@@ -84,6 +84,13 @@ export const investments = [
     logoSources: [],
   },
   {
+    name: "Starcloud",
+    fallback: "Starcloud",
+    meta: "Space · Compute",
+    href: "https://www.starcloud.com/",
+    logoSources: logoSources("starcloud.com", undefined, "/design-assets/logos/starcloud.png"),
+  },
+  {
     name: "Exowatt",
     fallback: "Exowatt",
     meta: "Energy",
@@ -162,6 +169,7 @@ export const warmupImageSources = [
   "/design-assets/founder-robert.png",
   "/design-assets/logos/openai.svg",
   "/design-assets/logos/exowatt.png",
+  "/design-assets/logos/starcloud.png",
   "/design-assets/logos/quaise.svg",
   "/design-assets/logos/shield-ai.svg",
   "/design-assets/logos/samply.svg",
