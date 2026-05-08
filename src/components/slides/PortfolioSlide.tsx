@@ -37,11 +37,8 @@ export function PortfolioSlide() {
           aria-label="Portfolio"
         >
           {investments.map((company, index) => (
-            <motion.a
+            <motion.div
               key={company.name}
-              href={company.href}
-              target="_blank"
-              rel="noopener noreferrer"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -51,21 +48,64 @@ export function PortfolioSlide() {
               }}
               className="at-investment-cell group relative isolate flex min-h-[150px] flex-col items-center justify-center overflow-hidden border-b border-r border-[rgb(var(--at-paper-rgb)_/_0.14)] px-4 py-6 text-center sm:min-h-[220px] sm:px-5 sm:py-8"
             >
-              <InvestmentLogo
-                name={company.name}
-                fallback={company.fallback}
-                sources={company.logoSources}
+              <a
+                href={company.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Visit ${company.name}`}
+                className="absolute inset-0 z-[1] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--at-accent-warm)]"
               />
-              <div className="font-display text-lg italic tracking-normal text-[rgb(var(--at-paper-rgb)_/_0.94)] transition duration-500 group-hover:text-[#ffffff]">
-                {company.name}
+              <div className="pointer-events-none relative z-0 flex flex-col items-center">
+                <InvestmentLogo
+                  name={company.name}
+                  fallback={company.fallback}
+                  sources={company.logoSources}
+                />
+                <div className="font-display text-lg italic tracking-normal text-[rgb(var(--at-paper-rgb)_/_0.94)] transition duration-500 group-hover:text-[#ffffff]">
+                  {company.name}
+                </div>
+                <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[rgb(var(--at-paper-rgb)_/_0.45)] transition duration-500 group-hover:text-[#ffffff]">
+                  {company.meta}
+                </div>
               </div>
-              <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[rgb(var(--at-paper-rgb)_/_0.45)] transition duration-500 group-hover:text-[#ffffff]">
-                {company.meta}
-              </div>
-              <span className="absolute bottom-4 right-4 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--at-paper)] opacity-0 transition delay-0 duration-300 group-hover:opacity-100 group-hover:delay-200">
+
+              {(company.linkedin || company.youtube) && (
+                <div className="absolute bottom-3 left-3 z-[2] flex gap-2 sm:bottom-4 sm:left-4">
+                  {company.linkedin && (
+                    <a
+                      href={company.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${company.name} on LinkedIn`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex h-7 w-7 items-center justify-center text-[rgb(var(--at-paper-rgb)_/_0.55)] transition-colors duration-300 hover:text-[#ffffff] focus-visible:text-[#ffffff] focus-visible:outline-none"
+                    >
+                      <svg className="h-[14px] w-[14px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                        <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.95v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.28V1.72C24 .77 23.2 0 22.22 0z" />
+                      </svg>
+                    </a>
+                  )}
+                  {company.youtube && (
+                    <a
+                      href={company.youtube}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Watch ${company.name} on YouTube`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex h-7 w-7 items-center justify-center text-[rgb(var(--at-paper-rgb)_/_0.55)] transition-colors duration-300 hover:text-[#ffffff] focus-visible:text-[#ffffff] focus-visible:outline-none"
+                    >
+                      <svg className="h-[16px] w-[16px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                        <path d="M23.5 6.2c-.3-1.1-1.1-1.9-2.2-2.2C19.4 3.5 12 3.5 12 3.5s-7.4 0-9.3.5C1.6 4.3.8 5.1.5 6.2 0 8.1 0 12 0 12s0 3.9.5 5.8c.3 1.1 1.1 1.9 2.2 2.2 1.9.5 9.3.5 9.3.5s7.4 0 9.3-.5c1.1-.3 1.9-1.1 2.2-2.2.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z" />
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              )}
+
+              <span className="pointer-events-none absolute bottom-4 right-4 z-[2] font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--at-paper)] opacity-0 transition delay-0 duration-300 group-hover:opacity-100 group-hover:delay-200">
                 Visit →
               </span>
-            </motion.a>
+            </motion.div>
           ))}
         </section>
       </main>

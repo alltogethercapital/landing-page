@@ -33,13 +33,24 @@ export function logoSources(domain: string, simpleIcon?: string, localSrc?: stri
   return sources;
 }
 
-export const investments = [
+export type Investment = {
+  name: string;
+  fallback: string;
+  meta: string;
+  href: string;
+  logoSources: string[];
+  linkedin?: string;
+  youtube?: string;
+};
+
+export const investments: Investment[] = [
   {
     name: "Anthropic",
     fallback: "Anthropic",
     meta: "AI",
     href: "https://www.anthropic.com/",
     logoSources: logoSources("anthropic.com", "anthropic"),
+    linkedin: "https://www.linkedin.com/company/anthropicresearch",
   },
   {
     name: "Anduril",
@@ -47,6 +58,7 @@ export const investments = [
     meta: "Defense · AI",
     href: "https://www.anduril.com/",
     logoSources: logoSources("anduril.com"),
+    linkedin: "https://www.linkedin.com/company/anduril",
   },
   {
     name: "Shield AI",
@@ -54,6 +66,7 @@ export const investments = [
     meta: "Defense · AI",
     href: "https://shield.ai/",
     logoSources: logoSources("shield.ai", undefined, "/design-assets/logos/shield-ai.svg"),
+    linkedin: "https://www.linkedin.com/company/shield-ai",
   },
   {
     name: "Replit",
@@ -61,6 +74,7 @@ export const investments = [
     meta: "Software · AI",
     href: "https://replit.com/",
     logoSources: logoSources("replit.com", "replit"),
+    linkedin: "https://www.linkedin.com/company/repl-it",
   },
   {
     name: "Applied Intuition",
@@ -68,6 +82,7 @@ export const investments = [
     meta: "AI · Robotics",
     href: "https://www.appliedintuition.com/",
     logoSources: logoSources("appliedintuition.com"),
+    linkedin: "https://www.linkedin.com/company/applied-intuition-inc",
   },
   {
     name: "Figure AI",
@@ -75,6 +90,7 @@ export const investments = [
     meta: "AI · Robotics",
     href: "https://www.figure.ai/",
     logoSources: [],
+    linkedin: "https://www.linkedin.com/company/figure-ai",
   },
   {
     name: "1X",
@@ -82,6 +98,7 @@ export const investments = [
     meta: "AI · Robotics",
     href: "https://www.1x.tech/",
     logoSources: [],
+    linkedin: "https://www.linkedin.com/company/1x-technologies",
   },
   {
     name: "Starcloud",
@@ -89,6 +106,8 @@ export const investments = [
     meta: "Space · Compute",
     href: "https://www.starcloud.com/",
     logoSources: logoSources("starcloud.com", undefined, "/design-assets/logos/starcloud.png"),
+    linkedin: "https://www.linkedin.com/company/starcloudinc",
+    youtube: "https://www.youtube.com/watch?v=FKHENV75b9Q",
   },
   {
     name: "Exowatt",
@@ -96,6 +115,7 @@ export const investments = [
     meta: "Energy",
     href: "https://www.exowatt.com/",
     logoSources: logoSources("exowatt.com", undefined, "/design-assets/logos/exowatt.png"),
+    linkedin: "https://www.linkedin.com/company/exowatt",
   },
   {
     name: "Quaise Energy",
@@ -103,6 +123,7 @@ export const investments = [
     meta: "Energy · Geothermal",
     href: "https://quaise.energy/",
     logoSources: logoSources("quaise.energy", undefined, "/design-assets/logos/quaise.svg"),
+    linkedin: "https://www.linkedin.com/company/quaise-energy",
   },
   {
     name: "Unspun",
@@ -110,6 +131,8 @@ export const investments = [
     meta: "Robotics · Manufacturing",
     href: "https://www.unspun.io/",
     logoSources: logoSources("unspun.io", undefined, "/design-assets/logos/unspun.png"),
+    linkedin: "https://www.linkedin.com/company/unspun-",
+    youtube: "https://www.youtube.com/watch?v=nc9TdnficlY",
   },
   {
     name: "Lance",
@@ -117,6 +140,8 @@ export const investments = [
     meta: "Software",
     href: "https://www.lance.live/",
     logoSources: logoSources("lance.live"),
+    linkedin: "https://www.linkedin.com/company/trylance",
+    youtube: "https://www.youtube.com/watch?v=b_EoZzE7KJ0",
   },
   {
     name: "Samply",
@@ -124,6 +149,7 @@ export const investments = [
     meta: "Software · Audio",
     href: "https://samply.app/",
     logoSources: logoSources("samply.app", undefined, "/design-assets/logos/samply.svg"),
+    linkedin: "https://www.linkedin.com/company/samplyaudio",
   },
   {
     name: "Bud Break Innovations",
@@ -131,6 +157,8 @@ export const investments = [
     meta: "Bio · Agriculture",
     href: "https://www.budbreakinnovations.com/",
     logoSources: logoSources("budbreakinnovations.com"),
+    linkedin: "https://www.linkedin.com/company/budbreak-innovations",
+    youtube: "https://www.youtube.com/watch?v=ljWvvz_wFrc",
   },
 ];
 
