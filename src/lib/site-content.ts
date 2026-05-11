@@ -45,6 +45,14 @@ export type Investment = {
 
 export const investments: Investment[] = [
   {
+    name: "OpenAI",
+    fallback: "OpenAI",
+    meta: "AI",
+    href: "https://openai.com/",
+    logoSources: logoSources("openai.com", "openai", "/design-assets/logos/openai.svg"),
+    linkedin: "https://www.linkedin.com/company/openai",
+  },
+  {
     name: "Anthropic",
     fallback: "Anthropic",
     meta: "AI",
