@@ -109,6 +109,22 @@ export const investments: Investment[] = [
     linkedin: "https://www.linkedin.com/company/1x-technologies",
   },
   {
+    name: "Apptronik",
+    fallback: "Apptronik",
+    meta: "AI · Robotics",
+    href: "https://apptronik.com/",
+    logoSources: logoSources("apptronik.com", undefined, "/design-assets/logos/apptronik.svg"),
+    linkedin: "https://www.linkedin.com/company/apptronik-inc",
+  },
+  {
+    name: "Volantis",
+    fallback: "Volantis",
+    meta: "AI · Semiconductors",
+    href: "https://www.volantissemi.ai/",
+    logoSources: logoSources("volantissemi.ai", undefined, "/design-assets/logos/volantis.webp"),
+    linkedin: "https://www.linkedin.com/company/volantis-semiconductor",
+  },
+  {
     name: "Starcloud",
     fallback: "Starcloud",
     meta: "Space · Compute",
@@ -209,6 +225,8 @@ export const warmupImageSources = [
   "/design-assets/logos/quaise.svg",
   "/design-assets/logos/shield-ai.svg",
   "/design-assets/logos/samply.svg",
+  "/design-assets/logos/apptronik.svg",
+  "/design-assets/logos/volantis.webp",
   "/design-assets/logos/unspun.png",
   ...investments.flatMap((company) => company.logoSources.slice(0, 1)),
 ];
