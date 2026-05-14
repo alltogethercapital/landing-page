@@ -77,6 +77,14 @@ export const investments: Investment[] = [
     linkedin: "https://www.linkedin.com/company/shield-ai",
   },
   {
+    name: "Aurelius Systems",
+    fallback: "Aurelius",
+    meta: "Defense · Directed Energy",
+    href: "https://www.aureliussystems.com/",
+    logoSources: logoSources("aureliussystems.com", undefined, "/design-assets/logos/aurelius.webp"),
+    linkedin: "https://www.linkedin.com/company/aurelius-systems",
+  },
+  {
     name: "Replit",
     fallback: "Replit",
     meta: "Software · AI",
@@ -224,6 +232,7 @@ export const warmupImageSources = [
   "/design-assets/logos/starcloud.png",
   "/design-assets/logos/quaise.svg",
   "/design-assets/logos/shield-ai.svg",
+  "/design-assets/logos/aurelius.webp",
   "/design-assets/logos/samply.svg",
   "/design-assets/logos/apptronik.svg",
   "/design-assets/logos/volantis.webp",
