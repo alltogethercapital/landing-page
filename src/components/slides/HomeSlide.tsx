@@ -1,10 +1,25 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { driftUp } from "@/lib/site-content";
 
+const subheadings = [
+  "from AI to atoms.",
+  "Technology is our birthright.",
+];
+
 export function HomeSlide() {
+  const [subheadingIndex, setSubheadingIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setSubheadingIndex((index) => (index + 1) % subheadings.length);
+    }, 4500);
+    return () => window.clearInterval(interval);
+  }, []);
+
   return (
     <div className="at-home-slide relative isolate flex flex-1 flex-col overflow-hidden">
       <div
@@ -45,8 +60,19 @@ export function HomeSlide() {
               >
                 The future is built together.
               </h1>
-              <p className="mt-2 font-display text-[clamp(1.4rem,3.6vw,3rem)] font-normal italic leading-[1] tracking-normal text-[#F4EFE6] [text-shadow:0_1px_2px_rgba(0,0,0,0.4),_0_2px_18px_rgba(0,0,0,0.2)]">
-                from AI to atoms.
+              <p className="relative mt-2 min-h-[1.1em] font-display text-[clamp(1.4rem,3.6vw,3rem)] font-normal italic leading-[1] tracking-normal text-[#F4EFE6] [text-shadow:0_1px_2px_rgba(0,0,0,0.4),_0_2px_18px_rgba(0,0,0,0.2)]">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={subheadings[subheadingIndex]}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] as const }}
+                    className="block"
+                  >
+                    {subheadings[subheadingIndex]}
+                  </motion.span>
+                </AnimatePresence>
               </p>
             </motion.div>
 
