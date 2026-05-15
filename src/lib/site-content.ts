@@ -1,23 +1,23 @@
 export const philosophyTenets = [
   {
     title: "Conviction over consensus",
-    body: "The best companies look obvious in retrospect and contrarian at conception. We back founders whose thesis we don't fully understand on the first read, and whose answers, by the second, feel inevitable.",
+    body: "The best companies look inevitable in hindsight and impossible up front. We back founders the room hasn't caught up to yet, and write the first check.",
   },
   {
-    title: "From AI to atoms",
-    body: "Software has stopped being a category. We invest across the full stack of intelligence and matter: language models, autonomous systems, robotics, energy, and the physical infrastructure that lets the digital world meet the real one.",
+    title: "The American rebuild",
+    body: "AI is the biggest industrial shift in a century, and it's happening on American soil. We back the founders rewriting what gets made here: models, autonomy, robotics, energy, and the factories putting it all back together.",
   },
   {
     title: "Evaluate from the command line",
-    body: "We read the codebase before the deck. We talk to the customer before the cap table. Pitches are signal; product is truth, and we'd rather spend an afternoon inside the thing than an hour hearing about it.",
+    body: "We read the code before the deck. We talk to customers before the cap table. Demos are signal. The product is the truth.",
   },
   {
     title: "Operators, not observers",
-    body: "Capital is the easy part. We've shipped products, recruited teams, and survived the quiet years. We show up when the work is hard and unglamorous, and we measure ourselves by what our founders can build because we were in the room.",
+    body: "Capital is the easy part. We've shipped products, hired teams, and lived through the quiet years. We show up for the work that never makes the press release.",
   },
   {
     title: "Long arcs, patient capital",
-    body: "The companies worth building rarely fit a fund cycle. We hold for decades, not exits, and we structure our partnership so that founders can optimize for the next fifteen years, not the next fifteen months.",
+    body: "The companies worth building don't fit a fund cycle. We hold for decades. Founders should optimize for the next fifteen years, not the next fifteen months.",
   },
 ];
 

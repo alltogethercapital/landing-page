@@ -19,15 +19,16 @@ export function PhilosophySlide() {
           >
             We invest in bold founders
             <br />
-            <em className="font-normal text-[var(--at-ink-3)]">Working at technology&apos;s edge</em>
+            <em className="font-normal text-[var(--at-ink-3)]">rebuilding America with AI.</em>
           </motion.h1>
 
           <motion.p
             {...driftUp(0.08)}
             className="max-w-[44ch] text-[15px] leading-[1.65] text-[var(--at-ink-3)]"
           >
-            Five convictions that shape how we partner with founders, from the first
-            call through the long arc of building a company together.
+            Five convictions about what comes next. AI is a once-in-a-century
+            reset, and the founders making the most of it are rebuilding the
+            country from the inside out.
           </motion.p>
 
           <div className="mt-8 border-t border-[rgb(var(--at-ink-rgb)_/_0.2)]">
