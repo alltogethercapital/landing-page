@@ -200,6 +200,14 @@ export const investments: Investment[] = [
     linkedin: "https://www.linkedin.com/company/samplyaudio",
   },
   {
+    name: "Hark",
+    fallback: "Hark",
+    meta: "AI · Consumer",
+    href: "https://hark.com/",
+    logoSources: logoSources("hark.com", undefined, "/design-assets/logos/hark.svg"),
+    linkedin: "https://www.linkedin.com/company/hark-ai",
+  },
+  {
     name: "Bud Break Innovations",
     fallback: "Bud Break",
     meta: "Bio · Agriculture",
@@ -252,6 +260,7 @@ export const warmupImageSources = [
   "/design-assets/logos/aurelius.webp",
   "/design-assets/logos/salient-motion.svg",
   "/design-assets/logos/samply.svg",
+  "/design-assets/logos/hark.svg",
   "/design-assets/logos/apptronik.svg",
   "/design-assets/logos/volantis.webp",
   "/design-assets/logos/unspun.png",
