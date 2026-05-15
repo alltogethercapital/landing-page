@@ -150,6 +150,14 @@ export const investments: Investment[] = [
     linkedin: "https://www.linkedin.com/company/exowatt",
   },
   {
+    name: "Aalo Atomics",
+    fallback: "Aalo",
+    meta: "Energy · Nuclear",
+    href: "https://www.aalo.com/",
+    logoSources: logoSources("aalo.com", undefined, "/design-assets/logos/aalo.png"),
+    linkedin: "https://www.linkedin.com/company/aalo-atomics",
+  },
+  {
     name: "Quaise Energy",
     fallback: "Quaise",
     meta: "Energy · Geothermal",
@@ -229,6 +237,7 @@ export const warmupImageSources = [
   "/design-assets/founder-robert.png",
   "/design-assets/logos/openai.svg",
   "/design-assets/logos/exowatt.png",
+  "/design-assets/logos/aalo.png",
   "/design-assets/logos/starcloud.png",
   "/design-assets/logos/quaise.svg",
   "/design-assets/logos/shield-ai.svg",
