@@ -85,6 +85,14 @@ export const investments: Investment[] = [
     linkedin: "https://www.linkedin.com/company/aurelius-systems",
   },
   {
+    name: "Salient Motion",
+    fallback: "Salient Motion",
+    meta: "Defense · Aerospace",
+    href: "https://salientmotion.com/",
+    logoSources: logoSources("salientmotion.com", undefined, "/design-assets/logos/salient-motion.svg"),
+    linkedin: "https://www.linkedin.com/company/salient-motion",
+  },
+  {
     name: "Replit",
     fallback: "Replit",
     meta: "Software · AI",
@@ -242,6 +250,7 @@ export const warmupImageSources = [
   "/design-assets/logos/quaise.svg",
   "/design-assets/logos/shield-ai.svg",
   "/design-assets/logos/aurelius.webp",
+  "/design-assets/logos/salient-motion.svg",
   "/design-assets/logos/samply.svg",
   "/design-assets/logos/apptronik.svg",
   "/design-assets/logos/volantis.webp",
