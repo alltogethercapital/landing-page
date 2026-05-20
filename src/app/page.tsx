@@ -1,10 +1,11 @@
-import { SiteShell } from "@/components/site/SiteShell";
-import { HomeSlide } from "@/components/slides/HomeSlide";
+import { SiteNav } from "@/components/site-nav";
+import { Hero } from "@/components/hero";
 
-export default function HomePage() {
+export default function Home() {
   return (
-    <SiteShell variant="paper">
-      <HomeSlide />
-    </SiteShell>
+    <>
+      <SiteNav />
+      <Hero />
+    </>
   );
 }
