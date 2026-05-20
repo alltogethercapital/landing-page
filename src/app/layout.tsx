@@ -15,8 +15,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "All Together — The Creative Agency",
-  description: "One subscription, unlimited design iterations.",
+  title: "The Future Is Built Together — All Together Capital",
+  description:
+    "All Together Capital backs the founders rebuilding the hard frontier — across AI, defense, energy, robotics, semiconductors, and space.",
 };
 
 export default function RootLayout({
