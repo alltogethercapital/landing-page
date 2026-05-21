@@ -294,6 +294,8 @@ type YTPlayer = {
   destroy: () => void;
   getCurrentTime: () => number;
   getDuration: () => number;
+  getVolume: () => number;
+  setVolume: (v: number) => void;
 };
 type YTPlayerEvent = { target: YTPlayer; data: number };
 type YTNamespace = {
@@ -343,6 +345,7 @@ function HeroVideoPlayer({
   const holderRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YTPlayer | null>(null);
   const doneRef = useRef(false);
+  const fadeRef = useRef<number | undefined>(undefined);
   // The video preloads + plays hidden during the image phase; it's only shown
   // once it has PLAYED enough that YouTube's start play/pause indicator is gone.
   const [played, setPlayed] = useState(false);
@@ -353,6 +356,52 @@ function HeroVideoPlayer({
     doneRef.current = true;
     onEnded();
   }, [onEnded]);
+
+  // Quick volume ramp so sound never snaps on/off abruptly.
+  const fadeTo = useCallback((target: number, ms = 400) => {
+    const p = playerRef.current;
+    if (!p?.setVolume) return;
+    window.clearInterval(fadeRef.current);
+    const fadingIn = target > 0;
+    let cur: number;
+    if (fadingIn) {
+      try {
+        p.unMute();
+        p.setVolume(0);
+      } catch {
+        /* not ready */
+      }
+      cur = 0;
+    } else {
+      try {
+        cur = p.getVolume?.() ?? 100;
+      } catch {
+        cur = 100;
+      }
+    }
+    const steps = Math.max(1, Math.round(ms / 25));
+    let i = 0;
+    fadeRef.current = window.setInterval(() => {
+      i += 1;
+      const v = Math.round(cur + (target - cur) * (i / steps));
+      try {
+        p.setVolume(v);
+      } catch {
+        /* player gone */
+      }
+      if (i >= steps) {
+        window.clearInterval(fadeRef.current);
+        fadeRef.current = undefined;
+        if (!fadingIn) {
+          try {
+            p.mute();
+          } catch {
+            /* player gone */
+          }
+        }
+      }
+    }, 25);
+  }, []);
 
   // Create the player.
   useEffect(() => {
@@ -396,6 +445,7 @@ function HeroVideoPlayer({
     });
     return () => {
       cancelled = true;
+      window.clearInterval(fadeRef.current);
       try {
         playerRef.current?.destroy();
       } catch {
@@ -424,14 +474,25 @@ function HeroVideoPlayer({
     return () => window.clearInterval(id);
   }, [finish, start]);
 
-  // Mute while preloading (not visible) so audio never plays under the image;
-  // apply the user's preference only once the video is actually shown.
+  // Mute (instantly) while preloading hidden so audio never plays under the
+  // image; once shown, fade the audio in/out quickly so there are no abrupt
+  // jumps when the user toggles sound.
   useEffect(() => {
     const p = playerRef.current;
     if (!p) return;
-    if (!visible || muted) p.mute();
-    else p.unMute();
-  }, [muted, visible]);
+    if (!visible) {
+      window.clearInterval(fadeRef.current);
+      try {
+        p.mute();
+      } catch {
+        /* not ready */
+      }
+    } else if (muted) {
+      fadeTo(0);
+    } else {
+      fadeTo(100);
+    }
+  }, [muted, visible, fadeTo]);
 
   // object-cover: size a 16:9 box to overflow + center within the viewport.
   useEffect(() => {
