@@ -2,9 +2,13 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import gsap from "gsap";
+import { SplitText } from "gsap/SplitText";
 import { PORTFOLIO } from "@/lib/portfolio";
 import { SoundOffIcon, SoundOnIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
+
+gsap.registerPlugin(SplitText);
 
 // Each hero slide is a portfolio company. The image + video come from the
 // shared PORTFOLIO data (single source of truth — same videos as /companies);
@@ -374,9 +378,11 @@ function HeroVideoPlayer({
         },
         events: {
           onReady: (e: YTPlayerEvent) => {
+            // NB: do NOT call playVideo() here — an explicit API play makes
+            // YouTube flash its center play/pause indicator. Muted autoplay
+            // (autoplay=1 & mute=1) starts it without any indicator.
             if (muted) e.target.mute();
             else e.target.unMute();
-            e.target.playVideo();
           },
           onStateChange: (e: YTPlayerEvent) => {
             if (e.data === YT.PlayerState.PLAYING) {
@@ -481,6 +487,45 @@ export function Hero() {
   const [active, setActive] = useState(0);
   const [phase, setPhase] = useState<"image" | "video" | "outro">("image");
   const [muted, setMuted] = useState(true);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+
+  // Epic headline reveal: mask each line and stagger the characters upward.
+  useEffect(() => {
+    const el = headlineRef.current;
+    if (!el) return;
+    let split: SplitText | undefined;
+    let tween: gsap.core.Tween | undefined;
+    const show = () => gsap.set(el, { autoAlpha: 1 });
+    const fallback = window.setTimeout(show, 2500); // never leave it hidden
+    const run = () => {
+      window.clearTimeout(fallback);
+      try {
+        split = SplitText.create(el, { type: "lines,chars", mask: "lines" });
+        show();
+        tween = gsap.from(split.chars, {
+          yPercent: 115,
+          opacity: 0,
+          stagger: 0.02,
+          duration: 0.9,
+          ease: "power4.out",
+          delay: 0.15,
+          onComplete: () => split?.revert(), // restore normal, responsive markup
+        });
+      } catch {
+        show();
+      }
+    };
+    const ready =
+      typeof document !== "undefined" && document.fonts
+        ? document.fonts.ready
+        : Promise.resolve();
+    ready.then(run);
+    return () => {
+      window.clearTimeout(fallback);
+      tween?.kill();
+      split?.revert();
+    };
+  }, []);
 
   const slide = SLIDES[active];
   const showDecor = phase !== "video";
@@ -577,10 +622,13 @@ export function Hero() {
         <div className="flex h-full flex-col gap-7 px-6 pt-[96px] lg:block lg:p-0">
           {/* Headline */}
           <div className="lg:absolute lg:left-[100px] lg:top-[175px] lg:max-w-[640px]">
-            <h1 className="text-[29px] font-medium leading-[1.12] tracking-[-1.1px] text-white md:text-[45.66px] md:leading-[54.79px] md:tracking-[-1.83px]">
+            <h1
+              ref={headlineRef}
+              className="hero-headline text-[29px] font-medium leading-[1.12] tracking-[-1.1px] text-white opacity-0 md:text-[45.66px] md:leading-[54.79px] md:tracking-[-1.83px]"
+            >
               The future is built together.
               <br />
-              The future starts now.
+              The future is built now.
             </h1>
           </div>
 
@@ -677,29 +725,32 @@ export function Hero() {
               >
                 <Chevron dir="right" />
               </button>
+
+              {/* Sound toggle — sits with the slide controls while a video plays */}
+              {playingVideo && (
+                <button
+                  type="button"
+                  onClick={() => setMuted((m) => !m)}
+                  aria-label={muted ? "Unmute video" : "Mute video"}
+                  className={cn(
+                    "ml-1 inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-semibold backdrop-blur-md transition-colors duration-200 md:ml-3 md:gap-2 md:px-3.5 md:py-2 md:text-[13px]",
+                    muted
+                      ? "bg-[#ff4400] text-black hover:bg-[#ff5a1f]"
+                      : "bg-white/15 text-white hover:bg-white/25",
+                  )}
+                >
+                  {muted ? (
+                    <SoundOffIcon className="size-4" />
+                  ) : (
+                    <SoundOnIcon className="size-4" />
+                  )}
+                  {muted ? "Tap for sound" : "Mute"}
+                </button>
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* Sound toggle — bottom-right, only while a video is taking over */}
-      {playingVideo && (
-        <button
-          type="button"
-          onClick={() => setMuted((m) => !m)}
-          aria-label={muted ? "Unmute video" : "Mute video"}
-          className={cn(
-            "pointer-events-auto absolute bottom-[68px] right-5 z-[20] flex size-14 items-center justify-center bg-black/60 backdrop-blur-md transition-colors duration-200 hover:bg-[#ff4400] hover:text-black md:bottom-[104px] md:right-8 md:size-16",
-            muted ? "sound-pulse text-[#ff4400]" : "text-white",
-          )}
-        >
-          {muted ? (
-            <SoundOffIcon className="size-6 md:size-7" />
-          ) : (
-            <SoundOnIcon className="size-6 md:size-7" />
-          )}
-        </button>
-      )}
 
       {/* Giant wordmark + Capital lockup — always visible, even over the video */}
       <div className="pointer-events-none absolute inset-x-[40px] bottom-[22px] z-[8] mx-auto max-w-[1920px] [container-type:inline-size] max-md:inset-x-3 max-md:bottom-2">
