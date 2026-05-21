@@ -329,11 +329,13 @@ function HeroVideoPlayer({
   videoId,
   start = 0,
   muted,
+  visible,
   onEnded,
 }: {
   videoId: string;
   start?: number;
   muted: boolean;
+  visible: boolean;
   onEnded: () => void;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -341,11 +343,9 @@ function HeroVideoPlayer({
   const holderRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YTPlayer | null>(null);
   const doneRef = useRef(false);
-  const revealTimer = useRef<number | undefined>(undefined);
-  // The video is revealed a beat AFTER playback starts (and hidden the instant
-  // it isn't playing), so YouTube's center play/pause flash, poster button, and
-  // end screen are never visible over the hero.
-  const [revealed, setRevealed] = useState(false);
+  // The video preloads + plays hidden during the image phase; it's only shown
+  // once it has PLAYED enough that YouTube's start play/pause indicator is gone.
+  const [played, setPlayed] = useState(false);
 
   // Advance to the next slide exactly once (whether via the end-poll or events).
   const finish = useCallback(() => {
@@ -385,24 +385,9 @@ function HeroVideoPlayer({
             else e.target.unMute();
           },
           onStateChange: (e: YTPlayerEvent) => {
-            if (e.data === YT.PlayerState.PLAYING) {
-              // Reveal only after YouTube's center play/pause indicator (shown
-              // for ~1.5s when playback starts) is fully gone — otherwise it
-              // flashes during the fade-in.
-              window.clearTimeout(revealTimer.current);
-              revealTimer.current = window.setTimeout(
-                () => setRevealed(true),
-                2200,
-              );
-            } else if (e.data === YT.PlayerState.PAUSED) {
-              // Never sit on a paused frame (which shows a play button) — hide
-              // the layer immediately and resume.
-              window.clearTimeout(revealTimer.current);
-              setRevealed(false);
-              e.target.playVideo();
-            } else if (e.data === YT.PlayerState.ENDED) {
-              finish();
-            }
+            // Never sit on a paused frame (which shows a play button) — resume.
+            if (e.data === YT.PlayerState.PAUSED) e.target.playVideo();
+            if (e.data === YT.PlayerState.ENDED) finish();
           },
           onError: () => finish(),
         },
@@ -410,7 +395,6 @@ function HeroVideoPlayer({
     });
     return () => {
       cancelled = true;
-      window.clearTimeout(revealTimer.current);
       try {
         playerRef.current?.destroy();
       } catch {
@@ -421,21 +405,23 @@ function HeroVideoPlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId, start]);
 
-  // End ~2s early so YouTube's end screen (replay button + suggested videos)
-  // never gets a chance to appear over the background.
+  // Poll playback: reveal once enough content has actually played (so YouTube's
+  // start indicator is gone — robust across devices), and end ~2s early so its
+  // end screen never appears.
   useEffect(() => {
     const id = window.setInterval(() => {
       const p = playerRef.current;
       if (!p?.getDuration || !p.getCurrentTime) return;
       const dur = p.getDuration();
       const cur = p.getCurrentTime();
+      if (cur >= start + 4) setPlayed(true);
       if (dur > 0 && cur >= dur - 2) {
         window.clearInterval(id);
         finish();
       }
-    }, 400);
+    }, 200);
     return () => window.clearInterval(id);
-  }, [finish]);
+  }, [finish, start]);
 
   // Reflect the mute toggle.
   useEffect(() => {
@@ -472,7 +458,7 @@ function HeroVideoPlayer({
       aria-hidden="true"
       className={cn(
         "pointer-events-none absolute inset-0 z-[1] bg-black transition-opacity duration-700 ease-in-out",
-        revealed ? "opacity-100" : "opacity-0",
+        visible && played ? "opacity-100" : "opacity-0",
       )}
     >
       <div ref={wrapRef} className="absolute inset-0 overflow-hidden">
@@ -556,6 +542,30 @@ export function Hero() {
 
   const handleVideoEnd = useCallback(() => setPhase("outro"), []);
 
+  // Mute/unmute control — placed under the "American companies" note on
+  // tablet/desktop and bottom-right on mobile, so it's easy to reach everywhere.
+  const renderMute = (extra: string) => (
+    <button
+      type="button"
+      onClick={() => setMuted((m) => !m)}
+      aria-label={muted ? "Unmute video" : "Mute video"}
+      className={cn(
+        "pointer-events-auto inline-flex items-center gap-2 px-3.5 py-2 text-[13px] font-semibold backdrop-blur-md transition-colors duration-200 md:text-[14px]",
+        muted
+          ? "bg-[#ff4400] text-black hover:bg-[#ff5a1f]"
+          : "bg-white/15 text-white hover:bg-white/25",
+        extra,
+      )}
+    >
+      {muted ? (
+        <SoundOffIcon className="size-4" />
+      ) : (
+        <SoundOnIcon className="size-4" />
+      )}
+      {muted ? "Tap to unmute" : "Mute"}
+    </button>
+  );
+
   return (
     <section
       id="top"
@@ -578,13 +588,15 @@ export function Hero() {
         ))}
       </div>
 
-      {/* Full-bleed video takeover — replaces the background image until it ends */}
-      {playingVideo && (
+      {/* Full-bleed video — preloads/plays hidden during the image phase, then
+          reveals once it's played enough (so YouTube's start indicator is gone). */}
+      {slide.video && phase !== "outro" && (
         <HeroVideoPlayer
           key={slide.name}
-          videoId={slide.video as string}
+          videoId={slide.video}
           start={slide.videoStart}
           muted={muted}
+          visible={phase === "video"}
           onEnded={handleVideoEnd}
         />
       )}
@@ -658,6 +670,8 @@ export function Hero() {
                 <rect width="7.6" height="5.385" fill="#3c3b6e" />
               </svg>
             </p>
+            {/* Mute control — under the note on tablet/desktop */}
+            {playingVideo && renderMute("mt-3 hidden md:inline-flex lg:mt-4")}
           </div>
 
           {/* Cycling caption (links to product) + slide nav */}
@@ -726,32 +740,14 @@ export function Hero() {
               >
                 <Chevron dir="right" />
               </button>
-
-              {/* Sound toggle — sits with the slide controls while a video plays */}
-              {playingVideo && (
-                <button
-                  type="button"
-                  onClick={() => setMuted((m) => !m)}
-                  aria-label={muted ? "Unmute video" : "Mute video"}
-                  className={cn(
-                    "ml-1 inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-semibold backdrop-blur-md transition-colors duration-200 md:ml-3 md:gap-2 md:px-3.5 md:py-2 md:text-[13px]",
-                    muted
-                      ? "bg-[#ff4400] text-black hover:bg-[#ff5a1f]"
-                      : "bg-white/15 text-white hover:bg-white/25",
-                  )}
-                >
-                  {muted ? (
-                    <SoundOffIcon className="size-4" />
-                  ) : (
-                    <SoundOnIcon className="size-4" />
-                  )}
-                  {muted ? "Tap for sound" : "Mute"}
-                </button>
-              )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Mute control — bottom-right on mobile (under the note on tablet/desktop) */}
+      {playingVideo &&
+        renderMute("absolute bottom-[68px] right-5 z-[20] md:hidden")}
 
       {/* Giant wordmark + Capital lockup — always visible, even over the video */}
       <div className="pointer-events-none absolute inset-x-[40px] bottom-[22px] z-[8] mx-auto max-w-[1920px] [container-type:inline-size] max-md:inset-x-3 max-md:bottom-2">
