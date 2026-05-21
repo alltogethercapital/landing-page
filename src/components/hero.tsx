@@ -337,9 +337,11 @@ function HeroVideoPlayer({
   const holderRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YTPlayer | null>(null);
   const doneRef = useRef(false);
-  // The video is only shown while it's actively playing, so YouTube's poster /
-  // pause / end-screen UI (which only appears when NOT playing) is never visible.
-  const [playing, setPlaying] = useState(false);
+  const revealTimer = useRef<number | undefined>(undefined);
+  // The video is revealed a beat AFTER playback starts (and hidden the instant
+  // it isn't playing), so YouTube's center play/pause flash, poster button, and
+  // end screen are never visible over the hero.
+  const [revealed, setRevealed] = useState(false);
 
   // Advance to the next slide exactly once (whether via the end-poll or events).
   const finish = useCallback(() => {
@@ -378,11 +380,18 @@ function HeroVideoPlayer({
           },
           onStateChange: (e: YTPlayerEvent) => {
             if (e.data === YT.PlayerState.PLAYING) {
-              setPlaying(true);
+              // Reveal ~1s after play so YouTube's center play/pause flash has
+              // faded before the video becomes visible.
+              window.clearTimeout(revealTimer.current);
+              revealTimer.current = window.setTimeout(
+                () => setRevealed(true),
+                1000,
+              );
             } else if (e.data === YT.PlayerState.PAUSED) {
               // Never sit on a paused frame (which shows a play button) — hide
-              // the layer and try to resume.
-              setPlaying(false);
+              // the layer immediately and resume.
+              window.clearTimeout(revealTimer.current);
+              setRevealed(false);
               e.target.playVideo();
             } else if (e.data === YT.PlayerState.ENDED) {
               finish();
@@ -394,6 +403,7 @@ function HeroVideoPlayer({
     });
     return () => {
       cancelled = true;
+      window.clearTimeout(revealTimer.current);
       try {
         playerRef.current?.destroy();
       } catch {
@@ -455,7 +465,7 @@ function HeroVideoPlayer({
       aria-hidden="true"
       className={cn(
         "pointer-events-none absolute inset-0 z-[1] bg-black transition-opacity duration-700 ease-in-out",
-        playing ? "opacity-100" : "opacity-0",
+        revealed ? "opacity-100" : "opacity-0",
       )}
     >
       <div ref={wrapRef} className="absolute inset-0 overflow-hidden">
