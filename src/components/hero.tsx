@@ -31,16 +31,16 @@ const SLIDE_COPY: Pick<Slide, "name" | "title" | "subtitle" | "href">[] = [
     href: "https://shield.ai/x-bat/",
   },
   {
-    name: "Figure AI",
-    title: "Figure 03 — the humanoid robot",
-    subtitle: "built for work and the home",
-    href: "https://www.figure.ai/",
-  },
-  {
     name: "1X",
     title: "1X NEO — the humanoid robot",
     subtitle: "engineered for the home",
     href: "https://www.1x.tech/",
+  },
+  {
+    name: "Figure AI",
+    title: "Figure 03 — the humanoid robot",
+    subtitle: "built for work and the home",
+    href: "https://www.figure.ai/",
   },
 ];
 
@@ -386,12 +386,13 @@ function HeroVideoPlayer({
           },
           onStateChange: (e: YTPlayerEvent) => {
             if (e.data === YT.PlayerState.PLAYING) {
-              // Reveal ~1s after play so YouTube's center play/pause flash has
-              // faded before the video becomes visible.
+              // Reveal only after YouTube's center play/pause indicator (shown
+              // for ~1.5s when playback starts) is fully gone — otherwise it
+              // flashes during the fade-in.
               window.clearTimeout(revealTimer.current);
               revealTimer.current = window.setTimeout(
                 () => setRevealed(true),
-                1000,
+                2200,
               );
             } else if (e.data === YT.PlayerState.PAUSED) {
               // Never sit on a paused frame (which shows a play button) — hide
