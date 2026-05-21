@@ -320,9 +320,9 @@ export function Hero() {
 
       {/* HERO CONTENT (flows on mobile, absolute on md+) */}
       <div className="pointer-events-none absolute inset-0 z-10">
-        <div className="flex h-full flex-col gap-7 px-6 pt-[96px] md:block md:p-0">
+        <div className="flex h-full flex-col gap-7 px-6 pt-[96px] lg:block lg:p-0">
           {/* Headline */}
-          <div className="md:absolute md:left-[100px] md:top-[175px] md:max-w-[640px]">
+          <div className="lg:absolute lg:left-[100px] lg:top-[175px] lg:max-w-[640px]">
             <h1 className="text-[29px] font-medium leading-[1.12] tracking-[-1.1px] text-white md:text-[45.66px] md:leading-[54.79px] md:tracking-[-1.83px]">
               The future is built together.
               <br />
@@ -330,9 +330,9 @@ export function Hero() {
             </h1>
           </div>
 
-          {/* Focused on American companies */}
-          <div className="md:absolute md:right-[100px] md:top-[209px] md:text-right">
-            <p className="[font-family:var(--font-playfair)] text-[40px] font-normal leading-[1.05] tracking-[-0.5px] text-white md:text-[44px] md:leading-[1.06]">
+          {/* Focused on American companies — secondary side note */}
+          <div className="lg:absolute lg:right-[100px] lg:top-[214px] lg:text-right">
+            <p className="[font-family:var(--font-playfair)] text-[14px] font-normal leading-[1.3] tracking-[-0.1px] text-white/80 sm:text-[16px] lg:text-[26px] lg:leading-[1.12] lg:tracking-[-0.4px] lg:text-white/90">
               Focused on
               <br />
               American companies{" "}
@@ -358,7 +358,7 @@ export function Hero() {
           </div>
 
           {/* Cycling caption (links to product) + slide nav */}
-          <div className="md:absolute md:left-[100px] md:top-[330px] md:max-w-[540px]">
+          <div className="lg:absolute lg:left-[100px] lg:top-[330px] lg:max-w-[540px]">
             <div className="flex items-start gap-[18px] md:gap-[22px]">
               <span className="mt-[7px] inline-block size-[14px] shrink-0 rounded-[2px] bg-[#ff4400] md:mt-[10px]" />
               <a

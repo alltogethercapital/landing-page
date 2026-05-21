@@ -177,6 +177,20 @@ export const PORTFOLIO: Company[] = [
     logo: "/logos/budbreak.png",
     image: "/work/budbreak.jpg",
   },
+  {
+    name: "Maven Robotics",
+    href: "https://www.mavenrobotics.ai/",
+    sectors: ["AI", "Robotics"],
+    blurb: "A new kind of working robot — general-purpose AI for industry.",
+    logo: "/logos/maven.png",
+  },
+  {
+    name: "Eccentric Machines",
+    href: "https://www.eccentricmachines.com/",
+    sectors: ["Robotics", "AI"],
+    blurb: "Unlocking intelligent robotic motion.",
+    image: "/work/eccentric.jpg",
+  },
 ];
 
 // sector → gradient (for cards without a product image)
