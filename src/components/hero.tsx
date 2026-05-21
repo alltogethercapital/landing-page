@@ -27,6 +27,12 @@ const SLIDE_COPY: Pick<Slide, "name" | "title" | "subtitle" | "href">[] = [
     href: "https://shield.ai/x-bat/",
   },
   {
+    name: "Figure AI",
+    title: "Figure 03 — the humanoid robot",
+    subtitle: "built for work and the home",
+    href: "https://www.figure.ai/",
+  },
+  {
     name: "1X",
     title: "1X NEO — the humanoid robot",
     subtitle: "engineered for the home",

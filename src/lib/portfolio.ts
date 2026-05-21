@@ -98,7 +98,9 @@ export const PORTFOLIO: Company[] = [
     sectors: ["AI", "Robotics"],
     blurb: "General-purpose humanoid robots for the workforce.",
     logo: "/logos/figure.png",
-    image: "/work/figure.jpg",
+    image: "/work/figure-ai.jpg",
+    // NOTE: the "Figure 03 Trailer" (IlG3X8zRI2I) has embedding disabled by its
+    // owner, so it can't be used; this is the embeddable official launch film.
     video: "Eu5mYMavctM", // Introducing Figure 03 (Figure)
   },
   {
