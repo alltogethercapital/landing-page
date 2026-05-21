@@ -290,6 +290,19 @@ export function Hero() {
         ))}
       </div>
 
+      {/* Per-slide drifting smoke — subtle, GPU-only, unique to each image */}
+      {SLIDES.map((s, i) => (
+        <div
+          key={`${s.img}-smoke`}
+          aria-hidden="true"
+          className={cn(
+            "hero-smoke absolute inset-0 z-[1] transition-opacity duration-[700ms] ease-in-out",
+            i % 2 === 0 ? "hero-smoke--a" : "hero-smoke--b",
+          )}
+          style={{ opacity: i === active ? 1 : 0 }}
+        />
+      ))}
+
       {/* Animated light rays — subtle "god rays" + breathing glow from the top */}
       <div
         className="light-rays pointer-events-none absolute inset-0 z-[1]"
@@ -323,7 +336,24 @@ export function Hero() {
               Focused on
               <br />
               American companies{" "}
-              <span className="text-[0.72em]">🇺🇸</span>
+              <svg
+                viewBox="0 0 19 10"
+                role="img"
+                aria-label="United States"
+                className="ml-[0.18em] inline-block h-[0.6em] w-auto align-[-0.04em]"
+              >
+                <rect width="19" height="10" fill="#fff" />
+                <g fill="#b22234">
+                  <rect width="19" height="0.769" y="0" />
+                  <rect width="19" height="0.769" y="1.538" />
+                  <rect width="19" height="0.769" y="3.077" />
+                  <rect width="19" height="0.769" y="4.615" />
+                  <rect width="19" height="0.769" y="6.154" />
+                  <rect width="19" height="0.769" y="7.692" />
+                  <rect width="19" height="0.769" y="9.231" />
+                </g>
+                <rect width="7.6" height="5.385" fill="#3c3b6e" />
+              </svg>
             </p>
           </div>
 

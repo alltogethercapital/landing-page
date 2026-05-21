@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { CONTACT_MAILTO, LEGAL, NAV, SOCIALS } from "@/lib/site";
+import { LEGAL, NAV, SOCIALS } from "@/lib/site";
 import { ArrowUpRight } from "@/components/icons";
+import { SubscribeForm } from "@/components/subscribe-form";
 
 function FooterLink({
   href,
@@ -94,15 +95,7 @@ export function SiteFooter() {
           <p className="mt-3 text-[14px] leading-relaxed text-white/55">
             Occasional notes on what we&apos;re building and backing. No spam.
           </p>
-          <a
-            href={CONTACT_MAILTO}
-            className="group mt-5 flex items-center justify-between gap-3 rounded-full border border-white/15 py-2 pl-4 pr-2 text-[14px] text-white/50 transition-colors hover:border-[#ff4400]/60"
-          >
-            Your email
-            <span className="flex size-8 items-center justify-center rounded-full bg-[#ff4400] text-black transition-transform group-hover:scale-105">
-              <ArrowUpRight className="size-4" />
-            </span>
-          </a>
+          <SubscribeForm />
         </div>
 
         <nav className="flex flex-col items-start gap-3">

@@ -246,3 +246,86 @@
     animation: none;
   }
 }
+
+/* ── Hero smoke — soft, subtle haze drifting over each slide.
+   GPU-only (transform/opacity); a different variant per image so the
+   motion isn't identical across slides. No canvas/SVG-turbulence, so
+   it's very cheap to render. */
+.hero-smoke {
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-smoke::before,
+.hero-smoke::after {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  background-repeat: no-repeat;
+  will-change: transform;
+}
+.hero-smoke--a::before {
+  background:
+    radial-gradient(38% 32% at 22% 30%, rgba(255, 255, 255, 0.12), transparent 72%),
+    radial-gradient(46% 40% at 78% 66%, rgba(200, 225, 255, 0.09), transparent 72%);
+  animation: smoke-a1 30s ease-in-out infinite alternate;
+}
+.hero-smoke--a::after {
+  background: radial-gradient(
+    44% 38% at 60% 16%,
+    rgba(255, 255, 255, 0.08),
+    transparent 70%
+  );
+  animation: smoke-a2 44s ease-in-out infinite alternate;
+}
+.hero-smoke--b::before {
+  background:
+    radial-gradient(42% 36% at 72% 28%, rgba(255, 255, 255, 0.11), transparent 72%),
+    radial-gradient(48% 42% at 26% 72%, rgba(205, 228, 255, 0.09), transparent 72%);
+  animation: smoke-b1 34s ease-in-out infinite alternate;
+}
+.hero-smoke--b::after {
+  background: radial-gradient(
+    40% 36% at 42% 20%,
+    rgba(255, 255, 255, 0.08),
+    transparent 70%
+  );
+  animation: smoke-b2 48s ease-in-out infinite alternate;
+}
+@keyframes smoke-a1 {
+  from {
+    transform: translate3d(-4%, 3%, 0) scale(1.05) rotate(-2deg);
+  }
+  to {
+    transform: translate3d(5%, -4%, 0) scale(1.18) rotate(2deg);
+  }
+}
+@keyframes smoke-a2 {
+  from {
+    transform: translate3d(3%, -2%, 0) scale(1.12);
+  }
+  to {
+    transform: translate3d(-4%, 4%, 0) scale(1);
+  }
+}
+@keyframes smoke-b1 {
+  from {
+    transform: translate3d(4%, -3%, 0) scale(1.08) rotate(2deg);
+  }
+  to {
+    transform: translate3d(-5%, 4%, 0) scale(1.2) rotate(-2deg);
+  }
+}
+@keyframes smoke-b2 {
+  from {
+    transform: translate3d(-3%, 3%, 0) scale(1.14);
+  }
+  to {
+    transform: translate3d(4%, -3%, 0) scale(1.02);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-smoke::before,
+  .hero-smoke::after {
+    animation: none;
+  }
+}

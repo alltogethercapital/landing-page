@@ -55,6 +55,14 @@ function CompanyCard({
       {/* Legibility gradient — clear at top so the product shows, dark at the base for the lockup */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/5" />
 
+      {/* Open affordance — bigger arrow, top-right (the whole card links out) */}
+      <span
+        aria-hidden="true"
+        className="absolute right-4 top-4 z-[1] flex size-11 items-center justify-center bg-black/40 text-white backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-5 md:top-5 md:size-12"
+      >
+        <ArrowUpRight className="size-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-7" />
+      </span>
+
       {/* "Newest addition" badge — featured card only */}
       {featured && (
         <span className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-[#ff4400] px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-black shadow-[0_2px_12px_rgba(0,0,0,0.45)] md:left-8 md:top-8 md:text-[12px]">
@@ -68,12 +76,9 @@ function CompanyCard({
 
       {/* Bottom: sector tag, divider, brand lockup (logo + name), blurb */}
       <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
-        <div className="flex items-center justify-between gap-4">
-          <span className="font-mono text-[12px] uppercase tracking-[0.16em] text-white/75">
-            {company.sectors.join(" · ")}
-          </span>
-          <ArrowUpRight className="size-5 shrink-0 text-white/60 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#ff4400]" />
-        </div>
+        <span className="font-mono text-[12px] uppercase tracking-[0.16em] text-white/75">
+          {company.sectors.join(" · ")}
+        </span>
         <div className="mt-4 h-px w-full bg-white/25" />
         <div className={cn("mt-4 flex items-center", featured ? "gap-4" : "gap-3")}>
           {company.logo && (
