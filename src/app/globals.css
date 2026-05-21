@@ -131,6 +131,22 @@
   html {
     @apply font-sans;
   }
+  /* Pointer cursor on interactive elements — Tailwind v4 resets buttons to the
+     default arrow, so restore the expected click affordance everywhere. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  a[href],
+  label[for],
+  summary,
+  select {
+    cursor: pointer;
+  }
+}
+
+/* Zero border radius site-wide — sharp, squared aesthetic everywhere.
+   Overrides every Tailwind rounded-* utility (including rounded-full). */
+* {
+  border-radius: 0 !important;
 }
 
 /* ── Animated light rays (hero) ──────────────────────────────

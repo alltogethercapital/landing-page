@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 // Each slide pairs a portfolio company's image with a caption + link.
@@ -24,40 +24,21 @@ const SLIDES: Slide[] = [
 
 const CYCLE_MS = 5000;
 
-// Glyphs: A/T (All Together) + 0/1 (binary).
-const GLYPHS = ["A", "T", "0", "1"] as const;
+// Glyphs: binary 0/1.
+const GLYPHS = ["0", "1"] as const;
 const PROXIMITY_RADIUS = 160; // px — how near the cursor must be to flip a glyph
 const FLIP_COOLDOWN = 800; // ms — min time before the same glyph re-flips
 
-// seeded PRNG so the scattered field is identical on server + client
-function mulberry32(seed: number) {
-  return () => {
-    seed = (seed + 0x6d2b79f5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+// Target spacing (px) between glyphs. Column/row counts are derived from the
+// viewport using this, so spacing stays ~square AND the density (sparseness) is
+// consistent across screens — phones get fewer glyphs, desktops more.
+const GLYPH_CELL = 168;
 
-// orderly, evenly-spaced grid (8×5) of positions + starting characters
-const GLYPH_FIELD = (() => {
-  const cols = 8;
-  const rows = 5;
-  const rand = mulberry32(20260521);
-  const cells: { left: string; top: string; char: string }[] = [];
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const left = ((c + 0.5) / cols) * 100;
-      const top = ((r + 0.5) / rows) * 100;
-      cells.push({
-        left: `${left.toFixed(2)}%`,
-        top: `${top.toFixed(2)}%`,
-        char: GLYPHS[Math.floor(rand() * GLYPHS.length)],
-      });
-    }
-  }
-  return cells;
-})();
+// Deterministic starting glyph per cell (stable across resizes — no reshuffle).
+function charFor(r: number, c: number) {
+  const h = (((r * 73856093) ^ (c * 19349663)) >>> 0) % GLYPHS.length;
+  return GLYPHS[h];
+}
 
 type GlyphHandle = {
   el: HTMLElement;
@@ -124,6 +105,12 @@ function GridGlyph({
 function GlyphField() {
   const fieldRef = useRef<HTMLDivElement>(null);
   const handles = useRef<GlyphHandle[]>([]);
+  const [dims, setDims] = useState<{
+    w: number;
+    h: number;
+    cols: number;
+    rows: number;
+  } | null>(null);
 
   const register = useCallback((h: GlyphHandle) => {
     handles.current.push(h);
@@ -132,9 +119,35 @@ function GlyphField() {
     };
   }, []);
 
+  // Derive an even, square grid from the field's actual size (consistent density).
   useEffect(() => {
     const field = fieldRef.current;
     if (!field) return;
+    const compute = () => {
+      const { width, height } = field.getBoundingClientRect();
+      if (!width || !height) return;
+      const cols = Math.max(2, Math.round(width / GLYPH_CELL));
+      const rows = Math.max(2, Math.round(height / GLYPH_CELL));
+      setDims((prev) =>
+        prev &&
+        prev.w === width &&
+        prev.h === height &&
+        prev.cols === cols &&
+        prev.rows === rows
+          ? prev
+          : { w: width, h: height, cols, rows },
+      );
+    };
+    compute();
+    const ro = new ResizeObserver(compute);
+    ro.observe(field);
+    return () => ro.disconnect();
+  }, []);
+
+  // Track cursor proximity → flip nearby glyphs. Re-measures when the grid changes.
+  useEffect(() => {
+    const field = fieldRef.current;
+    if (!field || !dims) return;
 
     const measure = () => {
       for (const h of handles.current) {
@@ -142,7 +155,7 @@ function GlyphField() {
         h.cy = h.el.offsetTop;
       }
     };
-    measure();
+    const raf = requestAnimationFrame(measure);
 
     let frame = 0;
     let queued = false;
@@ -176,8 +189,31 @@ function GlyphField() {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("resize", measure);
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [dims]);
+
+  const cells = useMemo(() => {
+    if (!dims) return [];
+    const { w, h, cols, rows } = dims;
+    // Center the grid with exact GLYPH_CELL spacing on both axes (true squares).
+    const offX = (w - (cols - 1) * GLYPH_CELL) / 2;
+    const offY = (h - (rows - 1) * GLYPH_CELL) / 2;
+    const out: { key: string; left: string; top: string; char: string }[] = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = offX + c * GLYPH_CELL;
+        const y = offY + r * GLYPH_CELL;
+        out.push({
+          key: `${r}-${c}`,
+          left: `${((x / w) * 100).toFixed(3)}%`,
+          top: `${((y / h) * 100).toFixed(3)}%`,
+          char: charFor(r, c),
+        });
+      }
+    }
+    return out;
+  }, [dims]);
 
   return (
     <div
@@ -185,9 +221,9 @@ function GlyphField() {
       className="pointer-events-none absolute inset-0 z-[5]"
       aria-hidden="true"
     >
-      {GLYPH_FIELD.map((cell, i) => (
+      {cells.map((cell) => (
         <GridGlyph
-          key={i}
+          key={cell.key}
           initial={cell.char}
           style={{ left: cell.left, top: cell.top }}
           register={register}
@@ -257,6 +293,12 @@ export function Hero() {
       {/* Animated light rays — subtle "god rays" + breathing glow from the top */}
       <div
         className="light-rays pointer-events-none absolute inset-0 z-[1]"
+        aria-hidden="true"
+      />
+
+      {/* Top scrim — keeps the headline + captions readable over bright slides */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(to_bottom,rgba(0,0,0,0.58)_0%,rgba(0,0,0,0.3)_16%,rgba(0,0,0,0.1)_32%,transparent_44%)]"
         aria-hidden="true"
       />
 
@@ -357,8 +399,8 @@ export function Hero() {
       </div>
 
       {/* Giant wordmark + Capital lockup */}
-      <div className="pointer-events-none absolute inset-x-[40px] bottom-[22px] z-[8] max-md:inset-x-3 max-md:bottom-2">
-        <div className="whitespace-nowrap text-[15.6vw] font-[900] leading-[1.0] tracking-[-0.05em] text-[#ff4400]">
+      <div className="pointer-events-none absolute inset-x-[40px] bottom-[22px] z-[8] mx-auto max-w-[1920px] [container-type:inline-size] max-md:inset-x-3 max-md:bottom-2">
+        <div className="whitespace-nowrap text-[16.5cqw] font-[900] leading-[1.0] tracking-[-0.05em] text-[#ff4400]">
           All Together
         </div>
         <div className="mt-[0.04em] text-right leading-none">
