@@ -282,11 +282,13 @@ type YTPlayer = {
   unMute: () => void;
   playVideo: () => void;
   destroy: () => void;
+  getCurrentTime: () => number;
+  getDuration: () => number;
 };
 type YTPlayerEvent = { target: YTPlayer; data: number };
 type YTNamespace = {
   Player: new (el: HTMLElement, opts: unknown) => YTPlayer;
-  PlayerState: { PLAYING: number; ENDED: number };
+  PlayerState: { PLAYING: number; PAUSED: number; ENDED: number };
 };
 declare global {
   interface Window {
@@ -328,7 +330,17 @@ function HeroVideoPlayer({
   const coverRef = useRef<HTMLDivElement>(null);
   const holderRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YTPlayer | null>(null);
+  const doneRef = useRef(false);
+  // The video is only shown while it's actively playing, so YouTube's poster /
+  // pause / end-screen UI (which only appears when NOT playing) is never visible.
   const [playing, setPlaying] = useState(false);
+
+  // Advance to the next slide exactly once (whether via the end-poll or events).
+  const finish = useCallback(() => {
+    if (doneRef.current) return;
+    doneRef.current = true;
+    onEnded();
+  }, [onEnded]);
 
   // Create the player.
   useEffect(() => {
@@ -359,10 +371,18 @@ function HeroVideoPlayer({
             e.target.playVideo();
           },
           onStateChange: (e: YTPlayerEvent) => {
-            if (e.data === YT.PlayerState.PLAYING) setPlaying(true);
-            if (e.data === YT.PlayerState.ENDED) onEnded();
+            if (e.data === YT.PlayerState.PLAYING) {
+              setPlaying(true);
+            } else if (e.data === YT.PlayerState.PAUSED) {
+              // Never sit on a paused frame (which shows a play button) — hide
+              // the layer and try to resume.
+              setPlaying(false);
+              e.target.playVideo();
+            } else if (e.data === YT.PlayerState.ENDED) {
+              finish();
+            }
           },
-          onError: () => onEnded(),
+          onError: () => finish(),
         },
       });
     });
@@ -377,6 +397,22 @@ function HeroVideoPlayer({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId, start]);
+
+  // End ~2s early so YouTube's end screen (replay button + suggested videos)
+  // never gets a chance to appear over the background.
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      const p = playerRef.current;
+      if (!p?.getDuration || !p.getCurrentTime) return;
+      const dur = p.getDuration();
+      const cur = p.getCurrentTime();
+      if (dur > 0 && cur >= dur - 2) {
+        window.clearInterval(id);
+        finish();
+      }
+    }, 400);
+    return () => window.clearInterval(id);
+  }, [finish]);
 
   // Reflect the mute toggle.
   useEffect(() => {
@@ -534,7 +570,7 @@ export function Hero() {
 
           {/* Focused on American companies — secondary side note */}
           <div className="lg:absolute lg:right-[100px] lg:top-[214px] lg:text-right">
-            <p className="[font-family:var(--font-playfair)] text-[14px] font-normal leading-[1.3] tracking-[-0.1px] text-white/80 sm:text-[16px] lg:text-[26px] lg:leading-[1.12] lg:tracking-[-0.4px] lg:text-white/90">
+            <p className="[font-family:var(--font-playfair)] text-[16px] font-normal leading-[1.3] tracking-[-0.1px] text-white/80 sm:text-[18px] lg:text-[30px] lg:leading-[1.12] lg:tracking-[-0.4px] lg:text-white/90">
               Focused on
               <br />
               American companies{" "}
@@ -636,12 +672,15 @@ export function Hero() {
           type="button"
           onClick={() => setMuted((m) => !m)}
           aria-label={muted ? "Unmute video" : "Mute video"}
-          className="pointer-events-auto absolute bottom-[68px] right-5 z-[20] flex size-12 items-center justify-center bg-black/55 text-white backdrop-blur-md transition-colors duration-200 hover:bg-[#ff4400] hover:text-black md:bottom-[104px] md:right-8 md:size-14"
+          className={cn(
+            "pointer-events-auto absolute bottom-[68px] right-5 z-[20] flex size-14 items-center justify-center bg-black/60 backdrop-blur-md transition-colors duration-200 hover:bg-[#ff4400] hover:text-black md:bottom-[104px] md:right-8 md:size-16",
+            muted ? "sound-pulse text-[#ff4400]" : "text-white",
+          )}
         >
           {muted ? (
-            <SoundOffIcon className="size-5 md:size-6" />
+            <SoundOffIcon className="size-6 md:size-7" />
           ) : (
-            <SoundOnIcon className="size-5 md:size-6" />
+            <SoundOnIcon className="size-6 md:size-7" />
           )}
         </button>
       )}

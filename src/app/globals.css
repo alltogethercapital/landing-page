@@ -358,3 +358,25 @@
       0 0 40px 4px rgba(255, 68, 0, 0.32);
   }
 }
+
+/* ── Muted hero video → pulsing ring on the unmute button ───────
+   Draws the eye to "tap for sound" without moving it front-and-center. */
+.sound-pulse {
+  animation: sound-pulse 2.2s ease-out infinite;
+}
+@keyframes sound-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 68, 0, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(255, 68, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 68, 0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sound-pulse {
+    animation: none;
+  }
+}
