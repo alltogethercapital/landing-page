@@ -47,6 +47,11 @@ export const FOUNDERS: Founder[] = [
     x: "https://x.com/LaFrogman",
   },
   {
+    name: "Vishaal Mali",
+    companyName: "Salient Motion",
+    linkedin: "https://www.linkedin.com/in/vishaalmali/",
+  },
+  {
     name: "Amjad Masad",
     companyName: "Replit",
     linkedin: "https://www.linkedin.com/in/amjadmasad/",
@@ -100,11 +105,45 @@ export const FOUNDERS: Founder[] = [
     companyName: "Unspun",
     linkedin: "https://www.linkedin.com/in/beth-esponnette-66763023/",
   },
-  // TODO — founders to confirm/add: Salient Motion, Lance, Samply, Hark, Bud Break Innovations
+  {
+    name: "Caleb Chan",
+    companyName: "Lance",
+    linkedin: "https://www.linkedin.com/in/caleb-chan-327b14239/",
+    x: "https://x.com/calebychan",
+  },
+  {
+    name: "Eric Schirtzinger",
+    companyName: "Samply",
+    linkedin: "https://www.linkedin.com/in/eschirtz/",
+    x: "https://x.com/eschirtz",
+  },
+  {
+    // Brett Adcock founded both Figure AI and Hark (his AI lab).
+    name: "Brett Adcock",
+    companyName: "Hark",
+    linkedin: "https://www.linkedin.com/in/brettadcock/",
+    x: "https://x.com/adcock_brett",
+  },
+  {
+    name: "Jonathan Moon",
+    companyName: "Bud Break Innovations",
+    linkedin: "https://www.linkedin.com/in/jmoon0714/",
+    x: "https://x.com/jmoonio",
+  },
+  {
+    name: "Hamza Derbas",
+    companyName: "Maven Robotics",
+    linkedin: "https://www.linkedin.com/in/hamzaderbas",
+  },
+  // Eccentric Machines — founder not public (company is in stealth); no card until confirmed.
 ];
 
 export function companyForFounder(f: Founder): Company | undefined {
   return PORTFOLIO.find((c) => c.name === f.companyName);
+}
+
+export function founderForCompany(companyName: string): Founder | undefined {
+  return FOUNDERS.find((f) => f.companyName === companyName);
 }
 
 export function initialsFor(name: string): string {

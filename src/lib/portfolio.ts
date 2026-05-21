@@ -5,6 +5,8 @@ export type Company = {
   blurb?: string; // short one-liner (revealed on hover)
   logo?: string; // /public path to the company's logo mark
   image?: string; // /public product image — falls back to a sector gradient when absent
+  video?: string; // YouTube video id (11 chars) — shows a "Watch video" button when present
+  videoStart?: number; // optional start time (seconds) for the video
 };
 
 // All Together Capital portfolio (alltogethercapital.com/portfolio)
@@ -16,6 +18,8 @@ export const PORTFOLIO: Company[] = [
     blurb: "AI pilots for aircraft, and the X-BAT autonomous fighter jet.",
     logo: "/logos/shield-ai.png",
     image: "/hero-drones.jpg",
+    video: "OnpuNlE3UxU", // X-BAT: Earth Is Our Runway (Shield AI)
+    videoStart: 32,
   },
   {
     name: "1X",
@@ -24,6 +28,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Humanoid robots engineered for the home.",
     logo: "/logos/1x.png",
     image: "/hero-robots.jpg",
+    video: "ag_rFhvSNmE", // NEO Factory | Hayward, California (1X)
   },
   {
     name: "OpenAI",
@@ -32,6 +37,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Frontier AI research — creators of ChatGPT and the GPT models.",
     logo: "/logos/openai.png",
     image: "/work/openai.jpg",
+    video: "HK6y8DAPN_0", // Introducing Sora (OpenAI)
   },
   {
     name: "Anthropic",
@@ -40,6 +46,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "AI safety research and Claude, a frontier AI assistant.",
     logo: "/logos/anthropic.png",
     image: "/work/anthropic.jpg",
+    video: "oqUclC3gqKs", // A day with Claude (Anthropic)
   },
   {
     name: "Anduril",
@@ -48,6 +55,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Autonomous defense systems built on the Lattice platform.",
     logo: "/logos/anduril.png",
     image: "/work/anduril.jpg",
+    video: "RpFFScTovII", // Lattice for Mission Autonomy (Anduril Industries)
   },
   {
     name: "Aurelius Systems",
@@ -56,6 +64,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Archimedes — an autonomous directed-energy counter-drone laser.",
     logo: "/logos/aurelius.png",
     image: "/work/aurelius.jpg",
+    video: "Oym5abej2qw", // This Startup Shoots Down Drones With Lasers (Cerebral Valley)
   },
   {
     name: "Salient Motion",
@@ -72,6 +81,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "The AI-native platform for building and shipping software.",
     logo: "/logos/replit.png",
     image: "/work/replit.jpg",
+    video: "-2xHmkpmCBM", // Replit Agent 4 Launch Announcement (Replit)
   },
   {
     name: "Applied Intuition",
@@ -80,6 +90,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Simulation and tooling for autonomous vehicles and machines.",
     logo: "/logos/applied.png",
     image: "/work/applied.jpg",
+    video: "eL-YnfG4K_0", // Inside 2025: Applied Intuition's Year of Building Physical AI
   },
   {
     name: "Figure AI",
@@ -88,6 +99,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "General-purpose humanoid robots for the workforce.",
     logo: "/logos/figure.png",
     image: "/work/figure.jpg",
+    video: "Eu5mYMavctM", // Introducing Figure 03 (Figure)
   },
   {
     name: "Apptronik",
@@ -96,6 +108,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Apollo — a general-purpose humanoid robot for industry.",
     logo: "/logos/apptronik.png",
     image: "/work/apptronik.jpg",
+    video: "uJOA5IDaL5g", // Hello Apollo (Apptronik)
   },
   {
     name: "Volantis",
@@ -112,6 +125,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Data centers in orbit, powered by the sun.",
     logo: "/logos/starcloud.png",
     image: "/work/starcloud.jpg",
+    video: "u9m6tCZa2-k", // Starcloud Constellation (Starcloud)
   },
   {
     name: "Exowatt",
@@ -120,6 +134,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Modular solar-thermal energy for the AI compute era.",
     logo: "/logos/exowatt.png",
     image: "/work/exowatt.jpg",
+    video: "kQgvCo5XG18", // Exowatt Power Summit 25 Sizzle Reel (Exowatt)
   },
   {
     name: "Aalo Atomics",
@@ -128,6 +143,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Factory-built modular nuclear reactors for clean power.",
     logo: "/logos/aalo.png",
     image: "/work/aalo.jpg",
+    video: "LuhHQshC7Xk", // Unveiling the Aalo-1 Prototype and Aalo Pod (Aalo Atomics)
   },
   {
     name: "Quaise Energy",
@@ -136,6 +152,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Ultra-deep geothermal to unlock clean baseload energy.",
     logo: "/logos/quaise.png",
     image: "/work/quaise.jpg",
+    video: "5U8-KoKB6_8", // Lab to Field Testing of Millimeter Wave Drilling (Quaise Energy)
   },
   {
     name: "Unspun",
@@ -144,6 +161,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Robotic, on-demand apparel manufacturing.",
     logo: "/logos/unspun.png",
     image: "/work/unspun.jpg",
+    video: "lLvn0o-jhuI", // 3D weaving | Vega by unspun (unspun)
   },
   {
     name: "Lance",
@@ -152,6 +170,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Building the future of hospitality.",
     logo: "/logos/lance.png",
     image: "/work/lance.jpg",
+    video: "4lfd34piGiE", // guests got places to be (Lance)
   },
   {
     name: "Samply",
@@ -160,6 +179,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Sample management for modern music producers.",
     logo: "/logos/samply.png",
     image: "/work/samply.jpg",
+    video: "0MT2smBqloI", // Getting started with Samply (Samply)
   },
   {
     name: "Hark",
@@ -168,6 +188,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "AI-powered tools for the way people work.",
     logo: "/logos/hark.png",
     image: "/work/hark.jpg",
+    video: "0H1LSLipOVI", // Introducing Hark (Hark)
   },
   {
     name: "Bud Break Innovations",
@@ -176,6 +197,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "The robotics platform for agriculture.",
     logo: "/logos/budbreak.png",
     image: "/work/budbreak.jpg",
+    video: "8sLI-XocJFw", // I Built a Robot to Save the Wine Industry (Budbreak Innovations)
   },
   {
     name: "Maven Robotics",
@@ -211,4 +233,13 @@ export function gradientFor(company: Company): string {
     if (SECTOR_GRADIENTS[s]) return SECTOR_GRADIENTS[s];
   }
   return "from-[#141414] via-[#1c1c1c] to-[#262626]";
+}
+
+// URL-safe slug from a name (e.g. "Shield AI" → "shield-ai").
+// Used to anchor a founder's card on /founders and deep-link to it from a company card.
+export function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }

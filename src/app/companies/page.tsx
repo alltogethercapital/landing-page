@@ -3,8 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { ArrowUpRight } from "@/components/icons";
-import { PORTFOLIO, gradientFor, type Company } from "@/lib/portfolio";
+import { ArrowRight, ArrowUpRight, UserIcon } from "@/components/icons";
+import { WatchVideo } from "@/components/watch-video";
+import { PORTFOLIO, gradientFor, slugify, type Company } from "@/lib/portfolio";
+import { founderForCompany } from "@/lib/founders";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -21,11 +23,9 @@ function CompanyCard({
   featured?: boolean;
 }) {
   const hasImage = Boolean(company.image);
+  const founder = founderForCompany(company.name);
   return (
-    <a
-      href={company.href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <div
       className={cn(
         "group relative block overflow-hidden rounded-2xl bg-[#0b0b0d]",
         featured
@@ -53,19 +53,28 @@ function CompanyCard({
       )}
 
       {/* Legibility gradient — clear at top so the product shows, dark at the base for the lockup */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/5" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/5" />
+
+      {/* Stretched link — the whole card (except the Watch button) opens the company site */}
+      <a
+        href={company.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Visit ${company.name}`}
+        className="absolute inset-0 z-[1]"
+      />
 
       {/* Open affordance — bigger arrow, top-right (the whole card links out) */}
       <span
         aria-hidden="true"
-        className="absolute right-4 top-4 z-[1] flex size-11 items-center justify-center bg-black/40 text-white backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-5 md:top-5 md:size-12"
+        className="pointer-events-none absolute right-4 top-4 z-[2] flex size-11 items-center justify-center bg-black/40 text-white backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-5 md:top-5 md:size-12"
       >
         <ArrowUpRight className="size-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-7" />
       </span>
 
       {/* "Newest addition" badge — featured card only */}
       {featured && (
-        <span className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-[#ff4400] px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-black shadow-[0_2px_12px_rgba(0,0,0,0.45)] md:left-8 md:top-8 md:text-[12px]">
+        <span className="pointer-events-none absolute left-5 top-5 z-[2] inline-flex items-center gap-2 rounded-full bg-[#ff4400] px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-black shadow-[0_2px_12px_rgba(0,0,0,0.45)] md:left-8 md:top-8 md:text-[12px]">
           <span className="relative flex size-2">
             <span className="absolute inline-flex size-full animate-ping rounded-full bg-black/60" />
             <span className="relative inline-flex size-2 rounded-full bg-black" />
@@ -74,8 +83,8 @@ function CompanyCard({
         </span>
       )}
 
-      {/* Bottom: sector tag, divider, brand lockup (logo + name), blurb */}
-      <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
+      {/* Bottom: sector tag, divider, brand lockup (logo + name), blurb, watch button */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] p-6 md:p-8">
         <span className="font-mono text-[12px] uppercase tracking-[0.16em] text-white/75">
           {company.sectors.join(" · ")}
         </span>
@@ -111,8 +120,30 @@ function CompanyCard({
         <p className="mt-2.5 text-[14px] text-white/70 md:text-[16px]">
           {company.blurb ?? "Portfolio company"}
         </p>
+        {(company.video || founder) && (
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            {company.video && (
+              <WatchVideo
+                videoId={company.video}
+                start={company.videoStart}
+                companyName={company.name}
+              />
+            )}
+            {founder && (
+              <Link
+                href={`/founders#${slugify(company.name)}`}
+                aria-label={`Meet ${founder.name}, founder of ${company.name}`}
+                className="group/founder pointer-events-auto relative z-[3] inline-flex items-center gap-2 border border-white/30 bg-black/30 px-4 py-2.5 text-[13px] font-semibold text-white backdrop-blur-md transition-colors duration-200 hover:border-[#ff4400] hover:bg-[#ff4400] hover:text-black md:text-[14px]"
+              >
+                <UserIcon className="size-3.5 opacity-80" />
+                {founder.name}
+                <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/founder:translate-x-0.5" />
+              </Link>
+            )}
+          </div>
+        )}
       </div>
-    </a>
+    </div>
   );
 }
 

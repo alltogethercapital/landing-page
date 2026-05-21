@@ -2,27 +2,50 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { PORTFOLIO } from "@/lib/portfolio";
+import { SoundOffIcon, SoundOnIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
-// Each slide pairs a portfolio company's image with a caption + link.
-type Slide = { img: string; title: string; subtitle: string; href: string };
+// Each hero slide is a portfolio company. The image + video come from the
+// shared PORTFOLIO data (single source of truth — same videos as /companies);
+// the caption is hero-specific copy. Latest company first.
+type Slide = {
+  name: string;
+  img: string;
+  title: string;
+  subtitle: string;
+  href: string;
+  video?: string;
+  videoStart?: number;
+};
 
-const SLIDES: Slide[] = [
+const SLIDE_COPY: Pick<Slide, "name" | "title" | "subtitle" | "href">[] = [
   {
-    img: "/hero-robots.jpg",
-    title: "1X NEO — the humanoid robot",
-    subtitle: "engineered for the home",
-    href: "https://www.1x.tech/",
-  },
-  {
-    img: "/hero-drones.jpg",
+    name: "Shield AI",
     title: "Shield AI X-BAT — the first",
     subtitle: "AI-piloted VTOL fighter jet",
     href: "https://shield.ai/x-bat/",
   },
+  {
+    name: "1X",
+    title: "1X NEO — the humanoid robot",
+    subtitle: "engineered for the home",
+    href: "https://www.1x.tech/",
+  },
 ];
 
-const CYCLE_MS = 5000;
+const SLIDES: Slide[] = SLIDE_COPY.map((c) => {
+  const company = PORTFOLIO.find((p) => p.name === c.name);
+  return {
+    ...c,
+    img: company?.image ?? "",
+    video: company?.video,
+    videoStart: company?.videoStart,
+  };
+});
+
+const CYCLE_MS = 5000; // image shown before the video takes over
+const OUTRO_MS = 2600; // image shown again after the video, before advancing
 
 // Glyphs: binary 0/1.
 const GLYPHS = ["0", "1"] as const;
@@ -251,22 +274,189 @@ function Chevron({ dir }: { dir: "left" | "right" }) {
   );
 }
 
+// ── Full-bleed YouTube background player ──────────────────────
+// Loads the IFrame API once, autoplays muted, fills the viewport (object-cover),
+// supports a mute toggle, and reports when the clip ends.
+type YTPlayer = {
+  mute: () => void;
+  unMute: () => void;
+  playVideo: () => void;
+  destroy: () => void;
+};
+type YTPlayerEvent = { target: YTPlayer; data: number };
+type YTNamespace = {
+  Player: new (el: HTMLElement, opts: unknown) => YTPlayer;
+  PlayerState: { PLAYING: number; ENDED: number };
+};
+declare global {
+  interface Window {
+    YT?: YTNamespace;
+    onYouTubeIframeAPIReady?: () => void;
+  }
+}
+
+let ytApiPromise: Promise<YTNamespace | null> | null = null;
+function loadYouTubeApi(): Promise<YTNamespace | null> {
+  if (typeof window === "undefined") return Promise.resolve(null);
+  if (window.YT?.Player) return Promise.resolve(window.YT);
+  if (ytApiPromise) return ytApiPromise;
+  ytApiPromise = new Promise((resolve) => {
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      prev?.();
+      resolve(window.YT ?? null);
+    };
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  });
+  return ytApiPromise;
+}
+
+function HeroVideoPlayer({
+  videoId,
+  start = 0,
+  muted,
+  onEnded,
+}: {
+  videoId: string;
+  start?: number;
+  muted: boolean;
+  onEnded: () => void;
+}) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const coverRef = useRef<HTMLDivElement>(null);
+  const holderRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<YTPlayer | null>(null);
+  const [playing, setPlaying] = useState(false);
+
+  // Create the player.
+  useEffect(() => {
+    let cancelled = false;
+    loadYouTubeApi().then((YT) => {
+      if (cancelled || !YT || !holderRef.current) return;
+      playerRef.current = new YT.Player(holderRef.current, {
+        videoId,
+        width: "100%",
+        height: "100%",
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          controls: 0,
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1,
+          start,
+          disablekb: 1,
+          fs: 0,
+          iv_load_policy: 3,
+          cc_load_policy: 0,
+        },
+        events: {
+          onReady: (e: YTPlayerEvent) => {
+            if (muted) e.target.mute();
+            else e.target.unMute();
+            e.target.playVideo();
+          },
+          onStateChange: (e: YTPlayerEvent) => {
+            if (e.data === YT.PlayerState.PLAYING) setPlaying(true);
+            if (e.data === YT.PlayerState.ENDED) onEnded();
+          },
+          onError: () => onEnded(),
+        },
+      });
+    });
+    return () => {
+      cancelled = true;
+      try {
+        playerRef.current?.destroy();
+      } catch {
+        /* player already gone */
+      }
+      playerRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [videoId, start]);
+
+  // Reflect the mute toggle.
+  useEffect(() => {
+    const p = playerRef.current;
+    if (!p) return;
+    if (muted) p.mute();
+    else p.unMute();
+  }, [muted]);
+
+  // object-cover: size a 16:9 box to overflow + center within the viewport.
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const cover = coverRef.current;
+    if (!wrap || !cover) return;
+    const resize = () => {
+      const w = wrap.clientWidth;
+      const h = wrap.clientHeight;
+      const scale = Math.max(w / 16, h / 9);
+      const vw = 16 * scale;
+      const vh = 9 * scale;
+      cover.style.width = `${vw}px`;
+      cover.style.height = `${vh}px`;
+      cover.style.left = `${(w - vw) / 2}px`;
+      cover.style.top = `${(h - vh) / 2}px`;
+    };
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(wrap);
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div
+      aria-hidden="true"
+      className={cn(
+        "pointer-events-none absolute inset-0 z-[1] bg-black transition-opacity duration-700 ease-in-out",
+        playing ? "opacity-100" : "opacity-0",
+      )}
+    >
+      <div ref={wrapRef} className="absolute inset-0 overflow-hidden">
+        <div ref={coverRef} className="absolute">
+          <div ref={holderRef} className="size-full" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Hero() {
   const [active, setActive] = useState(0);
-
-  const go = (i: number) => setActive((i + SLIDES.length) % SLIDES.length);
-
-  // Auto-advance — resets whenever `active` changes (so manual nav restarts it).
-  useEffect(() => {
-    if (SLIDES.length <= 1) return;
-    const id = setTimeout(
-      () => setActive((i) => (i + 1) % SLIDES.length),
-      CYCLE_MS,
-    );
-    return () => clearTimeout(id);
-  }, [active]);
+  const [phase, setPhase] = useState<"image" | "video" | "outro">("image");
+  const [muted, setMuted] = useState(true);
 
   const slide = SLIDES[active];
+  const showDecor = phase !== "video";
+  const playingVideo = phase === "video" && Boolean(slide.video);
+
+  const go = (i: number) => {
+    setActive((i + SLIDES.length) % SLIDES.length);
+    setPhase("image");
+  };
+
+  // Per company: image (5s) → video (until it ends) → image again (outro) → next.
+  useEffect(() => {
+    if (phase === "video") return; // advanced by the player's onEnded handler
+    const id = setTimeout(
+      () => {
+        if (phase === "image" && slide.video) {
+          setPhase("video");
+        } else {
+          setActive((i) => (i + 1) % SLIDES.length);
+          setPhase("image");
+        }
+      },
+      phase === "image" ? CYCLE_MS : OUTRO_MS,
+    );
+    return () => clearTimeout(id);
+  }, [phase, active, slide.video]);
+
+  const handleVideoEnd = useCallback(() => setPhase("outro"), []);
 
   return (
     <section
@@ -290,7 +480,18 @@ export function Hero() {
         ))}
       </div>
 
-      {/* Per-slide drifting smoke — subtle, GPU-only, unique to each image */}
+      {/* Full-bleed video takeover — replaces the background image until it ends */}
+      {playingVideo && (
+        <HeroVideoPlayer
+          key={slide.name}
+          videoId={slide.video as string}
+          start={slide.videoStart}
+          muted={muted}
+          onEnded={handleVideoEnd}
+        />
+      )}
+
+      {/* Per-slide drifting smoke — hidden while the video plays */}
       {SLIDES.map((s, i) => (
         <div
           key={`${s.img}-smoke`}
@@ -299,13 +500,14 @@ export function Hero() {
             "hero-smoke absolute inset-0 z-[1] transition-opacity duration-[700ms] ease-in-out",
             i % 2 === 0 ? "hero-smoke--a" : "hero-smoke--b",
           )}
-          style={{ opacity: i === active ? 1 : 0 }}
+          style={{ opacity: showDecor && i === active ? 1 : 0 }}
         />
       ))}
 
-      {/* Animated light rays — subtle "god rays" + breathing glow from the top */}
+      {/* Animated light rays — hidden while the video plays */}
       <div
-        className="light-rays pointer-events-none absolute inset-0 z-[1]"
+        className="light-rays pointer-events-none absolute inset-0 z-[1] transition-opacity duration-700"
+        style={{ opacity: showDecor ? 1 : 0 }}
         aria-hidden="true"
       />
 
@@ -315,8 +517,8 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      {/* Decorative glyph field (A/T/0/1) — flips when the cursor comes near */}
-      <GlyphField />
+      {/* Decorative glyph field (A/T/0/1) — hidden while the video plays */}
+      {showDecor && <GlyphField />}
 
       {/* HERO CONTENT (flows on mobile, absolute on md+) */}
       <div className="pointer-events-none absolute inset-0 z-10">
@@ -403,7 +605,7 @@ export function Hero() {
                   <button
                     key={s.img}
                     type="button"
-                    onClick={() => setActive(i)}
+                    onClick={() => go(i)}
                     aria-label={`Go to slide ${i + 1}`}
                     aria-current={i === active}
                     className={cn(
@@ -428,7 +630,23 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Giant wordmark + Capital lockup */}
+      {/* Sound toggle — bottom-right, only while a video is taking over */}
+      {playingVideo && (
+        <button
+          type="button"
+          onClick={() => setMuted((m) => !m)}
+          aria-label={muted ? "Unmute video" : "Mute video"}
+          className="pointer-events-auto absolute bottom-[68px] right-5 z-[20] flex size-12 items-center justify-center bg-black/55 text-white backdrop-blur-md transition-colors duration-200 hover:bg-[#ff4400] hover:text-black md:bottom-[104px] md:right-8 md:size-14"
+        >
+          {muted ? (
+            <SoundOffIcon className="size-5 md:size-6" />
+          ) : (
+            <SoundOnIcon className="size-5 md:size-6" />
+          )}
+        </button>
+      )}
+
+      {/* Giant wordmark + Capital lockup — always visible, even over the video */}
       <div className="pointer-events-none absolute inset-x-[40px] bottom-[22px] z-[8] mx-auto max-w-[1920px] [container-type:inline-size] max-md:inset-x-3 max-md:bottom-2">
         <div className="whitespace-nowrap text-[16.5cqw] font-[900] leading-[1.0] tracking-[-0.05em] text-[#ff4400]">
           All Together

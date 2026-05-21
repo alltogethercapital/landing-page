@@ -10,7 +10,7 @@ import {
   initialsFor,
   type Founder,
 } from "@/lib/founders";
-import { gradientFor } from "@/lib/portfolio";
+import { gradientFor, slugify } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -22,11 +22,16 @@ export const metadata: Metadata = {
 function FounderCard({ founder }: { founder: Founder }) {
   const company = companyForFounder(founder);
   const hasHeadshot = Boolean(founder.headshot);
+  // Anchor by company name so a company card can deep-link straight here.
+  const anchor = slugify(company ? company.name : founder.name);
 
   // The card itself is NOT a link — only the company name and the social
   // icons below the founder's name are interactive.
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-[#0b0b0d] aspect-[674/720] max-md:aspect-[4/5]">
+    <div
+      id={anchor}
+      className="founder-card relative scroll-mt-[100px] overflow-hidden rounded-2xl bg-[#0b0b0d] aspect-[674/720] max-md:aspect-[4/5]"
+    >
       {/* Headshot, or a clean placeholder until a photo is added */}
       {hasHeadshot ? (
         <Image
@@ -150,7 +155,7 @@ export default function FoundersPage() {
       <section className="px-6 pt-10 md:px-[40px]">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {FOUNDERS.map((founder) => (
-            <FounderCard key={founder.name} founder={founder} />
+            <FounderCard key={founder.companyName} founder={founder} />
           ))}
         </div>
       </section>

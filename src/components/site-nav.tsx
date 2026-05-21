@@ -69,8 +69,8 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
         aria-hidden={!open}
       >
         <div className="flex h-full flex-col gap-10 overflow-y-auto px-6 pb-10 pt-[96px] md:block md:gap-0 md:overflow-visible md:p-0">
-          {/* location + portfolio stats */}
-          <div className="md:absolute md:left-[40px] md:top-[110px] md:max-w-[700px]">
+          {/* location + portfolio stats — drops below the nav on mobile */}
+          <div className="order-last md:absolute md:left-[40px] md:top-[110px] md:max-w-[700px]">
             <p className="text-[40px] font-semibold leading-[1.08] tracking-[-1.6px] text-white md:text-[72px] md:leading-[79.2px] md:tracking-[-2.88px]">
               We are based in
               <br />
@@ -101,7 +101,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
           </div>
 
           {/* nav + legal */}
-          <div className="flex flex-col items-start md:absolute md:right-[40px] md:top-[101px] md:items-end">
+          <div className="order-first flex flex-col items-start md:absolute md:right-[40px] md:top-[101px] md:items-end">
             <nav className="flex flex-col items-start md:items-end">
               {NAV.map((item, i) => (
                 <NavLink

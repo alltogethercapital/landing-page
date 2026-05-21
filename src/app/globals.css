@@ -329,3 +329,32 @@
     animation: none;
   }
 }
+
+/* ── Founder card deep-link highlight ───────────────────────────
+   When a company card links to /founders#<company>, the matching
+   founder card briefly pulses an orange ring so it's easy to spot.
+   Outset box-shadow shows in the grid gap (cards are overflow-hidden). */
+.founder-card:target {
+  animation: founder-target 2.6s ease-out 1;
+}
+@keyframes founder-target {
+  0%,
+  14% {
+    box-shadow:
+      0 0 0 3px #ff4400,
+      0 0 48px 6px rgba(255, 68, 0, 0.45);
+  }
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(255, 68, 0, 0),
+      0 0 0 0 rgba(255, 68, 0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .founder-card:target {
+    animation: none;
+    box-shadow:
+      0 0 0 3px #ff4400,
+      0 0 40px 4px rgba(255, 68, 0, 0.32);
+  }
+}
