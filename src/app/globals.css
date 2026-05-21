@@ -380,3 +380,92 @@
     animation: none;
   }
 }
+
+/* ── Sunrise god-rays — soft WHITE rays rising from the bottom edge.
+   A fan of crepuscular beams radiating up from a glow just below the
+   horizon, gently swaying. GPU-only (transform/opacity); screen-blends
+   to brighten the scene. Pure white — never orange. The wordmark sits
+   above this layer and is never recolored. ──────────────────────────── */
+.sun-rays-bottom {
+  mix-blend-mode: screen;
+  overflow: hidden;
+}
+
+/* the "sun" — a soft glow sitting just below the bottom edge */
+.sun-rays-bottom::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    130% 84% at 50% 121%,
+    rgba(255, 255, 255, 0.62) 0%,
+    rgba(255, 252, 246, 0.34) 30%,
+    rgba(255, 250, 242, 0.12) 54%,
+    transparent 75%
+  );
+  animation: sun-glow 7s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+/* radiating fan of beams from the horizon, strongest at the bottom and
+   fading out toward the top so they read as light rising up the screen */
+.sun-rays-bottom::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(
+    from 170deg at 50% 124%,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.12) 6deg,
+    rgba(255, 255, 255, 0.12) 9deg,
+    transparent 15deg,
+    transparent 22deg
+  );
+  /* heavy blur dissolves the hard beam edges → soft volumetric shafts, not lines */
+  filter: blur(9px);
+  /* fade out radially from the source so the rays dissolve before ANY edge
+     (top + both sides) — no visible vertical seam at the screen edges */
+  -webkit-mask-image: radial-gradient(
+    100% 88% at 50% 116%,
+    #000 0%,
+    rgba(0, 0, 0, 0.5) 42%,
+    transparent 76%
+  );
+  mask-image: radial-gradient(
+    100% 88% at 50% 116%,
+    #000 0%,
+    rgba(0, 0, 0, 0.5) 42%,
+    transparent 76%
+  );
+  transform-origin: 50% 124%;
+  animation: sun-sway 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes sun-glow {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes sun-sway {
+  from {
+    transform: rotate(-2.4deg);
+  }
+  to {
+    transform: rotate(2.4deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sun-rays-bottom::before,
+  .sun-rays-bottom::after {
+    animation: none;
+  }
+}

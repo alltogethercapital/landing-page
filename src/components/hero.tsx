@@ -691,6 +691,14 @@ export function Hero() {
         aria-hidden="true"
       />
 
+      {/* White sunrise rays rising from the bottom — sits behind the wordmark
+          and content so the "All Together" lettering is never recolored. */}
+      <div
+        className="sun-rays-bottom pointer-events-none absolute inset-0 z-[1] transition-opacity duration-700"
+        style={{ opacity: showDecor ? 1 : 0 }}
+        aria-hidden="true"
+      />
+
       {/* Top scrim — keeps the headline + captions readable over bright slides */}
       <div
         className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(to_bottom,rgba(0,0,0,0.58)_0%,rgba(0,0,0,0.3)_16%,rgba(0,0,0,0.1)_32%,transparent_44%)]"
@@ -702,7 +710,9 @@ export function Hero() {
 
       {/* HERO CONTENT (flows on mobile, absolute on md+) */}
       <div className="pointer-events-none absolute inset-0 z-10">
-        <div className="flex h-full flex-col gap-7 px-6 pt-[96px] lg:block lg:p-0">
+        {/* On mobile the column reserves bottom room (scaled to the wordmark's
+            cqw height) so the caption cluster sits just above the wordmark. */}
+        <div className="flex h-full flex-col gap-7 px-6 pt-[96px] pb-[calc(34px_+_16.5vw)] lg:block lg:p-0">
           {/* Headline */}
           <div className="lg:absolute lg:left-[100px] lg:top-[175px] lg:max-w-[640px]">
             <h1
@@ -715,12 +725,12 @@ export function Hero() {
             </h1>
           </div>
 
-          {/* Focused on American companies — secondary side note */}
+          {/* Investment thesis — secondary side note */}
           <div className="lg:absolute lg:right-[100px] lg:top-[214px] lg:text-right">
             <p className="[font-family:var(--font-playfair)] text-[16px] font-normal leading-[1.3] tracking-[-0.1px] text-white/80 sm:text-[18px] lg:text-[30px] lg:leading-[1.12] lg:tracking-[-0.4px] lg:text-white/90">
-              Focused on
+              Investing in America&rsquo;s
               <br />
-              American companies{" "}
+              companies and resurgence{" "}
               <svg
                 viewBox="0 0 19 10"
                 role="img"
@@ -744,8 +754,13 @@ export function Hero() {
             {playingVideo && renderMute("mt-3 hidden md:inline-flex lg:mt-4")}
           </div>
 
-          {/* Cycling caption (links to product) + slide nav */}
-          <div className="lg:absolute lg:left-[100px] lg:top-[330px] lg:max-w-[540px]">
+          {/* Cycling caption (links to product) + slide nav — pinned to the
+              bottom (above the wordmark) on mobile, absolute on desktop */}
+          <div className="mt-auto lg:absolute lg:left-[100px] lg:top-[330px] lg:mt-0 lg:max-w-[540px]">
+            {/* Mobile unmute — above the caption so it never overlaps the wordmark */}
+            {playingVideo && (
+              <div className="mb-4 md:hidden">{renderMute("")}</div>
+            )}
             <div
               className={cn(
                 "flex items-start gap-[18px] transition-opacity duration-500 md:gap-[22px]",
@@ -824,11 +839,7 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Mute control — bottom-right on mobile (under the note on tablet/desktop) */}
-      {playingVideo &&
-        renderMute("absolute bottom-[68px] right-5 z-[20] md:hidden")}
-
-      {/* Giant wordmark + Capital lockup — always visible, even over the video */}
+      {/* Giant wordmark + Capital lockup */}
       <div className="pointer-events-none absolute inset-x-[40px] bottom-[22px] z-[8] mx-auto max-w-[1920px] [container-type:inline-size] max-md:inset-x-3 max-md:bottom-2">
         <div className="whitespace-nowrap text-[16.5cqw] font-[900] leading-[1.0] tracking-[-0.05em] text-[#ff4400]">
           All Together
