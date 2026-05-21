@@ -618,7 +618,7 @@ export function Hero() {
       onClick={() => setMuted((m) => !m)}
       aria-label={muted ? "Unmute video" : "Mute video"}
       className={cn(
-        "pointer-events-auto inline-flex items-center gap-2 bg-black/50 px-3.5 py-2 text-[13px] font-semibold text-white ring-1 ring-white/25 backdrop-blur-md transition-colors duration-200 hover:bg-[#ff4400] hover:text-black hover:ring-[#ff4400] md:text-[14px]",
+        "unmute-flash pointer-events-auto inline-flex items-center gap-2 bg-black/50 px-3.5 py-2 text-[13px] font-semibold text-white ring-1 ring-white/25 backdrop-blur-md transition-colors duration-200 hover:bg-[#ff4400] hover:text-black hover:ring-[#ff4400] md:text-[14px]",
         extra,
       )}
     >
@@ -735,7 +735,7 @@ export function Hero() {
                 viewBox="0 0 19 10"
                 role="img"
                 aria-label="United States"
-                className="ml-[0.18em] inline-block h-[0.6em] w-auto align-[-0.04em]"
+                className="ml-[0.3em] inline-block h-[1.2em] w-auto align-[-0.34em]"
               >
                 <rect width="19" height="10" fill="#fff" />
                 <g fill="#b22234">
