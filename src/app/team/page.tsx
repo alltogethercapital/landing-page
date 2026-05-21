@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { ArrowUpRight, LinkedInIcon, MailIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
-  title: "Team — All Together Capital",
+  title: "Our team — All Together Capital",
   description:
     "All Together Capital is led by founding partners Robert Neir and Hisham El-Husseini.",
 };

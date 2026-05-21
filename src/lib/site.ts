@@ -27,7 +27,7 @@ export const NAV = [
   { label: "Home", href: "/" },
   { label: "Our companies", href: "/companies" },
   { label: "Our founders", href: "/founders" },
-  { label: "Team", href: "/team" },
+  { label: "Our team", href: "/team" },
   { label: "Contact", href: CONTACT_MAILTO },
 ];
 
