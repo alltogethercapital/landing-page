@@ -550,10 +550,7 @@ export function Hero() {
       onClick={() => setMuted((m) => !m)}
       aria-label={muted ? "Unmute video" : "Mute video"}
       className={cn(
-        "pointer-events-auto inline-flex items-center gap-2 px-3.5 py-2 text-[13px] font-semibold backdrop-blur-md transition-colors duration-200 md:text-[14px]",
-        muted
-          ? "bg-[#ff4400] text-black hover:bg-[#ff5a1f]"
-          : "bg-white/15 text-white hover:bg-white/25",
+        "pointer-events-auto inline-flex items-center gap-2 bg-black/50 px-3.5 py-2 text-[13px] font-semibold text-white ring-1 ring-white/25 backdrop-blur-md transition-colors duration-200 hover:bg-[#ff4400] hover:text-black hover:ring-[#ff4400] md:text-[14px]",
         extra,
       )}
     >
