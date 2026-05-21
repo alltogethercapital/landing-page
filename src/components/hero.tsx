@@ -55,7 +55,7 @@ const SLIDES: Slide[] = SLIDE_COPY.map((c) => {
 });
 
 const CYCLE_MS = 5000; // image shown before the video takes over
-const OUTRO_MS = 2600; // image shown again after the video, before advancing
+const FADE_MS = 850; // crossfade from the ending video to the next company image
 
 // Glyphs: binary 0/1.
 const GLYPHS = ["0", "1"] as const;
@@ -346,6 +346,7 @@ function HeroVideoPlayer({
   const playerRef = useRef<YTPlayer | null>(null);
   const doneRef = useRef(false);
   const fadeRef = useRef<number | undefined>(undefined);
+  const wasVisibleRef = useRef(false);
   // The video preloads + plays hidden during the image phase; it's only shown
   // once it has PLAYED enough that YouTube's start play/pause indicator is gone.
   const [played, setPlayed] = useState(false);
@@ -480,17 +481,18 @@ function HeroVideoPlayer({
   useEffect(() => {
     const p = playerRef.current;
     if (!p) return;
-    if (!visible) {
+    if (visible) {
+      wasVisibleRef.current = true;
+      fadeTo(muted ? 0 : 100);
+    } else if (wasVisibleRef.current) {
+      fadeTo(0); // was shown, now leaving (end fade) → fade the audio out
+    } else {
       window.clearInterval(fadeRef.current);
       try {
-        p.mute();
+        p.mute(); // still preloading hidden → silent instantly
       } catch {
         /* not ready */
       }
-    } else if (muted) {
-      fadeTo(0);
-    } else {
-      fadeTo(100);
     }
   }, [muted, visible, fadeTo]);
 
@@ -535,7 +537,7 @@ function HeroVideoPlayer({
 
 export function Hero() {
   const [active, setActive] = useState(0);
-  const [phase, setPhase] = useState<"image" | "video" | "outro">("image");
+  const [phase, setPhase] = useState<"image" | "video" | "fade">("image");
   const [muted, setMuted] = useState(true);
   const headlineRef = useRef<HTMLHeadingElement>(null);
 
@@ -578,15 +580,18 @@ export function Hero() {
   }, []);
 
   const slide = SLIDES[active];
-  const showDecor = phase !== "video";
+  const showDecor = phase === "image";
   const playingVideo = phase === "video" && Boolean(slide.video);
+  // During the end "fade", show the NEXT company's image underneath the video
+  // (which is fading out), so it crossfades video -> next image seamlessly.
+  const shownImage = phase === "fade" ? (active + 1) % SLIDES.length : active;
 
   const go = (i: number) => {
     setActive((i + SLIDES.length) % SLIDES.length);
     setPhase("image");
   };
 
-  // Per company: image (5s) → video (until it ends) → image again (outro) → next.
+  // Per company: image (5s) → video → "fade" (crossfade to the NEXT company).
   useEffect(() => {
     if (phase === "video") return; // advanced by the player's onEnded handler
     const id = setTimeout(
@@ -598,12 +603,12 @@ export function Hero() {
           setPhase("image");
         }
       },
-      phase === "image" ? CYCLE_MS : OUTRO_MS,
+      phase === "image" ? CYCLE_MS : FADE_MS,
     );
     return () => clearTimeout(id);
   }, [phase, active, slide.video]);
 
-  const handleVideoEnd = useCallback(() => setPhase("outro"), []);
+  const handleVideoEnd = useCallback(() => setPhase("fade"), []);
 
   // Mute/unmute control — placed under the "American companies" note on
   // tablet/desktop and bottom-right on mobile, so it's easy to reach everywhere.
@@ -642,15 +647,20 @@ export function Hero() {
             priority={i === 0}
             quality={90}
             sizes="100vw"
-            className="object-cover object-center transition-opacity duration-[700ms] ease-in-out"
-            style={{ opacity: i === active ? 1 : 0 }}
+            className={cn(
+              "object-cover object-center",
+              // Instant swap during the fade (hidden under the fading video) so
+              // the previous image never flashes; smooth crossfade otherwise.
+              phase === "fade" ? "" : "transition-opacity duration-[700ms] ease-in-out",
+            )}
+            style={{ opacity: i === shownImage ? 1 : 0 }}
           />
         ))}
       </div>
 
       {/* Full-bleed video — preloads/plays hidden during the image phase, then
           reveals once it's played enough (so YouTube's start indicator is gone). */}
-      {slide.video && phase !== "outro" && (
+      {slide.video && (
         <HeroVideoPlayer
           key={slide.name}
           videoId={slide.video}
@@ -736,7 +746,12 @@ export function Hero() {
 
           {/* Cycling caption (links to product) + slide nav */}
           <div className="lg:absolute lg:left-[100px] lg:top-[330px] lg:max-w-[540px]">
-            <div className="flex items-start gap-[18px] md:gap-[22px]">
+            <div
+              className={cn(
+                "flex items-start gap-[18px] transition-opacity duration-500 md:gap-[22px]",
+                phase === "fade" ? "opacity-0" : "opacity-100",
+              )}
+            >
               <span className="mt-[7px] inline-block size-[14px] shrink-0 rounded-[2px] bg-[#ff4400] md:mt-[10px]" />
               <a
                 key={active}
@@ -775,7 +790,7 @@ export function Hero() {
               >
                 <Chevron dir="left" />
               </button>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 {SLIDES.map((s, i) => (
                   <button
                     key={s.img}
@@ -783,13 +798,17 @@ export function Hero() {
                     onClick={() => go(i)}
                     aria-label={`Go to slide ${i + 1}`}
                     aria-current={i === active}
-                    className={cn(
-                      "h-[3px] rounded-full transition-all duration-300",
-                      i === active
-                        ? "w-7 bg-[#ff4400]"
-                        : "w-3 bg-white/45 hover:bg-white/80",
-                    )}
-                  />
+                    className="group/dot flex items-center py-2"
+                  >
+                    <span
+                      className={cn(
+                        "block h-[5px] rounded-full transition-all duration-300",
+                        i === active
+                          ? "w-10 bg-[#ff4400]"
+                          : "w-5 bg-white/45 group-hover/dot:bg-white/80",
+                      )}
+                    />
+                  </button>
                 ))}
               </div>
               <button
