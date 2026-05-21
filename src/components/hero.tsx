@@ -381,8 +381,9 @@ function HeroVideoPlayer({
             // NB: do NOT call playVideo() here — an explicit API play makes
             // YouTube flash its center play/pause indicator. Muted autoplay
             // (autoplay=1 & mute=1) starts it without any indicator.
-            if (muted) e.target.mute();
-            else e.target.unMute();
+            // Always start muted — it preloads hidden; the mute effect applies
+            // the real preference once the video is actually shown.
+            e.target.mute();
           },
           onStateChange: (e: YTPlayerEvent) => {
             // Never sit on a paused frame (which shows a play button) — resume.
@@ -423,13 +424,14 @@ function HeroVideoPlayer({
     return () => window.clearInterval(id);
   }, [finish, start]);
 
-  // Reflect the mute toggle.
+  // Mute while preloading (not visible) so audio never plays under the image;
+  // apply the user's preference only once the video is actually shown.
   useEffect(() => {
     const p = playerRef.current;
     if (!p) return;
-    if (muted) p.mute();
+    if (!visible || muted) p.mute();
     else p.unMute();
-  }, [muted]);
+  }, [muted, visible]);
 
   // object-cover: size a 16:9 box to overflow + center within the viewport.
   useEffect(() => {
