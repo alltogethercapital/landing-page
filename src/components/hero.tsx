@@ -494,10 +494,11 @@ function HeroVideoPlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId, start]);
 
-  // Poll playback: reveal once ~2s has actually played (so YouTube's start
-  // indicator is gone — robust across devices, and keeps the image to ~3s paired
-  // with CYCLE_MS); let it play through but advance before the end-screen zone;
-  // and advance if playback stalls so the slideshow never hangs.
+  // Poll playback: reveal only AFTER ~5s has actually played, so YouTube's center
+  // play indicator (which flashes for the first couple seconds of playback) has
+  // fully faded BEFORE the video is shown — it flashes behind the still-visible
+  // image and is never seen. Then let it play through but advance before the
+  // end-screen zone; and advance if playback stalls so the slideshow never hangs.
   useEffect(() => {
     lastTimeRef.current = start;
     lastProgressRef.current = Date.now();
@@ -506,7 +507,7 @@ function HeroVideoPlayer({
       if (!p?.getDuration || !p.getCurrentTime) return;
       const dur = p.getDuration();
       const cur = p.getCurrentTime();
-      if (cur >= start + 2) setPlayed(true);
+      if (cur >= start + 5) setPlayed(true);
       // Track real progress for hang protection.
       if (cur > lastTimeRef.current + 0.05) {
         lastTimeRef.current = cur;
