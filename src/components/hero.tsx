@@ -54,8 +54,16 @@ const SLIDES: Slide[] = SLIDE_COPY.map((c) => {
   };
 });
 
-const CYCLE_MS = 5000; // image shown before the video takes over
+const CYCLE_MS = 3000; // image shown before the video takes over
 const FADE_MS = 850; // crossfade from the ending video to the next company image
+// Seconds of each company's video to play before advancing. Kept short so the
+// hero stays snappy AND so playback never reaches the final ~20s where YouTube
+// shows its end-screen "more videos" cards (chrome we never want on the hero).
+const VIDEO_CLIP_S = 12;
+// Hard cap on the video phase (wall-clock). The player normally advances itself
+// after the clip; this guarantees the slideshow never hangs if a video can't
+// autoplay or never reports finishing (slow link, autoplay-blocked browser).
+const VIDEO_MAX_MS = 14000;
 
 // Glyphs: binary 0/1.
 const GLYPHS = ["0", "1"] as const;
@@ -135,9 +143,10 @@ function GridGlyph({
   );
 }
 
-function GlyphField() {
+function GlyphField({ active }: { active: boolean }) {
   const fieldRef = useRef<HTMLDivElement>(null);
   const handles = useRef<GlyphHandle[]>([]);
+  const activeRef = useRef(active);
   const [dims, setDims] = useState<{
     w: number;
     h: number;
@@ -151,6 +160,12 @@ function GlyphField() {
       handles.current = handles.current.filter((x) => x !== h);
     };
   }, []);
+
+  // Mirror `active` into a ref so the global pointermove handler can read the
+  // latest value without re-subscribing.
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
 
   // Derive an even, square grid from the field's actual size (consistent density).
   useEffect(() => {
@@ -197,6 +212,7 @@ function GlyphField() {
     const r2 = PROXIMITY_RADIUS * PROXIMITY_RADIUS;
 
     const onMove = (e: PointerEvent) => {
+      if (!activeRef.current) return; // no flips while faded out (video phase)
       const rect = field.getBoundingClientRect();
       mx = e.clientX - rect.left;
       my = e.clientY - rect.top;
@@ -251,7 +267,10 @@ function GlyphField() {
   return (
     <div
       ref={fieldRef}
-      className="pointer-events-none absolute inset-0 z-[5]"
+      className={cn(
+        "pointer-events-none absolute inset-0 z-[5] transition-opacity duration-700 ease-in-out",
+        active ? "opacity-100" : "opacity-0 [&_*]:!pointer-events-none",
+      )}
       aria-hidden="true"
     >
       {cells.map((cell) => (
@@ -350,6 +369,10 @@ function HeroVideoPlayer({
   // The video preloads + plays hidden during the image phase; it's only shown
   // once it has PLAYED enough that YouTube's start play/pause indicator is gone.
   const [played, setPlayed] = useState(false);
+  // True only while the player reports an explicit PAUSED state. The video hides
+  // instantly whenever it's paused, so YouTube's center play/pause button can
+  // never be seen — but it defaults false so a normal reveal is never blocked.
+  const [paused, setPaused] = useState(false);
 
   // Advance to the next slide exactly once (whether via the end-poll or events).
   const finish = useCallback(() => {
@@ -436,9 +459,22 @@ function HeroVideoPlayer({
             e.target.mute();
           },
           onStateChange: (e: YTPlayerEvent) => {
-            // Never sit on a paused frame (which shows a play button) — resume.
-            if (e.data === YT.PlayerState.PAUSED) e.target.playVideo();
-            if (e.data === YT.PlayerState.ENDED) finish();
+            const s = e.data;
+            // Hide the video the instant it pauses so YouTube's center play/pause
+            // button is never seen; it shows again as soon as it's playing.
+            setPaused(s === YT.PlayerState.PAUSED);
+            // Never sit on a paused frame — resume on the NEXT tick (after it's
+            // hidden) so the resume can't flash the indicator on screen.
+            if (s === YT.PlayerState.PAUSED) {
+              window.setTimeout(() => {
+                try {
+                  e.target.playVideo();
+                } catch {
+                  /* player gone */
+                }
+              }, 60);
+            }
+            if (s === YT.PlayerState.ENDED) finish();
           },
           onError: () => finish(),
         },
@@ -459,15 +495,18 @@ function HeroVideoPlayer({
 
   // Poll playback: reveal once enough content has actually played (so YouTube's
   // start indicator is gone — robust across devices), and end ~2s early so its
-  // end screen never appears.
+  // end screen never appears. The ~2s playback gate keeps the image to ~3s
+  // before the video reveals (paired with CYCLE_MS) while still hiding the indicator.
   useEffect(() => {
     const id = window.setInterval(() => {
       const p = playerRef.current;
       if (!p?.getDuration || !p.getCurrentTime) return;
       const dur = p.getDuration();
       const cur = p.getCurrentTime();
-      if (cur >= start + 4) setPlayed(true);
-      if (dur > 0 && cur >= dur - 2) {
+      if (cur >= start + 2) setPlayed(true);
+      // Advance after the short clip, or before the end-screen zone for short
+      // videos — whichever comes first — so YouTube chrome never appears.
+      if (cur >= start + VIDEO_CLIP_S || (dur > 0 && cur >= dur - 2)) {
         window.clearInterval(id);
         finish();
       }
@@ -518,12 +557,18 @@ function HeroVideoPlayer({
     return () => ro.disconnect();
   }, []);
 
+  // Only ever show a cleanly-playing video that has played past the start
+  // indicator. Fade in when revealing, and fade out when leaving for the next
+  // slide (the seamless end crossfade); but on a mid-play pause (visible yet not
+  // playing) hide INSTANTLY so YouTube's play/pause button is never seen.
+  const reveal = visible && played && !paused;
   return (
     <div
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute inset-0 z-[1] bg-black transition-opacity duration-700 ease-in-out",
-        visible && played ? "opacity-100" : "opacity-0",
+        "pointer-events-none absolute inset-0 z-[1] bg-black",
+        reveal ? "opacity-100" : "opacity-0",
+        (reveal || !visible) && "transition-opacity duration-700 ease-in-out",
       )}
     >
       <div ref={wrapRef} className="absolute inset-0 overflow-hidden">
@@ -540,6 +585,38 @@ export function Hero() {
   const [phase, setPhase] = useState<"image" | "video" | "fade">("image");
   const [muted, setMuted] = useState(true);
   const headlineRef = useRef<HTMLHeadingElement>(null);
+  const curtainRef = useRef<HTMLDivElement>(null);
+
+  // Intro unveil: a brand-dark curtain wipes UP on load, revealing the page from
+  // the bottom with a thin orange scan line at its leading edge — techy + swift.
+  // GSAP (already in the stack) → GPU-friendly transform, smooth easing, and it
+  // coordinates with the headline reveal. Respects reduced motion.
+  useEffect(() => {
+    const el = curtainRef.current;
+    if (!el) return;
+    const hide = () => {
+      if (curtainRef.current) curtainRef.current.style.display = "none";
+    };
+    const reduce = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (reduce) {
+      hide();
+      return;
+    }
+    const tween = gsap.to(el, {
+      yPercent: -100,
+      duration: 0.9,
+      ease: "power3.inOut",
+      delay: 0.05,
+      onComplete: hide,
+    });
+    const fallback = window.setTimeout(hide, 2200); // never leave it covering
+    return () => {
+      tween.kill();
+      window.clearTimeout(fallback);
+    };
+  }, []);
 
   // Epic headline reveal: mask each line and stagger the characters upward.
   useEffect(() => {
@@ -560,7 +637,7 @@ export function Hero() {
           stagger: 0.02,
           duration: 0.9,
           ease: "power4.out",
-          delay: 0.15,
+          delay: 0.5, // start as the intro curtain clears the headline
           onComplete: () => split?.revert(), // restore normal, responsive markup
         });
       } catch {
@@ -591,9 +668,14 @@ export function Hero() {
     setPhase("image");
   };
 
-  // Per company: image (5s) → video → "fade" (crossfade to the NEXT company).
+  // Per company: image → video → "fade" (crossfade to the NEXT company).
   useEffect(() => {
-    if (phase === "video") return; // advanced by the player's onEnded handler
+    if (phase === "video") {
+      // Normally the player advances itself after the clip; this is the safety
+      // net that keeps the slideshow moving even if a video never plays/finishes.
+      const id = setTimeout(() => setPhase("fade"), VIDEO_MAX_MS);
+      return () => clearTimeout(id);
+    }
     const id = setTimeout(
       () => {
         if (phase === "image" && slide.video) {
@@ -636,6 +718,19 @@ export function Hero() {
       id="top"
       className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-black text-white"
     >
+      {/* Intro unveil curtain — wipes up to reveal the page from the bottom on
+          load, led by a thin orange scan line. Removed once the animation ends. */}
+      <div
+        ref={curtainRef}
+        aria-hidden="true"
+        className="intro-curtain pointer-events-none fixed inset-0 z-[200] bg-[#0b0b0d]"
+      >
+        <div className="absolute inset-x-0 bottom-0 h-[2px] bg-[#ff4400] shadow-[0_0_26px_7px_rgba(255,68,0,0.6)]" />
+      </div>
+      <noscript>
+        <style>{`.intro-curtain{display:none!important}`}</style>
+      </noscript>
+
       {/* Cycling background photos */}
       <div className="absolute inset-0 z-0 bg-black">
         {SLIDES.map((s, i) => (
@@ -705,8 +800,9 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      {/* Decorative glyph field (A/T/0/1) — hidden while the video plays */}
-      {showDecor && <GlyphField />}
+      {/* Decorative 0/1 glyph field — fades out (not a hard cut) when the
+          video takes over, and fades back in on the next image. */}
+      <GlyphField active={showDecor} />
 
       {/* HERO CONTENT (flows on mobile, absolute on md+) */}
       <div className="pointer-events-none absolute inset-0 z-10">
