@@ -821,18 +821,19 @@ export function Hero() {
             </h1>
           </div>
 
-          {/* Investment thesis — secondary side note */}
-          <div className="lg:absolute lg:right-[100px] lg:top-[214px] lg:text-right">
-            <p className="[font-family:var(--font-playfair)] text-[16px] font-normal leading-[1.3] tracking-[-0.1px] text-white/80 sm:text-[18px] lg:text-[30px] lg:leading-[1.12] lg:tracking-[-0.4px] lg:text-white/90">
-              Investing in America&rsquo;s
-              <br />
-              companies and resurgence
-              <br />
+          {/* Investment thesis — flag + two-line text lockup. The flag height is
+              tied to the same font-size/line-height as the text, so it matches
+              the two-line block's height exactly at every breakpoint. */}
+          <div className="lg:absolute lg:right-[100px] lg:top-[214px] lg:flex lg:flex-col lg:items-end">
+            <div className="inline-flex items-center gap-[0.45em] text-[16px] sm:text-[18px] lg:text-[30px]">
+              {/* US flag — to the left of the text, scaled to the block height
+                  (2 lines × line-height: 2.6em mobile, 2.24em desktop) */}
               <svg
                 viewBox="0 0 19 10"
+                preserveAspectRatio="xMidYMid meet"
                 role="img"
                 aria-label="United States"
-                className="mt-[0.25em] inline-block h-[1.2em] w-auto [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"
+                className="h-[2.6em] w-auto shrink-0 lg:h-[2.24em] [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"
               >
                 <rect width="19" height="10" fill="#fff" />
                 <g fill="#b22234">
@@ -846,7 +847,12 @@ export function Hero() {
                 </g>
                 <rect width="7.6" height="5.385" fill="#3c3b6e" />
               </svg>
-            </p>
+              <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-[-0.1px] text-white/80 lg:leading-[1.12] lg:tracking-[-0.4px] lg:text-white/90">
+                Investing in America&rsquo;s
+                <br />
+                companies and resurgence
+              </p>
+            </div>
             {/* Mute control — under the note on tablet/desktop */}
             {playingVideo && renderMute("mt-3 hidden md:inline-flex lg:mt-4")}
           </div>
