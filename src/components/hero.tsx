@@ -717,7 +717,7 @@ export function Hero() {
           <div className="lg:absolute lg:left-[100px] lg:top-[175px] lg:max-w-[640px]">
             <h1
               ref={headlineRef}
-              className="hero-headline text-[29px] font-medium leading-[1.12] tracking-[-1.1px] text-white opacity-0 md:text-[45.66px] md:leading-[54.79px] md:tracking-[-1.83px]"
+              className="hero-headline whitespace-nowrap text-[clamp(18px,7vw,40px)] font-medium leading-[1.12] tracking-[-1.1px] text-white opacity-0 md:whitespace-normal md:text-[45.66px] md:leading-[54.79px] md:tracking-[-1.83px]"
             >
               The future is built together.
               <br />
@@ -730,12 +730,13 @@ export function Hero() {
             <p className="[font-family:var(--font-playfair)] text-[16px] font-normal leading-[1.3] tracking-[-0.1px] text-white/80 sm:text-[18px] lg:text-[30px] lg:leading-[1.12] lg:tracking-[-0.4px] lg:text-white/90">
               Investing in America&rsquo;s
               <br />
-              companies and resurgence{" "}
+              companies and resurgence
+              <br />
               <svg
                 viewBox="0 0 19 10"
                 role="img"
                 aria-label="United States"
-                className="ml-[0.3em] inline-block h-[1.2em] w-auto align-[-0.34em]"
+                className="mt-[0.25em] inline-block h-[1.2em] w-auto [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"
               >
                 <rect width="19" height="10" fill="#fff" />
                 <g fill="#b22234">
@@ -801,7 +802,7 @@ export function Hero() {
                 type="button"
                 onClick={() => go(active - 1)}
                 aria-label="Previous slide"
-                className="text-white/75 transition-colors hover:text-white"
+                className="text-white/75 transition-colors hover:text-white max-md:hidden"
               >
                 <Chevron dir="left" />
               </button>
@@ -830,7 +831,7 @@ export function Hero() {
                 type="button"
                 onClick={() => go(active + 1)}
                 aria-label="Next slide"
-                className="text-white/75 transition-colors hover:text-white"
+                className="text-white/75 transition-colors hover:text-white max-md:hidden"
               >
                 <Chevron dir="right" />
               </button>
@@ -838,6 +839,25 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Mobile slide arrows — pinned to the screen edges, vertically centered
+          so they're easy to see/reach. Desktop keeps the inline arrows + dots. */}
+      <button
+        type="button"
+        onClick={() => go(active - 1)}
+        aria-label="Previous slide"
+        className="pointer-events-auto absolute left-2 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center bg-black/35 text-white/90 ring-1 ring-white/20 backdrop-blur-md transition-colors hover:bg-black/55 md:hidden"
+      >
+        <Chevron dir="left" />
+      </button>
+      <button
+        type="button"
+        onClick={() => go(active + 1)}
+        aria-label="Next slide"
+        className="pointer-events-auto absolute right-2 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center bg-black/35 text-white/90 ring-1 ring-white/20 backdrop-blur-md transition-colors hover:bg-black/55 md:hidden"
+      >
+        <Chevron dir="right" />
+      </button>
 
       {/* Giant wordmark + Capital lockup */}
       <div className="pointer-events-none absolute inset-x-[40px] bottom-[22px] z-[8] mx-auto max-w-[1920px] [container-type:inline-size] max-md:inset-x-3 max-md:bottom-2">
