@@ -56,14 +56,13 @@ const SLIDES: Slide[] = SLIDE_COPY.map((c) => {
 
 const CYCLE_MS = 3000; // image shown before the video takes over
 const FADE_MS = 850; // crossfade from the ending video to the next company image
-// Seconds of each company's video to play before advancing. Kept short so the
-// hero stays snappy AND so playback never reaches the final ~20s where YouTube
-// shows its end-screen "more videos" cards (chrome we never want on the hero).
-const VIDEO_CLIP_S = 12;
-// Hard cap on the video phase (wall-clock). The player normally advances itself
-// after the clip; this guarantees the slideshow never hangs if a video can't
-// autoplay or never reports finishing (slow link, autoplay-blocked browser).
-const VIDEO_MAX_MS = 14000;
+// Let each video play through, but stop this many seconds before its natural
+// end so it never reaches YouTube's end-screen "more videos" cards (which appear
+// in the final ~20s) — chrome we never want on the hero.
+const VIDEO_END_PAD_S = 22;
+// If playback can't progress for this long (autoplay blocked / stalled), advance
+// anyway so the slideshow never hangs.
+const VIDEO_STALL_MS = 8000;
 
 // Glyphs: binary 0/1.
 const GLYPHS = ["0", "1"] as const;
@@ -366,6 +365,8 @@ function HeroVideoPlayer({
   const doneRef = useRef(false);
   const fadeRef = useRef<number | undefined>(undefined);
   const wasVisibleRef = useRef(false);
+  const lastTimeRef = useRef(0); // last getCurrentTime — for stall detection
+  const lastProgressRef = useRef(0); // wall-clock of last real progress
   // The video preloads + plays hidden during the image phase; it's only shown
   // once it has PLAYED enough that YouTube's start play/pause indicator is gone.
   const [played, setPlayed] = useState(false);
@@ -493,20 +494,30 @@ function HeroVideoPlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId, start]);
 
-  // Poll playback: reveal once enough content has actually played (so YouTube's
-  // start indicator is gone — robust across devices), and end ~2s early so its
-  // end screen never appears. The ~2s playback gate keeps the image to ~3s
-  // before the video reveals (paired with CYCLE_MS) while still hiding the indicator.
+  // Poll playback: reveal once ~2s has actually played (so YouTube's start
+  // indicator is gone — robust across devices, and keeps the image to ~3s paired
+  // with CYCLE_MS); let it play through but advance before the end-screen zone;
+  // and advance if playback stalls so the slideshow never hangs.
   useEffect(() => {
+    lastTimeRef.current = start;
+    lastProgressRef.current = Date.now();
     const id = window.setInterval(() => {
       const p = playerRef.current;
       if (!p?.getDuration || !p.getCurrentTime) return;
       const dur = p.getDuration();
       const cur = p.getCurrentTime();
       if (cur >= start + 2) setPlayed(true);
-      // Advance after the short clip, or before the end-screen zone for short
-      // videos — whichever comes first — so YouTube chrome never appears.
-      if (cur >= start + VIDEO_CLIP_S || (dur > 0 && cur >= dur - 2)) {
+      // Track real progress for hang protection.
+      if (cur > lastTimeRef.current + 0.05) {
+        lastTimeRef.current = cur;
+        lastProgressRef.current = Date.now();
+      }
+      if (dur > 0 && cur >= dur - VIDEO_END_PAD_S) {
+        // Played through to (effectively) the end, before the end-screen zone.
+        window.clearInterval(id);
+        finish();
+      } else if (Date.now() - lastProgressRef.current > VIDEO_STALL_MS) {
+        // Can't progress (autoplay blocked / stalled) → advance so it never hangs.
         window.clearInterval(id);
         finish();
       }
@@ -536,6 +547,9 @@ function HeroVideoPlayer({
   }, [muted, visible, fadeTo]);
 
   // object-cover: size a 16:9 box to overflow + center within the viewport.
+  // The 1.4x overscale crops the iframe's top/bottom edges out of view — that's
+  // where YouTube renders its title bar and "more videos"/share chrome, so it's
+  // never visible (the wrap is overflow-hidden).
   useEffect(() => {
     const wrap = wrapRef.current;
     const cover = coverRef.current;
@@ -543,7 +557,7 @@ function HeroVideoPlayer({
     const resize = () => {
       const w = wrap.clientWidth;
       const h = wrap.clientHeight;
-      const scale = Math.max(w / 16, h / 9);
+      const scale = Math.max(w / 16, h / 9) * 1.4;
       const vw = 16 * scale;
       const vh = 9 * scale;
       cover.style.width = `${vw}px`;
@@ -618,28 +632,49 @@ export function Hero() {
     };
   }, []);
 
-  // Epic headline reveal: mask each line and stagger the characters upward.
+  // Headline reveal: a masked character-rise at >=768px (where the headline is
+  // whitespace-normal and SplitText behaves), and a simple, reliable fade-rise on
+  // mobile (SplitText + the responsive nowrap headline can leave chars hidden).
+  // A safety timer guarantees the headline is never left invisible.
   useEffect(() => {
     const el = headlineRef.current;
     if (!el) return;
     let split: SplitText | undefined;
     let tween: gsap.core.Tween | undefined;
+    let safety: number | undefined;
     const show = () => gsap.set(el, { autoAlpha: 1 });
     const fallback = window.setTimeout(show, 2500); // never leave it hidden
     const run = () => {
       window.clearTimeout(fallback);
+      const fancy = window.matchMedia("(min-width: 768px)").matches;
       try {
-        split = SplitText.create(el, { type: "lines,chars", mask: "lines" });
-        show();
-        tween = gsap.from(split.chars, {
-          yPercent: 115,
-          opacity: 0,
-          stagger: 0.02,
-          duration: 0.9,
-          ease: "power4.out",
-          delay: 0.5, // start as the intro curtain clears the headline
-          onComplete: () => split?.revert(), // restore normal, responsive markup
-        });
+        if (fancy) {
+          split = SplitText.create(el, { type: "lines,chars", mask: "lines" });
+          show();
+          tween = gsap.from(split.chars, {
+            yPercent: 115,
+            opacity: 0,
+            stagger: 0.02,
+            duration: 0.9,
+            ease: "power4.out",
+            delay: 0.5, // start as the intro curtain clears the headline
+            onComplete: () => split?.revert(), // restore normal, responsive markup
+          });
+          // Never leave the headline hidden if the tween can't finish.
+          safety = window.setTimeout(() => {
+            try {
+              split?.revert();
+            } catch {
+              /* ignore */
+            }
+            show();
+          }, 3200);
+        } else {
+          // Mobile: just reveal it (the intro curtain provides the entrance).
+          // A per-element gsap.from can strand the headline at its hidden "from"
+          // state here, so keep it bulletproof.
+          show();
+        }
       } catch {
         show();
       }
@@ -651,6 +686,7 @@ export function Hero() {
     ready.then(run);
     return () => {
       window.clearTimeout(fallback);
+      window.clearTimeout(safety);
       tween?.kill();
       split?.revert();
     };
@@ -669,13 +705,11 @@ export function Hero() {
   };
 
   // Per company: image → video → "fade" (crossfade to the NEXT company).
+  // The video phase is advanced by the player itself (plays through, then its
+  // poll calls onEnded near the end or on a stall) — no wall-clock cap here, so
+  // videos are never cut short.
   useEffect(() => {
-    if (phase === "video") {
-      // Normally the player advances itself after the clip; this is the safety
-      // net that keeps the slideshow moving even if a video never plays/finishes.
-      const id = setTimeout(() => setPhase("fade"), VIDEO_MAX_MS);
-      return () => clearTimeout(id);
-    }
+    if (phase === "video") return;
     const id = setTimeout(
       () => {
         if (phase === "image" && slide.video) {
@@ -794,9 +828,10 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      {/* Top scrim — keeps the headline + captions readable over bright slides */}
+      {/* Top scrim — keeps the headline + note readable over bright slides
+          (e.g. the light 1X robots). Darker + taller than before for contrast. */}
       <div
-        className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(to_bottom,rgba(0,0,0,0.58)_0%,rgba(0,0,0,0.3)_16%,rgba(0,0,0,0.1)_32%,transparent_44%)]"
+        className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(to_bottom,rgba(0,0,0,0.66)_0%,rgba(0,0,0,0.46)_15%,rgba(0,0,0,0.2)_34%,transparent_52%)]"
         aria-hidden="true"
       />
 
@@ -813,7 +848,7 @@ export function Hero() {
           <div className="lg:absolute lg:left-[100px] lg:top-[175px] lg:max-w-[640px]">
             <h1
               ref={headlineRef}
-              className="hero-headline whitespace-nowrap text-[clamp(18px,7vw,40px)] font-medium leading-[1.12] tracking-[-1.1px] text-white opacity-0 md:whitespace-normal md:text-[45.66px] md:leading-[54.79px] md:tracking-[-1.83px]"
+              className="hero-headline whitespace-nowrap text-[clamp(18px,7vw,40px)] font-medium leading-[1.12] tracking-[-1.1px] text-white opacity-0 [text-shadow:0_1px_16px_rgba(0,0,0,0.5)] md:whitespace-normal md:text-[45.66px] md:leading-[54.79px] md:tracking-[-1.83px]"
             >
               The future is built together.
               <br />
@@ -847,7 +882,7 @@ export function Hero() {
                 </g>
                 <rect width="7.6" height="5.385" fill="#3c3b6e" />
               </svg>
-              <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-[-0.1px] text-white/80 lg:leading-[1.12] lg:tracking-[-0.4px] lg:text-white/90">
+              <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-[-0.1px] text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] lg:leading-[1.12] lg:tracking-[-0.4px]">
                 Investing in America&rsquo;s
                 <br />
                 companies and resurgence

@@ -99,9 +99,10 @@ export const PORTFOLIO: Company[] = [
     blurb: "General-purpose humanoid robots for the workforce.",
     logo: "/logos/figure.png",
     image: "/work/figure-ai.jpg",
-    // NOTE: the "Figure 03 Trailer" (IlG3X8zRI2I) has embedding disabled by its
-    // owner, so it can't be used; this is the embeddable official launch film.
-    video: "Eu5mYMavctM", // Introducing Figure 03 (Figure)
+    // NOTE: the requested "Figure 03 Trailer" (IlG3X8zRI2I) has embedding
+    // disabled by its owner (playableInEmbed:false), so it can't be embedded.
+    // Using the official, embeddable Figure 03 reveal instead.
+    video: "nRS-iB8YRJQ", // Figure 03 – The Humanoid Robot Built for the Home and the World (Figure)
   },
   {
     name: "Apptronik",
