@@ -826,14 +826,14 @@ export function Hero() {
               the two-line block's height exactly at every breakpoint. */}
           <div className="lg:absolute lg:right-[100px] lg:top-[214px] lg:flex lg:flex-col lg:items-end">
             <div className="inline-flex items-center gap-[0.45em] text-[16px] sm:text-[18px] lg:text-[30px]">
-              {/* US flag — to the left of the text, scaled to the block height
-                  (2 lines × line-height: 2.6em mobile, 2.24em desktop) */}
+              {/* US flag — to the left of the text, ~1 line tall (half the
+                  two-line block height), vertically centered against the text */}
               <svg
                 viewBox="0 0 19 10"
                 preserveAspectRatio="xMidYMid meet"
                 role="img"
                 aria-label="United States"
-                className="h-[2.6em] w-auto shrink-0 lg:h-[2.24em] [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"
+                className="h-[1.3em] w-auto shrink-0 lg:h-[1.12em] [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"
               >
                 <rect width="19" height="10" fill="#fff" />
                 <g fill="#b22234">
