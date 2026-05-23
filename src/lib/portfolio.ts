@@ -5,6 +5,7 @@ export type Company = {
   blurb?: string; // short one-liner (revealed on hover)
   logo?: string; // /public path to the company's logo mark
   image?: string; // /public product image — falls back to a sector gradient when absent
+  cardImage?: string; // /public image for the /companies card only (hero keeps using `image`)
   video?: string; // YouTube video id (11 chars) — shows a "Watch video" button when present
   videoStart?: number; // optional start time (seconds) for the video
 };
@@ -28,6 +29,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Humanoid robots engineered for the home.",
     logo: "/logos/1x.png",
     image: "/hero-robots.jpg",
+    cardImage: "/work/cards/1x.jpg",
     video: "ag_rFhvSNmE", // NEO Factory | Hayward, California (1X)
   },
   {
@@ -37,6 +39,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Frontier AI research — creators of ChatGPT and the GPT models.",
     logo: "/logos/openai.png",
     image: "/work/openai.jpg",
+    cardImage: "/work/cards/openai.jpg",
     video: "HK6y8DAPN_0", // Introducing Sora (OpenAI)
   },
   {
@@ -46,6 +49,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "AI safety research and Claude, a frontier AI assistant.",
     logo: "/logos/anthropic.png",
     image: "/work/anthropic.jpg",
+    cardImage: "/work/cards/anthropic.jpg",
     video: "oqUclC3gqKs", // A day with Claude (Anthropic)
   },
   {
@@ -55,6 +59,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Autonomous defense systems built on the Lattice platform.",
     logo: "/logos/anduril.png",
     image: "/work/anduril.jpg",
+    cardImage: "/work/cards/anduril.jpg",
     video: "RpFFScTovII", // Lattice for Mission Autonomy (Anduril Industries)
   },
   {
@@ -64,6 +69,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Archimedes — an autonomous directed-energy counter-drone laser.",
     logo: "/logos/aurelius.png",
     image: "/work/aurelius.jpg",
+    cardImage: "/work/cards/aurelius.jpg",
     video: "Oym5abej2qw", // This Startup Shoots Down Drones With Lasers (Cerebral Valley)
   },
   {
@@ -73,6 +79,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Critical actuation systems for aviation and defense.",
     logo: "/logos/salient.png",
     image: "/work/salient-jet.jpg",
+    cardImage: "/work/cards/salient.jpg",
   },
   {
     name: "Replit",
@@ -81,6 +88,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "The AI-native platform for building and shipping software.",
     logo: "/logos/replit.png",
     image: "/work/replit.jpg",
+    cardImage: "/work/cards/replit.jpg",
     video: "-2xHmkpmCBM", // Replit Agent 4 Launch Announcement (Replit)
   },
   {
@@ -90,6 +98,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Simulation and tooling for autonomous vehicles and machines.",
     logo: "/logos/applied.png",
     image: "/work/applied.jpg",
+    cardImage: "/work/cards/applied.jpg",
     video: "eL-YnfG4K_0", // Inside 2025: Applied Intuition's Year of Building Physical AI
   },
   {
@@ -99,6 +108,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "General-purpose humanoid robots for the workforce.",
     logo: "/logos/figure.png",
     image: "/work/figure-ai.jpg",
+    cardImage: "/work/cards/figure.jpg",
     // NOTE: the requested "Figure 03 Trailer" (IlG3X8zRI2I) has embedding
     // disabled by its owner (playableInEmbed:false), so it can't be embedded.
     // Using the official, embeddable Figure 03 reveal instead.
@@ -111,6 +121,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Apollo — a general-purpose humanoid robot for industry.",
     logo: "/logos/apptronik.png",
     image: "/work/apptronik.jpg",
+    cardImage: "/work/cards/apptronik.jpg",
     video: "uJOA5IDaL5g", // Hello Apollo (Apptronik)
   },
   {
@@ -120,6 +131,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "AI-driven semiconductor design.",
     logo: "/logos/volantis.png",
     image: "/work/volantis.jpg",
+    cardImage: "/work/cards/volantis.jpg",
   },
   {
     name: "Starcloud",
@@ -128,6 +140,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Data centers in orbit, powered by the sun.",
     logo: "/logos/starcloud.png",
     image: "/work/starcloud.jpg",
+    cardImage: "/work/cards/starcloud.jpg",
     video: "u9m6tCZa2-k", // Starcloud Constellation (Starcloud)
   },
   {
@@ -137,6 +150,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Modular solar-thermal energy for the AI compute era.",
     logo: "/logos/exowatt.png",
     image: "/work/exowatt.jpg",
+    cardImage: "/work/cards/exowatt.jpg",
     video: "kQgvCo5XG18", // Exowatt Power Summit 25 Sizzle Reel (Exowatt)
   },
   {
@@ -146,6 +160,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Factory-built modular nuclear reactors for clean power.",
     logo: "/logos/aalo.png",
     image: "/work/aalo.jpg",
+    cardImage: "/work/cards/aalo.jpg",
     video: "LuhHQshC7Xk", // Unveiling the Aalo-1 Prototype and Aalo Pod (Aalo Atomics)
   },
   {
@@ -155,6 +170,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Ultra-deep geothermal to unlock clean baseload energy.",
     logo: "/logos/quaise.png",
     image: "/work/quaise.jpg",
+    cardImage: "/work/cards/quaise.jpg",
     video: "5U8-KoKB6_8", // Lab to Field Testing of Millimeter Wave Drilling (Quaise Energy)
   },
   {
@@ -164,6 +180,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Robotic, on-demand apparel manufacturing.",
     logo: "/logos/unspun.png",
     image: "/work/unspun.jpg",
+    cardImage: "/work/cards/unspun.jpg",
     video: "lLvn0o-jhuI", // 3D weaving | Vega by unspun (unspun)
   },
   {
@@ -173,6 +190,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Building the future of hospitality.",
     logo: "/logos/lance.png",
     image: "/work/lance.jpg",
+    cardImage: "/work/cards/lance.jpg",
     video: "4lfd34piGiE", // guests got places to be (Lance)
   },
   {
@@ -182,6 +200,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "Sample management for modern music producers.",
     logo: "/logos/samply.png",
     image: "/work/samply.jpg",
+    cardImage: "/work/cards/samply.jpg",
     video: "0MT2smBqloI", // Getting started with Samply (Samply)
   },
   {
@@ -191,6 +210,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "AI-powered tools for the way people work.",
     logo: "/logos/hark.png",
     image: "/work/hark.jpg",
+    cardImage: "/work/cards/hark.jpg",
     video: "0H1LSLipOVI", // Introducing Hark (Hark)
   },
   {
@@ -200,6 +220,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "The robotics platform for agriculture.",
     logo: "/logos/budbreak.png",
     image: "/work/budbreak.jpg",
+    cardImage: "/work/cards/budbreak.jpg",
     video: "8sLI-XocJFw", // I Built a Robot to Save the Wine Industry (Budbreak Innovations)
   },
   {
@@ -208,6 +229,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["AI", "Robotics"],
     blurb: "A new kind of working robot — general-purpose AI for industry.",
     logo: "/logos/maven.png",
+    cardImage: "/work/cards/maven.jpg",
   },
   {
     name: "Eccentric Machines",
@@ -215,6 +237,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Robotics", "AI"],
     blurb: "Unlocking intelligent robotic motion.",
     image: "/work/eccentric.jpg",
+    cardImage: "/work/cards/eccentric.jpg",
   },
 ];
 

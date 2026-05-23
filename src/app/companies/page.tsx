@@ -22,7 +22,9 @@ function CompanyCard({
   company: Company;
   featured?: boolean;
 }) {
-  const hasImage = Boolean(company.image);
+  // The /companies card prefers a card-specific image; the hero still uses `image`.
+  const cardSrc = company.cardImage ?? company.image;
+  const hasImage = Boolean(cardSrc);
   const founder = founderForCompany(company.name);
   return (
     <div
@@ -36,10 +38,10 @@ function CompanyCard({
       {/* Background: full-color product image (gradient only as a safety fallback) */}
       {hasImage ? (
         <Image
-          src={company.image as string}
+          src={cardSrc as string}
           alt={`${company.name} — product`}
           fill
-          sizes={featured ? "100vw" : "(max-width: 768px) 100vw, 50vw"}
+          sizes={featured ? "100vw" : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"}
           quality={90}
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
         />
@@ -180,7 +182,7 @@ export default function CompaniesPage() {
 
       {/* Grid */}
       <section className="px-6 pt-10 md:px-[40px]">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {rest.map((company) => (
             <CompanyCard key={company.name} company={company} />
           ))}

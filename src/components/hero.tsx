@@ -56,10 +56,9 @@ const SLIDES: Slide[] = SLIDE_COPY.map((c) => {
 
 const CYCLE_MS = 3000; // image shown before the video takes over
 const FADE_MS = 850; // crossfade from the ending video to the next company image
-// Let each video play through, but stop this many seconds before its natural
-// end so it never reaches YouTube's end-screen "more videos" cards (which appear
-// in the final ~20s) — chrome we never want on the hero.
-const VIDEO_END_PAD_S = 22;
+// Play each video essentially to its end before advancing — a tiny pad so the
+// crossfade to the next slide begins just before the final frame.
+const VIDEO_END_PAD_S = 2;
 // If playback can't progress for this long (autoplay blocked / stalled), advance
 // anyway so the slideshow never hangs.
 const VIDEO_STALL_MS = 8000;
@@ -364,7 +363,7 @@ function HeroVideoPlayer({
   const playerRef = useRef<YTPlayer | null>(null);
   const doneRef = useRef(false);
   const fadeRef = useRef<number | undefined>(undefined);
-  const wasVisibleRef = useRef(false);
+  const wasShownRef = useRef(false);
   const lastTimeRef = useRef(0); // last getCurrentTime — for stall detection
   const lastProgressRef = useRef(0); // wall-clock of last real progress
   // The video preloads + plays hidden during the image phase; it's only shown
@@ -374,6 +373,10 @@ function HeroVideoPlayer({
   // instantly whenever it's paused, so YouTube's center play/pause button can
   // never be seen — but it defaults false so a normal reveal is never blocked.
   const [paused, setPaused] = useState(false);
+  // The video is visually shown only in the video phase, once played past the
+  // start-indicator window, and while not paused. Audio is tied to this so sound
+  // and visuals switch together.
+  const reveal = visible && played && !paused;
 
   // Advance to the next slide exactly once (whether via the end-poll or events).
   const finish = useCallback(() => {
@@ -497,8 +500,8 @@ function HeroVideoPlayer({
   // Poll playback: reveal only AFTER ~5s has actually played, so YouTube's center
   // play indicator (which flashes for the first couple seconds of playback) has
   // fully faded BEFORE the video is shown — it flashes behind the still-visible
-  // image and is never seen. Then let it play through but advance before the
-  // end-screen zone; and advance if playback stalls so the slideshow never hangs.
+  // image and is never seen. Then play through to the end before advancing; and
+  // advance if playback stalls so the slideshow never hangs.
   useEffect(() => {
     lastTimeRef.current = start;
     lastProgressRef.current = Date.now();
@@ -514,7 +517,7 @@ function HeroVideoPlayer({
         lastProgressRef.current = Date.now();
       }
       if (dur > 0 && cur >= dur - VIDEO_END_PAD_S) {
-        // Played through to (effectively) the end, before the end-screen zone.
+        // Played to (effectively) the end → advance to the next slide.
         window.clearInterval(id);
         finish();
       } else if (Date.now() - lastProgressRef.current > VIDEO_STALL_MS) {
@@ -526,17 +529,17 @@ function HeroVideoPlayer({
     return () => window.clearInterval(id);
   }, [finish, start]);
 
-  // Mute (instantly) while preloading hidden so audio never plays under the
-  // image; once shown, fade the audio in/out quickly so there are no abrupt
-  // jumps when the user toggles sound.
+  // Audio follows the VISUAL reveal — not the phase — so sound switches in step
+  // with the picture: silent while the video plays hidden behind the image, then
+  // fades in exactly as the video fades in, and fades out as it leaves.
   useEffect(() => {
     const p = playerRef.current;
     if (!p) return;
-    if (visible) {
-      wasVisibleRef.current = true;
+    if (reveal) {
+      wasShownRef.current = true;
       fadeTo(muted ? 0 : 100);
-    } else if (wasVisibleRef.current) {
-      fadeTo(0); // was shown, now leaving (end fade) → fade the audio out
+    } else if (wasShownRef.current) {
+      fadeTo(0); // was shown, now leaving → fade the audio out with the visuals
     } else {
       window.clearInterval(fadeRef.current);
       try {
@@ -545,7 +548,7 @@ function HeroVideoPlayer({
         /* not ready */
       }
     }
-  }, [muted, visible, fadeTo]);
+  }, [muted, reveal, fadeTo]);
 
   // object-cover: size a 16:9 box to overflow + center within the viewport.
   // The 1.4x overscale crops the iframe's top/bottom edges out of view — that's
@@ -572,11 +575,9 @@ function HeroVideoPlayer({
     return () => ro.disconnect();
   }, []);
 
-  // Only ever show a cleanly-playing video that has played past the start
-  // indicator. Fade in when revealing, and fade out when leaving for the next
-  // slide (the seamless end crossfade); but on a mid-play pause (visible yet not
-  // playing) hide INSTANTLY so YouTube's play/pause button is never seen.
-  const reveal = visible && played && !paused;
+  // Fade in when revealing, fade out when leaving (the seamless end crossfade);
+  // but on a mid-play pause (visible yet not playing) hide INSTANTLY so YouTube's
+  // play/pause button is never seen.
   return (
     <div
       aria-hidden="true"

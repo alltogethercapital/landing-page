@@ -38,7 +38,7 @@ function FounderCard({ founder }: { founder: Founder }) {
           src={founder.headshot as string}
           alt={founder.name}
           fill
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           quality={90}
           className="object-cover object-top"
         />
@@ -153,7 +153,7 @@ export default function FoundersPage() {
 
       {/* Grid */}
       <section className="px-6 pt-10 md:px-[40px]">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {FOUNDERS.map((founder) => (
             <FounderCard key={founder.companyName} founder={founder} />
           ))}
