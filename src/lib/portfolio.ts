@@ -239,6 +239,13 @@ export const PORTFOLIO: Company[] = [
     image: "/work/eccentric.jpg",
     cardImage: "/work/cards/eccentric.jpg",
   },
+  {
+    name: "Array Labs",
+    href: "https://www.arraylabs.io/",
+    sectors: ["Space", "Defense"],
+    blurb: "Satellite swarms building a real-time 3D map of Earth.",
+    video: "SS0a_KjvDis", // Introducing Site3D, from Array Labs
+  },
 ];
 
 // sector → gradient (for cards without a product image)

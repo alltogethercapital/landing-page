@@ -740,24 +740,23 @@ export function Hero() {
 
   const handleVideoEnd = useCallback(() => setPhase("fade"), []);
 
-  // Mute/unmute control — placed under the "American companies" note on
-  // tablet/desktop and bottom-right on mobile, so it's easy to reach everywhere.
+  // Audio toggle — a large, icon-only, see-through control (no background) so the
+  // video shows through. Positioned bottom-right of the hero.
   const renderMute = (extra: string) => (
     <button
       type="button"
       onClick={() => setMuted((m) => !m)}
       aria-label={muted ? "Unmute video" : "Mute video"}
       className={cn(
-        "unmute-flash pointer-events-auto inline-flex items-center gap-2 bg-black/50 px-3.5 py-2 text-[13px] font-semibold text-white ring-1 ring-white/25 backdrop-blur-md transition-colors duration-200 hover:bg-[#ff4400] hover:text-black hover:ring-[#ff4400] md:text-[14px]",
+        "unmute-flash pointer-events-auto inline-flex size-14 items-center justify-center text-white/85 [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.55))] transition-colors duration-200 hover:text-[#ff4400] md:size-[68px]",
         extra,
       )}
     >
       {muted ? (
-        <SoundOffIcon className="size-4" />
+        <SoundOffIcon className="size-8 md:size-11" />
       ) : (
-        <SoundOnIcon className="size-4" />
+        <SoundOnIcon className="size-8 md:size-11" />
       )}
-      {muted ? "Tap to unmute" : "Mute"}
     </button>
   );
 
@@ -842,12 +841,8 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      {/* Top scrim — keeps the headline + note readable over bright slides
-          (e.g. the light 1X robots). Darker + taller than before for contrast. */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(to_bottom,rgba(0,0,0,0.66)_0%,rgba(0,0,0,0.46)_15%,rgba(0,0,0,0.2)_34%,transparent_52%)]"
-        aria-hidden="true"
-      />
+      {/* (Top scrim removed per request — the headline, nav, and thesis note
+          rely on their own text-shadows for legibility over bright slides.) */}
 
       {/* Decorative 0/1 glyph field — fades out (not a hard cut) when the
           video takes over, and fades back in on the next image. */}
@@ -873,7 +868,7 @@ export function Hero() {
           {/* Investment thesis — flag + two-line text lockup. The flag height is
               tied to the same font-size/line-height as the text, so it matches
               the two-line block's height exactly at every breakpoint. */}
-          <div className="lg:absolute lg:right-[100px] lg:top-[214px] lg:flex lg:flex-col lg:items-end">
+          <div className="hero-thesis-wrap lg:absolute lg:right-[100px] lg:top-[183px] lg:flex lg:flex-col lg:items-end">
             <div className="inline-flex items-center gap-[0.55em] text-[16px] sm:text-[18px] lg:text-[30px]">
               {/* US flag — to the left of the text, sized to span the full
                   two-line block so its top/bottom align with the text (no float) */}
@@ -902,16 +897,14 @@ export function Hero() {
                 resurgence, and future.
               </p>
             </div>
-            {/* Mute control — under the note on tablet/desktop */}
-            {playingVideo && renderMute("mt-3 hidden md:inline-flex lg:mt-4")}
           </div>
 
           {/* Cycling caption (links to product) + slide nav — pinned to the
               bottom (above the wordmark) on mobile, absolute on desktop */}
           <div className="hero-caption-wrap mt-auto lg:absolute lg:left-[100px] lg:bottom-[calc(16.5vw_+_70px)] lg:mt-0 lg:max-w-[680px]">
-            {/* Mobile unmute — above the caption so it never overlaps the wordmark */}
+            {/* Mobile audio toggle — above the caption, right-aligned (md+ uses the bottom-right one) */}
             {playingVideo && (
-              <div className="mb-4 md:hidden">{renderMute("")}</div>
+              <div className="mb-3 flex justify-end md:hidden">{renderMute("")}</div>
             )}
             <div
               className={cn(
@@ -929,10 +922,6 @@ export function Hero() {
                 aria-label={`${slide.name} — visit site`}
                 className="group pointer-events-auto block"
               >
-                {/* Eyebrow — signals the hero is cycling through portfolio companies */}
-                <span className="hero-line-in mb-2 block text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4400] [text-shadow:0_1px_8px_rgba(0,0,0,0.55)] md:mb-2.5 md:text-[13px]">
-                  Now showing
-                </span>
                 {/* Company / product name — the focal point, revealed word-by-word */}
                 <span className="flex items-center gap-3.5 md:gap-5">
                   <span className="flex flex-wrap items-baseline gap-x-[0.26em] text-[34px] font-semibold leading-[1.0] tracking-[-1.5px] text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.55)] md:text-[56px] md:tracking-[-2.4px]">
@@ -964,7 +953,7 @@ export function Hero() {
             </div>
 
             {/* Slide controls */}
-            <div className="pointer-events-auto mt-6 flex items-center gap-4 md:pl-[36px]">
+            <div className="pointer-events-auto mt-6 flex items-center gap-4">
               <button
                 type="button"
                 onClick={() => go(active - 1)}
@@ -1040,6 +1029,12 @@ export function Hero() {
           </span>
         </div>
       </div>
+
+      {/* Audio toggle — large, see-through, bottom-right above the wordmark */}
+      {playingVideo &&
+        renderMute(
+          "absolute z-20 bottom-[calc(min(16.5vw,27svh)_+_56px)] max-md:hidden md:right-[40px] lg:right-[100px]",
+        )}
     </section>
   );
 }

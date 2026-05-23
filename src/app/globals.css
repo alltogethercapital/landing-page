@@ -573,4 +573,7 @@
   .hero-caption-wrap {
     bottom: calc(min(16.5vw, 27svh) + 64px);
   }
+  .hero-thesis-wrap {
+    top: 120px;
+  }
 }
