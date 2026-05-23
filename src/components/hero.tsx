@@ -859,10 +859,10 @@ export function Hero() {
             cqw height) so the caption cluster sits just above the wordmark. */}
         <div className="flex h-full flex-col gap-7 px-6 pt-[96px] pb-[calc(34px_+_16.5vw)] lg:block lg:p-0">
           {/* Headline */}
-          <div className="lg:absolute lg:left-[100px] lg:top-[175px] lg:max-w-[640px]">
+          <div className="hero-headline-wrap lg:absolute lg:left-[100px] lg:top-[175px] lg:max-w-[640px]">
             <h1
               ref={headlineRef}
-              className="hero-headline whitespace-nowrap text-[clamp(18px,7vw,40px)] font-medium leading-[1.12] tracking-[-1.1px] text-white opacity-0 [text-shadow:0_1px_16px_rgba(0,0,0,0.5)] md:whitespace-normal md:text-[45.66px] md:leading-[54.79px] md:tracking-[-1.83px]"
+              className="hero-headline whitespace-nowrap text-[clamp(17px,6vw,34px)] font-medium leading-[1.12] tracking-[-1px] text-white opacity-0 [text-shadow:0_1px_16px_rgba(0,0,0,0.5)] md:whitespace-normal md:text-[38px] md:leading-[44px] md:tracking-[-1.5px]"
             >
               The future is built together.
               <br />
@@ -897,9 +897,9 @@ export function Hero() {
                 <rect width="7.6" height="5.385" fill="#3c3b6e" />
               </svg>
               <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-[-0.1px] text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] lg:leading-[1.12] lg:tracking-[-0.4px]">
-                Investing in America&rsquo;s
+                Investing in America&rsquo;s companies,
                 <br />
-                companies and future
+                resurgence, and future.
               </p>
             </div>
             {/* Mute control — under the note on tablet/desktop */}
@@ -908,7 +908,7 @@ export function Hero() {
 
           {/* Cycling caption (links to product) + slide nav — pinned to the
               bottom (above the wordmark) on mobile, absolute on desktop */}
-          <div className="mt-auto lg:absolute lg:left-[100px] lg:top-[330px] lg:mt-0 lg:max-w-[540px]">
+          <div className="hero-caption-wrap mt-auto lg:absolute lg:left-[100px] lg:bottom-[calc(16.5vw_+_70px)] lg:mt-0 lg:max-w-[680px]">
             {/* Mobile unmute — above the caption so it never overlaps the wordmark */}
             {playingVideo && (
               <div className="mb-4 md:hidden">{renderMute("")}</div>
@@ -919,9 +919,8 @@ export function Hero() {
                 phase === "fade" ? "opacity-0" : "opacity-100",
               )}
             >
-              <span className="mt-[8px] inline-block size-[12px] shrink-0 rounded-[2px] bg-[#ff4400] md:mt-[15px] md:size-[14px]" />
-              {/* Re-keyed on `active` so the name → text → arrow animate in on every
-                  slide switch, pulling the eye to the company we're now showing. */}
+              {/* Re-keyed on `active` so the eyebrow → name → text → arrow animate in
+                  on every slide switch, pulling the eye to the company we're showing. */}
               <a
                 key={active}
                 href={slide.href}
@@ -930,9 +929,13 @@ export function Hero() {
                 aria-label={`${slide.name} — visit site`}
                 className="group pointer-events-auto block"
               >
+                {/* Eyebrow — signals the hero is cycling through portfolio companies */}
+                <span className="hero-line-in mb-2 block text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4400] [text-shadow:0_1px_8px_rgba(0,0,0,0.55)] md:mb-2.5 md:text-[13px]">
+                  Now showing
+                </span>
                 {/* Company / product name — the focal point, revealed word-by-word */}
-                <span className="flex items-center gap-3 md:gap-4">
-                  <span className="flex flex-wrap items-baseline gap-x-[0.26em] text-[26px] font-semibold leading-[1.02] tracking-[-1.1px] text-white [text-shadow:0_1px_14px_rgba(0,0,0,0.55)] md:text-[40px] md:tracking-[-1.7px]">
+                <span className="flex items-center gap-3.5 md:gap-5">
+                  <span className="flex flex-wrap items-baseline gap-x-[0.26em] text-[34px] font-semibold leading-[1.0] tracking-[-1.5px] text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.55)] md:text-[56px] md:tracking-[-2.4px]">
                     {slide.title.split(" ").map((word, i) => (
                       <span
                         key={i}
@@ -944,15 +947,15 @@ export function Hero() {
                     ))}
                   </span>
                   <span
-                    className="hero-pop-in flex size-10 shrink-0 items-center justify-center bg-black/40 text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:size-12"
+                    className="hero-pop-in flex size-11 shrink-0 items-center justify-center bg-black/40 text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:size-[60px]"
                     style={{ animationDelay: "360ms" }}
                   >
-                    <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-6" />
+                    <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-7" />
                   </span>
                 </span>
                 {/* Supporting line — augments the name */}
                 <span
-                  className="hero-line-in mt-2.5 block max-w-[460px] text-[15px] leading-[1.4] text-white/80 [text-shadow:0_1px_10px_rgba(0,0,0,0.5)] md:text-[18px] md:leading-[1.45]"
+                  className="hero-line-in mt-3 block max-w-[500px] text-[15px] leading-[1.4] text-white/80 [text-shadow:0_1px_10px_rgba(0,0,0,0.5)] md:text-[20px] md:leading-[1.45]"
                   style={{ animationDelay: "240ms" }}
                 >
                   {slide.subtitle}
@@ -1025,7 +1028,7 @@ export function Hero() {
 
       {/* Giant wordmark + Capital lockup */}
       <div className="pointer-events-none absolute inset-x-[40px] bottom-[22px] z-[8] mx-auto max-w-[1920px] [container-type:inline-size] max-md:inset-x-3 max-md:bottom-2">
-        <div className="whitespace-nowrap text-[16.5cqw] font-[900] leading-[1.0] tracking-[-0.05em] text-[#ff4400]">
+        <div className="hero-wordmark whitespace-nowrap text-[16.5cqw] font-[900] leading-[1.0] tracking-[-0.05em] text-[#ff4400]">
           All Together
         </div>
         <div className="mt-[0.04em] text-right leading-none">
