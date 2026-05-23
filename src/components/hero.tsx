@@ -922,6 +922,10 @@ export function Hero() {
                 aria-label={`${slide.name} — visit site`}
                 className="group pointer-events-auto block"
               >
+                {/* Eyebrow — labels the company the hero is featuring */}
+                <span className="hero-line-in mb-2 block text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4400] [text-shadow:0_1px_8px_rgba(0,0,0,0.55)] md:mb-2.5 md:text-[13px]">
+                  Featuring
+                </span>
                 {/* Company / product name — the focal point, revealed word-by-word */}
                 <span className="flex items-center gap-3.5 md:gap-5">
                   <span className="flex flex-wrap items-baseline gap-x-[0.26em] text-[34px] font-semibold leading-[1.0] tracking-[-1.5px] text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.55)] md:text-[56px] md:tracking-[-2.4px]">
