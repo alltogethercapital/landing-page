@@ -498,3 +498,64 @@
     animation: none;
   }
 }
+
+/* ── Hero slide caption reveal — an elegant entrance that re-fires each time
+   we switch companies (the caption link is re-keyed on `active`). The company
+   name resolves in word-by-word (blur → sharp + a small rise), the supporting
+   line glides up after it, and the link arrow eases in last. Per-element delays
+   are set inline in the JSX for the stagger. */
+.hero-name-word {
+  display: inline-block;
+  animation: hero-word-in 0.72s cubic-bezier(0.21, 1, 0.32, 1) both;
+}
+.hero-line-in {
+  animation: hero-line-in 0.7s cubic-bezier(0.21, 1, 0.32, 1) both;
+}
+.hero-pop-in {
+  animation: hero-pop-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes hero-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5em);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes hero-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes hero-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-name-word,
+  .hero-line-in,
+  .hero-pop-in {
+    animation: none;
+  }
+}

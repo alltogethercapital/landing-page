@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { PORTFOLIO } from "@/lib/portfolio";
-import { SoundOffIcon, SoundOnIcon } from "@/components/icons";
+import { ArrowUpRight, SoundOffIcon, SoundOnIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(SplitText);
@@ -26,20 +26,20 @@ type Slide = {
 const SLIDE_COPY: Pick<Slide, "name" | "title" | "subtitle" | "href">[] = [
   {
     name: "Shield AI",
-    title: "Shield AI X-BAT — the first",
-    subtitle: "AI-piloted VTOL fighter jet",
+    title: "Shield AI X-BAT",
+    subtitle: "The first AI-piloted VTOL fighter jet",
     href: "https://shield.ai/x-bat/",
   },
   {
     name: "1X",
-    title: "1X NEO — the humanoid robot",
-    subtitle: "engineered for the home",
+    title: "1X NEO",
+    subtitle: "The humanoid robot engineered for the home",
     href: "https://www.1x.tech/",
   },
   {
     name: "Figure AI",
-    title: "Figure 03 — the humanoid robot",
-    subtitle: "built for work and the home",
+    title: "Figure 03",
+    subtitle: "The humanoid robot built for work and the home",
     href: "https://www.figure.ai/",
   },
 ];
@@ -54,7 +54,7 @@ const SLIDES: Slide[] = SLIDE_COPY.map((c) => {
   };
 });
 
-const CYCLE_MS = 3000; // image shown before the video takes over
+const CYCLE_MS = 3000; // image leads in; the video reveals after the bezel-clear gate
 const FADE_MS = 850; // crossfade from the ending video to the next company image
 // Play each video essentially to its end before advancing — a tiny pad so the
 // crossfade to the next slide begins just before the final frame.
@@ -394,8 +394,10 @@ function HeroVideoPlayer({
     let cur: number;
     if (fadingIn) {
       try {
-        p.unMute();
+        // Volume to 0 BEFORE unmuting, so unmuting can't pop at full volume for a
+        // frame — the ramp then brings sound up cleanly from true silence.
         p.setVolume(0);
+        p.unMute();
       } catch {
         /* not ready */
       }
@@ -497,11 +499,12 @@ function HeroVideoPlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId, start]);
 
-  // Poll playback: reveal only AFTER ~5s has actually played, so YouTube's center
-  // play indicator (which flashes for the first couple seconds of playback) has
-  // fully faded BEFORE the video is shown — it flashes behind the still-visible
-  // image and is never seen. Then play through to the end before advancing; and
-  // advance if playback stalls so the slideshow never hangs.
+  // Poll playback: the video plays HIDDEN behind the image from the moment the
+  // slide loads; we only REVEAL it once it has played ~5s — long enough for
+  // YouTube's center play/pause bezel (which flashes over the first few seconds of
+  // playback) to fully fade while still hidden, so it's never seen on screen.
+  // Then play through to the end before advancing; and advance if playback stalls
+  // so the slideshow never hangs.
   useEffect(() => {
     lastTimeRef.current = start;
     lastProgressRef.current = Date.now();
@@ -537,7 +540,8 @@ function HeroVideoPlayer({
     if (!p) return;
     if (reveal) {
       wasShownRef.current = true;
-      fadeTo(muted ? 0 : 100);
+      // Clear, audible fade-in as the video appears (quick fade to silent if muted).
+      fadeTo(muted ? 0 : 100, muted ? 250 : 700);
     } else if (wasShownRef.current) {
       fadeTo(0); // was shown, now leaving → fade the audio out with the visuals
     } else {
@@ -592,6 +596,14 @@ function HeroVideoPlayer({
           <div ref={holderRef} className="size-full" />
         </div>
       </div>
+      {/* Brand-blue tint over the video — keyed to the logo's background blue
+          (#025C80), lightened and low-opacity so it tints the footage without
+          making it feel darker. Fades in/out with the reveal via the parent. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{ backgroundColor: "#5fb6da", opacity: 0.18 }}
+      />
     </div>
   );
 }
@@ -862,15 +874,15 @@ export function Hero() {
               tied to the same font-size/line-height as the text, so it matches
               the two-line block's height exactly at every breakpoint. */}
           <div className="lg:absolute lg:right-[100px] lg:top-[214px] lg:flex lg:flex-col lg:items-end">
-            <div className="inline-flex items-center gap-[0.45em] text-[16px] sm:text-[18px] lg:text-[30px]">
-              {/* US flag — to the left of the text, ~1 line tall (half the
-                  two-line block height), vertically centered against the text */}
+            <div className="inline-flex items-center gap-[0.55em] text-[16px] sm:text-[18px] lg:text-[30px]">
+              {/* US flag — to the left of the text, sized to span the full
+                  two-line block so its top/bottom align with the text (no float) */}
               <svg
                 viewBox="0 0 19 10"
                 preserveAspectRatio="xMidYMid meet"
                 role="img"
                 aria-label="United States"
-                className="h-[1.3em] w-auto shrink-0 lg:h-[1.12em] [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"
+                className="h-[2em] w-auto shrink-0 lg:h-[1.86em] [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"
               >
                 <rect width="19" height="10" fill="#fff" />
                 <g fill="#b22234">
@@ -887,7 +899,7 @@ export function Hero() {
               <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-[-0.1px] text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] lg:leading-[1.12] lg:tracking-[-0.4px]">
                 Investing in America&rsquo;s
                 <br />
-                companies and resurgence
+                companies and future
               </p>
             </div>
             {/* Mute control — under the note on tablet/desktop */}
@@ -903,35 +915,48 @@ export function Hero() {
             )}
             <div
               className={cn(
-                "flex items-start gap-[18px] transition-opacity duration-500 md:gap-[22px]",
+                "flex items-start gap-[14px] transition-opacity duration-500 md:gap-[18px]",
                 phase === "fade" ? "opacity-0" : "opacity-100",
               )}
             >
-              <span className="mt-[7px] inline-block size-[14px] shrink-0 rounded-[2px] bg-[#ff4400] md:mt-[10px]" />
+              <span className="mt-[8px] inline-block size-[12px] shrink-0 rounded-[2px] bg-[#ff4400] md:mt-[15px] md:size-[14px]" />
+              {/* Re-keyed on `active` so the name → text → arrow animate in on every
+                  slide switch, pulling the eye to the company we're now showing. */}
               <a
                 key={active}
                 href={slide.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group pointer-events-auto block animate-in fade-in duration-700"
+                aria-label={`${slide.name} — visit site`}
+                className="group pointer-events-auto block"
               >
-                <p className="text-[18px] font-medium leading-[1.25] tracking-[-0.8px] text-white underline-offset-[6px] group-hover:underline md:text-[28px] md:leading-[33.6px] md:tracking-[-1.12px]">
-                  {slide.title}
-                  <br />
-                  {slide.subtitle}
-                  <svg
-                    className="ml-[0.4em] inline size-[0.78em] -translate-y-[0.05em] transition-transform group-hover:translate-x-[0.1em] group-hover:-translate-y-[0.15em]"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2.2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
+                {/* Company / product name — the focal point, revealed word-by-word */}
+                <span className="flex items-center gap-3 md:gap-4">
+                  <span className="flex flex-wrap items-baseline gap-x-[0.26em] text-[26px] font-semibold leading-[1.02] tracking-[-1.1px] text-white [text-shadow:0_1px_14px_rgba(0,0,0,0.55)] md:text-[40px] md:tracking-[-1.7px]">
+                    {slide.title.split(" ").map((word, i) => (
+                      <span
+                        key={i}
+                        className="hero-name-word"
+                        style={{ animationDelay: `${i * 85}ms` }}
+                      >
+                        {word}
+                      </span>
+                    ))}
+                  </span>
+                  <span
+                    className="hero-pop-in flex size-10 shrink-0 items-center justify-center bg-black/40 text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:size-12"
+                    style={{ animationDelay: "360ms" }}
                   >
-                    <path d="M7 17 17 7M9 7h8v8" />
-                  </svg>
-                </p>
+                    <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-6" />
+                  </span>
+                </span>
+                {/* Supporting line — augments the name */}
+                <span
+                  className="hero-line-in mt-2.5 block max-w-[460px] text-[15px] leading-[1.4] text-white/80 [text-shadow:0_1px_10px_rgba(0,0,0,0.5)] md:text-[18px] md:leading-[1.45]"
+                  style={{ animationDelay: "240ms" }}
+                >
+                  {slide.subtitle}
+                </span>
               </a>
             </div>
 

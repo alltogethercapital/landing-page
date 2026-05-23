@@ -75,8 +75,6 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
               We are based in
               <br />
               <span className="text-[#ff4400]">Seattle, WA.</span>
-              <br />
-              A <span className="text-[#ff4400]">tech hub</span>.
             </p>
             <table className="mt-8 w-full max-w-[300px] md:mt-[56px]">
               <thead>

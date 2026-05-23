@@ -109,10 +109,10 @@ export const PORTFOLIO: Company[] = [
     logo: "/logos/figure.png",
     image: "/work/figure-ai.jpg",
     cardImage: "/work/cards/figure.jpg",
-    // NOTE: the requested "Figure 03 Trailer" (IlG3X8zRI2I) has embedding
-    // disabled by its owner (playableInEmbed:false), so it can't be embedded.
-    // Using the official, embeddable Figure 03 reveal instead.
-    video: "nRS-iB8YRJQ", // Figure 03 – The Humanoid Robot Built for the Home and the World (Figure)
+    // Figure 03 trailer — embeddable upload (playableInEmbed:true, 0 end-screen
+    // cards, verified). NOTE: third-party re-upload (channel "rmn-t1x"), not
+    // Figure's official channel, so it could be removed by YouTube at any time.
+    video: "CvHQ6qENEkQ", // Figure AI 3 (embeddable re-upload)
   },
   {
     name: "Apptronik",
