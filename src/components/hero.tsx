@@ -283,11 +283,9 @@ function GlyphField({ active }: { active: boolean }) {
   );
 }
 
-function Chevron({ dir }: { dir: "left" | "right" }) {
+function Chevron({ dir, className }: { dir: "left" | "right"; className?: string }) {
   return (
     <svg
-      width="22"
-      height="22"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -295,6 +293,7 @@ function Chevron({ dir }: { dir: "left" | "right" }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
+      className={cn("size-[22px]", className)}
     >
       <path d={dir === "left" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6"} />
     </svg>
@@ -1006,17 +1005,17 @@ export function Hero() {
         type="button"
         onClick={() => go(active - 1)}
         aria-label="Previous slide"
-        className="pointer-events-auto absolute left-2 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center bg-black/35 text-white/90 ring-1 ring-white/20 backdrop-blur-md transition-colors hover:bg-black/55 md:hidden"
+        className="pointer-events-auto absolute left-2 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center text-white [filter:drop-shadow(0_1px_5px_rgba(0,0,0,0.85))] transition-transform duration-150 active:scale-90 md:hidden"
       >
-        <Chevron dir="left" />
+        <Chevron dir="left" className="size-8" />
       </button>
       <button
         type="button"
         onClick={() => go(active + 1)}
         aria-label="Next slide"
-        className="pointer-events-auto absolute right-2 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center bg-black/35 text-white/90 ring-1 ring-white/20 backdrop-blur-md transition-colors hover:bg-black/55 md:hidden"
+        className="pointer-events-auto absolute right-2 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center text-white [filter:drop-shadow(0_1px_5px_rgba(0,0,0,0.85))] transition-transform duration-150 active:scale-90 md:hidden"
       >
-        <Chevron dir="right" />
+        <Chevron dir="right" className="size-8" />
       </button>
 
       {/* Giant wordmark + Capital lockup */}

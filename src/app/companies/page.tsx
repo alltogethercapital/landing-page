@@ -3,8 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { ArrowRight, ArrowUpRight, UserIcon } from "@/components/icons";
-import { WatchVideo } from "@/components/watch-video";
+import { ArrowRight, ArrowUpRight } from "@/components/icons";
 import { PORTFOLIO, gradientFor, slugify, type Company } from "@/lib/portfolio";
 import { founderForCompany } from "@/lib/founders";
 import { cn } from "@/lib/utils";
@@ -122,27 +121,15 @@ function CompanyCard({
         <p className="mt-2.5 text-[14px] text-white/70 md:text-[16px]">
           {company.blurb ?? "Portfolio company"}
         </p>
-        {(company.video || founder) && (
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            {company.video && (
-              <WatchVideo
-                videoId={company.video}
-                start={company.videoStart}
-                companyName={company.name}
-              />
-            )}
-            {founder && (
-              <Link
-                href={`/founders#${slugify(company.name)}`}
-                aria-label={`Meet ${founder.name}, founder of ${company.name}`}
-                className="group/founder pointer-events-auto relative z-[3] inline-flex items-center gap-2 border border-white/30 bg-black/30 px-4 py-2.5 text-[13px] font-semibold text-white backdrop-blur-md transition-colors duration-200 hover:border-[#ff4400] hover:bg-[#ff4400] hover:text-black md:text-[14px]"
-              >
-                <UserIcon className="size-3.5 opacity-80" />
-                {founder.name}
-                <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/founder:translate-x-0.5" />
-              </Link>
-            )}
-          </div>
+        {founder && (
+          <Link
+            href={`/founders#${slugify(company.name)}`}
+            aria-label={`Meet ${founder.name}, founder of ${company.name}`}
+            className="group/founder pointer-events-auto relative z-[3] mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-white/90 underline-offset-4 transition-colors duration-200 hover:text-[#ff4400] hover:underline md:text-[14px]"
+          >
+            Meet the founder
+            <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/founder:translate-x-0.5" />
+          </Link>
         )}
       </div>
     </div>

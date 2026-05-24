@@ -26,12 +26,6 @@ export const FOUNDERS: Founder[] = [
     x: "https://x.com/BerntBornich",
   },
   {
-    name: "Sam Altman",
-    companyName: "OpenAI",
-    headshot: "/founders/sam-altman.jpg",
-    x: "https://x.com/sama",
-  },
-  {
     name: "Dario Amodei",
     companyName: "Anthropic",
     headshot: "/founders/dario-amodei.jpg",
@@ -44,13 +38,6 @@ export const FOUNDERS: Founder[] = [
     headshot: "/founders/palmer-luckey.jpg",
     linkedin: "https://www.linkedin.com/in/palmer-luckey-21a16959/",
     x: "https://x.com/PalmerLuckey",
-  },
-  {
-    name: "Michael LaFramboise",
-    companyName: "Aurelius Systems",
-    headshot: "/founders/michael-laframboise.jpg",
-    linkedin: "https://www.linkedin.com/in/michael-laframboise/",
-    x: "https://x.com/LaFrogman",
   },
   {
     name: "Vishaal Mali",
@@ -156,6 +143,20 @@ export const FOUNDERS: Founder[] = [
     companyName: "Maven Robotics",
     headshot: "/founders/hamza-derbas.jpg",
     linkedin: "https://www.linkedin.com/in/hamzaderbas",
+  },
+  // Moved toward the bottom by request — shown after everyone else.
+  {
+    name: "Sam Altman",
+    companyName: "OpenAI",
+    headshot: "/founders/sam-altman.jpg",
+    x: "https://x.com/sama",
+  },
+  {
+    name: "Michael LaFramboise",
+    companyName: "Aurelius Systems",
+    headshot: "/founders/michael-laframboise.jpg",
+    linkedin: "https://www.linkedin.com/in/michael-laframboise/",
+    x: "https://x.com/LaFrogman",
   },
   // Eccentric Machines — founder not public (company is in stealth); no card until confirmed.
 ];
