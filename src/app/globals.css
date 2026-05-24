@@ -577,3 +577,16 @@
     top: 120px;
   }
 }
+
+/* Card hover binary field — a faint grid of 0/1 glyphs that flip in place while
+   the card is hovered (companies + founders cards), echoing the hero's binary
+   motif. The flip uses the `glyph-flip` keyframe reused from the grid glyphs. */
+.card-glyph {
+  display: inline-block;
+  animation: glyph-flip 0.32s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-glyph {
+    animation: none;
+  }
+}

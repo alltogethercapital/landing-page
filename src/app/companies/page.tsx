@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { ArrowRight, ArrowUpRight } from "@/components/icons";
+import { CardGlyphs } from "@/components/card-glyphs";
 import { PORTFOLIO, gradientFor, slugify, type Company } from "@/lib/portfolio";
 import { founderForCompany } from "@/lib/founders";
 import { cn } from "@/lib/utils";
@@ -42,7 +43,7 @@ function CompanyCard({
           fill
           sizes={featured ? "100vw" : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"}
           quality={90}
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          className="object-cover brightness-[0.8] transition-[filter] duration-200 ease-out group-hover:brightness-100"
         />
       ) : (
         <div className={cn("absolute inset-0 bg-gradient-to-br", gradientFor(company))}>
@@ -53,8 +54,11 @@ function CompanyCard({
         </div>
       )}
 
-      {/* Legibility gradient — clear at top so the product shows, dark at the base for the lockup */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/5" />
+      {/* Auto-flipping binary field over the image — reveals on hover */}
+      <CardGlyphs />
+
+      {/* Legibility gradient — light so the image leads */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/12 to-transparent" />
 
       {/* Stretched link — the whole card (except the Watch button) opens the company site */}
       <a
@@ -84,53 +88,61 @@ function CompanyCard({
         </span>
       )}
 
-      {/* Bottom: sector tag, divider, brand lockup (logo + name), blurb, watch button */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] p-6 md:p-8">
-        <span className="font-mono text-[12px] uppercase tracking-[0.16em] text-white/75">
+      {/* Bottom: compact lockup — tiny sector kicker + logo + name. The description
+          and founder link stay hidden until hover, so the image leads. */}
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-x-0 bottom-0 z-[2]",
+          featured ? "p-6 md:p-8" : "p-5 md:p-6",
+        )}
+      >
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/70 md:text-[11px]">
           {company.sectors.join(" · ")}
         </span>
-        <div className="mt-4 h-px w-full bg-white/25" />
-        <div className={cn("mt-4 flex items-center", featured ? "gap-4" : "gap-3")}>
+        <div className="mt-2 flex items-center gap-2.5">
           {company.logo && (
             <span
               className={cn(
-                "flex shrink-0 items-center justify-center rounded-xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.4)]",
-                featured
-                  ? "size-12 p-2 md:size-14 md:p-2.5"
-                  : "size-10 p-1.5 md:size-[52px] md:p-2",
+                "flex shrink-0 items-center justify-center rounded-lg bg-white p-1.5 shadow-[0_2px_10px_rgba(0,0,0,0.4)]",
+                featured ? "size-10 md:size-12" : "size-9 md:size-10",
               )}
             >
               <Image
                 src={company.logo}
                 alt={`${company.name} logo`}
-                width={128}
-                height={128}
+                width={96}
+                height={96}
                 className="size-full object-contain"
               />
             </span>
           )}
           <h3
             className={cn(
-              "font-medium leading-[1.02] tracking-[-1px] text-white",
-              featured ? "text-[36px] md:text-[52px]" : "text-[26px] md:text-[38px]",
+              "font-semibold leading-[1.05] tracking-[-0.5px] text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]",
+              featured ? "text-[26px] md:text-[34px]" : "text-[19px] md:text-[22px]",
             )}
           >
             {company.name}
           </h3>
         </div>
-        <p className="mt-2.5 text-[14px] text-white/70 md:text-[16px]">
-          {company.blurb ?? "Portfolio company"}
-        </p>
-        {founder && (
-          <Link
-            href={`/founders#${slugify(company.name)}`}
-            aria-label={`Meet ${founder.name}, founder of ${company.name}`}
-            className="group/founder pointer-events-auto relative z-[3] mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-white/90 underline-offset-4 transition-colors duration-200 hover:text-[#ff4400] hover:underline md:text-[14px]"
-          >
-            Meet the founder
-            <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/founder:translate-x-0.5" />
-          </Link>
-        )}
+        {/* Description + founder link — revealed on hover (height + fade) */}
+        <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-300 ease-out group-hover:mt-2.5 group-hover:grid-rows-[1fr] group-hover:opacity-100">
+          <div className="overflow-hidden">
+            <p className="text-[13px] leading-snug text-white/80 [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] md:text-[14px]">
+              {company.blurb ?? "Portfolio company"}
+            </p>
+            {founder && (
+              <Link
+                href={`/founders#${slugify(company.name)}`}
+                aria-label={`Meet ${founder.name}, founder of ${company.name}`}
+                className="group/founder pointer-events-auto relative z-[3] mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-semibold text-white/90 transition-colors duration-200 hover:text-[#ff4400] md:text-[13px]"
+              >
+                Meet the founder
+                <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/founder:translate-x-0.5" />
+              </Link>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

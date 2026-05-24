@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { ArrowUpRight, LinkedInIcon, XIcon } from "@/components/icons";
+import { CardGlyphs } from "@/components/card-glyphs";
 import {
   FOUNDERS,
   companyForFounder,
@@ -30,7 +31,7 @@ function FounderCard({ founder }: { founder: Founder }) {
   return (
     <div
       id={anchor}
-      className="founder-card relative scroll-mt-[100px] overflow-hidden rounded-2xl bg-[#0b0b0d] aspect-[674/720] max-md:aspect-[4/5]"
+      className="group founder-card relative scroll-mt-[100px] overflow-hidden rounded-2xl bg-[#0b0b0d] aspect-[674/720] max-md:aspect-[4/5]"
     >
       {/* Headshot, or a clean placeholder until a photo is added */}
       {hasHeadshot ? (
@@ -40,7 +41,7 @@ function FounderCard({ founder }: { founder: Founder }) {
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           quality={90}
-          className="object-cover object-top"
+          className="object-cover object-top brightness-[0.8] transition-[filter] duration-200 ease-out group-hover:brightness-100"
         />
       ) : (
         <div
@@ -59,8 +60,11 @@ function FounderCard({ founder }: { founder: Founder }) {
         </div>
       )}
 
-      {/* Legibility gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10" />
+      {/* Auto-flipping binary field over the headshot — reveals on hover */}
+      <CardGlyphs />
+
+      {/* Legibility gradient — lighter so the headshot leads; brightens on hover */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
 
       {/* Bottom: tag, divider, founder name, then interactive company + socials */}
       <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
