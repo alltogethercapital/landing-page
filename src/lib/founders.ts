@@ -144,6 +144,13 @@ export const FOUNDERS: Founder[] = [
     headshot: "/founders/hamza-derbas.jpg",
     linkedin: "https://www.linkedin.com/in/hamzaderbas",
   },
+  {
+    // Co-founder & CEO (Paulo da Costa is co-founder/COO). Headshot omitted —
+    // drop /public/founders/nick-aubin.jpg in and set `headshot` to use it.
+    name: "Nick Aubin",
+    companyName: "Commons Clinic",
+    linkedin: "https://www.linkedin.com/in/nick-aubin-56883647/",
+  },
   // Moved toward the bottom by request — shown after everyone else.
   {
     name: "Sam Altman",

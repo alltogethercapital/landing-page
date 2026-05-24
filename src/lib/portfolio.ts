@@ -246,6 +246,12 @@ export const PORTFOLIO: Company[] = [
     blurb: "Satellite swarms building a real-time 3D map of Earth.",
     video: "SS0a_KjvDis", // Introducing Site3D, from Array Labs
   },
+  {
+    name: "Commons Clinic",
+    href: "https://commonsclinic.com/",
+    sectors: ["Healthcare"],
+    blurb: "Value-based specialty care, from orthopedics to whole-body health.",
+  },
 ];
 
 // sector → gradient (for cards without a product image)
@@ -259,6 +265,7 @@ const SECTOR_GRADIENTS: Record<string, string> = {
   Software: "from-[#0b1016] via-[#121a24] to-[#1c2734]",
   Bio: "from-[#091505] via-[#10240b] to-[#1a3a14]",
   Compute: "from-[#0c0a1e] via-[#141233] to-[#241f4a]",
+  Healthcare: "from-[#06241f] via-[#0a352f] to-[#114a40]",
 };
 
 export function gradientFor(company: Company): string {
