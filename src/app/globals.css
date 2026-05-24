@@ -381,9 +381,11 @@
   }
 }
 
-/* ── Unmute button → brief primary-color flash when it first appears ──
-   Each time the hero switches to a company's video the button mounts and
-   flashes orange once to catch the eye, then eases back to its glass state. */
+/* ── Unmute button → brief primary-color flash to hint "sound lives here" ──
+   The button is always visible; this one-shot flash is re-triggered (via the
+   `unmute-flash` class toggled in React) each time a video starts while still
+   muted, then fades back to the see-through glass state. The end frame is fully
+   transparent so it dissolves into the base button with no snap. */
 .unmute-flash {
   animation: unmute-flash 1.5s ease-out;
 }
@@ -397,10 +399,10 @@
       0 0 22px 3px rgba(255, 68, 0, 0.6);
   }
   100% {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 68, 0, 0);
     color: #fff;
     box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0),
       0 0 0 0 rgba(255, 68, 0, 0);
   }
 }

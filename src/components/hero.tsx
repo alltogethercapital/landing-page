@@ -611,6 +611,9 @@ export function Hero() {
   const [active, setActive] = useState(0);
   const [phase, setPhase] = useState<"image" | "video" | "fade">("image");
   const [muted, setMuted] = useState(true);
+  // Brief "sound lives here" highlight on the audio button — pulsed on each
+  // video start while still muted (see the flash effect below).
+  const [flash, setFlash] = useState(false);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
 
@@ -707,7 +710,6 @@ export function Hero() {
 
   const slide = SLIDES[active];
   const showDecor = phase === "image";
-  const playingVideo = phase === "video" && Boolean(slide.video);
   // During the end "fade", show the NEXT company's image underneath the video
   // (which is fading out), so it crossfades video -> next image seamlessly.
   const shownImage = phase === "fade" ? (active + 1) % SLIDES.length : active;
@@ -739,6 +741,16 @@ export function Hero() {
 
   const handleVideoEnd = useCallback(() => setPhase("fade"), []);
 
+  // Each time a company's video begins while the hero is still muted, briefly
+  // flash the audio button orange — a quick "sound is available here" nudge.
+  // It only fires while muted, so it stops nagging the moment the user unmutes.
+  useEffect(() => {
+    if (phase !== "video" || !muted) return;
+    setFlash(true);
+    const t = window.setTimeout(() => setFlash(false), 1500);
+    return () => window.clearTimeout(t);
+  }, [phase, muted]);
+
   // Audio toggle — a large, icon-only, see-through control (no background) so the
   // video shows through. Positioned bottom-right of the hero.
   const renderMute = (extra: string) => (
@@ -747,7 +759,8 @@ export function Hero() {
       onClick={() => setMuted((m) => !m)}
       aria-label={muted ? "Unmute video" : "Mute video"}
       className={cn(
-        "unmute-flash pointer-events-auto inline-flex size-14 items-center justify-center text-white/85 [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.55))] transition-colors duration-200 hover:text-[#ff4400] md:size-[68px]",
+        "pointer-events-auto inline-flex size-14 items-center justify-center text-white/85 [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.55))] transition-colors duration-200 hover:text-[#ff4400] md:size-[68px]",
+        flash && "unmute-flash",
         extra,
       )}
     >
@@ -901,10 +914,9 @@ export function Hero() {
           {/* Cycling caption (links to product) + slide nav — pinned to the
               bottom (above the wordmark) on mobile, absolute on desktop */}
           <div className="hero-caption-wrap mt-auto lg:absolute lg:left-[100px] lg:bottom-[calc(16.5vw_+_70px)] lg:mt-0 lg:max-w-[680px]">
-            {/* Mobile audio toggle — above the caption, right-aligned (md+ uses the bottom-right one) */}
-            {playingVideo && (
-              <div className="mb-3 flex justify-end md:hidden">{renderMute("")}</div>
-            )}
+            {/* Mobile audio toggle — above the caption, right-aligned, always
+                visible so the control is discoverable (md+ uses the bottom-right one) */}
+            <div className="mb-3 flex justify-end md:hidden">{renderMute("")}</div>
             <div
               className={cn(
                 "flex items-start gap-[14px] transition-opacity duration-500 md:gap-[18px]",
@@ -1033,11 +1045,11 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Audio toggle — large, see-through, bottom-right above the wordmark */}
-      {playingVideo &&
-        renderMute(
-          "absolute z-20 bottom-[calc(min(16.5vw,27svh)_+_56px)] max-md:hidden md:right-[40px] lg:right-[100px]",
-        )}
+      {/* Audio toggle — large, see-through, bottom-right above the wordmark.
+          Always visible; it flashes briefly on each video start while muted. */}
+      {renderMute(
+        "absolute z-20 bottom-[calc(min(16.5vw,27svh)_+_56px)] max-md:hidden md:right-[40px] lg:right-[100px]",
+      )}
     </section>
   );
 }
