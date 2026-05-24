@@ -845,14 +845,6 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      {/* White sunrise rays rising from the bottom — sits behind the wordmark
-          and content so the "All Together" lettering is never recolored. */}
-      <div
-        className="sun-rays-bottom pointer-events-none absolute inset-0 z-[1] transition-opacity duration-700"
-        style={{ opacity: showDecor ? 1 : 0 }}
-        aria-hidden="true"
-      />
-
       {/* (Top scrim removed per request — the headline, nav, and thesis note
           rely on their own text-shadows for legibility over bright slides.) */}
 
