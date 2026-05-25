@@ -54,7 +54,7 @@ const SLIDES: Slide[] = SLIDE_COPY.map((c) => {
   };
 });
 
-const CYCLE_MS = 3000; // image leads in; the video reveals after the bezel-clear gate
+const CYCLE_MS = 1500; // image leads in; the video reveals after the bezel-clear gate
 const FADE_MS = 850; // crossfade from the ending video to the next company image
 // Play each video essentially to its end before advancing — a tiny pad so the
 // crossfade to the next slide begins just before the final frame.
@@ -499,9 +499,10 @@ function HeroVideoPlayer({
   }, [videoId, start]);
 
   // Poll playback: the video plays HIDDEN behind the image from the moment the
-  // slide loads; we only REVEAL it once it has played ~5s — long enough for
-  // YouTube's center play/pause bezel (which flashes over the first few seconds of
-  // playback) to fully fade while still hidden, so it's never seen on screen.
+  // slide loads; we only REVEAL it once it has played ~2.5s — a faster reveal
+  // (was 5s) that still gives YouTube's center play/pause bezel (which flashes
+  // over the first second or two of playback) time to fade while still hidden,
+  // so it's never seen on screen.
   // Then play through to the end before advancing; and advance if playback stalls
   // so the slideshow never hangs.
   useEffect(() => {
@@ -512,7 +513,7 @@ function HeroVideoPlayer({
       if (!p?.getDuration || !p.getCurrentTime) return;
       const dur = p.getDuration();
       const cur = p.getCurrentTime();
-      if (cur >= start + 5) setPlayed(true);
+      if (cur >= start + 2.5) setPlayed(true);
       // Track real progress for hang protection.
       if (cur > lastTimeRef.current + 0.05) {
         lastTimeRef.current = cur;
