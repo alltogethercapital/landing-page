@@ -894,7 +894,7 @@ export function Hero() {
               tied to the same font-size/line-height as the text, so it matches
               the two-line block's height exactly at every breakpoint. */}
           <div className="hero-thesis-wrap lg:absolute lg:right-[100px] lg:top-[183px] lg:flex lg:flex-col lg:items-end">
-            <div className="inline-flex items-center gap-[0.55em] text-[16px] sm:text-[18px] lg:text-[30px]">
+            <div className="inline-flex items-center gap-[0.55em] text-[16px] sm:text-[18px] lg:text-[15px]">
               {/* US flag — to the left of the text, sized to span the full
                   two-line block so its top/bottom align with the text (no float) */}
               <svg
