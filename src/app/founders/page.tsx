@@ -152,10 +152,11 @@ function FounderCard({ founder }: { founder: Founder }) {
   );
 }
 
-// Compact tile for founders we don't have a headshot for yet — no placeholder
-// portrait, just a short sector-tinted card with the name, company, and socials.
-// Aspect ~2.4:1 so roughly three of these stack into the height of one
-// full-size FounderCard ("a few share a square").
+// Compact tile for founders we don't have a headshot for yet — no portrait
+// placeholder, just a sector-tinted backdrop with name + company + socials.
+// The tile has NO intrinsic aspect ratio; it fills whatever grid row its
+// parent gives it (the pair container in FoundersPage sizes it via
+// `grid-rows-2`, so two stacked tiles match one photo-card cell).
 function CompactFounderTile({ founder }: { founder: Founder }) {
   const company = companyForFounder(founder);
   const anchor = founderAnchor(founder);
@@ -165,7 +166,7 @@ function CompactFounderTile({ founder }: { founder: Founder }) {
   return (
     <div
       id={anchor}
-      className="group relative scroll-mt-[100px] overflow-hidden rounded-2xl bg-[#0b0b0d] aspect-[674/280] max-md:aspect-[4/3]"
+      className="group relative min-h-0 overflow-hidden rounded-2xl bg-[#0b0b0d] scroll-mt-[100px]"
     >
       {/* Subtle sector-tinted backdrop so the tile isn't a flat block */}
       <div
@@ -257,6 +258,19 @@ function CompactFounderTile({ founder }: { founder: Founder }) {
 }
 
 export default function FoundersPage() {
+  // Split founders by whether we have a headshot. Photo founders take a full
+  // grid cell each; photo-less founders are grouped into PAIRS that share one
+  // cell as two stacked compact tiles (same height as a photo card). Pairs
+  // flow into the same grid right after the photo cards, so any empty cell
+  // left by the photo grid's tail gets filled by the next pair — no mid-page
+  // gaps. Only the very last row of the unified grid can be partial.
+  const photoFounders = FOUNDERS.filter((f) => f.headshot);
+  const compactFounders = FOUNDERS.filter((f) => !f.headshot);
+  const compactPairs: [Founder, Founder?][] = [];
+  for (let i = 0; i < compactFounders.length; i += 2) {
+    compactPairs.push([compactFounders[i], compactFounders[i + 1]]);
+  }
+
   return (
     <main className="min-h-screen bg-white text-[#0b0b0d]">
       <SiteNav showLogo />
@@ -279,22 +293,26 @@ export default function FoundersPage() {
         </p>
       </section>
 
-      {/* Grid — founders WITH photos in the regular card grid; founders WITHOUT
-          photos rendered below in a denser compact-tile grid (roughly three
-          compact tiles stack into the height of one regular card). */}
+      {/* Grid — ONE unified 3-up grid. Photo cards take a cell each; compact
+          tiles share a cell in pairs (two stacked, sized via grid-rows-2 to
+          match a photo card's height). The pairs flow naturally into the
+          empty cells left at the tail of the photo cards, so the only partial
+          row is the very last one. */}
       <section className="px-6 pt-10 md:px-[40px]">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {FOUNDERS.filter((f) => f.headshot).map((founder) => (
+          {photoFounders.map((founder) => (
             <FounderCard key={founderAnchor(founder)} founder={founder} />
           ))}
+          {compactPairs.map(([a, b]) => (
+            <div
+              key={`pair-${founderAnchor(a)}`}
+              className="grid grid-rows-2 gap-3 aspect-[674/720] max-md:aspect-[4/5]"
+            >
+              <CompactFounderTile founder={a} />
+              {b && <CompactFounderTile founder={b} />}
+            </div>
+          ))}
         </div>
-        {FOUNDERS.some((f) => !f.headshot) && (
-          <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-            {FOUNDERS.filter((f) => !f.headshot).map((founder) => (
-              <CompactFounderTile key={founderAnchor(founder)} founder={founder} />
-            ))}
-          </div>
-        )}
       </section>
 
       {/* CTA */}
