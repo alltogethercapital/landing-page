@@ -88,15 +88,11 @@ function FounderCard({ founder }: { founder: Founder }) {
         </span>
       )}
 
-      {/* Bottom: tag, divider, founder name, then interactive company + socials.
-          pointer-events-none so the card's stretched profile link stays clickable;
-          the company link + social icons opt back in below. */}
+      {/* Bottom: founder name + interactive company + socials. pointer-events-none
+          so the card's stretched profile link stays clickable; the company link +
+          social icons opt back in below. */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] p-6 md:p-8">
-        <span className="font-mono text-[12px] uppercase tracking-[0.16em] text-white/75">
-          {company ? company.sectors.join(" · ") : "Founder"}
-        </span>
-        <div className="mt-4 h-px w-full bg-white/25" />
-        <h3 className="mt-4 font-medium leading-[1.02] tracking-[-1px] text-white text-[26px] md:text-[38px]">
+        <h3 className="font-medium leading-[1.02] tracking-[-1px] text-white text-[26px] md:text-[38px]">
           {founder.name}
         </h3>
 
@@ -156,6 +152,110 @@ function FounderCard({ founder }: { founder: Founder }) {
   );
 }
 
+// Compact tile for founders we don't have a headshot for yet — no placeholder
+// portrait, just a short sector-tinted card with the name, company, and socials.
+// Aspect ~2.4:1 so roughly three of these stack into the height of one
+// full-size FounderCard ("a few share a square").
+function CompactFounderTile({ founder }: { founder: Founder }) {
+  const company = companyForFounder(founder);
+  const anchor = founderAnchor(founder);
+  const profile = founder.linkedin ?? founder.x;
+  const profileLabel = founder.linkedin ? "LinkedIn" : "X";
+
+  return (
+    <div
+      id={anchor}
+      className="group relative scroll-mt-[100px] overflow-hidden rounded-2xl bg-[#0b0b0d] aspect-[674/280] max-md:aspect-[4/3]"
+    >
+      {/* Subtle sector-tinted backdrop so the tile isn't a flat block */}
+      <div
+        className={cn(
+          "absolute inset-0 bg-gradient-to-br opacity-80",
+          company ? gradientFor(company) : "from-[#141414] via-[#1c1c1c] to-[#262626]",
+        )}
+      />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_0%,rgba(255,255,255,0.07),transparent_60%)]" />
+
+      {/* Stretched link to the founder's primary profile (LinkedIn first, X otherwise) */}
+      {profile && (
+        <a
+          href={profile}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${founder.name} on ${profileLabel}`}
+          className="absolute inset-0 z-[1]"
+        />
+      )}
+
+      {/* Open affordance — smaller arrow than FounderCard's */}
+      {profile && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-3 top-3 z-[2] flex size-8 items-center justify-center bg-black/40 text-white backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-4 md:top-4 md:size-9"
+        >
+          <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-[18px]" />
+        </span>
+      )}
+
+      {/* Content — fills the tile, no image area */}
+      <div className="pointer-events-none absolute inset-0 z-[2] flex flex-col p-5 md:p-6">
+        <h3 className="text-[20px] font-medium leading-[1.05] tracking-[-0.4px] text-white md:text-[22px]">
+          {founder.name}
+        </h3>
+        <div className="mt-auto flex items-center justify-between gap-3">
+          {company && (
+            <a
+              href={company.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/co pointer-events-auto relative z-[3] inline-flex items-center gap-2 text-white/80 transition-colors hover:text-white"
+            >
+              {company.logo && (
+                <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-white p-1 shadow-[0_2px_8px_rgba(0,0,0,0.4)] md:size-7">
+                  <Image
+                    src={company.logo}
+                    alt={`${company.name} logo`}
+                    width={56}
+                    height={56}
+                    className="size-full object-contain"
+                  />
+                </span>
+              )}
+              <span className="text-[13px] font-medium md:text-[14px]">
+                {company.name}
+              </span>
+            </a>
+          )}
+          <div className="pointer-events-auto relative z-[3] flex shrink-0 items-center gap-1.5">
+            {founder.linkedin && (
+              <a
+                href={founder.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${founder.name} on LinkedIn`}
+                className="flex size-7 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
+              >
+                <LinkedInIcon className="size-3.5" />
+              </a>
+            )}
+            {founder.x && (
+              <a
+                href={founder.x}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${founder.name} on X`}
+                className="flex size-7 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
+              >
+                <XIcon className="size-3" />
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function FoundersPage() {
   return (
     <main className="min-h-screen bg-white text-[#0b0b0d]">
@@ -179,13 +279,22 @@ export default function FoundersPage() {
         </p>
       </section>
 
-      {/* Grid */}
+      {/* Grid — founders WITH photos in the regular card grid; founders WITHOUT
+          photos rendered below in a denser compact-tile grid (roughly three
+          compact tiles stack into the height of one regular card). */}
       <section className="px-6 pt-10 md:px-[40px]">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {FOUNDERS.map((founder) => (
+          {FOUNDERS.filter((f) => f.headshot).map((founder) => (
             <FounderCard key={founderAnchor(founder)} founder={founder} />
           ))}
         </div>
+        {FOUNDERS.some((f) => !f.headshot) && (
+          <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+            {FOUNDERS.filter((f) => !f.headshot).map((founder) => (
+              <CompactFounderTile key={founderAnchor(founder)} founder={founder} />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* CTA */}

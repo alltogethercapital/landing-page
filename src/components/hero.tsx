@@ -508,10 +508,10 @@ function HeroVideoPlayer({
   }, [videoId, start]);
 
   // Poll playback: the video plays HIDDEN behind the image from the moment the
-  // slide loads; we only REVEAL it once it has played ~3.5s — long enough for
-  // YouTube's center play/pause bezel (which flashes over the first couple of
-  // seconds of playback) to fully fade while still hidden, so it's never seen
-  // on screen.
+  // slide loads; we only REVEAL it once it has played ~1.5s — matches the
+  // CYCLE_MS image lead-in so the picture transitions at exactly 1.5s. Trade-off
+  // at this cadence: YouTube's center play/pause bezel (which flashes over the
+  // first second or two of playback) may briefly flicker as the video fades in.
   // Then play through to the end before advancing; and advance if playback stalls
   // so the slideshow never hangs.
   useEffect(() => {
@@ -522,7 +522,7 @@ function HeroVideoPlayer({
       if (!p?.getDuration || !p.getCurrentTime) return;
       const dur = p.getDuration();
       const cur = p.getCurrentTime();
-      if (cur >= start + 3.5) setPlayed(true);
+      if (cur >= start + 1.5) setPlayed(true);
       // Track real progress for hang protection.
       if (cur > lastTimeRef.current + 0.05) {
         lastTimeRef.current = cur;
