@@ -349,12 +349,14 @@ function HeroVideoPlayer({
   muted,
   visible,
   onEnded,
+  onRevealChange,
 }: {
   videoId: string;
   start?: number;
   muted: boolean;
   visible: boolean;
   onEnded: () => void;
+  onRevealChange?: (revealed: boolean) => void;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const coverRef = useRef<HTMLDivElement>(null);
@@ -376,6 +378,13 @@ function HeroVideoPlayer({
   // start-indicator window, and while not paused. Audio is tied to this so sound
   // and visuals switch together.
   const reveal = visible && played && !paused;
+
+  // Notify the parent whenever the video's reveal state changes — keeps the
+  // decorative layers (glyph field, light rays, smoke) visible until the
+  // video actually fades in, not just when the phase flips to "video".
+  useEffect(() => {
+    onRevealChange?.(reveal);
+  }, [reveal, onRevealChange]);
 
   // Advance to the next slide exactly once (whether via the end-poll or events).
   const finish = useCallback(() => {
@@ -499,10 +508,10 @@ function HeroVideoPlayer({
   }, [videoId, start]);
 
   // Poll playback: the video plays HIDDEN behind the image from the moment the
-  // slide loads; we only REVEAL it once it has played ~2.5s — a faster reveal
-  // (was 5s) that still gives YouTube's center play/pause bezel (which flashes
-  // over the first second or two of playback) time to fade while still hidden,
-  // so it's never seen on screen.
+  // slide loads; we only REVEAL it once it has played ~3.5s — long enough for
+  // YouTube's center play/pause bezel (which flashes over the first couple of
+  // seconds of playback) to fully fade while still hidden, so it's never seen
+  // on screen.
   // Then play through to the end before advancing; and advance if playback stalls
   // so the slideshow never hangs.
   useEffect(() => {
@@ -513,7 +522,7 @@ function HeroVideoPlayer({
       if (!p?.getDuration || !p.getCurrentTime) return;
       const dur = p.getDuration();
       const cur = p.getCurrentTime();
-      if (cur >= start + 2.5) setPlayed(true);
+      if (cur >= start + 3.5) setPlayed(true);
       // Track real progress for hang protection.
       if (cur > lastTimeRef.current + 0.05) {
         lastTimeRef.current = cur;
@@ -615,6 +624,10 @@ export function Hero() {
   // Brief "sound lives here" highlight on the audio button — pulsed on each
   // video start while still muted (see the flash effect below).
   const [flash, setFlash] = useState(false);
+  // Whether the YouTube video has visually revealed (faded in) for the current
+  // slide — keeps decorations (glyphs, rays, smoke) on screen until the video
+  // actually appears, not just when the phase flips internally.
+  const [revealed, setRevealed] = useState(false);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
 
@@ -710,7 +723,10 @@ export function Hero() {
   }, []);
 
   const slide = SLIDES[active];
-  const showDecor = phase === "image";
+  // Decorations (glyphs, rays, smoke) stay on screen while the IMAGE is visible
+  // — through the image phase AND the video phase before the video has actually
+  // revealed. They fade only when the video itself fades in.
+  const showDecor = phase === "image" || (phase === "video" && !revealed);
   // During the end "fade", show the NEXT company's image underneath the video
   // (which is fading out), so it crossfades video -> next image seamlessly.
   const shownImage = phase === "fade" ? (active + 1) % SLIDES.length : active;
@@ -823,6 +839,7 @@ export function Hero() {
           muted={muted}
           visible={phase === "video"}
           onEnded={handleVideoEnd}
+          onRevealChange={setRevealed}
         />
       )}
 

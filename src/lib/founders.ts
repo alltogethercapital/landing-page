@@ -20,6 +20,12 @@ export const FOUNDERS: Founder[] = [
     linkedin: "https://www.linkedin.com/in/brandontseng/",
   },
   {
+    // Co-founder; President & Chief Strategy Officer (founding CEO).
+    name: "Ryan Tseng",
+    companyName: "Shield AI",
+    linkedin: "https://www.linkedin.com/in/ryantseng",
+  },
+  {
     name: "Bernt Børnich",
     companyName: "1X",
     headshot: "/founders/bernt-bornich.jpg",
@@ -33,11 +39,23 @@ export const FOUNDERS: Founder[] = [
     x: "https://x.com/DarioAmodei",
   },
   {
+    // Co-founder & President of Anthropic (sister of Dario).
+    name: "Daniela Amodei",
+    companyName: "Anthropic",
+    linkedin: "https://www.linkedin.com/in/daniela-amodei-790bb22a/",
+  },
+  {
     name: "Palmer Luckey",
     companyName: "Anduril",
     headshot: "/founders/palmer-luckey.jpg",
     linkedin: "https://www.linkedin.com/in/palmer-luckey-21a16959/",
     x: "https://x.com/PalmerLuckey",
+  },
+  {
+    // Co-founder & Executive Chairman; partner at Founders Fund.
+    name: "Trae Stephens",
+    companyName: "Anduril",
+    linkedin: "https://www.linkedin.com/in/trae-stephens-485a811/",
   },
   {
     name: "Vishaal Mali",
@@ -70,6 +88,12 @@ export const FOUNDERS: Founder[] = [
     companyName: "Apptronik",
     headshot: "/founders/jeff-cardenas.jpg",
     linkedin: "https://www.linkedin.com/in/jeffrey-cardenas",
+  },
+  {
+    // Co-founder & CTO.
+    name: "Nick Paine",
+    companyName: "Apptronik",
+    linkedin: "https://www.linkedin.com/in/nipaine/",
   },
   {
     name: "Tapa Ghosh",
@@ -152,6 +176,12 @@ export const FOUNDERS: Founder[] = [
     linkedin: "https://www.linkedin.com/in/nick-aubin-56883647/",
   },
   {
+    // Co-founder & COO of Commons Clinic.
+    name: "Paulo da Costa",
+    companyName: "Commons Clinic",
+    linkedin: "https://www.linkedin.com/in/paulo-da-costa-9abb739/",
+  },
+  {
     // Co-founder & CEO (Jose Isaac Robledo is the other co-founder). No headshot yet.
     name: "Andrew Peterson",
     companyName: "Array Labs",
@@ -168,12 +198,61 @@ export const FOUNDERS: Founder[] = [
     companyName: "Corgi",
     linkedin: "https://www.linkedin.com/in/emilyyuan96",
   },
+  {
+    // Founder & CEO of xAI.
+    name: "Elon Musk",
+    companyName: "xAI",
+    x: "https://x.com/elonmusk",
+  },
+  {
+    // Co-founder & CEO of Crusoe.
+    name: "Chase Lochmiller",
+    companyName: "Crusoe",
+    linkedin: "https://www.linkedin.com/in/chase-lochmiller-604483341/",
+  },
+  {
+    // Co-founder & President of Crusoe.
+    name: "Cully Cavness",
+    companyName: "Crusoe",
+    linkedin: "https://www.linkedin.com/in/ccavness",
+  },
+  {
+    // Co-founder & CEO of Sierra (formerly co-CEO of Salesforce).
+    name: "Bret Taylor",
+    companyName: "Sierra",
+    x: "https://x.com/btaylor",
+  },
+  {
+    // Co-founder of Sierra (formerly Google VR/AR lead).
+    name: "Clay Bavor",
+    companyName: "Sierra",
+    linkedin: "https://www.linkedin.com/in/claybavor",
+  },
+  {
+    // Co-founder & CEO of Legora.
+    name: "Max Junestrand",
+    companyName: "Legora",
+    linkedin: "https://www.linkedin.com/in/maxjunestrand/",
+  },
+  {
+    // Founder & CEO of Vercel.
+    name: "Guillermo Rauch",
+    companyName: "Vercel",
+    linkedin: "https://www.linkedin.com/in/rauchg/",
+    x: "https://x.com/rauchg",
+  },
   // Moved toward the bottom by request — shown after everyone else.
   {
     name: "Sam Altman",
     companyName: "OpenAI",
     headshot: "/founders/sam-altman.jpg",
     x: "https://x.com/sama",
+  },
+  {
+    // Co-founder & President of OpenAI.
+    name: "Greg Brockman",
+    companyName: "OpenAI",
+    x: "https://x.com/gdb",
   },
   {
     name: "Michael LaFramboise",

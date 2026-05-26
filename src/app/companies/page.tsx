@@ -21,21 +21,39 @@ function CompanyCard({
   company: Company;
   featured?: boolean;
 }) {
-  // The /companies card prefers a card-specific image; the hero still uses `image`.
+  // Three render modes:
+  //   - cardLogo set → centered logo on a light tile (used when there's no product image).
+  //   - else cardImage/image set → full-bleed dark photo card.
+  //   - else → sector gradient fallback (dark).
+  const logoSrc = company.cardLogo;
   const cardSrc = company.cardImage ?? company.image;
+  const isLogoCard = Boolean(logoSrc);
   const hasImage = Boolean(cardSrc);
   const founder = founderForCompany(company.name);
   return (
     <div
       className={cn(
-        "group relative block overflow-hidden rounded-2xl bg-[#0b0b0d]",
+        "group relative block overflow-hidden rounded-2xl",
+        isLogoCard ? "bg-[#f5f5f7]" : "bg-[#0b0b0d]",
         featured
           ? "aspect-[1360/720] max-md:aspect-[4/5]"
           : "aspect-[674/720] max-md:aspect-[4/5]",
       )}
     >
-      {/* Background: full-color product image (gradient only as a safety fallback) */}
-      {hasImage ? (
+      {/* Card art */}
+      {isLogoCard ? (
+        // Logo centered in the upper area; bottom reserved for the lockup.
+        <div className="absolute left-[10%] right-[10%] top-[8%] bottom-[28%]">
+          <Image
+            src={logoSrc as string}
+            alt={`${company.name} logo`}
+            fill
+            sizes={featured ? "60vw" : "(max-width: 768px) 80vw, (max-width: 1024px) 40vw, 25vw"}
+            quality={92}
+            className="object-contain transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+          />
+        </div>
+      ) : hasImage ? (
         <Image
           src={cardSrc as string}
           alt={`${company.name} — product`}
@@ -53,10 +71,12 @@ function CompanyCard({
         </div>
       )}
 
-      {/* Legibility gradient — light so the image leads */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/12 to-transparent" />
+      {/* Legibility gradient — only for dark/photo cards; light tile doesn't need it */}
+      {!isLogoCard && (
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/12 to-transparent" />
+      )}
 
-      {/* Stretched link — the whole card (except the Watch button) opens the company site */}
+      {/* Stretched link — the whole card opens the company site */}
       <a
         href={company.href}
         target="_blank"
@@ -65,10 +85,13 @@ function CompanyCard({
         className="absolute inset-0 z-[1]"
       />
 
-      {/* Open affordance — bigger arrow, top-right (the whole card links out) */}
+      {/* Open affordance — bigger arrow, top-right; color variants for light vs dark */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute right-4 top-4 z-[2] flex size-11 items-center justify-center bg-black/40 text-white backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-5 md:top-5 md:size-12"
+        className={cn(
+          "pointer-events-none absolute right-4 top-4 z-[2] flex size-11 items-center justify-center backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-5 md:top-5 md:size-12",
+          isLogoCard ? "bg-black/[0.06] text-[#0b0b0d]" : "bg-black/40 text-white",
+        )}
       >
         <ArrowUpRight className="size-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-7" />
       </span>
@@ -84,19 +107,24 @@ function CompanyCard({
         </span>
       )}
 
-      {/* Bottom: compact lockup — tiny sector kicker + logo + name. The description
-          and founder link stay hidden until hover, so the image leads. */}
+      {/* Bottom: compact lockup. Light-tile cards drop the white chip (the card IS
+          the logo) and use dark text on the light background. */}
       <div
         className={cn(
           "pointer-events-none absolute inset-x-0 bottom-0 z-[2]",
           featured ? "p-6 md:p-8" : "p-5 md:p-6",
         )}
       >
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/70 md:text-[11px]">
+        <span
+          className={cn(
+            "font-mono text-[10px] uppercase tracking-[0.18em] md:text-[11px]",
+            isLogoCard ? "text-[#0b0b0d]/55" : "text-white/70",
+          )}
+        >
           {company.sectors.join(" · ")}
         </span>
         <div className="mt-2 flex items-center gap-2.5">
-          {company.logo && (
+          {!isLogoCard && company.logo && (
             <span
               className={cn(
                 "flex shrink-0 items-center justify-center rounded-lg bg-white p-1.5 shadow-[0_2px_10px_rgba(0,0,0,0.4)]",
@@ -114,8 +142,9 @@ function CompanyCard({
           )}
           <h3
             className={cn(
-              "font-semibold leading-[1.05] tracking-[-0.5px] text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]",
+              "font-semibold leading-[1.05] tracking-[-0.5px]",
               featured ? "text-[26px] md:text-[34px]" : "text-[19px] md:text-[22px]",
+              isLogoCard ? "text-[#0b0b0d]" : "text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]",
             )}
           >
             {company.name}
@@ -124,14 +153,24 @@ function CompanyCard({
         {/* Description + founder link — revealed on hover (height + fade) */}
         <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-300 ease-out group-hover:mt-2.5 group-hover:grid-rows-[1fr] group-hover:opacity-100">
           <div className="overflow-hidden">
-            <p className="text-[13px] leading-snug text-white/80 [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] md:text-[14px]">
+            <p
+              className={cn(
+                "text-[13px] leading-snug md:text-[14px]",
+                isLogoCard
+                  ? "text-[#0b0b0d]/70"
+                  : "text-white/80 [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]",
+              )}
+            >
               {company.blurb ?? "Portfolio company"}
             </p>
             {founder && (
               <Link
                 href={`/founders#${founderAnchor(founder)}`}
                 aria-label={`Meet ${founder.name}, founder of ${company.name}`}
-                className="group/founder pointer-events-auto relative z-[3] mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-semibold text-white/90 transition-colors duration-200 hover:text-[#ff4400] md:text-[13px]"
+                className={cn(
+                  "group/founder pointer-events-auto relative z-[3] mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-semibold transition-colors duration-200 md:text-[13px]",
+                  isLogoCard ? "text-[#0b0b0d]/75 hover:text-[#ff4400]" : "text-white/90 hover:text-[#ff4400]",
+                )}
               >
                 Meet the founder
                 <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/founder:translate-x-0.5" />

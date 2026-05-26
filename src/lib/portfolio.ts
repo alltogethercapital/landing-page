@@ -6,6 +6,7 @@ export type Company = {
   logo?: string; // /public path to the company's logo mark
   image?: string; // /public product image — falls back to a sector gradient when absent
   cardImage?: string; // /public image for the /companies card only (hero keeps using `image`)
+  cardLogo?: string; // /public path to a transparent-PNG logo — switches the /companies card to a light-tile, logo-centered mode (used for companies without a product image)
   video?: string; // YouTube video id (11 chars) — shows a "Watch video" button when present
   videoStart?: number; // optional start time (seconds) for the video
 };
@@ -252,12 +253,49 @@ export const PORTFOLIO: Company[] = [
     href: "https://commonsclinic.com/",
     sectors: ["Healthcare"],
     blurb: "Value-based specialty care, from orthopedics to whole-body health.",
+    cardImage: "/work/cards/commons-clinic.jpg",
   },
   {
     name: "Corgi",
     href: "https://www.corgi.insure/",
     sectors: ["Insurance", "AI"],
     blurb: "AI-native, full-stack insurance built for startups.",
+    cardLogo: "/logos/cards/corgi.png",
+  },
+  {
+    name: "xAI",
+    href: "https://x.ai/",
+    sectors: ["AI"],
+    blurb: "Frontier AI lab — creators of Grok.",
+    cardLogo: "/logos/cards/xai.png",
+  },
+  {
+    name: "Crusoe",
+    href: "https://www.crusoe.ai/",
+    sectors: ["AI", "Energy"],
+    blurb: "Energy-first AI infrastructure and cloud.",
+    cardLogo: "/logos/cards/crusoe.png",
+  },
+  {
+    name: "Sierra",
+    href: "https://sierra.ai/",
+    sectors: ["AI"],
+    blurb: "Conversational AI agents for customer-facing teams.",
+    cardLogo: "/logos/cards/sierra.png",
+  },
+  {
+    name: "Legora",
+    href: "https://legora.com/",
+    sectors: ["Legal", "AI"],
+    blurb: "The collaborative AI workspace for lawyers.",
+    cardLogo: "/logos/cards/legora.png",
+  },
+  {
+    name: "Vercel",
+    href: "https://vercel.com/",
+    sectors: ["Software", "AI"],
+    blurb: "The frontend cloud for building and shipping the web.",
+    cardLogo: "/logos/cards/vercel.png",
   },
 ];
 
