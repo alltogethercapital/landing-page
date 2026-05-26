@@ -157,7 +157,13 @@ function FounderCard({ founder }: { founder: Founder }) {
 // The tile has NO intrinsic aspect ratio; it fills whatever grid row its
 // parent gives it (the pair container in FoundersPage sizes it via
 // `grid-rows-2`, so two stacked tiles match one photo-card cell).
-function CompactFounderTile({ founder }: { founder: Founder }) {
+function CompactFounderTile({
+  founder,
+  solo = false,
+}: {
+  founder: Founder;
+  solo?: boolean;
+}) {
   const company = companyForFounder(founder);
   const anchor = founderAnchor(founder);
   const profile = founder.linkedin ?? founder.x;
@@ -166,7 +172,14 @@ function CompactFounderTile({ founder }: { founder: Founder }) {
   return (
     <div
       id={anchor}
-      className="group relative min-h-0 overflow-hidden rounded-2xl bg-[#0b0b0d] scroll-mt-[100px]"
+      className={cn(
+        "group relative min-h-0 overflow-hidden rounded-2xl bg-[#0b0b0d] scroll-mt-[100px]",
+        // Solo cell (no partner tile to share the slot with) — give it its
+        // own short aspect (~half a pair) so the row sizes down to it and
+        // there's no tall empty bottom. self-start prevents the grid from
+        // stretching it to match any taller siblings in the same row.
+        solo && "aspect-[674/350] max-md:aspect-[5/3] self-start",
+      )}
     >
       {/* Subtle sector-tinted backdrop so the tile isn't a flat block */}
       <div
@@ -315,15 +328,22 @@ export default function FoundersPage() {
           {photoFounders.map((founder) => (
             <FounderCard key={founderAnchor(founder)} founder={founder} />
           ))}
-          {compactPairs.map(([a, b]) => (
-            <div
-              key={`pair-${founderAnchor(a)}`}
-              className="grid grid-rows-2 gap-3 aspect-[674/720] max-md:aspect-[4/5]"
-            >
-              <CompactFounderTile founder={a} />
-              {b && <CompactFounderTile founder={b} />}
-            </div>
-          ))}
+          {compactPairs.map(([a, b]) =>
+            b ? (
+              <div
+                key={`pair-${founderAnchor(a)}`}
+                className="grid grid-rows-2 gap-3 aspect-[674/720] max-md:aspect-[4/5]"
+              >
+                <CompactFounderTile founder={a} />
+                <CompactFounderTile founder={b} />
+              </div>
+            ) : (
+              // Solo cell — renders at half a pair's height so the last row
+              // doesn't leave a tall empty bottom below the two side-by-side
+              // tiles. Inherits all the same hover + link behavior.
+              <CompactFounderTile key={`solo-${founderAnchor(a)}`} founder={a} solo />
+            ),
+          )}
         </div>
       </section>
 
