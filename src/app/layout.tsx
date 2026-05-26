@@ -14,10 +14,29 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+// metadataBase is required so Next.js can resolve the opengraph-image
+// route to an absolute URL in the rendered og:image meta tag.
+const SITE_URL = "https://alltogethercapital.com";
+const SITE_TITLE = "The Future Is Built Together — All Together Capital";
+const SITE_DESCRIPTION =
+  "All Together Capital backs the founders rebuilding the hard frontier — across AI, defense, energy, robotics, semiconductors, and space.";
+
 export const metadata: Metadata = {
-  title: "The Future Is Built Together — All Together Capital",
-  description:
-    "All Together Capital backs the founders rebuilding the hard frontier — across AI, defense, energy, robotics, semiconductors, and space.",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: "All Together Capital",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
