@@ -739,6 +739,28 @@ export function Hero() {
     setPhase("image");
   };
 
+  // Touch swipe — mobile users flick left/right to advance / go back, like
+  // Instagram. Snap-on-release; the actual visual transition is the same
+  // horizontal slide that the auto-cycle uses (see the image strip below).
+  // Require a clear horizontal motion (>40px and more horizontal than
+  // vertical) so vertical scrolling still works.
+  const swipeStart = useRef<{ x: number; y: number } | null>(null);
+  const onSwipeStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    swipeStart.current = { x: t.clientX, y: t.clientY };
+  };
+  const onSwipeEnd = (e: React.TouchEvent) => {
+    const start = swipeStart.current;
+    swipeStart.current = null;
+    if (!start) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      go(dx < 0 ? active + 1 : active - 1);
+    }
+  };
+
   // Per company: image → video → "fade" (crossfade to the NEXT company).
   // The video phase is advanced by the player itself (plays through, then its
   // poll calls onEnded near the end or on a stall) — no wall-clock cap here, so
@@ -796,6 +818,8 @@ export function Hero() {
     <section
       id="top"
       className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-black text-white"
+      onTouchStart={onSwipeStart}
+      onTouchEnd={onSwipeEnd}
     >
       {/* Intro unveil curtain — wipes up to reveal the page from the bottom on
           load, led by a thin orange scan line. Removed once the animation ends. */}
@@ -810,26 +834,29 @@ export function Hero() {
         <style>{`.intro-curtain{display:none!important}`}</style>
       </noscript>
 
-      {/* Cycling background photos */}
-      <div className="absolute inset-0 z-0 bg-black">
-        {SLIDES.map((s, i) => (
-          <Image
-            key={s.img}
-            src={s.img}
-            alt=""
-            fill
-            priority={i === 0}
-            quality={90}
-            sizes="100vw"
-            className={cn(
-              "object-cover object-center",
-              // Instant swap during the fade (hidden under the fading video) so
-              // the previous image never flashes; smooth crossfade otherwise.
-              phase === "fade" ? "" : "transition-opacity duration-[700ms] ease-in-out",
-            )}
-            style={{ opacity: i === shownImage ? 1 : 0 }}
-          />
-        ))}
+      {/* Cycling background photos — horizontal strip. The whole strip
+          translates by `shownImage * 100%` so every transition reads as a
+          smooth horizontal slide (Instagram-style) on auto-cycle AND on
+          mobile swipe. */}
+      <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+        <div
+          className="flex h-full w-full transition-transform duration-[450ms] ease-out"
+          style={{ transform: `translateX(-${shownImage * 100}%)` }}
+        >
+          {SLIDES.map((s, i) => (
+            <div key={s.img} className="relative h-full w-full shrink-0">
+              <Image
+                src={s.img}
+                alt=""
+                fill
+                priority={i === 0}
+                quality={90}
+                sizes="100vw"
+                className="object-cover object-center"
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Full-bleed video — preloads/plays hidden during the image phase, then
