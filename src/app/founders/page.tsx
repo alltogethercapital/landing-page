@@ -270,6 +270,18 @@ export default function FoundersPage() {
   for (let i = 0; i < compactFounders.length; i += 2) {
     compactPairs.push([compactFounders[i], compactFounders[i + 1]]);
   }
+  // If the last row of the unified 3-up grid would have only 1 cell filled
+  // (i.e. (photos + pairs) % 3 === 1), split the final full pair into two
+  // single-tile cells so the two compacts sit side-by-side instead of stacked.
+  // Turns "1 filled, 2 empty" into "2 filled (top-half), 1 empty".
+  if (
+    (photoFounders.length + compactPairs.length) % 3 === 1 &&
+    compactPairs.length > 0 &&
+    compactPairs[compactPairs.length - 1][1]
+  ) {
+    const last = compactPairs.pop()!;
+    compactPairs.push([last[0]], [last[1]!]);
+  }
 
   return (
     <main className="min-h-screen bg-white text-[#0b0b0d]">
