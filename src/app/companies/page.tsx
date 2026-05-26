@@ -4,9 +4,8 @@ import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { ArrowRight, ArrowUpRight } from "@/components/icons";
-import { CardGlyphs } from "@/components/card-glyphs";
-import { PORTFOLIO, gradientFor, slugify, type Company } from "@/lib/portfolio";
-import { founderForCompany } from "@/lib/founders";
+import { PORTFOLIO, gradientFor, type Company } from "@/lib/portfolio";
+import { founderForCompany, founderAnchor } from "@/lib/founders";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -53,9 +52,6 @@ function CompanyCard({
           </span>
         </div>
       )}
-
-      {/* Auto-flipping binary field over the image — reveals on hover */}
-      <CardGlyphs />
 
       {/* Legibility gradient — light so the image leads */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/12 to-transparent" />
@@ -133,7 +129,7 @@ function CompanyCard({
             </p>
             {founder && (
               <Link
-                href={`/founders#${slugify(company.name)}`}
+                href={`/founders#${founderAnchor(founder)}`}
                 aria-label={`Meet ${founder.name}, founder of ${company.name}`}
                 className="group/founder pointer-events-auto relative z-[3] mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-semibold text-white/90 transition-colors duration-200 hover:text-[#ff4400] md:text-[13px]"
               >

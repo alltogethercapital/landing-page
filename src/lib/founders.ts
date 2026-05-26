@@ -1,4 +1,4 @@
-import { PORTFOLIO, type Company } from "./portfolio";
+import { PORTFOLIO, slugify, type Company } from "./portfolio";
 
 export type Founder = {
   name: string; // founder's name
@@ -145,11 +145,28 @@ export const FOUNDERS: Founder[] = [
     linkedin: "https://www.linkedin.com/in/hamzaderbas",
   },
   {
-    // Co-founder & CEO (Paulo da Costa is co-founder/COO). Headshot omitted —
-    // drop /public/founders/nick-aubin.jpg in and set `headshot` to use it.
+    // Co-founder & CEO (Paulo da Costa is co-founder/COO).
     name: "Nick Aubin",
     companyName: "Commons Clinic",
+    headshot: "/founders/nick-aubin.jpg",
     linkedin: "https://www.linkedin.com/in/nick-aubin-56883647/",
+  },
+  {
+    // Co-founder & CEO (Jose Isaac Robledo is the other co-founder). No headshot yet.
+    name: "Andrew Peterson",
+    companyName: "Array Labs",
+    linkedin: "https://www.linkedin.com/in/andrew-peterson-array-labs/",
+  },
+  {
+    // Corgi co-founders — Nico (CEO/CTO) first so the company card deep-links to him.
+    name: "Nico Laqua",
+    companyName: "Corgi",
+    linkedin: "https://www.linkedin.com/in/nico-laqua-302b17233/",
+  },
+  {
+    name: "Emily Yuan",
+    companyName: "Corgi",
+    linkedin: "https://www.linkedin.com/in/emilyyuan96",
   },
   // Moved toward the bottom by request — shown after everyone else.
   {
@@ -174,6 +191,13 @@ export function companyForFounder(f: Founder): Company | undefined {
 
 export function founderForCompany(companyName: string): Founder | undefined {
   return FOUNDERS.find((f) => f.companyName === companyName);
+}
+
+// Unique per-founder anchor/key: name + company, so multiple founders can share
+// a company (e.g. Corgi) without their card ids/keys colliding. Company cards
+// deep-link to their (first) founder's card via this same scheme.
+export function founderAnchor(f: Founder): string {
+  return slugify(`${f.name} ${f.companyName}`);
 }
 
 export function initialsFor(name: string): string {

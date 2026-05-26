@@ -4,14 +4,14 @@ import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { ArrowUpRight, LinkedInIcon, XIcon } from "@/components/icons";
-import { CardGlyphs } from "@/components/card-glyphs";
 import {
   FOUNDERS,
   companyForFounder,
+  founderAnchor,
   initialsFor,
   type Founder,
 } from "@/lib/founders";
-import { gradientFor, slugify } from "@/lib/portfolio";
+import { gradientFor } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -23,11 +23,13 @@ export const metadata: Metadata = {
 function FounderCard({ founder }: { founder: Founder }) {
   const company = companyForFounder(founder);
   const hasHeadshot = Boolean(founder.headshot);
-  // Anchor by company name so a company card can deep-link straight here.
-  const anchor = slugify(company ? company.name : founder.name);
+  // Unique anchor (name + company) so multiple founders can share a company;
+  // company cards deep-link here via the same scheme.
+  const anchor = founderAnchor(founder);
+  // The whole card links to the founder's profile — LinkedIn first, then X.
+  const profile = founder.linkedin ?? founder.x;
+  const profileLabel = founder.linkedin ? "LinkedIn" : "X";
 
-  // The card itself is NOT a link — only the company name and the social
-  // icons below the founder's name are interactive.
   return (
     <div
       id={anchor}
@@ -60,14 +62,36 @@ function FounderCard({ founder }: { founder: Founder }) {
         </div>
       )}
 
-      {/* Auto-flipping binary field over the headshot — reveals on hover */}
-      <CardGlyphs />
-
       {/* Legibility gradient — lighter so the headshot leads; brightens on hover */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
 
-      {/* Bottom: tag, divider, founder name, then interactive company + socials */}
-      <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
+      {/* Stretched link — the whole card (except the company + social links below)
+          opens the founder's profile: LinkedIn first, then X. */}
+      {profile && (
+        <a
+          href={profile}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${founder.name} on ${profileLabel}`}
+          className="absolute inset-0 z-[1]"
+        />
+      )}
+
+      {/* Open affordance — arrow, top-right, signalling the card links out
+          (matching the company cards). */}
+      {profile && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-4 top-4 z-[2] flex size-11 items-center justify-center bg-black/40 text-white backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-5 md:top-5 md:size-12"
+        >
+          <ArrowUpRight className="size-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-7" />
+        </span>
+      )}
+
+      {/* Bottom: tag, divider, founder name, then interactive company + socials.
+          pointer-events-none so the card's stretched profile link stays clickable;
+          the company link + social icons opt back in below. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] p-6 md:p-8">
         <span className="font-mono text-[12px] uppercase tracking-[0.16em] text-white/75">
           {company ? company.sectors.join(" · ") : "Founder"}
         </span>
@@ -82,7 +106,7 @@ function FounderCard({ founder }: { founder: Founder }) {
               href={company.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/co inline-flex items-center gap-2.5 text-white/80 transition-colors hover:text-white"
+              className="group/co pointer-events-auto relative z-[3] inline-flex items-center gap-2.5 text-white/80 transition-colors hover:text-white"
             >
               {company.logo && (
                 <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-white p-1 shadow-[0_2px_10px_rgba(0,0,0,0.4)] md:size-8">
@@ -102,7 +126,7 @@ function FounderCard({ founder }: { founder: Founder }) {
             </a>
           )}
 
-          <div className="flex shrink-0 items-center gap-1.5">
+          <div className="pointer-events-auto relative z-[3] flex shrink-0 items-center gap-1.5">
             {founder.linkedin && (
               <a
                 href={founder.linkedin}
@@ -159,7 +183,7 @@ export default function FoundersPage() {
       <section className="px-6 pt-10 md:px-[40px]">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {FOUNDERS.map((founder) => (
-            <FounderCard key={founder.companyName} founder={founder} />
+            <FounderCard key={founderAnchor(founder)} founder={founder} />
           ))}
         </div>
       </section>

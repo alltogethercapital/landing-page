@@ -244,6 +244,7 @@ export const PORTFOLIO: Company[] = [
     href: "https://www.arraylabs.io/",
     sectors: ["Space", "Defense"],
     blurb: "Satellite swarms building a real-time 3D map of Earth.",
+    cardImage: "/work/cards/array-labs.jpg",
     video: "SS0a_KjvDis", // Introducing Site3D, from Array Labs
   },
   {
@@ -251,6 +252,12 @@ export const PORTFOLIO: Company[] = [
     href: "https://commonsclinic.com/",
     sectors: ["Healthcare"],
     blurb: "Value-based specialty care, from orthopedics to whole-body health.",
+  },
+  {
+    name: "Corgi",
+    href: "https://www.corgi.insure/",
+    sectors: ["Insurance", "AI"],
+    blurb: "AI-native, full-stack insurance built for startups.",
   },
 ];
 
@@ -266,6 +273,7 @@ const SECTOR_GRADIENTS: Record<string, string> = {
   Bio: "from-[#091505] via-[#10240b] to-[#1a3a14]",
   Compute: "from-[#0c0a1e] via-[#141233] to-[#241f4a]",
   Healthcare: "from-[#06241f] via-[#0a352f] to-[#114a40]",
+  Insurance: "from-[#0a1b2b] via-[#0e2a3f] to-[#163c54]",
 };
 
 export function gradientFor(company: Company): string {
