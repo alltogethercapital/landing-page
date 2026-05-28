@@ -297,6 +297,14 @@ export const PORTFOLIO: Company[] = [
     blurb: "The frontend cloud for building and shipping the web.",
     cardLogo: "/logos/cards/vercel.png",
   },
+  {
+    name: "Aformic",
+    href: "https://aformic.com/",
+    sectors: ["Robotics", "Logistics"],
+    blurb:
+      "Autonomous mobile robots and fleet software for warehouse and factory intralogistics.",
+    cardLogo: "/logos/cards/aformic.png",
+  },
 ];
 
 // sector → gradient (for cards without a product image)

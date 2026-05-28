@@ -241,6 +241,19 @@ export const FOUNDERS: Founder[] = [
     linkedin: "https://www.linkedin.com/in/rauchg/",
     x: "https://x.com/rauchg",
   },
+  {
+    // President of Aformic and of the AIUT Group (Aformic's parent — the
+    // US arm of a Polish industrial automation company).
+    name: "Marek Gabryś",
+    companyName: "Aformic",
+    linkedin: "https://pl.linkedin.com/in/marek-gabry%C5%9B-11b0b51",
+  },
+  {
+    // CEO of Aformic.
+    name: "Michal Fiuk",
+    companyName: "Aformic",
+    linkedin: "https://www.linkedin.com/in/michalfiuk",
+  },
   // Moved toward the bottom by request — shown after everyone else.
   {
     name: "Sam Altman",
