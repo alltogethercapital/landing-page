@@ -199,49 +199,6 @@ export const FOUNDERS: Founder[] = [
     linkedin: "https://www.linkedin.com/in/emilyyuan96",
   },
   {
-    // Founder & CEO of xAI.
-    name: "Elon Musk",
-    companyName: "xAI",
-    x: "https://x.com/elonmusk",
-  },
-  {
-    // Co-founder & CEO of Crusoe.
-    name: "Chase Lochmiller",
-    companyName: "Crusoe",
-    linkedin: "https://www.linkedin.com/in/chase-lochmiller-604483341/",
-  },
-  {
-    // Co-founder & President of Crusoe.
-    name: "Cully Cavness",
-    companyName: "Crusoe",
-    linkedin: "https://www.linkedin.com/in/ccavness",
-  },
-  {
-    // Co-founder & CEO of Sierra (formerly co-CEO of Salesforce).
-    name: "Bret Taylor",
-    companyName: "Sierra",
-    x: "https://x.com/btaylor",
-  },
-  {
-    // Co-founder of Sierra (formerly Google VR/AR lead).
-    name: "Clay Bavor",
-    companyName: "Sierra",
-    linkedin: "https://www.linkedin.com/in/claybavor",
-  },
-  {
-    // Co-founder & CEO of Legora.
-    name: "Max Junestrand",
-    companyName: "Legora",
-    linkedin: "https://www.linkedin.com/in/maxjunestrand/",
-  },
-  {
-    // Founder & CEO of Vercel.
-    name: "Guillermo Rauch",
-    companyName: "Vercel",
-    linkedin: "https://www.linkedin.com/in/rauchg/",
-    x: "https://x.com/rauchg",
-  },
-  {
     // President of Aformic and of the AIUT Group (Aformic's parent — the
     // US arm of a Polish industrial automation company).
     name: "Marek Gabryś",
