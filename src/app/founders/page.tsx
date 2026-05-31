@@ -11,7 +11,6 @@ import {
   initialsFor,
   type Founder,
 } from "@/lib/founders";
-import { gradientFor } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -23,10 +22,6 @@ export const metadata: Metadata = {
 function FounderCard({ founder }: { founder: Founder }) {
   const company = companyForFounder(founder);
   const hasHeadshot = Boolean(founder.headshot);
-  const hoverHeadshot = founder.headshot?.replace(
-    "/founders/cutouts/",
-    "/founders/backgrounds/",
-  );
   // Unique anchor (name + company) so multiple founders can share a company;
   // company cards deep-link here via the same scheme.
   const anchor = founderAnchor(founder);
@@ -41,44 +36,24 @@ function FounderCard({ founder }: { founder: Founder }) {
     >
       {/* Headshot, or a clean placeholder until a photo is added */}
       {hasHeadshot ? (
-        <>
-          <Image
-            src={hoverHeadshot as string}
-            alt=""
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            quality={90}
-            loading="eager"
-            className="founder-photo-background object-cover object-top"
-          />
-          <Image
-            src={founder.headshot as string}
-            alt={founder.name}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            quality={90}
-            className="founder-photo-cutout object-cover object-top"
-          />
-        </>
+        <Image
+          src={founder.headshot as string}
+          alt={founder.name}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          quality={90}
+          className="object-cover object-top"
+        />
       ) : (
-        <div
-          className={cn(
-            "absolute inset-0 bg-gradient-to-br",
-            company ? gradientFor(company) : "from-[#141414] via-[#1c1c1c] to-[#262626]",
-          )}
-        >
-          <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_22%,rgba(255,255,255,0.12),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[#f5f5f7]">
           {/* placeholder avatar */}
           <div className="absolute inset-x-0 top-0 bottom-[38%] flex items-center justify-center">
-            <span className="flex size-28 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-[28px] font-semibold tracking-tight text-white/80 backdrop-blur-sm md:size-36 md:text-[36px]">
+            <span className="flex size-28 items-center justify-center rounded-full border border-black/10 bg-white text-[28px] font-semibold tracking-tight text-[#0b0b0d]/70 md:size-36 md:text-[36px]">
               {initialsFor(founder.name)}
             </span>
           </div>
         </div>
       )}
-
-      {/* Legibility gradient — bottom-only so the default portrait stays on white. */}
-      <div className="absolute inset-x-0 bottom-0 h-[48%] bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
 
       {/* Stretched link — the whole card (except the company + social links below)
           opens the founder's profile: LinkedIn first, then X. */}
@@ -97,7 +72,7 @@ function FounderCard({ founder }: { founder: Founder }) {
       {profile && (
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute right-4 top-4 z-[2] flex size-11 items-center justify-center bg-black/40 text-white backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-5 md:top-5 md:size-12"
+          className="pointer-events-none absolute right-4 top-4 z-[2] flex size-11 items-center justify-center bg-black/[0.06] text-[#0b0b0d] backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-5 md:top-5 md:size-12"
         >
           <ArrowUpRight className="size-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-7" />
         </span>
@@ -107,7 +82,7 @@ function FounderCard({ founder }: { founder: Founder }) {
           so the card's stretched profile link stays clickable; the company link +
           social icons opt back in below. */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] p-6 md:p-8">
-        <h3 className="font-medium leading-[1.02] tracking-[-1px] text-white text-[26px] md:text-[38px]">
+        <h3 className="font-medium leading-[1.02] tracking-[-1px] text-[#0b0b0d] text-[26px] md:text-[38px]">
           {founder.name}
         </h3>
 
@@ -117,10 +92,10 @@ function FounderCard({ founder }: { founder: Founder }) {
               href={company.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/co pointer-events-auto relative z-[3] inline-flex items-center gap-2.5 text-white/80 transition-colors hover:text-white"
+              className="group/co pointer-events-auto relative z-[3] inline-flex items-center gap-2.5 text-[#0b0b0d]/70 transition-colors hover:text-[#0b0b0d]"
             >
               {company.logo && (
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-white p-1 shadow-[0_2px_10px_rgba(0,0,0,0.4)] md:size-8">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-white p-1 shadow-[0_2px_10px_rgba(0,0,0,0.12)] md:size-8">
                   <Image
                     src={company.logo}
                     alt={`${company.name} logo`}
@@ -133,7 +108,7 @@ function FounderCard({ founder }: { founder: Founder }) {
               <span className="text-[14px] font-medium md:text-[16px]">
                 {company.name}
               </span>
-              <ArrowUpRight className="size-3.5 text-white/40 transition-all group-hover/co:-translate-y-0.5 group-hover/co:translate-x-0.5 group-hover/co:text-[#ff4400]" />
+              <ArrowUpRight className="size-3.5 text-[#0b0b0d]/35 transition-all group-hover/co:-translate-y-0.5 group-hover/co:translate-x-0.5 group-hover/co:text-[#ff4400]" />
             </a>
           )}
 
@@ -144,7 +119,7 @@ function FounderCard({ founder }: { founder: Founder }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${founder.name} on LinkedIn`}
-                className="flex size-8 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
+                className="flex size-8 items-center justify-center rounded-full border border-black/10 text-[#0b0b0d]/60 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
               >
                 <LinkedInIcon className="size-4" />
               </a>
@@ -155,7 +130,7 @@ function FounderCard({ founder }: { founder: Founder }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${founder.name} on X`}
-                className="flex size-8 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
+                className="flex size-8 items-center justify-center rounded-full border border-black/10 text-[#0b0b0d]/60 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
               >
                 <XIcon className="size-3.5" />
               </a>
@@ -196,14 +171,7 @@ function CompactFounderTile({
         solo && "aspect-[674/350] max-md:aspect-[5/3] self-start",
       )}
     >
-      {/* Subtle sector-tinted backdrop so the tile isn't a flat block */}
-      <div
-        className={cn(
-          "absolute inset-0 bg-gradient-to-br opacity-80",
-          company ? gradientFor(company) : "from-[#141414] via-[#1c1c1c] to-[#262626]",
-        )}
-      />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_0%,rgba(255,255,255,0.07),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[#0b0b0d]" />
 
       {/* Stretched link to the founder's primary profile (LinkedIn first, X otherwise) */}
       {profile && (
