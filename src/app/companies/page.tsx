@@ -3,9 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { ArrowRight, ArrowUpRight } from "@/components/icons";
+import { ArrowUpRight } from "@/components/icons";
 import { PORTFOLIO, gradientFor, type Company } from "@/lib/portfolio";
-import { founderForCompany, founderAnchor } from "@/lib/founders";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -20,13 +19,12 @@ function CompanyCard({
   company: Company;
 }) {
   const logoSrc = company.cardLogo ?? company.logo;
-  const founder = founderForCompany(company.name);
   return (
     <div
       className="group relative block aspect-[4/3] overflow-hidden rounded-2xl bg-[#f5f5f7]"
     >
       {logoSrc ? (
-        <div className="absolute left-[10%] right-[10%] top-[10%] bottom-[36%]">
+        <div className="absolute inset-x-[12%] top-1/2 h-[42%] -translate-y-1/2">
           <Image
             src={logoSrc}
             alt={`${company.name} logo`}
@@ -61,37 +59,6 @@ function CompanyCard({
       >
         <ArrowUpRight className="size-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-7" />
       </span>
-
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] p-5 md:p-6"
-      >
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0d]/55 md:text-[11px]">
-          {company.sectors.join(" · ")}
-        </span>
-        <div className="mt-2 flex items-center gap-2.5">
-          <h3 className="text-[19px] font-semibold leading-[1.05] tracking-[-0.5px] text-[#0b0b0d] md:text-[22px]">
-            {company.name}
-          </h3>
-        </div>
-        {/* Description + founder link — revealed on hover (height + fade) */}
-        <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-300 ease-out group-hover:mt-2.5 group-hover:grid-rows-[1fr] group-hover:opacity-100">
-          <div className="overflow-hidden">
-            <p className="text-[13px] leading-snug text-[#0b0b0d]/70 md:text-[14px]">
-              {company.blurb ?? "Portfolio company"}
-            </p>
-            {founder && (
-              <Link
-                href={`/founders#${founderAnchor(founder)}`}
-                aria-label={`Meet ${founder.name}, founder of ${company.name}`}
-                className="group/founder pointer-events-auto relative z-[3] mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#0b0b0d]/75 transition-colors duration-200 hover:text-[#ff4400] md:text-[13px]"
-              >
-                Meet the founder
-                <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/founder:translate-x-0.5" />
-              </Link>
-            )}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
