@@ -54,6 +54,12 @@ function FounderCard({ founder }: { founder: Founder }) {
             </div>
           </div>
         )}
+
+        <div className="pointer-events-none absolute bottom-4 left-4 z-[2] max-w-[calc(100%-2rem)] translate-y-3 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 md:bottom-5 md:left-5 max-lg:translate-y-0 max-lg:opacity-100 [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100">
+          <h3 className="rounded-lg border border-white/60 bg-white/70 px-3.5 py-2 text-[19px] font-medium leading-[1.02] tracking-[-0.3px] text-[#0b0b0d] shadow-[0_12px_34px_rgba(0,0,0,0.16)] backdrop-blur-md md:text-[24px]">
+            {founder.name}
+          </h3>
+        </div>
       </div>
 
       {/* Stretched link — the whole card (except the company + social links below)
@@ -79,21 +85,15 @@ function FounderCard({ founder }: { founder: Founder }) {
         </span>
       )}
 
-      {/* Bottom: founder name + interactive company + socials. pointer-events-none
-          so the card's stretched profile link stays clickable; the company link +
-          social icons opt back in below. */}
-      <div className="pointer-events-none relative z-[2] border-t border-black/[0.06] px-5 pb-5 pt-4 md:px-6 md:pb-6 md:pt-5">
-        <h3 className="text-[25px] font-medium leading-[1.02] tracking-[-0.7px] text-[#0b0b0d] md:text-[32px]">
-          {founder.name}
-        </h3>
-
-        <div className="mt-3 flex min-w-0 items-center justify-between gap-3">
+      {/* Bottom: company stays visible; social links reveal on hover/focus. */}
+      <div className="pointer-events-none relative z-[2] min-h-[72px] border-t border-black/[0.06] px-5 py-4 md:px-6">
+        <div className="flex h-full min-w-0 items-center">
           {company && (
             <a
               href={company.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/co pointer-events-auto relative z-[3] inline-flex min-w-0 items-center gap-2.5 text-[#0b0b0d]/70 transition-colors hover:text-[#0b0b0d]"
+              className="group/co pointer-events-auto relative z-[3] inline-flex min-w-0 max-w-[calc(100%-4.75rem)] items-center gap-2.5 text-[#0b0b0d]/70 transition-colors hover:text-[#0b0b0d]"
             >
               {company.logo && (
                 <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-white p-1 shadow-[0_2px_10px_rgba(0,0,0,0.12)] md:size-8">
@@ -113,7 +113,7 @@ function FounderCard({ founder }: { founder: Founder }) {
             </a>
           )}
 
-          <div className="pointer-events-auto relative z-[3] flex shrink-0 items-center gap-1.5">
+          <div className="pointer-events-none absolute right-5 top-1/2 z-[3] flex -translate-y-1/2 translate-x-1 items-center gap-1.5 opacity-0 transition-all duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-x-0 group-focus-within:opacity-100 md:right-6 max-lg:pointer-events-auto max-lg:translate-x-0 max-lg:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:translate-x-0 [@media(hover:none)]:opacity-100">
             {founder.linkedin && (
               <a
                 href={founder.linkedin}
