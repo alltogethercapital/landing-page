@@ -32,28 +32,29 @@ function FounderCard({ founder }: { founder: Founder }) {
   return (
     <div
       id={anchor}
-      className="group founder-card relative scroll-mt-[100px] overflow-hidden rounded-2xl bg-white ring-1 ring-black/[0.06] aspect-[674/720] max-md:aspect-[4/5]"
+      className="group founder-card relative grid scroll-mt-[100px] overflow-hidden rounded-2xl bg-white ring-1 ring-black/[0.06] aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] max-md:aspect-[4/5]"
     >
       {/* Headshot, or a clean placeholder until a photo is added */}
-      {hasHeadshot ? (
-        <Image
-          src={founder.headshot as string}
-          alt={founder.name}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          quality={90}
-          className="object-cover object-top"
-        />
-      ) : (
-        <div className="absolute inset-0 bg-[#f5f5f7]">
-          {/* placeholder avatar */}
-          <div className="absolute inset-x-0 top-0 bottom-[38%] flex items-center justify-center">
-            <span className="flex size-28 items-center justify-center rounded-full border border-black/10 bg-white text-[28px] font-semibold tracking-tight text-[#0b0b0d]/70 md:size-36 md:text-[36px]">
-              {initialsFor(founder.name)}
-            </span>
+      <div className="relative min-h-0 overflow-hidden bg-white">
+        {hasHeadshot ? (
+          <Image
+            src={founder.headshot as string}
+            alt={founder.name}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            quality={90}
+            className="object-cover object-top"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-[#f5f5f7]">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="flex size-28 items-center justify-center rounded-full border border-black/10 bg-white text-[28px] font-semibold tracking-tight text-[#0b0b0d]/70 md:size-36 md:text-[36px]">
+                {initialsFor(founder.name)}
+              </span>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Stretched link — the whole card (except the company + social links below)
           opens the founder's profile: LinkedIn first, then X. */}
@@ -81,18 +82,18 @@ function FounderCard({ founder }: { founder: Founder }) {
       {/* Bottom: founder name + interactive company + socials. pointer-events-none
           so the card's stretched profile link stays clickable; the company link +
           social icons opt back in below. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] p-6 md:p-8">
-        <h3 className="font-medium leading-[1.02] tracking-[-1px] text-[#0b0b0d] text-[26px] md:text-[38px]">
+      <div className="pointer-events-none relative z-[2] border-t border-black/[0.06] px-5 pb-5 pt-4 md:px-6 md:pb-6 md:pt-5">
+        <h3 className="text-[25px] font-medium leading-[1.02] tracking-[-0.7px] text-[#0b0b0d] md:text-[32px]">
           {founder.name}
         </h3>
 
-        <div className="mt-3 flex items-center justify-between gap-3">
+        <div className="mt-3 flex min-w-0 items-center justify-between gap-3">
           {company && (
             <a
               href={company.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/co pointer-events-auto relative z-[3] inline-flex items-center gap-2.5 text-[#0b0b0d]/70 transition-colors hover:text-[#0b0b0d]"
+              className="group/co pointer-events-auto relative z-[3] inline-flex min-w-0 items-center gap-2.5 text-[#0b0b0d]/70 transition-colors hover:text-[#0b0b0d]"
             >
               {company.logo && (
                 <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-white p-1 shadow-[0_2px_10px_rgba(0,0,0,0.12)] md:size-8">
@@ -105,7 +106,7 @@ function FounderCard({ founder }: { founder: Founder }) {
                   />
                 </span>
               )}
-              <span className="text-[14px] font-medium md:text-[16px]">
+              <span className="min-w-0 truncate text-[14px] font-medium md:text-[15px]">
                 {company.name}
               </span>
               <ArrowUpRight className="size-3.5 text-[#0b0b0d]/35 transition-all group-hover/co:-translate-y-0.5 group-hover/co:translate-x-0.5 group-hover/co:text-[#ff4400]" />
