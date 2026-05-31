@@ -5,8 +5,8 @@ export type Company = {
   blurb?: string; // short one-liner (revealed on hover)
   logo?: string; // /public path to the company's logo mark
   image?: string; // /public product image — falls back to a sector gradient when absent
-  cardImage?: string; // /public image for the /companies card only (hero keeps using `image`)
-  cardLogo?: string; // /public path to a transparent-PNG logo — switches the /companies card to a light-tile, logo-centered mode (used for companies without a product image)
+  cardImage?: string; // legacy /companies card image; current companies page uses `cardLogo`
+  cardLogo?: string; // /public path to a transparent-PNG wordmark for the /companies card
   video?: string; // YouTube video id (11 chars) — shows a "Watch video" button when present
   videoStart?: number; // optional start time (seconds) for the video
 };
@@ -19,6 +19,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Defense", "AI"],
     blurb: "AI pilots for aircraft, and the X-BAT autonomous fighter jet.",
     logo: "/logos/shield-ai.png",
+    cardLogo: "/logos/cards/shield-ai.png",
     image: "/hero-drones.jpg",
     video: "OnpuNlE3UxU", // X-BAT: Earth Is Our Runway (Shield AI)
     videoStart: 32,
@@ -29,6 +30,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["AI", "Robotics"],
     blurb: "Humanoid robots engineered for the home.",
     logo: "/logos/1x.png",
+    cardLogo: "/logos/cards/1x.png",
     image: "/hero-robots.jpg",
     cardImage: "/work/cards/1x.jpg",
     video: "ag_rFhvSNmE", // NEO Factory | Hayward, California (1X)
@@ -39,6 +41,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["AI"],
     blurb: "Frontier AI research — creators of ChatGPT and the GPT models.",
     logo: "/logos/openai.png",
+    cardLogo: "/logos/cards/openai.png",
     image: "/work/openai.jpg",
     cardImage: "/work/cards/openai.jpg",
     video: "HK6y8DAPN_0", // Introducing Sora (OpenAI)
@@ -49,6 +52,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["AI"],
     blurb: "AI safety research and Claude, a frontier AI assistant.",
     logo: "/logos/anthropic.png",
+    cardLogo: "/logos/cards/anthropic.png",
     image: "/work/anthropic.jpg",
     cardImage: "/work/cards/anthropic.jpg",
     video: "oqUclC3gqKs", // A day with Claude (Anthropic)
@@ -59,6 +63,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Defense", "AI"],
     blurb: "Autonomous defense systems built on the Lattice platform.",
     logo: "/logos/anduril.png",
+    cardLogo: "/logos/cards/anduril.png",
     image: "/work/anduril.jpg",
     cardImage: "/work/cards/anduril.jpg",
     video: "RpFFScTovII", // Lattice for Mission Autonomy (Anduril Industries)
@@ -69,6 +74,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Defense", "Directed Energy"],
     blurb: "Archimedes — an autonomous directed-energy counter-drone laser.",
     logo: "/logos/aurelius.png",
+    cardLogo: "/logos/cards/aurelius.png",
     image: "/work/aurelius.jpg",
     cardImage: "/work/cards/aurelius.jpg",
     video: "Oym5abej2qw", // This Startup Shoots Down Drones With Lasers (Cerebral Valley)
@@ -79,6 +85,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Defense", "Aerospace"],
     blurb: "Critical actuation systems for aviation and defense.",
     logo: "/logos/salient.png",
+    cardLogo: "/logos/cards/salient.png",
     image: "/work/salient-jet.jpg",
     cardImage: "/work/cards/salient.jpg",
   },
@@ -88,6 +95,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Software", "AI"],
     blurb: "The AI-native platform for building and shipping software.",
     logo: "/logos/replit.png",
+    cardLogo: "/logos/cards/replit.png",
     image: "/work/replit.jpg",
     cardImage: "/work/cards/replit.jpg",
     video: "-2xHmkpmCBM", // Replit Agent 4 Launch Announcement (Replit)
@@ -98,6 +106,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["AI", "Robotics"],
     blurb: "Simulation and tooling for autonomous vehicles and machines.",
     logo: "/logos/applied.png",
+    cardLogo: "/logos/cards/applied.png",
     image: "/work/applied.jpg",
     cardImage: "/work/cards/applied.jpg",
     video: "eL-YnfG4K_0", // Inside 2025: Applied Intuition's Year of Building Physical AI
@@ -108,6 +117,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["AI", "Robotics"],
     blurb: "General-purpose humanoid robots for the workforce.",
     logo: "/logos/figure.png",
+    cardLogo: "/logos/cards/figure.png",
     image: "/work/figure-ai.jpg",
     cardImage: "/work/cards/figure.jpg",
     // Figure 03 trailer — embeddable upload (playableInEmbed:true, 0 end-screen
@@ -121,6 +131,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["AI", "Robotics"],
     blurb: "Apollo — a general-purpose humanoid robot for industry.",
     logo: "/logos/apptronik.png",
+    cardLogo: "/logos/cards/apptronik.png",
     image: "/work/apptronik.jpg",
     cardImage: "/work/cards/apptronik.jpg",
     video: "uJOA5IDaL5g", // Hello Apollo (Apptronik)
@@ -131,6 +142,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["AI", "Semiconductors"],
     blurb: "AI-driven semiconductor design.",
     logo: "/logos/volantis.png",
+    cardLogo: "/logos/cards/volantis.png",
     image: "/work/volantis.jpg",
     cardImage: "/work/cards/volantis.jpg",
   },
@@ -140,6 +152,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Space", "Compute"],
     blurb: "Data centers in orbit, powered by the sun.",
     logo: "/logos/starcloud.png",
+    cardLogo: "/logos/cards/starcloud.png",
     image: "/work/starcloud.jpg",
     cardImage: "/work/cards/starcloud.jpg",
     video: "u9m6tCZa2-k", // Starcloud Constellation (Starcloud)
@@ -150,6 +163,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Energy"],
     blurb: "Modular solar-thermal energy for the AI compute era.",
     logo: "/logos/exowatt.png",
+    cardLogo: "/logos/cards/exowatt.png",
     image: "/work/exowatt.jpg",
     cardImage: "/work/cards/exowatt.jpg",
     video: "kQgvCo5XG18", // Exowatt Power Summit 25 Sizzle Reel (Exowatt)
@@ -160,6 +174,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Energy", "Nuclear"],
     blurb: "Factory-built modular nuclear reactors for clean power.",
     logo: "/logos/aalo.png",
+    cardLogo: "/logos/cards/aalo.png",
     image: "/work/aalo.jpg",
     cardImage: "/work/cards/aalo.jpg",
     video: "LuhHQshC7Xk", // Unveiling the Aalo-1 Prototype and Aalo Pod (Aalo Atomics)
@@ -170,6 +185,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Energy", "Geothermal"],
     blurb: "Ultra-deep geothermal to unlock clean baseload energy.",
     logo: "/logos/quaise.png",
+    cardLogo: "/logos/cards/quaise.png",
     image: "/work/quaise.jpg",
     cardImage: "/work/cards/quaise.jpg",
     video: "5U8-KoKB6_8", // Lab to Field Testing of Millimeter Wave Drilling (Quaise Energy)
@@ -180,6 +196,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Robotics", "Manufacturing"],
     blurb: "Robotic, on-demand apparel manufacturing.",
     logo: "/logos/unspun.png",
+    cardLogo: "/logos/cards/unspun.png",
     image: "/work/unspun.jpg",
     cardImage: "/work/cards/unspun.jpg",
     video: "lLvn0o-jhuI", // 3D weaving | Vega by unspun (unspun)
@@ -190,6 +207,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Software"],
     blurb: "Building the future of hospitality.",
     logo: "/logos/lance.png",
+    cardLogo: "/logos/cards/lance.png",
     image: "/work/lance.jpg",
     cardImage: "/work/cards/lance.jpg",
     video: "4lfd34piGiE", // guests got places to be (Lance)
@@ -200,6 +218,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Software", "Audio"],
     blurb: "Sample management for modern music producers.",
     logo: "/logos/samply.png",
+    cardLogo: "/logos/cards/samply.png",
     image: "/work/samply.jpg",
     cardImage: "/work/cards/samply.jpg",
     video: "0MT2smBqloI", // Getting started with Samply (Samply)
@@ -210,6 +229,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["AI", "Consumer"],
     blurb: "AI-powered tools for the way people work.",
     logo: "/logos/hark.png",
+    cardLogo: "/logos/cards/hark.png",
     image: "/work/hark.jpg",
     cardImage: "/work/cards/hark.jpg",
     video: "0H1LSLipOVI", // Introducing Hark (Hark)
@@ -220,6 +240,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Bio", "Agriculture"],
     blurb: "The robotics platform for agriculture.",
     logo: "/logos/budbreak.png",
+    cardLogo: "/logos/cards/budbreak.png",
     image: "/work/budbreak.jpg",
     cardImage: "/work/cards/budbreak.jpg",
     video: "8sLI-XocJFw", // I Built a Robot to Save the Wine Industry (Budbreak Innovations)
@@ -230,6 +251,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["AI", "Robotics"],
     blurb: "A new kind of working robot — general-purpose AI for industry.",
     logo: "/logos/maven.png",
+    cardLogo: "/logos/cards/maven.png",
     cardImage: "/work/cards/maven.jpg",
   },
   {
@@ -237,6 +259,7 @@ export const PORTFOLIO: Company[] = [
     href: "https://www.eccentricmachines.com/",
     sectors: ["Robotics", "AI"],
     blurb: "Unlocking intelligent robotic motion.",
+    cardLogo: "/logos/cards/eccentric.png",
     image: "/work/eccentric.jpg",
     cardImage: "/work/cards/eccentric.jpg",
   },
@@ -245,6 +268,7 @@ export const PORTFOLIO: Company[] = [
     href: "https://www.arraylabs.io/",
     sectors: ["Space", "Defense"],
     blurb: "Satellite swarms building a real-time 3D map of Earth.",
+    cardLogo: "/logos/cards/array-labs.png",
     cardImage: "/work/cards/array-labs.jpg",
     video: "SS0a_KjvDis", // Introducing Site3D, from Array Labs
   },
@@ -253,7 +277,7 @@ export const PORTFOLIO: Company[] = [
     href: "https://commonsclinic.com/",
     sectors: ["Healthcare"],
     blurb: "Value-based specialty care, from orthopedics to whole-body health.",
-    cardImage: "/work/cards/commons-clinic.jpg",
+    cardLogo: "/logos/cards/commons-clinic.png",
   },
   {
     name: "Corgi",
