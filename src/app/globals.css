@@ -330,6 +330,30 @@
   }
 }
 
+/* Founder portraits: transparent cutout by default; selected blue style fades in on hover. */
+.founder-photo-background,
+.founder-photo-cutout {
+  transition:
+    filter 240ms ease,
+    opacity 420ms ease,
+    transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.founder-photo-background {
+  opacity: 0;
+  transform: scale(1.025);
+  filter: brightness(0.98) saturate(1.04);
+}
+.founder-photo-cutout {
+  filter: brightness(0.98) contrast(1.02) saturate(0.98);
+}
+.founder-card:hover .founder-photo-background {
+  opacity: 1;
+  transform: scale(1);
+}
+.founder-card:hover .founder-photo-cutout {
+  filter: brightness(1) contrast(1.02) saturate(1);
+}
+
 /* ── Founder card deep-link highlight ───────────────────────────
    When a company card links to /founders#<company>, the matching
    founder card briefly pulses an orange ring so it's easy to spot.

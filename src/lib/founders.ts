@@ -3,7 +3,7 @@ import { PORTFOLIO, slugify, type Company } from "./portfolio";
 export type Founder = {
   name: string; // founder's name
   companyName: string; // must match a company `name` in PORTFOLIO
-  headshot?: string; // /founders/<slug>.jpg — omit to render a placeholder
+  headshot?: string; // /founders/cutouts/<slug>.png — omit to render a placeholder
   linkedin?: string; // full URL to LinkedIn profile
   x?: string; // full URL to X (Twitter) profile
 };
@@ -11,30 +11,31 @@ export type Founder = {
 // One representative founder per company.
 // NOTE: names + profile links are from public record — please verify each.
 // Headshots are intentionally omitted (placeholders render) — drop image files
-// into /public/founders/ and set `headshot: "/founders/<file>.jpg"` to use them.
+// into /public/founders/cutouts/ and set `headshot` to the cutout PNG.
 export const FOUNDERS: Founder[] = [
   {
     name: "Brandon Tseng",
     companyName: "Shield AI",
-    headshot: "/founders/brandon-tseng.jpg",
+    headshot: "/founders/cutouts/brandon-tseng.png",
     linkedin: "https://www.linkedin.com/in/brandontseng/",
   },
   {
     // Co-founder; President & Chief Strategy Officer (founding CEO).
     name: "Ryan Tseng",
     companyName: "Shield AI",
+    headshot: "/founders/cutouts/ryan-tseng.png",
     linkedin: "https://www.linkedin.com/in/ryantseng",
   },
   {
     name: "Bernt Børnich",
     companyName: "1X",
-    headshot: "/founders/bernt-bornich.jpg",
+    headshot: "/founders/cutouts/bernt-bornich.png",
     x: "https://x.com/BerntBornich",
   },
   {
     name: "Dario Amodei",
     companyName: "Anthropic",
-    headshot: "/founders/dario-amodei.jpg",
+    headshot: "/founders/cutouts/dario-amodei.png",
     linkedin: "https://www.linkedin.com/in/dario-amodei-3934934/",
     x: "https://x.com/DarioAmodei",
   },
@@ -42,12 +43,13 @@ export const FOUNDERS: Founder[] = [
     // Co-founder & President of Anthropic (sister of Dario).
     name: "Daniela Amodei",
     companyName: "Anthropic",
+    headshot: "/founders/cutouts/daniela-amodei.png",
     linkedin: "https://www.linkedin.com/in/daniela-amodei-790bb22a/",
   },
   {
     name: "Palmer Luckey",
     companyName: "Anduril",
-    headshot: "/founders/palmer-luckey.jpg",
+    headshot: "/founders/cutouts/palmer-luckey.png",
     linkedin: "https://www.linkedin.com/in/palmer-luckey-21a16959/",
     x: "https://x.com/PalmerLuckey",
   },
@@ -55,95 +57,97 @@ export const FOUNDERS: Founder[] = [
     // Co-founder & Executive Chairman; partner at Founders Fund.
     name: "Trae Stephens",
     companyName: "Anduril",
+    headshot: "/founders/cutouts/trae-stephens.png",
     linkedin: "https://www.linkedin.com/in/trae-stephens-485a811/",
   },
   {
     name: "Vishaal Mali",
     companyName: "Salient Motion",
-    headshot: "/founders/vishaal-mali.jpg",
+    headshot: "/founders/cutouts/vishaal-mali.png",
     linkedin: "https://www.linkedin.com/in/vishaalmali/",
   },
   {
     name: "Amjad Masad",
     companyName: "Replit",
-    headshot: "/founders/amjad-masad.jpg",
+    headshot: "/founders/cutouts/amjad-masad.png",
     linkedin: "https://www.linkedin.com/in/amjadmasad/",
     x: "https://x.com/amasad",
   },
   {
     name: "Qasar Younis",
     companyName: "Applied Intuition",
-    headshot: "/founders/qasar-younis.jpg",
+    headshot: "/founders/cutouts/qasar-younis.png",
     linkedin: "https://www.linkedin.com/in/qasar/",
   },
   {
     name: "Brett Adcock",
     companyName: "Figure AI",
-    headshot: "/founders/brett-adcock.jpg",
+    headshot: "/founders/cutouts/brett-adcock.png",
     linkedin: "https://www.linkedin.com/in/brettadcock/",
     x: "https://x.com/adcock_brett",
   },
   {
     name: "Jeff Cardenas",
     companyName: "Apptronik",
-    headshot: "/founders/jeff-cardenas.jpg",
+    headshot: "/founders/cutouts/jeff-cardenas.png",
     linkedin: "https://www.linkedin.com/in/jeffrey-cardenas",
   },
   {
     // Co-founder & CTO.
     name: "Nick Paine",
     companyName: "Apptronik",
+    headshot: "/founders/cutouts/nick-paine.png",
     linkedin: "https://www.linkedin.com/in/nipaine/",
   },
   {
     name: "Tapa Ghosh",
     companyName: "Volantis",
-    headshot: "/founders/tapa-ghosh.jpg",
+    headshot: "/founders/cutouts/tapa-ghosh.png",
     linkedin: "https://www.linkedin.com/in/tapa-ghosh-156640102/",
     x: "https://x.com/semiDL",
   },
   {
     name: "Philip Johnston",
     companyName: "Starcloud",
-    headshot: "/founders/philip-johnston.jpg",
+    headshot: "/founders/cutouts/philip-johnston.png",
     linkedin: "https://www.linkedin.com/in/johnstonphilip/",
   },
   {
     name: "Hannan Happi",
     companyName: "Exowatt",
-    headshot: "/founders/hannan-happi.jpg",
+    headshot: "/founders/cutouts/hannan-happi.png",
     linkedin: "https://www.linkedin.com/in/hannanhappi/",
   },
   {
     name: "Matt Loszak",
     companyName: "Aalo Atomics",
-    headshot: "/founders/matt-loszak.jpg",
+    headshot: "/founders/cutouts/matt-loszak.png",
     linkedin: "https://www.linkedin.com/in/matt-loszak/",
     x: "https://x.com/MattLoszak",
   },
   {
     name: "Carlos Araque",
     companyName: "Quaise Energy",
-    headshot: "/founders/carlos-araque.jpg",
+    headshot: "/founders/cutouts/carlos-araque.png",
     linkedin: "https://www.linkedin.com/in/quaise/",
   },
   {
     name: "Beth Esponnette",
     companyName: "Unspun",
-    headshot: "/founders/beth-esponnette.jpg",
+    headshot: "/founders/cutouts/beth-esponnette.png",
     linkedin: "https://www.linkedin.com/in/beth-esponnette-66763023/",
   },
   {
     name: "Caleb Chan",
     companyName: "Lance",
-    headshot: "/founders/caleb-chan.jpg",
+    headshot: "/founders/cutouts/caleb-chan.png",
     linkedin: "https://www.linkedin.com/in/caleb-chan-327b14239/",
     x: "https://x.com/calebychan",
   },
   {
     name: "Eric Schirtzinger",
     companyName: "Samply",
-    headshot: "/founders/eric-schirtzinger.jpg",
+    headshot: "/founders/cutouts/eric-schirtzinger.png",
     linkedin: "https://www.linkedin.com/in/eschirtz/",
     x: "https://x.com/eschirtz",
   },
@@ -151,51 +155,55 @@ export const FOUNDERS: Founder[] = [
     // Brett Adcock founded both Figure AI and Hark (his AI lab).
     name: "Brett Adcock",
     companyName: "Hark",
-    headshot: "/founders/brett-adcock.jpg",
+    headshot: "/founders/cutouts/brett-adcock.png",
     linkedin: "https://www.linkedin.com/in/brettadcock/",
     x: "https://x.com/adcock_brett",
   },
   {
     name: "Jonathan Moon",
     companyName: "Bud Break Innovations",
-    headshot: "/founders/jonathan-moon.jpg",
+    headshot: "/founders/cutouts/jonathan-moon.png",
     linkedin: "https://www.linkedin.com/in/jmoon0714/",
     x: "https://x.com/jmoonio",
   },
   {
     name: "Hamza Derbas",
     companyName: "Maven Robotics",
-    headshot: "/founders/hamza-derbas.jpg",
+    headshot: "/founders/cutouts/hamza-derbas.png",
     linkedin: "https://www.linkedin.com/in/hamzaderbas",
   },
   {
     // Co-founder & CEO (Paulo da Costa is co-founder/COO).
     name: "Nick Aubin",
     companyName: "Commons Clinic",
-    headshot: "/founders/nick-aubin.jpg",
+    headshot: "/founders/cutouts/nick-aubin.png",
     linkedin: "https://www.linkedin.com/in/nick-aubin-56883647/",
   },
   {
     // Co-founder & COO of Commons Clinic.
     name: "Paulo da Costa",
     companyName: "Commons Clinic",
+    headshot: "/founders/cutouts/paulo-da-costa.png",
     linkedin: "https://www.linkedin.com/in/paulo-da-costa-9abb739/",
   },
   {
-    // Co-founder & CEO (Jose Isaac Robledo is the other co-founder). No headshot yet.
+    // Co-founder & CEO (Jose Isaac Robledo is the other co-founder).
     name: "Andrew Peterson",
     companyName: "Array Labs",
+    headshot: "/founders/cutouts/andrew-peterson.png",
     linkedin: "https://www.linkedin.com/in/andrew-peterson-array-labs/",
   },
   {
     // Corgi co-founders — Nico (CEO/CTO) first so the company card deep-links to him.
     name: "Nico Laqua",
     companyName: "Corgi",
+    headshot: "/founders/cutouts/nico-laqua.png",
     linkedin: "https://www.linkedin.com/in/nico-laqua-302b17233/",
   },
   {
     name: "Emily Yuan",
     companyName: "Corgi",
+    headshot: "/founders/cutouts/emily-yuan.png",
     linkedin: "https://www.linkedin.com/in/emilyyuan96",
   },
   {
@@ -203,31 +211,34 @@ export const FOUNDERS: Founder[] = [
     // US arm of a Polish industrial automation company).
     name: "Marek Gabryś",
     companyName: "Aformic",
+    headshot: "/founders/cutouts/marek-gabrys.png",
     linkedin: "https://pl.linkedin.com/in/marek-gabry%C5%9B-11b0b51",
   },
   {
     // CEO of Aformic.
     name: "Michal Fiuk",
     companyName: "Aformic",
+    headshot: "/founders/cutouts/michal-fiuk.png",
     linkedin: "https://www.linkedin.com/in/michalfiuk",
   },
   // Moved toward the bottom by request — shown after everyone else.
   {
     name: "Sam Altman",
     companyName: "OpenAI",
-    headshot: "/founders/sam-altman.jpg",
+    headshot: "/founders/cutouts/sam-altman.png",
     x: "https://x.com/sama",
   },
   {
     // Co-founder & President of OpenAI.
     name: "Greg Brockman",
     companyName: "OpenAI",
+    headshot: "/founders/cutouts/greg-brockman.png",
     x: "https://x.com/gdb",
   },
   {
     name: "Michael LaFramboise",
     companyName: "Aurelius Systems",
-    headshot: "/founders/michael-laframboise.jpg",
+    headshot: "/founders/cutouts/michael-laframboise.png",
     linkedin: "https://www.linkedin.com/in/michael-laframboise/",
     x: "https://x.com/LaFrogman",
   },

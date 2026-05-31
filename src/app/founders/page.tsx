@@ -23,6 +23,10 @@ export const metadata: Metadata = {
 function FounderCard({ founder }: { founder: Founder }) {
   const company = companyForFounder(founder);
   const hasHeadshot = Boolean(founder.headshot);
+  const hoverHeadshot = founder.headshot?.replace(
+    "/founders/cutouts/",
+    "/founders/backgrounds/",
+  );
   // Unique anchor (name + company) so multiple founders can share a company;
   // company cards deep-link here via the same scheme.
   const anchor = founderAnchor(founder);
@@ -33,18 +37,29 @@ function FounderCard({ founder }: { founder: Founder }) {
   return (
     <div
       id={anchor}
-      className="group founder-card relative scroll-mt-[100px] overflow-hidden rounded-2xl bg-[#0b0b0d] aspect-[674/720] max-md:aspect-[4/5]"
+      className="group founder-card relative scroll-mt-[100px] overflow-hidden rounded-2xl bg-white ring-1 ring-black/[0.06] aspect-[674/720] max-md:aspect-[4/5]"
     >
       {/* Headshot, or a clean placeholder until a photo is added */}
       {hasHeadshot ? (
-        <Image
-          src={founder.headshot as string}
-          alt={founder.name}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          quality={90}
-          className="object-cover object-top brightness-[0.8] transition-[filter] duration-200 ease-out group-hover:brightness-100"
-        />
+        <>
+          <Image
+            src={hoverHeadshot as string}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            quality={90}
+            loading="eager"
+            className="founder-photo-background object-cover object-top"
+          />
+          <Image
+            src={founder.headshot as string}
+            alt={founder.name}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            quality={90}
+            className="founder-photo-cutout object-cover object-top"
+          />
+        </>
       ) : (
         <div
           className={cn(
@@ -62,8 +77,8 @@ function FounderCard({ founder }: { founder: Founder }) {
         </div>
       )}
 
-      {/* Legibility gradient — lighter so the headshot leads; brightens on hover */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+      {/* Legibility gradient — bottom-only so the default portrait stays on white. */}
+      <div className="absolute inset-x-0 bottom-0 h-[48%] bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
 
       {/* Stretched link — the whole card (except the company + social links below)
           opens the founder's profile: LinkedIn first, then X. */}
