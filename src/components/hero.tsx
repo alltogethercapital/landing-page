@@ -10,37 +10,42 @@ import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(SplitText);
 
-// Each hero slide is a portfolio company. The image + video come from the
-// shared PORTFOLIO data (single source of truth — same videos as /companies);
-// the caption is hero-specific copy. Latest company first.
+// Each hero slide is a portfolio company. The image comes from the shared
+// portfolio data; the background video is a local full-length MP4 so the hero
+// never exposes third-party iframe chrome.
 type Slide = {
   name: string;
   img: string;
   title: string;
   subtitle: string;
   href: string;
-  video?: string;
-  videoStart?: number;
+  heroVideo?: string;
 };
 
-const SLIDE_COPY: Pick<Slide, "name" | "title" | "subtitle" | "href">[] = [
+const SLIDE_COPY: Pick<
+  Slide,
+  "name" | "title" | "subtitle" | "href" | "heroVideo"
+>[] = [
   {
     name: "Shield AI",
     title: "Shield AI X-BAT",
     subtitle: "The first AI-piloted VTOL fighter jet",
     href: "https://shield.ai/x-bat/",
+    heroVideo: "/hero-videos/shield-ai-xbat.mp4",
   },
   {
     name: "1X",
     title: "1X NEO",
     subtitle: "The humanoid robot engineered for the home",
     href: "https://www.1x.tech/",
+    heroVideo: "/hero-videos/1x-neo-factory.mp4",
   },
   {
     name: "Figure AI",
     title: "Figure 03",
     subtitle: "The humanoid robot built for work and the home",
     href: "https://www.figure.ai/",
+    heroVideo: "/hero-videos/figure-03.mp4",
   },
 ];
 
@@ -49,19 +54,11 @@ const SLIDES: Slide[] = SLIDE_COPY.map((c) => {
   return {
     ...c,
     img: company?.image ?? "",
-    video: company?.video,
-    videoStart: company?.videoStart,
   };
 });
 
 const IMAGE_HOLD_MS = 2000; // show each company image for two seconds before video
 const FADE_MS = 850; // crossfade from the ending video to the next company image
-// Play each video essentially to its end before advancing — a tiny pad so the
-// crossfade to the next slide begins just before the final frame.
-const VIDEO_END_PAD_S = 2;
-// If playback can't progress for this long (autoplay blocked / stalled), advance
-// anyway so the slideshow never hangs.
-const VIDEO_STALL_MS = 8000;
 
 // Glyphs: binary 0/1.
 const GLYPHS = ["0", "1"] as const;
@@ -300,289 +297,100 @@ function Chevron({ dir, className }: { dir: "left" | "right"; className?: string
   );
 }
 
-// ── Full-bleed YouTube background player ──────────────────────
-// Loads the IFrame API once, autoplays muted, fills the viewport (object-cover),
-// supports a mute toggle, and reports when the clip ends.
-type YTPlayer = {
-  mute: () => void;
-  unMute: () => void;
-  playVideo: () => void;
-  destroy: () => void;
-  getCurrentTime: () => number;
-  getDuration: () => number;
-  getVolume: () => number;
-  setVolume: (v: number) => void;
-};
-type YTPlayerEvent = { target: YTPlayer; data: number };
-type YTNamespace = {
-  Player: new (el: HTMLElement, opts: unknown) => YTPlayer;
-  PlayerState: { PLAYING: number; PAUSED: number; ENDED: number };
-};
-declare global {
-  interface Window {
-    YT?: YTNamespace;
-    onYouTubeIframeAPIReady?: () => void;
-  }
-}
-
-let ytApiPromise: Promise<YTNamespace | null> | null = null;
-function loadYouTubeApi(): Promise<YTNamespace | null> {
-  if (typeof window === "undefined") return Promise.resolve(null);
-  if (window.YT?.Player) return Promise.resolve(window.YT);
-  if (ytApiPromise) return ytApiPromise;
-  ytApiPromise = new Promise((resolve) => {
-    const prev = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = () => {
-      prev?.();
-      resolve(window.YT ?? null);
-    };
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(tag);
-  });
-  return ytApiPromise;
-}
-
+// ── Full-bleed native background video ──────────────────────
+// Native video keeps the hero free of third-party iframe chrome, including the
+// center play/pause overlay YouTube can paint inside its own frame.
 function HeroVideoPlayer({
-  videoId,
-  start = 0,
+  src,
   muted,
   visible,
   onEnded,
   onRevealChange,
 }: {
-  videoId: string;
-  start?: number;
+  src: string;
   muted: boolean;
   visible: boolean;
   onEnded: () => void;
   onRevealChange?: (revealed: boolean) => void;
 }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const coverRef = useRef<HTMLDivElement>(null);
-  const holderRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<YTPlayer | null>(null);
-  const doneRef = useRef(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const fadeRef = useRef<number | undefined>(undefined);
-  const wasShownRef = useRef(false);
-  const lastTimeRef = useRef(0); // last getCurrentTime — for stall detection
-  const lastProgressRef = useRef(0); // wall-clock of last real progress
-  // True only while the player reports an explicit PAUSED state. The video hides
-  // instantly whenever it's paused, so YouTube's center play/pause button can
-  // never be seen — but it defaults false so a normal reveal is never blocked.
-  const [paused, setPaused] = useState(false);
-  // The video is visually shown as soon as the two-second image phase ends.
-  // Audio is tied to this so sound and visuals switch together.
-  const reveal = visible && !paused;
+  const doneRef = useRef(false);
+  const [playing, setPlaying] = useState(false);
+  const reveal = visible && playing;
 
-  // Notify the parent whenever the video's reveal state changes — keeps the
-  // decorative layers (glyph field, light rays, smoke) visible until the
-  // video actually fades in, not just when the phase flips to "video".
   useEffect(() => {
     onRevealChange?.(reveal);
   }, [reveal, onRevealChange]);
 
-  // Advance to the next slide exactly once (whether via the end-poll or events).
   const finish = useCallback(() => {
     if (doneRef.current) return;
     doneRef.current = true;
+    setPlaying(false);
     onEnded();
   }, [onEnded]);
 
-  // Quick volume ramp so sound never snaps on/off abruptly.
-  const fadeTo = useCallback((target: number, ms = 400) => {
-    const p = playerRef.current;
-    if (!p?.setVolume) return;
+  const fadeVolumeTo = useCallback((target: number, ms = 400) => {
+    const video = videoRef.current;
+    if (!video) return;
     window.clearInterval(fadeRef.current);
-    const fadingIn = target > 0;
-    let cur: number;
-    if (fadingIn) {
-      try {
-        // Volume to 0 BEFORE unmuting, so unmuting can't pop at full volume for a
-        // frame — the ramp then brings sound up cleanly from true silence.
-        p.setVolume(0);
-        p.unMute();
-      } catch {
-        /* not ready */
-      }
-      cur = 0;
-    } else {
-      try {
-        cur = p.getVolume?.() ?? 100;
-      } catch {
-        cur = 100;
-      }
-    }
+    const start = video.volume;
     const steps = Math.max(1, Math.round(ms / 25));
     let i = 0;
+    if (target > 0) video.muted = false;
     fadeRef.current = window.setInterval(() => {
       i += 1;
-      const v = Math.round(cur + (target - cur) * (i / steps));
-      try {
-        p.setVolume(v);
-      } catch {
-        /* player gone */
-      }
+      const next = start + (target - start) * (i / steps);
+      video.volume = Math.min(1, Math.max(0, next));
       if (i >= steps) {
         window.clearInterval(fadeRef.current);
         fadeRef.current = undefined;
-        if (!fadingIn) {
-          try {
-            p.mute();
-          } catch {
-            /* player gone */
-          }
-        }
+        video.volume = target;
+        if (target === 0) video.muted = true;
       }
     }, 25);
   }, []);
 
-  // Create the player.
   useEffect(() => {
-    let cancelled = false;
-    loadYouTubeApi().then((YT) => {
-      if (cancelled || !YT || !holderRef.current) return;
-      playerRef.current = new YT.Player(holderRef.current, {
-        videoId,
-        width: "100%",
-        height: "100%",
-        playerVars: {
-          autoplay: 1,
-          mute: 1,
-          controls: 0,
-          rel: 0,
-          modestbranding: 1,
-          playsinline: 1,
-          start,
-          disablekb: 1,
-          fs: 0,
-          iv_load_policy: 3,
-          cc_load_policy: 0,
-        },
-        events: {
-          onReady: (e: YTPlayerEvent) => {
-            // Always start muted while hidden; the mute effect applies the real
-            // preference once the video is actually shown.
-            e.target.mute();
-            try {
-              e.target.playVideo();
-            } catch {
-              /* player not ready */
-            }
-          },
-          onStateChange: (e: YTPlayerEvent) => {
-            const s = e.data;
-            // Hide the video the instant it pauses so YouTube's center play/pause
-            // button is never seen; it shows again as soon as it's playing.
-            setPaused(s === YT.PlayerState.PAUSED);
-            // Never sit on a paused frame — resume on the NEXT tick (after it's
-            // hidden) so the resume can't flash the indicator on screen.
-            if (s === YT.PlayerState.PAUSED) {
-              window.setTimeout(() => {
-                try {
-                  e.target.playVideo();
-                } catch {
-                  /* player gone */
-                }
-              }, 60);
-            }
-            if (s === YT.PlayerState.ENDED) finish();
-          },
-          onError: () => finish(),
-        },
-      });
-    });
-    return () => {
-      cancelled = true;
-      window.clearInterval(fadeRef.current);
-      try {
-        playerRef.current?.destroy();
-      } catch {
-        /* player already gone */
-      }
-      playerRef.current = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [videoId, start]);
+    const video = videoRef.current;
+    if (!video) return;
 
-  // Poll playback so videos play through to the end before advancing, and
-  // advance if playback stalls so the slideshow never hangs.
-  useEffect(() => {
-    lastTimeRef.current = start;
-    lastProgressRef.current = Date.now();
-    const id = window.setInterval(() => {
-      const p = playerRef.current;
-      if (!p?.getDuration || !p.getCurrentTime) return;
-      const dur = p.getDuration();
-      const cur = p.getCurrentTime();
-      // Track real progress for hang protection.
-      if (cur > lastTimeRef.current + 0.05) {
-        lastTimeRef.current = cur;
-        lastProgressRef.current = Date.now();
-      }
-      if (dur > 0 && cur >= dur - VIDEO_END_PAD_S) {
-        // Played to (effectively) the end → advance to the next slide.
-        window.clearInterval(id);
-        finish();
-      } else if (Date.now() - lastProgressRef.current > VIDEO_STALL_MS) {
-        // Can't progress (autoplay blocked / stalled) → advance so it never hangs.
-        window.clearInterval(id);
-        finish();
-      }
-    }, 200);
-    return () => window.clearInterval(id);
-  }, [finish, start]);
+    window.clearInterval(fadeRef.current);
+    doneRef.current = false;
+    setPlaying(false);
 
-  // Audio follows the VISUAL reveal — not the phase — so sound switches in step
-  // with the picture: silent while the video plays hidden behind the image, then
-  // fades in exactly as the video fades in, and fades out as it leaves.
-  useEffect(() => {
-    const p = playerRef.current;
-    if (!p) return;
-    if (reveal) {
-      wasShownRef.current = true;
-      // Clear, audible fade-in as the video appears (quick fade to silent if muted).
-      fadeTo(muted ? 0 : 100, muted ? 250 : 700);
-    } else if (wasShownRef.current) {
-      fadeTo(0); // was shown, now leaving → fade the audio out with the visuals
-    } else {
-      window.clearInterval(fadeRef.current);
-      try {
-        p.mute(); // still preloading hidden → silent instantly
-      } catch {
-        /* not ready */
-      }
+    if (!visible) {
+      video.pause();
+      video.currentTime = 0;
+      video.volume = 0;
+      video.muted = true;
+      onRevealChange?.(false);
+      return;
     }
-  }, [muted, reveal, fadeTo]);
 
-  // object-cover: size a 16:9 box to overflow + center within the viewport.
-  // The 1.4x overscale crops the iframe's top/bottom edges out of view — that's
-  // where YouTube renders its title bar and "more videos"/share chrome, so it's
-  // never visible (the wrap is overflow-hidden).
-  useEffect(() => {
-    const wrap = wrapRef.current;
-    const cover = coverRef.current;
-    if (!wrap || !cover) return;
-    const resize = () => {
-      const w = wrap.clientWidth;
-      const h = wrap.clientHeight;
-      const scale = Math.max(w / 16, h / 9) * 1.4;
-      const vw = 16 * scale;
-      const vh = 9 * scale;
-      cover.style.width = `${vw}px`;
-      cover.style.height = `${vh}px`;
-      cover.style.left = `${(w - vw) / 2}px`;
-      cover.style.top = `${(h - vh) / 2}px`;
+    video.currentTime = 0;
+    video.volume = 0;
+    video.muted = true;
+    const play = video.play();
+    if (play && typeof play.catch === "function") {
+      play.catch(() => {
+        video.muted = true;
+        video.volume = 0;
+        video.play().catch(finish);
+      });
+    }
+
+    return () => {
+      window.clearInterval(fadeRef.current);
+      video.pause();
     };
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(wrap);
-    return () => ro.disconnect();
-  }, []);
+  }, [finish, onRevealChange, src, visible]);
 
-  // Fade in when revealing, fade out when leaving (the seamless end crossfade);
-  // but on a mid-play pause (visible yet not playing) hide INSTANTLY so YouTube's
-  // play/pause button is never seen.
+  useEffect(() => {
+    if (!visible || !playing) return;
+    fadeVolumeTo(muted ? 0 : 1, muted ? 250 : 700);
+  }, [fadeVolumeTo, muted, playing, visible]);
+
   return (
     <div
       aria-hidden="true"
@@ -592,11 +400,28 @@ function HeroVideoPlayer({
         (reveal || !visible) && "transition-opacity duration-700 ease-in-out",
       )}
     >
-      <div ref={wrapRef} className="absolute inset-0 overflow-hidden">
-        <div ref={coverRef} className="absolute">
-          <div ref={holderRef} className="size-full" />
-        </div>
-      </div>
+      <video
+        ref={videoRef}
+        src={src}
+        className="absolute inset-0 size-full object-cover"
+        playsInline
+        preload="auto"
+        disablePictureInPicture
+        controls={false}
+        controlsList="nodownload noplaybackrate noremoteplayback"
+        onPlaying={() => setPlaying(true)}
+        onCanPlay={() => {
+          const video = videoRef.current;
+          if (visible && video && !video.paused) setPlaying(true);
+        }}
+        onPause={() => {
+          const video = videoRef.current;
+          if (!visible || !video || video.ended) return;
+          video.play().catch(() => undefined);
+        }}
+        onEnded={finish}
+        onError={finish}
+      />
       {/* Brand-blue tint over the video — keyed to the logo's background blue
           (#025C80), lightened and low-opacity so it tints the footage without
           making it feel darker. Fades in/out with the reveal via the parent. */}
@@ -616,7 +441,7 @@ export function Hero() {
   // Brief "sound lives here" highlight on the audio button — pulsed on each
   // video start while still muted (see the flash effect below).
   const [flash, setFlash] = useState(false);
-  // Whether the YouTube video has visually revealed (faded in) for the current
+  // Whether the native video has visually revealed (faded in) for the current
   // slide — keeps decorations (glyphs, rays, smoke) on screen until the video
   // actually appears, not just when the phase flips internally.
   const [revealed, setRevealed] = useState(false);
@@ -751,14 +576,13 @@ export function Hero() {
   };
 
   // Per company: image → video → "fade" (crossfade to the NEXT company).
-  // The video phase is advanced by the player itself (plays through, then its
-  // poll calls onEnded near the end or on a stall) — no wall-clock cap here, so
-  // videos are never cut short.
+  // The video phase advances on the native ended event, with no wall-clock cap,
+  // so full clips play through before the next slide.
   useEffect(() => {
     if (phase === "video") return;
     const id = setTimeout(
       () => {
-        if (phase === "image" && slide.video) {
+        if (phase === "image" && slide.heroVideo) {
           setPhase("video");
         } else {
           setActive((i) => (i + 1) % SLIDES.length);
@@ -768,7 +592,7 @@ export function Hero() {
       phase === "image" ? IMAGE_HOLD_MS : FADE_MS,
     );
     return () => clearTimeout(id);
-  }, [phase, active, slide.video]);
+  }, [phase, active, slide.heroVideo]);
 
   const handleVideoEnd = useCallback(() => setPhase("fade"), []);
 
@@ -851,13 +675,12 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Full-bleed video — preloads/plays hidden during the image phase, then
-          reveals as soon as the two-second image hold ends. */}
-      {slide.video && (
+      {/* Full-bleed video — starts after the two-second image hold and advances
+          only when the full native file ends. */}
+      {slide.heroVideo && (
         <HeroVideoPlayer
           key={slide.name}
-          videoId={slide.video}
-          start={slide.videoStart}
+          src={slide.heroVideo}
           muted={muted}
           visible={phase === "video"}
           onEnded={handleVideoEnd}
