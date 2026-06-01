@@ -785,23 +785,23 @@ export function Hero() {
     };
   }, [phase, muted]);
 
-  // Audio toggle — a large, icon-only, see-through control (no background) so the
-  // video shows through. Positioned bottom-right of the hero.
+  // Audio toggle — small and glassy, tucked into the hero's lower-right utility
+  // corner so it stays discoverable without competing with the content.
   const renderMute = (extra: string) => (
     <button
       type="button"
       onClick={() => setMuted((m) => !m)}
       aria-label={muted ? "Unmute video" : "Mute video"}
       className={cn(
-        "pointer-events-auto inline-flex size-14 items-center justify-center text-white/85 [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.55))] transition-colors duration-200 hover:text-[#ff4400] md:size-[68px]",
+        "pointer-events-auto inline-flex size-11 items-center justify-center rounded-full border border-white/30 bg-black/35 text-white/85 backdrop-blur-sm [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.55))] transition-colors duration-200 hover:border-[#ff4400]/70 hover:bg-black/45 hover:text-[#ff4400]",
         flash && "unmute-flash",
         extra,
       )}
     >
       {muted ? (
-        <SoundOffIcon className="size-8 md:size-11" />
+        <SoundOffIcon className="size-6" />
       ) : (
-        <SoundOnIcon className="size-8 md:size-11" />
+        <SoundOnIcon className="size-6" />
       )}
     </button>
   );
@@ -943,9 +943,6 @@ export function Hero() {
           {/* Cycling caption (links to product) + slide arrows — pinned to the
               bottom (above the wordmark) on mobile, absolute on desktop */}
           <div className="hero-caption-wrap mt-auto lg:absolute lg:left-[var(--hero-frame-x)] lg:bottom-[calc(16.5vw_+_70px)] lg:mt-0 lg:max-w-[680px]">
-            {/* Mobile audio toggle — above the caption, right-aligned, always
-                visible so the control is discoverable (md+ uses the bottom-right one) */}
-            <div className="mb-3 flex justify-end md:hidden">{renderMute("")}</div>
             <div className="flex max-w-full items-center gap-3 md:gap-5">
               <button
                 type="button"
@@ -1026,10 +1023,9 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Audio toggle — large, see-through, bottom-right above the wordmark.
-          Always visible; it flashes briefly on each video start while muted. */}
+      {/* Audio toggle — lower-right utility control, above the wordmark. */}
       {renderMute(
-        "absolute z-20 bottom-[calc(min(16.5vw,27svh)_+_56px)] max-md:hidden md:right-[var(--site-frame-x)] lg:right-[var(--hero-frame-x)]",
+        "absolute bottom-[calc(min(16.5vw,24svh)_+_24px)] right-5 z-20 md:bottom-[calc(min(16.5vw,27svh)_+_32px)] md:right-[var(--site-frame-x)] lg:right-[var(--hero-frame-x)]",
       )}
     </section>
   );
