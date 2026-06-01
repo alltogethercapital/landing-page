@@ -23,21 +23,21 @@ const MEMBERS: Member[] = [
   {
     name: "Robert Neir",
     role: "Founding Partner",
-    img: "/leadership/robert-white.jpg",
+    img: "/leadership/robert-team-studio.png",
     linkedin: "https://www.linkedin.com/in/robertmneir/",
     email: "robertneir@alltogethercapital.com",
   },
   {
     name: "Hisham El-Husseini",
     role: "Founding Partner",
-    img: "/leadership/hisham-white.jpg",
+    img: "/leadership/hisham-team-studio.png",
     linkedin: "https://www.linkedin.com/in/hisham-el-husseini/",
     email: "hisham@alltogethercapital.com",
   },
   {
     name: "NEO",
     role: "Head of Robotics",
-    img: "/leadership/neo-white.jpg",
+    img: "/leadership/neo-team-studio.png",
     website: { label: "1x.tech", href: "https://www.1x.tech/" },
   },
 ];
