@@ -17,33 +17,29 @@ type Slide = {
   name: string;
   img: string;
   title: string;
-  subtitle: string;
   href: string;
   heroVideo?: string;
 };
 
 const SLIDE_COPY: Pick<
   Slide,
-  "name" | "title" | "subtitle" | "href" | "heroVideo"
+  "name" | "title" | "href" | "heroVideo"
 >[] = [
   {
     name: "Shield AI",
     title: "Shield AI X-BAT",
-    subtitle: "The first AI-piloted VTOL fighter jet",
     href: "https://shield.ai/x-bat/",
     heroVideo: "/hero-videos/shield-ai-xbat.mp4",
   },
   {
     name: "1X",
     title: "1X NEO",
-    subtitle: "The humanoid robot engineered for the home",
     href: "https://www.1x.tech/",
     heroVideo: "/hero-videos/1x-neo-factory.mp4",
   },
   {
     name: "Figure AI",
     title: "Figure 03",
-    subtitle: "The humanoid robot built for work and the home",
     href: "https://www.figure.ai/",
     heroVideo: "/hero-videos/figure-03.mp4",
   },
@@ -609,8 +605,7 @@ export function Hero() {
     };
   }, [phase, muted]);
 
-  // Audio toggle — small and glassy, tucked into the hero's lower-right utility
-  // corner so it stays discoverable without competing with the content.
+  // Audio toggle — small and glassy, used inside the compact slide rail.
   const renderMute = (extra: string) => (
     <button
       type="button"
@@ -717,9 +712,7 @@ export function Hero() {
 
       {/* HERO CONTENT (flows on mobile, absolute on md+) */}
       <div className="pointer-events-none absolute inset-0 z-10">
-        {/* On mobile the column reserves bottom room (scaled to the wordmark's
-            cqw height) so the caption cluster sits just above the wordmark. */}
-        <div className="flex h-full flex-col gap-7 px-6 pt-[96px] pb-[calc(34px_+_16.5vw)] lg:block lg:p-0">
+        <div className="flex h-full flex-col gap-7 px-6 pt-[96px] lg:block lg:p-0">
           {/* Headline */}
           <div className="hero-headline-wrap lg:absolute lg:left-[var(--hero-frame-x)] lg:top-[175px] lg:max-w-[640px]">
             <h1
@@ -763,69 +756,47 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Cycling caption (links to product) + slide arrows — pinned to the
-              bottom (above the wordmark) on mobile, absolute on desktop */}
-          <div className="hero-caption-wrap mt-auto lg:absolute lg:left-[var(--hero-frame-x)] lg:bottom-[calc(16.5vw_+_70px)] lg:mt-0 lg:max-w-[680px]">
-            <div className="flex max-w-full items-center gap-3 md:gap-5">
+          {/* Compact slide rail — kept out of the center so the footage breathes. */}
+          <div className="hero-caption-wrap absolute right-4 bottom-[calc(16.5vw_+_22px)] z-20 md:right-[var(--site-frame-x)] md:bottom-[calc(min(16.5vw,27svh)_+_28px)] lg:right-[var(--hero-frame-x)]">
+            <div
+              className={cn(
+                "pointer-events-auto flex max-w-[calc(100vw-32px)] items-center gap-1 rounded-full border border-white/15 bg-black/25 px-1.5 py-1.5 text-white shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-md transition-opacity duration-500",
+                phase === "fade" ? "opacity-0" : "opacity-100",
+              )}
+            >
               <button
                 type="button"
                 onClick={() => go(active - 1)}
                 aria-label="Previous slide"
-                className="pointer-events-auto flex size-11 shrink-0 items-center justify-center text-white/80 [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.65))] transition-colors hover:text-[#ff4400] md:size-[54px]"
+                className="flex size-8 shrink-0 items-center justify-center rounded-full text-white/80 transition-colors hover:bg-white/10 hover:text-[#ff4400]"
               >
-                <Chevron dir="left" className="size-9 md:size-11" />
+                <Chevron dir="left" className="size-5" />
               </button>
 
-              <div
-                className={cn(
-                  "min-w-0 transition-opacity duration-500",
-                  phase === "fade" ? "opacity-0" : "opacity-100",
-                )}
+              <a
+                key={active}
+                href={slide.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${slide.name} — visit site`}
+                className="min-w-0 max-w-[150px] px-2 text-[12px] font-medium leading-none text-white/90 transition-colors hover:text-[#ff4400] md:max-w-[190px] md:text-[13px]"
               >
-                {/* Re-keyed on `active` so the eyebrow → name → text animate in
-                    on every slide switch, pulling the eye to the company we're showing. */}
-                <a
-                  key={active}
-                  href={slide.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${slide.name} — visit site`}
-                  className="group pointer-events-auto block min-w-0"
-                >
-                  {/* Eyebrow — labels the company the hero is featuring */}
-                  <span className="hero-line-in mb-2 block text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4400] [text-shadow:0_1px_8px_rgba(0,0,0,0.55)] md:mb-2.5 md:text-[13px]">
-                    Featuring
-                  </span>
-                  {/* Company / product name — the focal point, revealed word-by-word */}
-                  <span className="flex flex-wrap items-baseline gap-x-[0.26em] text-[34px] font-semibold leading-[1.0] tracking-[-1.5px] text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.55)] md:text-[56px] md:tracking-[-2.4px]">
-                    {slide.title.split(" ").map((word, index) => (
-                      <span
-                        key={index}
-                        className="hero-name-word"
-                        style={{ animationDelay: `${index * 85}ms` }}
-                      >
-                        {word}
-                      </span>
-                    ))}
-                  </span>
-                  {/* Supporting line — augments the name */}
-                  <span
-                    className="hero-line-in mt-3 block max-w-[500px] text-[15px] leading-[1.4] text-white/80 [text-shadow:0_1px_10px_rgba(0,0,0,0.5)] md:text-[20px] md:leading-[1.45]"
-                    style={{ animationDelay: "240ms" }}
-                  >
-                    {slide.subtitle}
-                  </span>
-                </a>
-              </div>
+                <span className="block truncate">{slide.title}</span>
+              </a>
 
               <button
                 type="button"
                 onClick={() => go(active + 1)}
                 aria-label="Next slide"
-                className="pointer-events-auto flex size-11 shrink-0 items-center justify-center text-white/80 [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.65))] transition-colors hover:text-[#ff4400] md:size-[54px]"
+                className="flex size-8 shrink-0 items-center justify-center rounded-full text-white/80 transition-colors hover:bg-white/10 hover:text-[#ff4400]"
               >
-                <Chevron dir="right" className="size-9 md:size-11" />
+                <Chevron dir="right" className="size-5" />
               </button>
+
+              <span aria-hidden="true" className="mx-0.5 h-4 w-px bg-white/15" />
+              {renderMute(
+                "size-8 border-0 bg-transparent text-white/80 backdrop-blur-none [filter:none] hover:bg-white/10 hover:text-[#ff4400]",
+              )}
             </div>
           </div>
         </div>
@@ -845,11 +816,6 @@ export function Hero() {
           </span>
         </div>
       </div>
-
-      {/* Audio toggle — lower-right utility control, above the wordmark. */}
-      {renderMute(
-        "absolute bottom-[calc(min(16.5vw,24svh)_+_24px)] right-5 z-20 md:bottom-[calc(min(16.5vw,27svh)_+_32px)] md:right-[var(--site-frame-x)] lg:right-[var(--hero-frame-x)]",
-      )}
     </section>
   );
 }
