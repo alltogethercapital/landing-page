@@ -19,6 +19,12 @@ export const metadata: Metadata = {
     "The founders we back — building the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
 };
 
+function studioHeadshotSrc(headshot: string) {
+  return headshot
+    .replace("/founders/cutouts/", "/founders/studio/")
+    .replace(/\.png$/, ".jpg");
+}
+
 function FounderCard({ founder }: { founder: Founder }) {
   const company = companyForFounder(founder);
   const hasHeadshot = Boolean(founder.headshot);
@@ -38,7 +44,7 @@ function FounderCard({ founder }: { founder: Founder }) {
       <div className="relative min-h-0 overflow-hidden bg-white">
         {hasHeadshot ? (
           <Image
-            src={founder.headshot as string}
+            src={studioHeadshotSrc(founder.headshot as string)}
             alt={founder.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

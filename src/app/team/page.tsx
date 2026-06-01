@@ -23,34 +23,34 @@ const MEMBERS: Member[] = [
   {
     name: "Robert Neir",
     role: "Founding Partner",
-    img: "/leadership/robert-white.jpg",
+    img: "/leadership/robert-studio.jpg",
     linkedin: "https://www.linkedin.com/in/robertmneir/",
     email: "robertneir@alltogethercapital.com",
   },
   {
     name: "Hisham El-Husseini",
     role: "Founding Partner",
-    img: "/leadership/hisham-white.jpg",
+    img: "/leadership/hisham-studio.jpg",
     linkedin: "https://www.linkedin.com/in/hisham-el-husseini/",
     email: "hisham@alltogethercapital.com",
   },
   {
     name: "NEO",
     role: "Head of Robotics",
-    img: "/leadership/neo-white.jpg",
+    img: "/leadership/neo-studio.jpg",
     website: { label: "1x.tech", href: "https://www.1x.tech/" },
   },
 ];
 
 function MemberCard({ m }: { m: Member }) {
   return (
-    <div className="group relative grid aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] overflow-hidden rounded-2xl bg-white ring-1 ring-black/[0.06] max-lg:aspect-[4/5]">
+    <div className="group relative grid aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] overflow-hidden rounded-2xl bg-white ring-1 ring-black/[0.06] max-md:aspect-[4/5]">
       <div className="relative min-h-0 overflow-hidden bg-white">
         <Image
           src={m.img}
           alt={m.name}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           quality={90}
           className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.025]"
         />
@@ -111,7 +111,7 @@ export default function TeamPage() {
         <h1 className="font-mono text-[12px] uppercase tracking-[0.22em] text-[#0b0b0d]/45">
           Leadership
         </h1>
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {MEMBERS.map((m) => (
             <MemberCard key={m.name} m={m} />
           ))}
