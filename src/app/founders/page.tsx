@@ -19,10 +19,18 @@ export const metadata: Metadata = {
     "The founders we back — building the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
 };
 
+const STUDIO_HEADSHOT_OVERRIDES: Record<string, string> = {
+  "/founders/cutouts/andrew-peterson.png": "/founders/white/andrew-peterson.png",
+  "/founders/cutouts/dario-amodei.png": "/founders/white/dario-amodei.png",
+};
+
 function studioHeadshotSrc(headshot: string) {
-  return headshot
-    .replace("/founders/cutouts/", "/founders/studio/")
-    .replace(/\.png$/, ".jpg");
+  return (
+    STUDIO_HEADSHOT_OVERRIDES[headshot] ??
+    headshot
+      .replace("/founders/cutouts/", "/founders/studio/")
+      .replace(/\.png$/, ".jpg")
+  );
 }
 
 function FounderCard({ founder }: { founder: Founder }) {
