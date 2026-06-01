@@ -23,21 +23,21 @@ const MEMBERS: Member[] = [
   {
     name: "Robert Neir",
     role: "Founding Partner",
-    img: "/leadership/robert-studio.jpg",
+    img: "/leadership/robert-white.jpg",
     linkedin: "https://www.linkedin.com/in/robertmneir/",
     email: "robertneir@alltogethercapital.com",
   },
   {
     name: "Hisham El-Husseini",
     role: "Founding Partner",
-    img: "/leadership/hisham-studio.jpg",
+    img: "/leadership/hisham-white.jpg",
     linkedin: "https://www.linkedin.com/in/hisham-el-husseini/",
     email: "hisham@alltogethercapital.com",
   },
   {
     name: "NEO",
     role: "Head of Robotics",
-    img: "/leadership/neo-studio.jpg",
+    img: "/leadership/neo-white.jpg",
     website: { label: "1x.tech", href: "https://www.1x.tech/" },
   },
 ];
@@ -55,7 +55,7 @@ function MemberCard({ m }: { m: Member }) {
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           quality={90}
-          className="object-cover object-center"
+          className="object-contain object-center"
         />
 
         <div className="pointer-events-none absolute bottom-4 left-4 z-[2] max-w-[calc(100%-2rem)] translate-y-3 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 md:bottom-5 md:left-5 max-lg:translate-y-0 max-lg:opacity-100 [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100">
