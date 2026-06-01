@@ -35,7 +35,7 @@ function FounderCard({ founder }: { founder: Founder }) {
   return (
     <div
       id={anchor}
-      className="group founder-card relative grid scroll-mt-[100px] overflow-hidden rounded-2xl bg-white aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] max-md:aspect-[4/5]"
+      className="group founder-card relative grid scroll-mt-[100px] border-0 bg-transparent shadow-none outline-none aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] max-md:aspect-[4/5]"
     >
       {/* Headshot, or a clean placeholder until a photo is added */}
       <div className="relative min-h-0 overflow-hidden bg-white">
@@ -49,9 +49,9 @@ function FounderCard({ founder }: { founder: Founder }) {
             className="object-contain object-center"
           />
         ) : (
-          <div className="absolute inset-0 bg-[#f5f5f7]">
+          <div className="absolute inset-0 bg-white">
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="flex size-28 items-center justify-center rounded-full border border-black/10 bg-white text-[28px] font-semibold tracking-tight text-[#0b0b0d]/70 md:size-36 md:text-[36px]">
+              <span className="flex size-28 items-center justify-center bg-white text-[28px] font-semibold tracking-tight text-[#0b0b0d]/70 md:size-36 md:text-[36px]">
                 {initialsFor(founder.name)}
               </span>
             </div>
@@ -293,7 +293,7 @@ export default function FoundersPage() {
           empty cells left at the tail of the photo cards, so the only partial
           row is the very last one. */}
       <section className="px-6 pt-[104px] md:px-[40px] md:pt-[140px]">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-[1360px] grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {photoFounders.map((founder) => (
             <FounderCard key={founderAnchor(founder)} founder={founder} />
           ))}

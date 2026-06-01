@@ -47,7 +47,7 @@ function MemberCard({ m }: { m: Member }) {
   const profileLabel = m.linkedin ? "LinkedIn" : m.website ? m.website.label : "email";
 
   return (
-    <div className="group founder-card relative grid scroll-mt-[100px] overflow-hidden rounded-2xl bg-white aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] max-md:aspect-[4/5]">
+    <div className="group founder-card relative grid scroll-mt-[100px] border-0 bg-transparent shadow-none outline-none aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] max-md:aspect-[4/5]">
       <div className="relative min-h-0 overflow-hidden bg-white">
         <Image
           src={m.img}
@@ -135,7 +135,7 @@ export default function TeamPage() {
       <SiteNav showLogo />
 
       <section className="px-6 pt-[104px] md:px-[40px] md:pt-[140px]">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-[1360px] grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {MEMBERS.map((m) => (
             <MemberCard key={m.name} m={m} />
           ))}
