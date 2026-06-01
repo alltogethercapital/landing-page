@@ -1,12 +1,12 @@
 import type { ComponentType } from "react";
 import { LinkedInIcon, MailIcon } from "@/components/icons";
 
-// Emails to the fund reach both founding partners (both on the To line).
-export const CONTACT_RECIPIENTS = [
-  "robertneir@alltogethercapital.com",
-  "hisham@alltogethercapital.com",
-];
-export const CONTACT_MAILTO = `mailto:${CONTACT_RECIPIENTS.join(",")}`;
+export const CONTACT_RECIPIENT = "robertneir@alltogethercapital.com";
+export const CONTACT_CC = "hisham@alltogethercapital.com";
+export const CONTACT_RECIPIENTS = [CONTACT_RECIPIENT, CONTACT_CC];
+export const CONTACT_MAILTO = `mailto:${CONTACT_RECIPIENT}?cc=${encodeURIComponent(
+  CONTACT_CC,
+)}`;
 
 export type SocialLink = {
   label: string;
