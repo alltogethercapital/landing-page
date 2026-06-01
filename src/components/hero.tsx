@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { PORTFOLIO } from "@/lib/portfolio";
-import { ArrowUpRight, SoundOffIcon, SoundOnIcon } from "@/components/icons";
+import { SoundOffIcon, SoundOnIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(SplitText);
@@ -943,124 +943,76 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Cycling caption (links to product) + slide nav — pinned to the
+          {/* Cycling caption (links to product) + slide arrows — pinned to the
               bottom (above the wordmark) on mobile, absolute on desktop */}
           <div className="hero-caption-wrap mt-auto lg:absolute lg:left-[var(--hero-frame-x)] lg:bottom-[calc(16.5vw_+_70px)] lg:mt-0 lg:max-w-[680px]">
             {/* Mobile audio toggle — above the caption, right-aligned, always
                 visible so the control is discoverable (md+ uses the bottom-right one) */}
             <div className="mb-3 flex justify-end md:hidden">{renderMute("")}</div>
-            <div
-              className={cn(
-                "flex items-start gap-[14px] transition-opacity duration-500 md:gap-[18px]",
-                phase === "fade" ? "opacity-0" : "opacity-100",
-              )}
-            >
-              {/* Re-keyed on `active` so the eyebrow → name → text → arrow animate in
-                  on every slide switch, pulling the eye to the company we're showing. */}
-              <a
-                key={active}
-                href={slide.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${slide.name} — visit site`}
-                className="group pointer-events-auto block"
+            <div className="flex max-w-full items-center gap-3 md:gap-5">
+              <button
+                type="button"
+                onClick={() => go(active - 1)}
+                aria-label="Previous slide"
+                className="pointer-events-auto flex size-11 shrink-0 items-center justify-center text-white/80 [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.65))] transition-colors hover:text-[#ff4400] md:size-[54px]"
               >
-                {/* Eyebrow — labels the company the hero is featuring */}
-                <span className="hero-line-in mb-2 block text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4400] [text-shadow:0_1px_8px_rgba(0,0,0,0.55)] md:mb-2.5 md:text-[13px]">
-                  Featuring
-                </span>
-                {/* Company / product name — the focal point, revealed word-by-word */}
-                <span className="flex items-center gap-3.5 md:gap-5">
+                <Chevron dir="left" className="size-9 md:size-11" />
+              </button>
+
+              <div
+                className={cn(
+                  "min-w-0 transition-opacity duration-500",
+                  phase === "fade" ? "opacity-0" : "opacity-100",
+                )}
+              >
+                {/* Re-keyed on `active` so the eyebrow → name → text animate in
+                    on every slide switch, pulling the eye to the company we're showing. */}
+                <a
+                  key={active}
+                  href={slide.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${slide.name} — visit site`}
+                  className="group pointer-events-auto block min-w-0"
+                >
+                  {/* Eyebrow — labels the company the hero is featuring */}
+                  <span className="hero-line-in mb-2 block text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4400] [text-shadow:0_1px_8px_rgba(0,0,0,0.55)] md:mb-2.5 md:text-[13px]">
+                    Featuring
+                  </span>
+                  {/* Company / product name — the focal point, revealed word-by-word */}
                   <span className="flex flex-wrap items-baseline gap-x-[0.26em] text-[34px] font-semibold leading-[1.0] tracking-[-1.5px] text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.55)] md:text-[56px] md:tracking-[-2.4px]">
-                    {slide.title.split(" ").map((word, i) => (
+                    {slide.title.split(" ").map((word, index) => (
                       <span
-                        key={i}
+                        key={index}
                         className="hero-name-word"
-                        style={{ animationDelay: `${i * 85}ms` }}
+                        style={{ animationDelay: `${index * 85}ms` }}
                       >
                         {word}
                       </span>
                     ))}
                   </span>
+                  {/* Supporting line — augments the name */}
                   <span
-                    className="hero-pop-in flex size-11 shrink-0 items-center justify-center bg-black/40 text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:size-[60px]"
-                    style={{ animationDelay: "360ms" }}
+                    className="hero-line-in mt-3 block max-w-[500px] text-[15px] leading-[1.4] text-white/80 [text-shadow:0_1px_10px_rgba(0,0,0,0.5)] md:text-[20px] md:leading-[1.45]"
+                    style={{ animationDelay: "240ms" }}
                   >
-                    <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-7" />
+                    {slide.subtitle}
                   </span>
-                </span>
-                {/* Supporting line — augments the name */}
-                <span
-                  className="hero-line-in mt-3 block max-w-[500px] text-[15px] leading-[1.4] text-white/80 [text-shadow:0_1px_10px_rgba(0,0,0,0.5)] md:text-[20px] md:leading-[1.45]"
-                  style={{ animationDelay: "240ms" }}
-                >
-                  {slide.subtitle}
-                </span>
-              </a>
-            </div>
-
-            {/* Slide controls */}
-            <div className="pointer-events-auto mt-6 flex items-center gap-4">
-              <button
-                type="button"
-                onClick={() => go(active - 1)}
-                aria-label="Previous slide"
-                className="text-white/75 transition-colors hover:text-white max-md:hidden"
-              >
-                <Chevron dir="left" />
-              </button>
-              <div className="flex items-center gap-2.5">
-                {SLIDES.map((s, i) => (
-                  <button
-                    key={s.img}
-                    type="button"
-                    onClick={() => go(i)}
-                    aria-label={`Go to slide ${i + 1}`}
-                    aria-current={i === active}
-                    className="group/dot flex items-center py-2"
-                  >
-                    <span
-                      className={cn(
-                        "block h-[5px] rounded-full transition-all duration-300",
-                        i === active
-                          ? "w-10 bg-[#ff4400]"
-                          : "w-5 bg-white/45 group-hover/dot:bg-white/80",
-                      )}
-                    />
-                  </button>
-                ))}
+                </a>
               </div>
+
               <button
                 type="button"
                 onClick={() => go(active + 1)}
                 aria-label="Next slide"
-                className="text-white/75 transition-colors hover:text-white max-md:hidden"
+                className="pointer-events-auto flex size-11 shrink-0 items-center justify-center text-white/80 [filter:drop-shadow(0_1px_8px_rgba(0,0,0,0.65))] transition-colors hover:text-[#ff4400] md:size-[54px]"
               >
-                <Chevron dir="right" />
+                <Chevron dir="right" className="size-9 md:size-11" />
               </button>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Mobile slide arrows — pinned to the screen edges, vertically centered
-          so they're easy to see/reach. Desktop keeps the inline arrows + dots. */}
-      <button
-        type="button"
-        onClick={() => go(active - 1)}
-        aria-label="Previous slide"
-        className="pointer-events-auto absolute left-2 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center text-white [filter:drop-shadow(0_1px_5px_rgba(0,0,0,0.85))] transition-transform duration-150 active:scale-90 md:hidden"
-      >
-        <Chevron dir="left" className="size-8" />
-      </button>
-      <button
-        type="button"
-        onClick={() => go(active + 1)}
-        aria-label="Next slide"
-        className="pointer-events-auto absolute right-2 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center text-white [filter:drop-shadow(0_1px_5px_rgba(0,0,0,0.85))] transition-transform duration-150 active:scale-90 md:hidden"
-      >
-        <Chevron dir="right" className="size-8" />
-      </button>
 
       {/* Giant wordmark + Capital lockup */}
       <div className="pointer-events-none absolute inset-x-[var(--site-frame-x)] bottom-[22px] z-[8] mx-auto max-w-[1920px] [container-type:inline-size] max-md:inset-x-3 max-md:bottom-2">
