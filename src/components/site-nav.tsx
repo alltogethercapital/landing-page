@@ -68,10 +68,10 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
         style={{ opacity: open ? 1 : 0, pointerEvents: open ? "auto" : "none" }}
         aria-hidden={!open}
       >
-        <div className="flex h-full flex-col gap-10 overflow-y-auto px-6 pb-10 pt-[96px] md:block md:gap-0 md:overflow-visible md:p-0">
+        <div className="flex h-full flex-col gap-10 overflow-y-auto px-6 pb-10 pt-[96px] md:px-10 md:pt-[104px] xl:block xl:overflow-visible xl:p-0">
           {/* location + portfolio stats — drops below the nav on mobile */}
-          <div className="order-last md:absolute md:left-[40px] md:top-[110px] md:max-w-[700px]">
-            <p className="text-[40px] font-semibold leading-[1.08] tracking-[-1.6px] text-white md:text-[72px] md:leading-[79.2px] md:tracking-[-2.88px]">
+          <div className="order-last xl:absolute xl:left-[40px] xl:top-[110px] xl:max-w-[560px] 2xl:max-w-[700px]">
+            <p className="text-[40px] font-semibold leading-[1.08] tracking-[-1.6px] text-white md:text-[54px] md:tracking-[-2px] lg:text-[60px] xl:text-[64px] xl:tracking-[-2.4px] 2xl:text-[72px] 2xl:leading-[79.2px] 2xl:tracking-[-2.88px]">
               We are based in
               <br />
               <span className="text-[#ff4400]">Seattle, WA.</span>
@@ -99,14 +99,14 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
           </div>
 
           {/* nav + legal */}
-          <div className="order-first flex flex-col items-start md:absolute md:right-[40px] md:top-[101px] md:items-end">
-            <nav className="flex flex-col items-start md:items-end">
+          <div className="order-first flex flex-col items-start xl:absolute xl:right-[40px] xl:top-[101px] xl:items-end">
+            <nav className="flex flex-col items-start xl:items-end">
               {NAV.map((item, i) => (
                 <NavLink
                   key={item.label}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="text-[40px] font-semibold leading-[1.15] tracking-[-1.6px] text-[#f6f6f6] transition-colors duration-200 hover:text-[#ff4400] md:text-[84px] md:leading-[84px] md:tracking-[-3.36px]"
+                  className="text-[40px] font-semibold leading-[1.15] tracking-[-1.6px] text-[#f6f6f6] transition-colors duration-200 hover:text-[#ff4400] md:text-[58px] md:leading-[1.02] md:tracking-[-2.2px] lg:text-[64px] xl:text-[76px] xl:leading-[0.98] xl:tracking-[-3px] 2xl:text-[84px] 2xl:leading-[84px] 2xl:tracking-[-3.36px]"
                   style={{
                     transform: open ? "translateY(0)" : "translateY(20px)",
                     opacity: open ? 1 : 0,
@@ -117,13 +117,13 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
                 </NavLink>
               ))}
             </nav>
-            <div className="mt-6 flex flex-col items-start md:mt-[72px] md:items-end">
+            <div className="mt-6 flex flex-col items-start md:mt-8 xl:mt-[72px] xl:items-end">
               {LEGAL.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="text-[16px] font-medium leading-[1.5] tracking-[-0.5px] text-[#f6f6f6] transition-colors duration-200 hover:text-[#ff4400] md:text-[28px] md:leading-[33.6px] md:tracking-[-1.12px]"
+                  className="text-[16px] font-medium leading-[1.5] tracking-[-0.5px] text-[#f6f6f6] transition-colors duration-200 hover:text-[#ff4400] md:text-[22px] md:leading-[1.35] md:tracking-[-0.8px] xl:text-[24px] xl:tracking-[-0.9px] 2xl:text-[28px] 2xl:leading-[33.6px] 2xl:tracking-[-1.12px]"
                 >
                   {item.label}
                 </Link>
