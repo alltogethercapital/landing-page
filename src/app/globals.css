@@ -226,29 +226,6 @@
   }
 }
 
-/* ── Decorative grid glyphs (A/T/0/1) flip on hover/tap ────── */
-.grid-glyph--flip {
-  animation: glyph-flip 0.34s ease;
-}
-
-@keyframes glyph-flip {
-  0% {
-    transform: perspective(180px) rotateX(0deg);
-  }
-  50% {
-    transform: perspective(180px) rotateX(90deg);
-  }
-  100% {
-    transform: perspective(180px) rotateX(0deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .grid-glyph--flip {
-    animation: none;
-  }
-}
-
 /* ── Hero smoke — soft, subtle haze drifting over each slide.
    GPU-only (transform/opacity); a different variant per image so the
    motion isn't identical across slides. No canvas/SVG-turbulence, so

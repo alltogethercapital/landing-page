@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { PORTFOLIO } from "@/lib/portfolio";
@@ -55,226 +55,6 @@ const SLIDES: Slide[] = SLIDE_COPY.map((c) => {
 
 const IMAGE_HOLD_MS = 2000; // show each company image for two seconds before video
 const FADE_MS = 850; // crossfade from the ending video to the next company image
-
-// Glyphs: binary 0/1.
-const GLYPHS = ["0", "1"] as const;
-const PROXIMITY_RADIUS = 160; // px — how near the cursor must be to flip a glyph
-const FLIP_COOLDOWN = 800; // ms — min time before the same glyph re-flips
-
-// Target spacing (px) between glyphs. Column/row counts are derived from the
-// viewport using this, so spacing stays ~square AND the density (sparseness) is
-// consistent across screens — phones get fewer glyphs, desktops more.
-const GLYPH_CELL = 168;
-
-// Deterministic starting glyph per cell (stable across resizes — no reshuffle).
-function charFor(r: number, c: number) {
-  const h = (((r * 73856093) ^ (c * 19349663)) >>> 0) % GLYPHS.length;
-  return GLYPHS[h];
-}
-
-type GlyphHandle = {
-  el: HTMLElement;
-  flip: () => void;
-  last: number;
-  cx: number;
-  cy: number;
-};
-
-function GridGlyph({
-  initial,
-  style,
-  register,
-}: {
-  initial: string;
-  style: React.CSSProperties;
-  register: (h: GlyphHandle) => () => void;
-}) {
-  const [char, setChar] = useState(initial);
-  const [flipping, setFlipping] = useState(false);
-  const ref = useRef<HTMLSpanElement>(null);
-  const busy = useRef(false);
-
-  const flip = useCallback(() => {
-    if (busy.current) return;
-    busy.current = true;
-    setFlipping(true);
-    window.setTimeout(
-      () =>
-        setChar((c) => {
-          let n = c;
-          while (n === c) n = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
-          return n;
-        }),
-      150,
-    );
-    window.setTimeout(() => {
-      busy.current = false;
-      setFlipping(false);
-    }, 340);
-  }, []);
-
-  useEffect(() => {
-    if (!ref.current) return;
-    return register({ el: ref.current, flip, last: 0, cx: 0, cy: 0 });
-  }, [register, flip]);
-
-  return (
-    <span
-      ref={ref}
-      aria-hidden="true"
-      onPointerDown={flip}
-      style={style}
-      className={cn(
-        "pointer-events-auto absolute flex size-7 -translate-x-1/2 -translate-y-1/2 cursor-default select-none items-center justify-center font-mono text-[14px] leading-none text-white/75",
-        flipping && "grid-glyph--flip",
-      )}
-    >
-      {char}
-    </span>
-  );
-}
-
-function GlyphField({ active }: { active: boolean }) {
-  const fieldRef = useRef<HTMLDivElement>(null);
-  const handles = useRef<GlyphHandle[]>([]);
-  const activeRef = useRef(active);
-  const [dims, setDims] = useState<{
-    w: number;
-    h: number;
-    cols: number;
-    rows: number;
-  } | null>(null);
-
-  const register = useCallback((h: GlyphHandle) => {
-    handles.current.push(h);
-    return () => {
-      handles.current = handles.current.filter((x) => x !== h);
-    };
-  }, []);
-
-  // Mirror `active` into a ref so the global pointermove handler can read the
-  // latest value without re-subscribing.
-  useEffect(() => {
-    activeRef.current = active;
-  }, [active]);
-
-  // Derive an even, square grid from the field's actual size (consistent density).
-  useEffect(() => {
-    const field = fieldRef.current;
-    if (!field) return;
-    const compute = () => {
-      const { width, height } = field.getBoundingClientRect();
-      if (!width || !height) return;
-      const cols = Math.max(2, Math.round(width / GLYPH_CELL));
-      const rows = Math.max(2, Math.round(height / GLYPH_CELL));
-      setDims((prev) =>
-        prev &&
-        prev.w === width &&
-        prev.h === height &&
-        prev.cols === cols &&
-        prev.rows === rows
-          ? prev
-          : { w: width, h: height, cols, rows },
-      );
-    };
-    compute();
-    const ro = new ResizeObserver(compute);
-    ro.observe(field);
-    return () => ro.disconnect();
-  }, []);
-
-  // Track cursor proximity → flip nearby glyphs. Re-measures when the grid changes.
-  useEffect(() => {
-    const field = fieldRef.current;
-    if (!field || !dims) return;
-
-    const measure = () => {
-      for (const h of handles.current) {
-        h.cx = h.el.offsetLeft;
-        h.cy = h.el.offsetTop;
-      }
-    };
-    const raf = requestAnimationFrame(measure);
-
-    let frame = 0;
-    let queued = false;
-    let mx = 0;
-    let my = 0;
-    const r2 = PROXIMITY_RADIUS * PROXIMITY_RADIUS;
-
-    const onMove = (e: PointerEvent) => {
-      if (!activeRef.current) return; // no flips while faded out (video phase)
-      const rect = field.getBoundingClientRect();
-      mx = e.clientX - rect.left;
-      my = e.clientY - rect.top;
-      if (queued) return;
-      queued = true;
-      frame = requestAnimationFrame(() => {
-        queued = false;
-        const now = performance.now();
-        for (const h of handles.current) {
-          const dx = mx - h.cx;
-          const dy = my - h.cy;
-          if (dx * dx + dy * dy < r2 && now - h.last > FLIP_COOLDOWN) {
-            h.last = now;
-            h.flip();
-          }
-        }
-      });
-    };
-
-    window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("resize", measure);
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("resize", measure);
-      cancelAnimationFrame(frame);
-      cancelAnimationFrame(raf);
-    };
-  }, [dims]);
-
-  const cells = useMemo(() => {
-    if (!dims) return [];
-    const { w, h, cols, rows } = dims;
-    // Center the grid with exact GLYPH_CELL spacing on both axes (true squares).
-    const offX = (w - (cols - 1) * GLYPH_CELL) / 2;
-    const offY = (h - (rows - 1) * GLYPH_CELL) / 2;
-    const out: { key: string; left: string; top: string; char: string }[] = [];
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const x = offX + c * GLYPH_CELL;
-        const y = offY + r * GLYPH_CELL;
-        out.push({
-          key: `${r}-${c}`,
-          left: `${((x / w) * 100).toFixed(3)}%`,
-          top: `${((y / h) * 100).toFixed(3)}%`,
-          char: charFor(r, c),
-        });
-      }
-    }
-    return out;
-  }, [dims]);
-
-  return (
-    <div
-      ref={fieldRef}
-      className={cn(
-        "pointer-events-none absolute inset-0 z-[5] transition-opacity duration-700 ease-in-out",
-        active ? "opacity-100" : "opacity-0 [&_*]:!pointer-events-none",
-      )}
-      aria-hidden="true"
-    >
-      {cells.map((cell) => (
-        <GridGlyph
-          key={cell.key}
-          initial={cell.char}
-          style={{ left: cell.left, top: cell.top }}
-          register={register}
-        />
-      ))}
-    </div>
-  );
-}
 
 function Chevron({ dir, className }: { dir: "left" | "right"; className?: string }) {
   return (
@@ -536,9 +316,8 @@ export function Hero() {
   }, []);
 
   const slide = SLIDES[active];
-  // Decorations (glyphs, rays, smoke) stay on screen while the IMAGE is visible
-  // — through the image phase AND the video phase before the video has actually
-  // revealed. They fade only when the video itself fades in.
+  // Atmosphere layers stay on screen while the image is visible and fade once
+  // the native video has actually revealed.
   const showDecor = phase === "image" || (phase === "video" && !revealed);
   // During the end "fade", show the NEXT company's image underneath the video
   // (which is fading out), so it crossfades video -> next image seamlessly.
@@ -705,10 +484,6 @@ export function Hero() {
 
       {/* (Top scrim removed per request — the headline, nav, and thesis note
           rely on their own text-shadows for legibility over bright slides.) */}
-
-      {/* Decorative 0/1 glyph field — fades out (not a hard cut) when the
-          video takes over, and fades back in on the next image. */}
-      <GlyphField active={showDecor} />
 
       {/* HERO CONTENT (flows on mobile, absolute on md+) */}
       <div className="pointer-events-none absolute inset-0 z-10">
