@@ -134,7 +134,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
       </div>
 
       {/* HEADER (container is click-through; only the controls are interactive) */}
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex h-[70px] items-center justify-between px-[40px] max-md:px-6">
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex h-[70px] items-center justify-between px-[var(--site-frame-x)] max-md:px-6">
         <nav className="pointer-events-auto flex items-center gap-[22px] max-md:gap-5">
           {SOCIALS.map((s) => (
             <a

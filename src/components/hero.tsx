@@ -898,7 +898,7 @@ export function Hero() {
             cqw height) so the caption cluster sits just above the wordmark. */}
         <div className="flex h-full flex-col gap-7 px-6 pt-[96px] pb-[calc(34px_+_16.5vw)] lg:block lg:p-0">
           {/* Headline */}
-          <div className="hero-headline-wrap lg:absolute lg:left-[100px] lg:top-[175px] lg:max-w-[640px]">
+          <div className="hero-headline-wrap lg:absolute lg:left-[var(--hero-frame-x)] lg:top-[175px] lg:max-w-[640px]">
             <h1
               ref={headlineRef}
               className="hero-headline whitespace-nowrap text-[clamp(17px,6vw,34px)] font-medium leading-[1.12] tracking-[-1px] text-white opacity-0 [text-shadow:0_1px_16px_rgba(0,0,0,0.5)] md:whitespace-normal md:text-[38px] md:leading-[44px] md:tracking-[-1.5px]"
@@ -912,7 +912,7 @@ export function Hero() {
           {/* Investment thesis — flag + two-line text lockup. The flag height is
               tied to the same font-size/line-height as the text, so it matches
               the two-line block's height exactly at every breakpoint. */}
-          <div className="hero-thesis-wrap lg:absolute lg:right-[100px] lg:top-[183px] lg:flex lg:flex-col lg:items-end">
+          <div className="hero-thesis-wrap lg:absolute lg:right-[var(--hero-frame-x)] lg:top-[183px] lg:flex lg:flex-col lg:items-end">
             <div className="inline-flex items-center gap-[0.55em] text-[16px] sm:text-[18px] lg:text-[15px]">
               {/* US flag — to the left of the text, sized to span the full
                   two-line block so its top/bottom align with the text (no float) */}
@@ -945,7 +945,7 @@ export function Hero() {
 
           {/* Cycling caption (links to product) + slide nav — pinned to the
               bottom (above the wordmark) on mobile, absolute on desktop */}
-          <div className="hero-caption-wrap mt-auto lg:absolute lg:left-[100px] lg:bottom-[calc(16.5vw_+_70px)] lg:mt-0 lg:max-w-[680px]">
+          <div className="hero-caption-wrap mt-auto lg:absolute lg:left-[var(--hero-frame-x)] lg:bottom-[calc(16.5vw_+_70px)] lg:mt-0 lg:max-w-[680px]">
             {/* Mobile audio toggle — above the caption, right-aligned, always
                 visible so the control is discoverable (md+ uses the bottom-right one) */}
             <div className="mb-3 flex justify-end md:hidden">{renderMute("")}</div>
@@ -1063,7 +1063,7 @@ export function Hero() {
       </button>
 
       {/* Giant wordmark + Capital lockup */}
-      <div className="pointer-events-none absolute inset-x-[40px] bottom-[22px] z-[8] mx-auto max-w-[1920px] [container-type:inline-size] max-md:inset-x-3 max-md:bottom-2">
+      <div className="pointer-events-none absolute inset-x-[var(--site-frame-x)] bottom-[22px] z-[8] mx-auto max-w-[1920px] [container-type:inline-size] max-md:inset-x-3 max-md:bottom-2">
         <div className="hero-wordmark whitespace-nowrap text-[16.5cqw] font-[900] leading-[1.0] tracking-[-0.05em] text-[#ff4400]">
           All Together
         </div>
@@ -1080,7 +1080,7 @@ export function Hero() {
       {/* Audio toggle — large, see-through, bottom-right above the wordmark.
           Always visible; it flashes briefly on each video start while muted. */}
       {renderMute(
-        "absolute z-20 bottom-[calc(min(16.5vw,27svh)_+_56px)] max-md:hidden md:right-[40px] lg:right-[100px]",
+        "absolute z-20 bottom-[calc(min(16.5vw,27svh)_+_56px)] max-md:hidden md:right-[var(--site-frame-x)] lg:right-[var(--hero-frame-x)]",
       )}
     </section>
   );
