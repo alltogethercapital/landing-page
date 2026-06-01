@@ -218,8 +218,8 @@ export function Hero() {
   // video start while still muted (see the flash effect below).
   const [flash, setFlash] = useState(false);
   // Whether the native video has visually revealed (faded in) for the current
-  // slide — keeps decorations (glyphs, rays, smoke) on screen until the video
-  // actually appears, not just when the phase flips internally.
+  // slide — keeps atmosphere layers on screen until the video actually appears,
+  // not just when the phase flips internally.
   const [revealed, setRevealed] = useState(false);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
@@ -487,12 +487,12 @@ export function Hero() {
 
       {/* HERO CONTENT (flows on mobile, absolute on md+) */}
       <div className="pointer-events-none absolute inset-0 z-10">
-        <div className="flex h-full flex-col gap-7 px-6 pt-[96px] lg:block lg:p-0">
+        <div className="h-full">
           {/* Headline */}
-          <div className="hero-headline-wrap lg:absolute lg:left-[var(--hero-frame-x)] lg:top-[175px] lg:max-w-[640px]">
+          <div className="hero-headline-wrap absolute top-[clamp(116px,14svh,152px)] right-6 left-6 max-w-[560px] md:top-[clamp(122px,12svh,160px)] md:right-auto md:left-[var(--site-frame-x)] md:max-w-[640px] lg:top-[175px] lg:left-[var(--hero-frame-x)]">
             <h1
               ref={headlineRef}
-              className="hero-headline whitespace-nowrap text-[clamp(17px,6vw,34px)] font-medium leading-[1.12] tracking-[-1px] text-white opacity-0 [text-shadow:0_1px_16px_rgba(0,0,0,0.5)] md:whitespace-normal md:text-[38px] md:leading-[44px] md:tracking-[-1.5px]"
+              className="hero-headline whitespace-nowrap text-[clamp(19px,5.8vw,34px)] font-medium leading-[1.18] tracking-normal text-white opacity-0 [text-shadow:0_1px_16px_rgba(0,0,0,0.5)] md:whitespace-normal md:text-[38px] md:leading-[1.14]"
             >
               The future is built together.
               <br />
@@ -501,7 +501,7 @@ export function Hero() {
 
             {/* Investment thesis — flag + two-line text lockup, left-aligned
                 under the main headline. */}
-            <div className="hero-thesis-wrap mt-5 inline-flex max-w-[520px] items-center gap-[0.55em] text-[15px] sm:text-[17px] md:mt-6 lg:text-[16px]">
+            <div className="hero-thesis-wrap mt-7 inline-flex max-w-[520px] items-center gap-[0.55em] text-[14px] sm:text-[16px] md:mt-8 md:text-[17px] lg:text-[16px]">
               {/* US flag — to the left of the text, sized to span the full
                   two-line block so its top/bottom align with the text. */}
               <svg
@@ -523,7 +523,7 @@ export function Hero() {
                 </g>
                 <rect width="7.6" height="5.385" fill="#3c3b6e" />
               </svg>
-              <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-[-0.1px] text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] lg:leading-[1.16] lg:tracking-[-0.35px]">
+              <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-normal text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] lg:leading-[1.16]">
                 Investing in America&rsquo;s companies,
                 <br />
                 resurgence, and future.
@@ -532,7 +532,7 @@ export function Hero() {
           </div>
 
           {/* Compact slide rail — kept out of the center so the footage breathes. */}
-          <div className="hero-caption-wrap absolute right-4 bottom-[calc(16.5vw_+_22px)] z-20 md:right-[var(--site-frame-x)] md:bottom-[calc(min(16.5vw,27svh)_+_28px)] lg:right-[var(--hero-frame-x)]">
+          <div className="hero-caption-wrap absolute right-4 bottom-[calc(16.5vw_+_92px)] z-20 md:right-[var(--site-frame-x)] md:bottom-[calc(min(16.5vw,27svh)_+_96px)] lg:right-[var(--hero-frame-x)] lg:bottom-[calc(min(16.5vw,27svh)_+_76px)]">
             <div
               className={cn(
                 "pointer-events-auto flex max-w-[calc(100vw-32px)] items-center gap-1 rounded-full border border-white/15 bg-black/25 px-1.5 py-1.5 text-white shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-md transition-opacity duration-500",
