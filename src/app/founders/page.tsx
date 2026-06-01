@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { ArrowUpRight, LinkedInIcon, XIcon } from "@/components/icons";
@@ -288,30 +287,12 @@ export default function FoundersPage() {
     <main className="min-h-screen bg-white text-[#0b0b0d]">
       <SiteNav showLogo />
 
-      {/* Heading */}
-      <section className="px-6 pt-[104px] md:px-[40px] md:pt-[140px]">
-        <div className="flex items-center gap-2.5">
-          <span className="size-2.5 rounded-full bg-[#ff4400]" />
-          <span className="font-mono text-[12px] uppercase tracking-[0.22em] text-[#0b0b0d]/60">
-            Our founders
-          </span>
-        </div>
-        <h1 className="mt-5 max-w-[16ch] text-[40px] font-semibold leading-[1.02] tracking-[-1.7px] md:text-[56px] md:tracking-[-2.5px]">
-          Our founders
-        </h1>
-        <p className="mt-5 max-w-[60ch] text-[16px] leading-relaxed text-[#0b0b0d]/55 md:text-[18px]">
-          The crazy, bold, visionary founders we back — building the hard
-          frontier across artificial intelligence, defense, energy, robotics,
-          semiconductors, and space.
-        </p>
-      </section>
-
       {/* Grid — ONE unified 3-up grid. Photo cards take a cell each; compact
           tiles share a cell in pairs (two stacked, sized via grid-rows-2 to
           match a photo card's height). The pairs flow naturally into the
           empty cells left at the tail of the photo cards, so the only partial
           row is the very last one. */}
-      <section className="px-6 pt-10 md:px-[40px]">
+      <section className="px-6 pt-[104px] md:px-[40px] md:pt-[140px]">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {photoFounders.map((founder) => (
             <FounderCard key={founderAnchor(founder)} founder={founder} />
@@ -332,23 +313,6 @@ export default function FoundersPage() {
               <CompactFounderTile key={`solo-${founderAnchor(a)}`} founder={a} solo />
             ),
           )}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="px-6 py-28 text-center md:px-[40px] md:py-36">
-        <h2 className="mx-auto max-w-[20ch] text-[36px] font-semibold leading-[1.04] tracking-[-1.4px] md:text-[68px] md:tracking-[-2.8px]">
-          Crazy, bold, visionary founders are what{" "}
-          <span className="text-[#ff4400]">move America forward.</span>
-        </h2>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <Link
-            href="/companies"
-            className="inline-flex items-center gap-2 rounded-full bg-[#ff4400] px-7 py-4 text-[15px] font-semibold text-black transition-transform hover:scale-[1.03]"
-          >
-            Our companies
-            <ArrowUpRight className="size-4" />
-          </Link>
         </div>
       </section>
 

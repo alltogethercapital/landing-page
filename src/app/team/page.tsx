@@ -135,10 +135,7 @@ export default function TeamPage() {
       <SiteNav showLogo />
 
       <section className="px-6 pt-[110px] pb-24 md:px-[40px] md:pt-[150px] md:pb-32">
-        <h1 className="font-mono text-[12px] uppercase tracking-[0.22em] text-[#0b0b0d]/45">
-          Leadership
-        </h1>
-        <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {MEMBERS.map((m) => (
             <MemberCard key={m.name} m={m} />
           ))}
