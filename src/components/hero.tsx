@@ -54,7 +54,7 @@ const SLIDES: Slide[] = SLIDE_COPY.map((c) => {
   };
 });
 
-const CYCLE_MS = 1500; // image leads in; the video reveals after the bezel-clear gate
+const IMAGE_HOLD_MS = 2000; // show each company image for two seconds before video
 const FADE_MS = 850; // crossfade from the ending video to the next company image
 // Play each video essentially to its end before advancing — a tiny pad so the
 // crossfade to the next slide begins just before the final frame.
@@ -367,17 +367,13 @@ function HeroVideoPlayer({
   const wasShownRef = useRef(false);
   const lastTimeRef = useRef(0); // last getCurrentTime — for stall detection
   const lastProgressRef = useRef(0); // wall-clock of last real progress
-  // The video preloads + plays hidden during the image phase; it's only shown
-  // once it has PLAYED enough that YouTube's start play/pause indicator is gone.
-  const [played, setPlayed] = useState(false);
   // True only while the player reports an explicit PAUSED state. The video hides
   // instantly whenever it's paused, so YouTube's center play/pause button can
   // never be seen — but it defaults false so a normal reveal is never blocked.
   const [paused, setPaused] = useState(false);
-  // The video is visually shown only in the video phase, once played past the
-  // start-indicator window, and while not paused. Audio is tied to this so sound
-  // and visuals switch together.
-  const reveal = visible && played && !paused;
+  // The video is visually shown as soon as the two-second image phase ends.
+  // Audio is tied to this so sound and visuals switch together.
+  const reveal = visible && !paused;
 
   // Notify the parent whenever the video's reveal state changes — keeps the
   // decorative layers (glyph field, light rays, smoke) visible until the
@@ -465,12 +461,14 @@ function HeroVideoPlayer({
         },
         events: {
           onReady: (e: YTPlayerEvent) => {
-            // NB: do NOT call playVideo() here — an explicit API play makes
-            // YouTube flash its center play/pause indicator. Muted autoplay
-            // (autoplay=1 & mute=1) starts it without any indicator.
-            // Always start muted — it preloads hidden; the mute effect applies
-            // the real preference once the video is actually shown.
+            // Always start muted while hidden; the mute effect applies the real
+            // preference once the video is actually shown.
             e.target.mute();
+            try {
+              e.target.playVideo();
+            } catch {
+              /* player not ready */
+            }
           },
           onStateChange: (e: YTPlayerEvent) => {
             const s = e.data;
@@ -507,16 +505,8 @@ function HeroVideoPlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId, start]);
 
-  // Poll playback: the video plays HIDDEN behind the image from the moment the
-  // slide loads; we only REVEAL it once it has played ~3.5s. YouTube renders a
-  // center play/pause "bezel" inside its iframe for the first ~1-2s of any
-  // playback and gives us no embed parameter to hide it (controls=0,
-  // modestbranding=1, iv_load_policy=3, disablekb=1, fs=0 all already set; none
-  // suppress the bezel). The only reliable way to avoid showing it is to wait
-  // for it to fade before unhiding the video — hence 3.5s. Don't drop this
-  // below ~3s or the bezel becomes visible at reveal time.
-  // Then play through to the end before advancing; and advance if playback stalls
-  // so the slideshow never hangs.
+  // Poll playback so videos play through to the end before advancing, and
+  // advance if playback stalls so the slideshow never hangs.
   useEffect(() => {
     lastTimeRef.current = start;
     lastProgressRef.current = Date.now();
@@ -525,7 +515,6 @@ function HeroVideoPlayer({
       if (!p?.getDuration || !p.getCurrentTime) return;
       const dur = p.getDuration();
       const cur = p.getCurrentTime();
-      if (cur >= start + 3.5) setPlayed(true);
       // Track real progress for hang protection.
       if (cur > lastTimeRef.current + 0.05) {
         lastTimeRef.current = cur;
@@ -776,7 +765,7 @@ export function Hero() {
           setPhase("image");
         }
       },
-      phase === "image" ? CYCLE_MS : FADE_MS,
+      phase === "image" ? IMAGE_HOLD_MS : FADE_MS,
     );
     return () => clearTimeout(id);
   }, [phase, active, slide.video]);
@@ -788,9 +777,12 @@ export function Hero() {
   // It only fires while muted, so it stops nagging the moment the user unmutes.
   useEffect(() => {
     if (phase !== "video" || !muted) return;
-    setFlash(true);
-    const t = window.setTimeout(() => setFlash(false), 1500);
-    return () => window.clearTimeout(t);
+    const show = window.setTimeout(() => setFlash(true), 0);
+    const hide = window.setTimeout(() => setFlash(false), 1500);
+    return () => {
+      window.clearTimeout(show);
+      window.clearTimeout(hide);
+    };
   }, [phase, muted]);
 
   // Audio toggle — a large, icon-only, see-through control (no background) so the
@@ -860,7 +852,7 @@ export function Hero() {
       </div>
 
       {/* Full-bleed video — preloads/plays hidden during the image phase, then
-          reveals once it's played enough (so YouTube's start indicator is gone). */}
+          reveals as soon as the two-second image hold ends. */}
       {slide.video && (
         <HeroVideoPlayer
           key={slide.name}
