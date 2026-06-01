@@ -907,21 +907,18 @@ export function Hero() {
               <br />
               The future is built now.
             </h1>
-          </div>
 
-          {/* Investment thesis — flag + two-line text lockup. The flag height is
-              tied to the same font-size/line-height as the text, so it matches
-              the two-line block's height exactly at every breakpoint. */}
-          <div className="hero-thesis-wrap lg:absolute lg:right-[var(--hero-frame-x)] lg:top-[183px] lg:flex lg:flex-col lg:items-end">
-            <div className="inline-flex items-center gap-[0.55em] text-[16px] sm:text-[18px] lg:text-[15px]">
+            {/* Investment thesis — flag + two-line text lockup, left-aligned
+                under the main headline. */}
+            <div className="hero-thesis-wrap mt-5 inline-flex max-w-[520px] items-center gap-[0.55em] text-[15px] sm:text-[17px] md:mt-6 lg:text-[16px]">
               {/* US flag — to the left of the text, sized to span the full
-                  two-line block so its top/bottom align with the text (no float) */}
+                  two-line block so its top/bottom align with the text. */}
               <svg
                 viewBox="0 0 19 10"
                 preserveAspectRatio="xMidYMid meet"
                 role="img"
                 aria-label="United States"
-                className="h-[2em] w-auto shrink-0 lg:h-[1.86em] [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"
+                className="h-[2em] w-auto shrink-0 [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"
               >
                 <rect width="19" height="10" fill="#fff" />
                 <g fill="#b22234">
@@ -935,7 +932,7 @@ export function Hero() {
                 </g>
                 <rect width="7.6" height="5.385" fill="#3c3b6e" />
               </svg>
-              <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-[-0.1px] text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] lg:leading-[1.12] lg:tracking-[-0.4px]">
+              <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-[-0.1px] text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] lg:leading-[1.16] lg:tracking-[-0.35px]">
                 Investing in America&rsquo;s companies,
                 <br />
                 resurgence, and future.
