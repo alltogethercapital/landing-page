@@ -35,7 +35,7 @@ function FounderCard({ founder }: { founder: Founder }) {
   return (
     <div
       id={anchor}
-      className="group founder-card relative grid scroll-mt-[100px] overflow-hidden rounded-2xl bg-white ring-1 ring-black/[0.06] aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] max-md:aspect-[4/5]"
+      className="group founder-card relative grid scroll-mt-[100px] overflow-hidden rounded-2xl bg-white aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] max-md:aspect-[4/5]"
     >
       {/* Headshot, or a clean placeholder until a photo is added */}
       <div className="relative min-h-0 overflow-hidden bg-white">
@@ -45,7 +45,7 @@ function FounderCard({ founder }: { founder: Founder }) {
             alt={founder.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            quality={90}
+            quality={100}
             className="object-contain object-center"
           />
         ) : (
@@ -89,7 +89,7 @@ function FounderCard({ founder }: { founder: Founder }) {
       )}
 
       {/* Bottom: company stays visible; social links reveal on hover/focus. */}
-      <div className="pointer-events-none relative z-[2] min-h-[72px] border-t border-black/[0.06] px-5 py-4 md:px-6">
+      <div className="pointer-events-none relative z-[2] min-h-[72px] px-5 py-4 md:px-6">
         <div className="flex h-full min-w-0 items-center">
           {company && (
             <a

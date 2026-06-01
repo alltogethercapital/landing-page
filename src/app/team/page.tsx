@@ -47,14 +47,14 @@ function MemberCard({ m }: { m: Member }) {
   const profileLabel = m.linkedin ? "LinkedIn" : m.website ? m.website.label : "email";
 
   return (
-    <div className="group founder-card relative grid scroll-mt-[100px] overflow-hidden rounded-2xl bg-white ring-1 ring-black/[0.06] aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] max-md:aspect-[4/5]">
+    <div className="group founder-card relative grid scroll-mt-[100px] overflow-hidden rounded-2xl bg-white aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] max-md:aspect-[4/5]">
       <div className="relative min-h-0 overflow-hidden bg-white">
         <Image
           src={m.img}
           alt={m.name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          quality={90}
+          quality={100}
           className="object-contain object-center"
         />
 
@@ -84,7 +84,7 @@ function MemberCard({ m }: { m: Member }) {
         </span>
       )}
 
-      <div className="pointer-events-none relative z-[2] min-h-[72px] border-t border-black/[0.06] px-5 py-4 md:px-6">
+      <div className="pointer-events-none relative z-[2] min-h-[72px] px-5 py-4 md:px-6">
         <div className="flex h-full min-w-0 items-center">
           <p className="min-w-0 max-w-[calc(100%-4.75rem)] truncate text-[14px] font-medium text-[#0b0b0d]/70 md:text-[15px]">
             {m.role}
@@ -134,7 +134,7 @@ export default function TeamPage() {
     <main className="min-h-screen bg-white text-[#0b0b0d]">
       <SiteNav showLogo />
 
-      <section className="px-6 pt-[110px] pb-24 md:px-[40px] md:pt-[150px] md:pb-32">
+      <section className="px-6 pt-[104px] md:px-[40px] md:pt-[140px]">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {MEMBERS.map((m) => (
             <MemberCard key={m.name} m={m} />
