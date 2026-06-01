@@ -64,7 +64,7 @@ export default function CompaniesPage() {
       <SiteNav showLogo />
 
       {/* Grid */}
-      <section className="px-6 pt-[104px] md:px-[40px] md:pt-[118px]">
+      <section className="min-h-[100svh] px-6 pb-16 pt-[104px] md:px-[40px] md:pb-20 md:pt-[118px]">
         <div className="mx-auto grid max-w-[1360px] grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {PORTFOLIO.map((company) => (
             <CompanyCard key={company.name} company={company} />

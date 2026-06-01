@@ -37,7 +37,7 @@ export default async function LegalPage({
     <main className="min-h-screen bg-black text-white">
       <SiteNav showLogo />
 
-      <article className="mx-auto max-w-[760px] px-6 pb-24 pt-[136px] md:pt-[176px]">
+      <article className="mx-auto min-h-[100svh] max-w-[760px] px-6 pb-24 pt-[136px] md:pt-[176px]">
         <p className="font-mono text-[13px] uppercase tracking-[0.25em] text-[#ff4400]">
           Legal
         </p>
