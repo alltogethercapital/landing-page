@@ -43,8 +43,11 @@ const MEMBERS: Member[] = [
 ];
 
 function MemberCard({ m }: { m: Member }) {
+  const profile = m.linkedin ?? m.website?.href ?? (m.email ? `mailto:${m.email}` : undefined);
+  const profileLabel = m.linkedin ? "LinkedIn" : m.website ? m.website.label : "email";
+
   return (
-    <div className="group relative grid aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] overflow-hidden rounded-2xl bg-white ring-1 ring-black/[0.06] max-md:aspect-[4/5]">
+    <div className="group founder-card relative grid scroll-mt-[100px] overflow-hidden rounded-2xl bg-white ring-1 ring-black/[0.06] aspect-[674/720] grid-rows-[minmax(0,1fr)_auto] max-md:aspect-[4/5]">
       <div className="relative min-h-0 overflow-hidden bg-white">
         <Image
           src={m.img}
@@ -52,50 +55,74 @@ function MemberCard({ m }: { m: Member }) {
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           quality={90}
-          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.025]"
+          className="object-cover object-center"
         />
+
+        <div className="pointer-events-none absolute bottom-4 left-4 z-[2] max-w-[calc(100%-2rem)] translate-y-3 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 md:bottom-5 md:left-5 max-lg:translate-y-0 max-lg:opacity-100 [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100">
+          <h3 className="rounded-lg border border-white/60 bg-white/70 px-3.5 py-2 text-[19px] font-medium leading-[1.02] tracking-[-0.3px] text-[#0b0b0d] shadow-[0_12px_34px_rgba(0,0,0,0.16)] backdrop-blur-md md:text-[24px]">
+            {m.name}
+          </h3>
+        </div>
       </div>
 
-      <div className="border-t border-black/[0.06] px-5 pb-5 pt-4 md:px-6 md:pb-6 md:pt-5">
-        <h3 className="text-[25px] font-medium leading-[1.02] tracking-[-0.7px] text-[#0b0b0d] md:text-[32px]">
-          {m.name}
-        </h3>
-        <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.18em] text-[#ff4400] md:text-[12px]">
-          {m.role}
-        </p>
-        <div className="mt-4 flex items-center gap-2.5 opacity-100 transition-all duration-300 md:translate-y-1 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
-          {m.linkedin && (
-            <a
-              href={m.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${m.name} on LinkedIn`}
-              className="flex size-9 items-center justify-center rounded-full border border-black/10 text-[#0b0b0d]/65 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
-            >
-              <LinkedInIcon className="size-4" />
-            </a>
-          )}
-          {m.email && (
-            <a
-              href={`mailto:${m.email}`}
-              aria-label={`Email ${m.name}`}
-              className="flex size-9 items-center justify-center rounded-full border border-black/10 text-[#0b0b0d]/65 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
-            >
-              <MailIcon className="size-4" />
-            </a>
-          )}
-          {m.website && (
-            <a
-              href={m.website.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${m.name} — ${m.website.label}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3.5 py-2 text-[12px] font-medium text-[#0b0b0d]/65 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
-            >
-              {m.website.label}
-              <ArrowUpRight className="size-3" />
-            </a>
-          )}
+      {profile && (
+        <a
+          href={profile}
+          target={profile.startsWith("mailto:") ? undefined : "_blank"}
+          rel={profile.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+          aria-label={`${m.name} on ${profileLabel}`}
+          className="absolute inset-0 z-[1]"
+        />
+      )}
+
+      {profile && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-4 top-4 z-[2] flex size-11 items-center justify-center bg-black/[0.06] text-[#0b0b0d] backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-5 md:top-5 md:size-12"
+        >
+          <ArrowUpRight className="size-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-7" />
+        </span>
+      )}
+
+      <div className="pointer-events-none relative z-[2] min-h-[72px] border-t border-black/[0.06] px-5 py-4 md:px-6">
+        <div className="flex h-full min-w-0 items-center">
+          <p className="min-w-0 max-w-[calc(100%-4.75rem)] truncate text-[14px] font-medium text-[#0b0b0d]/70 md:text-[15px]">
+            {m.role}
+          </p>
+
+          <div className="pointer-events-none absolute right-5 top-1/2 z-[3] flex -translate-y-1/2 translate-x-1 items-center gap-1.5 opacity-0 transition-all duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-x-0 group-focus-within:opacity-100 md:right-6 max-lg:pointer-events-auto max-lg:translate-x-0 max-lg:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:translate-x-0 [@media(hover:none)]:opacity-100">
+            {m.website && (
+              <a
+                href={m.website.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${m.name} - ${m.website.label}`}
+                className="flex size-8 items-center justify-center rounded-full border border-black/10 text-[#0b0b0d]/60 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
+              >
+                <ArrowUpRight className="size-4" />
+              </a>
+            )}
+            {m.linkedin && (
+              <a
+                href={m.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${m.name} on LinkedIn`}
+                className="flex size-8 items-center justify-center rounded-full border border-black/10 text-[#0b0b0d]/60 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
+              >
+                <LinkedInIcon className="size-4" />
+              </a>
+            )}
+            {m.email && (
+              <a
+                href={`mailto:${m.email}`}
+                aria-label={`Email ${m.name}`}
+                className="flex size-8 items-center justify-center rounded-full border border-black/10 text-[#0b0b0d]/60 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
+              >
+                <MailIcon className="size-4" />
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </div>
