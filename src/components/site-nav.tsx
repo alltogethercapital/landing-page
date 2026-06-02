@@ -70,7 +70,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
       >
         <div className="flex h-full flex-col gap-10 overflow-y-auto px-6 pb-10 pt-[96px] md:px-10 md:pt-[104px] xl:block xl:overflow-visible xl:p-0">
           {/* location + portfolio stats — drops below the nav on mobile */}
-          <div className="order-last xl:absolute xl:left-[40px] xl:top-[110px] xl:max-w-[560px] 2xl:max-w-[700px]">
+          <div className="order-last xl:absolute xl:left-[var(--site-frame-x)] xl:top-[110px] xl:max-w-[560px] 2xl:max-w-[700px]">
             <p className="text-[40px] font-semibold leading-[1.08] tracking-[-1.6px] text-white md:text-[54px] md:tracking-[-2px] lg:text-[60px] xl:text-[64px] xl:tracking-[-2.4px] 2xl:text-[72px] 2xl:leading-[79.2px] 2xl:tracking-[-2.88px]">
               We are based in
               <br />
@@ -99,7 +99,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
           </div>
 
           {/* nav + legal */}
-          <div className="order-first flex flex-col items-start xl:absolute xl:right-[40px] xl:top-[101px] xl:items-end">
+          <div className="order-first flex flex-col items-start xl:absolute xl:right-[var(--site-frame-x)] xl:top-[101px] xl:items-end">
             <nav className="flex flex-col items-start xl:items-end">
               {NAV.map((item, i) => (
                 <NavLink
