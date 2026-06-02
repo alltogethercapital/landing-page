@@ -20,17 +20,19 @@ type Slide = {
   title: string;
   href: string;
   heroVideo?: readonly HeroVideoSource[];
+  heroVideoStart?: number;
 };
 
 const SLIDE_COPY: Pick<
   Slide,
-  "name" | "title" | "href" | "heroVideo"
+  "name" | "title" | "href" | "heroVideo" | "heroVideoStart"
 >[] = [
   {
     name: "Shield AI",
     title: "Shield AI X-BAT",
     href: "https://shield.ai/x-bat/",
     heroVideo: HERO_VIDEOS.shieldAiXbat,
+    heroVideoStart: 18,
   },
   {
     name: "1X",
@@ -845,12 +847,14 @@ function Chevron({ dir, className }: { dir: "left" | "right"; className?: string
 // center play/pause overlay YouTube can paint inside its own frame.
 function HeroVideoPlayer({
   sources,
+  startAt = 0,
   muted,
   visible,
   onEnded,
   onRevealChange,
 }: {
   sources: readonly HeroVideoSource[];
+  startAt?: number;
   muted: boolean;
   visible: boolean;
   onEnded: () => void;
@@ -862,6 +866,14 @@ function HeroVideoPlayer({
   const [playing, setPlaying] = useState(false);
   const reveal = visible && playing;
   const sourceKey = sources.map((source) => source.src).join("|");
+  const seekToStart = useCallback((video: HTMLVideoElement) => {
+    if (Math.abs(video.currentTime - startAt) < 0.15) return;
+    try {
+      video.currentTime = startAt;
+    } catch {
+      /* Safari may reject seeks before metadata is loaded; loadedmetadata retries. */
+    }
+  }, [startAt]);
 
   useEffect(() => {
     onRevealChange?.(reveal);
@@ -905,7 +917,7 @@ function HeroVideoPlayer({
 
     if (!visible) {
       video.pause();
-      video.currentTime = 0;
+      seekToStart(video);
       video.volume = 0;
       video.muted = true;
       onRevealChange?.(false);
@@ -913,7 +925,7 @@ function HeroVideoPlayer({
     }
 
     video.load();
-    video.currentTime = 0;
+    seekToStart(video);
     video.volume = 0;
     video.muted = true;
     const play = video.play();
@@ -929,7 +941,7 @@ function HeroVideoPlayer({
       window.clearInterval(fadeRef.current);
       video.pause();
     };
-  }, [finish, onRevealChange, sourceKey, visible]);
+  }, [finish, onRevealChange, seekToStart, sourceKey, visible]);
 
   useEffect(() => {
     if (!visible || !playing) return;
@@ -953,10 +965,16 @@ function HeroVideoPlayer({
         disablePictureInPicture
         controls={false}
         controlsList="nodownload noplaybackrate noremoteplayback"
+        onLoadedMetadata={() => {
+          const video = videoRef.current;
+          if (video) seekToStart(video);
+        }}
         onPlaying={() => setPlaying(true)}
         onCanPlay={() => {
           const video = videoRef.current;
-          if (visible && video && !video.paused) setPlaying(true);
+          if (!video) return;
+          if (visible) seekToStart(video);
+          if (visible && !video.paused) setPlaying(true);
         }}
         onPause={() => {
           const video = videoRef.current;
@@ -1273,6 +1291,7 @@ export function Hero() {
         <HeroVideoPlayer
           key={slide.name}
           sources={slide.heroVideo}
+          startAt={slide.heroVideoStart}
           muted={muted}
           visible={phase === "video"}
           onEnded={handleVideoEnd}
