@@ -235,6 +235,14 @@ export const PORTFOLIO: Company[] = [
     video: "0H1LSLipOVI", // Introducing Hark (Hark)
   },
   {
+    name: "Campus",
+    href: "https://campus.edu/",
+    sectors: ["Education", "AI"],
+    blurb: "An accredited online college expanding access to elite education.",
+    logo: "/logos/campus.png",
+    cardLogo: "/logos/cards/campus.png",
+  },
+  {
     name: "Bud Break Innovations",
     href: "https://www.budbreakinnovations.com/",
     sectors: ["Bio", "Agriculture"],
@@ -307,6 +315,7 @@ const SECTOR_GRADIENTS: Record<string, string> = {
   Software: "from-[#0b1016] via-[#121a24] to-[#1c2734]",
   Bio: "from-[#091505] via-[#10240b] to-[#1a3a14]",
   Compute: "from-[#0c0a1e] via-[#141233] to-[#241f4a]",
+  Education: "from-[#0c1724] via-[#102338] to-[#17324d]",
   Healthcare: "from-[#06241f] via-[#0a352f] to-[#114a40]",
   Insurance: "from-[#0a1b2b] via-[#0e2a3f] to-[#163c54]",
 };

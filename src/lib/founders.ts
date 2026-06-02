@@ -207,6 +207,12 @@ export const FOUNDERS: Founder[] = [
     linkedin: "https://www.linkedin.com/in/emilyyuan96",
   },
   {
+    name: "Tade Oyerinde",
+    companyName: "Campus",
+    headshot: "/founders/cutouts/tade-oyerinde.png",
+    linkedin: "https://www.linkedin.com/in/tadeoyerinde",
+  },
+  {
     // President of Aformic and of the AIUT Group (Aformic's parent — the
     // US arm of a Polish industrial automation company).
     name: "Marek Gabryś",

@@ -15,6 +15,7 @@ const SECTOR_GROUPS: { name: string; match: string[] }[] = [
   { name: "Semiconductors", match: ["Semiconductors"] },
   { name: "Space", match: ["Space", "Compute"] },
   { name: "Bio", match: ["Bio", "Agriculture"] },
+  { name: "Education", match: ["Education"] },
 ];
 const SECTOR_STATS = SECTOR_GROUPS.map((g) => ({
   name: g.name,
