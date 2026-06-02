@@ -535,7 +535,7 @@ export function Hero() {
           <div className="hero-caption-wrap absolute right-4 bottom-[calc(16.5vw_+_92px)] z-20 md:right-[var(--site-frame-x)] md:bottom-[calc(min(16.5vw,27svh)_+_96px)] lg:right-[var(--hero-frame-x)] lg:bottom-[calc(min(16.5vw,27svh)_+_76px)]">
             <div
               className={cn(
-                "pointer-events-auto flex max-w-[calc(100vw-32px)] items-center gap-1 rounded-full border border-white/15 bg-black/25 px-1.5 py-1.5 text-white shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-md transition-opacity duration-500",
+                "pointer-events-auto flex w-[258px] max-w-[calc(100vw-32px)] items-center gap-1 rounded-full border border-white/15 bg-black/25 px-1.5 py-1.5 text-white shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-md transition-opacity duration-500",
                 phase === "fade" ? "opacity-0" : "opacity-100",
               )}
             >
@@ -554,7 +554,7 @@ export function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${slide.name} — visit site`}
-                className="min-w-0 max-w-[150px] px-2 text-[12px] font-medium leading-none text-white/90 transition-colors hover:text-[#ff4400] md:max-w-[190px] md:text-[13px]"
+                className="min-w-0 flex-1 px-2 text-center text-[12px] font-medium leading-none text-white/90 transition-colors hover:text-[#ff4400] md:text-[13px]"
               >
                 <span className="block truncate">{slide.title}</span>
               </a>
