@@ -32,7 +32,7 @@ const SLIDE_COPY: Pick<
     title: "Shield AI X-BAT",
     href: "https://shield.ai/x-bat/",
     heroVideo: HERO_VIDEOS.shieldAiXbat,
-    heroVideoStart: 18,
+    heroVideoStart: 30,
   },
   {
     name: "1X",
