@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { PORTFOLIO } from "@/lib/portfolio";
+import { HERO_VIDEOS } from "@/lib/hero-video-assets";
 import { SoundOffIcon, SoundOnIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
@@ -29,19 +30,19 @@ const SLIDE_COPY: Pick<
     name: "Shield AI",
     title: "Shield AI X-BAT",
     href: "https://shield.ai/x-bat/",
-    heroVideo: "/hero-videos/shield-ai-xbat.mp4",
+    heroVideo: HERO_VIDEOS.shieldAiXbat,
   },
   {
     name: "1X",
     title: "1X NEO",
     href: "https://www.1x.tech/",
-    heroVideo: "/hero-videos/1x-neo-factory.mp4",
+    heroVideo: HERO_VIDEOS.oneXNeoFactory,
   },
   {
     name: "Figure AI",
     title: "Figure 03",
     href: "https://www.figure.ai/",
-    heroVideo: "/hero-videos/figure-03.mp4",
+    heroVideo: HERO_VIDEOS.figure03,
   },
 ];
 
