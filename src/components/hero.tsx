@@ -1170,7 +1170,7 @@ export function Hero() {
     };
   }, [phase, muted]);
 
-  // Audio toggle — small and glassy, used inside the compact slide rail.
+  // Audio toggle — small and glassy, tucked beside the thesis lockup.
   const renderMute = (extra: string) => (
     <button
       type="button"
@@ -1336,80 +1336,66 @@ export function Hero() {
               The future is built now.
             </h1>
 
-            {/* Investment thesis — flag + two-line text lockup, left-aligned
-                under the main headline. */}
-            <div className="hero-thesis-wrap mt-7 inline-flex max-w-[520px] items-center gap-[0.55em] text-[14px] sm:text-[16px] md:mt-8 md:text-[17px] lg:text-[16px]">
-              {/* US flag — to the left of the text, sized to span the full
-                  two-line block so its top/bottom align with the text. */}
-              <svg
-                viewBox="0 0 19 10"
-                preserveAspectRatio="xMidYMid meet"
-                role="img"
-                aria-label="United States"
-                className="h-[2em] w-auto shrink-0 [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"
-              >
-                <rect width="19" height="10" fill="#fff" />
-                <g fill="#b22234">
-                  <rect width="19" height="0.769" y="0" />
-                  <rect width="19" height="0.769" y="1.538" />
-                  <rect width="19" height="0.769" y="3.077" />
-                  <rect width="19" height="0.769" y="4.615" />
-                  <rect width="19" height="0.769" y="6.154" />
-                  <rect width="19" height="0.769" y="7.692" />
-                  <rect width="19" height="0.769" y="9.231" />
-                </g>
-                <rect width="7.6" height="5.385" fill="#3c3b6e" />
-              </svg>
-              <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-normal text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] lg:leading-[1.16]">
-                Investing in America&rsquo;s companies,
-                <br />
-                resurgence, and future.
-              </p>
+            <div className="mt-7 flex w-fit max-w-full items-center gap-2 sm:gap-3 md:mt-8">
+              {/* Investment thesis — flag + two-line text lockup, left-aligned
+                  under the main headline. */}
+              <div className="hero-thesis-wrap inline-flex min-w-0 max-w-[520px] items-center gap-[0.55em] text-[14px] sm:text-[16px] md:text-[17px] lg:text-[16px]">
+                {/* US flag — to the left of the text, sized to span the full
+                    two-line block so its top/bottom align with the text. */}
+                <svg
+                  viewBox="0 0 19 10"
+                  preserveAspectRatio="xMidYMid meet"
+                  role="img"
+                  aria-label="United States"
+                  className="h-[2em] w-auto shrink-0 [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"
+                >
+                  <rect width="19" height="10" fill="#fff" />
+                  <g fill="#b22234">
+                    <rect width="19" height="0.769" y="0" />
+                    <rect width="19" height="0.769" y="1.538" />
+                    <rect width="19" height="0.769" y="3.077" />
+                    <rect width="19" height="0.769" y="4.615" />
+                    <rect width="19" height="0.769" y="6.154" />
+                    <rect width="19" height="0.769" y="7.692" />
+                    <rect width="19" height="0.769" y="9.231" />
+                  </g>
+                  <rect width="7.6" height="5.385" fill="#3c3b6e" />
+                </svg>
+                <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-normal text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] lg:leading-[1.16]">
+                  Investing in America&rsquo;s companies,
+                  <br />
+                  resurgence, and future.
+                </p>
+              </div>
+              {renderMute(
+                "size-9 shrink-0 border-white/25 bg-black/25 text-white/85 backdrop-blur-md [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.48))] hover:bg-black/40 sm:size-10 md:size-11",
+              )}
             </div>
           </div>
 
-          {/* Compact slide rail — kept out of the center so the footage breathes. */}
-          <div className="hero-caption-wrap absolute right-4 bottom-[calc(16.5vw_+_92px)] z-20 md:right-[var(--site-frame-x)] md:bottom-[calc(min(16.5vw,27svh)_+_96px)] lg:right-[var(--hero-frame-x)] lg:bottom-[calc(min(16.5vw,27svh)_+_76px)]">
-            <div
-              className={cn(
-                "pointer-events-auto flex w-[258px] max-w-[calc(100vw-32px)] items-center gap-1 rounded-full border border-white/15 bg-black/25 px-1.5 py-1.5 text-white shadow-[0_10px_30px_rgba(0,0,0,0.28)] backdrop-blur-md transition-opacity duration-500",
-                phase === "fade" ? "opacity-0" : "opacity-100",
-              )}
+          {/* Side slide controls — aligned to the site frame and kept minimal. */}
+          <div
+            className={cn(
+              "absolute inset-y-0 right-4 left-4 z-20 flex items-center justify-between transition-opacity duration-500 md:right-[var(--site-frame-x)] md:left-[var(--site-frame-x)] lg:right-[var(--hero-frame-x)] lg:left-[var(--hero-frame-x)]",
+              phase === "fade" ? "pointer-events-none opacity-0" : "opacity-100",
+            )}
+          >
+            <button
+              type="button"
+              onClick={() => go(active - 1)}
+              aria-label="Previous slide"
+              className="pointer-events-auto flex size-12 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/[0.18] text-white/85 shadow-[0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-sm transition-colors duration-200 hover:border-[#ff4400]/70 hover:bg-black/[0.32] hover:text-[#ff4400] md:size-[52px]"
             >
-              <button
-                type="button"
-                onClick={() => go(active - 1)}
-                aria-label="Previous slide"
-                className="flex size-8 shrink-0 items-center justify-center rounded-full text-white/80 transition-colors hover:bg-white/10 hover:text-[#ff4400]"
-              >
-                <Chevron dir="left" className="size-5" />
-              </button>
-
-              <a
-                key={active}
-                href={slide.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${slide.name} — visit site`}
-                className="min-w-0 flex-1 px-2 text-center text-[12px] font-medium leading-none text-white/90 transition-colors hover:text-[#ff4400] md:text-[13px]"
-              >
-                <span className="block truncate">{slide.title}</span>
-              </a>
-
-              <button
-                type="button"
-                onClick={() => go(active + 1)}
-                aria-label="Next slide"
-                className="flex size-8 shrink-0 items-center justify-center rounded-full text-white/80 transition-colors hover:bg-white/10 hover:text-[#ff4400]"
-              >
-                <Chevron dir="right" className="size-5" />
-              </button>
-
-              <span aria-hidden="true" className="mx-0.5 h-4 w-px bg-white/15" />
-              {renderMute(
-                "size-8 border-0 bg-transparent text-white/80 backdrop-blur-none [filter:none] hover:bg-white/10 hover:text-[#ff4400]",
-              )}
-            </div>
+              <Chevron dir="left" className="size-6" />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(active + 1)}
+              aria-label="Next slide"
+              className="pointer-events-auto flex size-12 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/[0.18] text-white/85 shadow-[0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-sm transition-colors duration-200 hover:border-[#ff4400]/70 hover:bg-black/[0.32] hover:text-[#ff4400] md:size-[52px]"
+            >
+              <Chevron dir="right" className="size-6" />
+            </button>
           </div>
         </div>
       </div>

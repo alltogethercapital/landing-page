@@ -372,9 +372,6 @@
   .hero-wordmark {
     font-size: min(16.5cqw, 27svh);
   }
-  .hero-caption-wrap {
-    bottom: calc(min(16.5vw, 27svh) + 72px);
-  }
   .hero-thesis-wrap {
     top: 120px;
   }
