@@ -17,8 +17,15 @@ function CompanyCard({
   company: Company;
 }) {
   const logoSrc = company.cardLogo ?? company.logo;
+  const isPending = company.investmentStatus === "pending";
   return (
     <div className="group relative block aspect-[4/3] overflow-hidden border-0 bg-transparent shadow-none outline-none">
+      {isPending && (
+        <span className="pointer-events-none absolute left-4 top-4 z-[2] inline-flex h-8 items-center border border-[#0b0b0d]/10 bg-white/80 px-3 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#0b0b0d]/70 backdrop-blur-sm md:left-5 md:top-5 md:h-9 md:text-[11px]">
+          Pending
+        </span>
+      )}
+
       {logoSrc ? (
         <div className="absolute inset-x-[12%] top-1/2 h-[42%] -translate-y-1/2">
           <Image

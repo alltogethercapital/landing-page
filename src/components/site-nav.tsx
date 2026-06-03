@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { PORTFOLIO } from "@/lib/portfolio";
+import { isCompleteInvestment, PORTFOLIO } from "@/lib/portfolio";
 import { LEGAL, NAV, SOCIALS } from "@/lib/site";
 
 // Companies per sector (a company can span more than one).
@@ -19,7 +19,9 @@ const SECTOR_GROUPS: { name: string; match: string[] }[] = [
 ];
 const SECTOR_STATS = SECTOR_GROUPS.map((g) => ({
   name: g.name,
-  count: PORTFOLIO.filter((c) => c.sectors.some((s) => g.match.includes(s))).length,
+  count: PORTFOLIO.filter(
+    (c) => isCompleteInvestment(c) && c.sectors.some((s) => g.match.includes(s)),
+  ).length,
 }))
   .filter((s) => s.count > 0)
   .sort((a, b) => b.count - a.count);

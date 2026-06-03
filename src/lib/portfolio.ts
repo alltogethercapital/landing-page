@@ -2,6 +2,7 @@ export type Company = {
   name: string;
   href: string;
   sectors: string[];
+  investmentStatus?: "complete" | "pending"; // omitted means complete
   blurb?: string; // short one-liner (revealed on hover)
   logo?: string; // /public path to the company's logo mark
   image?: string; // /public product image — falls back to a sector gradient when absent
@@ -50,6 +51,7 @@ export const PORTFOLIO: Company[] = [
     name: "Anthropic",
     href: "https://www.anthropic.com/",
     sectors: ["AI"],
+    investmentStatus: "pending",
     blurb: "AI safety research and Claude, a frontier AI assistant.",
     logo: "/logos/anthropic.png",
     cardLogo: "/logos/cards/anthropic.png",
@@ -104,6 +106,7 @@ export const PORTFOLIO: Company[] = [
     name: "Applied Intuition",
     href: "https://www.appliedintuition.com/",
     sectors: ["AI", "Robotics"],
+    investmentStatus: "pending",
     blurb: "Simulation and tooling for autonomous vehicles and machines.",
     logo: "/logos/applied.png",
     cardLogo: "/logos/cards/applied.png",
@@ -325,6 +328,10 @@ export function gradientFor(company: Company): string {
     if (SECTOR_GRADIENTS[s]) return SECTOR_GRADIENTS[s];
   }
   return "from-[#141414] via-[#1c1c1c] to-[#262626]";
+}
+
+export function isCompleteInvestment(company: Company): boolean {
+  return company.investmentStatus !== "pending";
 }
 
 // URL-safe slug from a name (e.g. "Shield AI" → "shield-ai").
