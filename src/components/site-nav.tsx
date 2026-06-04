@@ -40,6 +40,7 @@ const SECTOR_STATS = SECTOR_GROUPS.map((g) => ({
 
 const MENU_DIALOG_ID = "site-menu";
 const SEARCH_DIALOG_ID = "site-search";
+const DESKTOP_NAV_QUERY = "(min-width: 1360px)";
 
 type SearchItem = {
   title: string;
@@ -272,7 +273,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
   }, [open, searchOpen]);
 
   useEffect(() => {
-    const desktopQuery = window.matchMedia("(min-width: 1180px)");
+    const desktopQuery = window.matchMedia(DESKTOP_NAV_QUERY);
     const closeMenuOnDesktop = () => {
       if (desktopQuery.matches) setOpen(false);
     };
@@ -320,7 +321,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
         role="dialog"
         aria-modal={open ? true : undefined}
         aria-label="Site menu"
-        className="fixed inset-0 z-40 bg-black/85 backdrop-blur-[8px] transition-opacity duration-500 min-[1180px]:hidden"
+        className="fixed inset-0 z-40 bg-black/85 backdrop-blur-[8px] transition-opacity duration-500 min-[1360px]:hidden"
         inert={!open ? true : undefined}
         style={{
           opacity: open ? 1 : 0,
@@ -421,13 +422,8 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
       </div>
 
       {/* HEADER (container is click-through; only the controls are interactive) */}
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex h-[70px] items-center justify-between px-[var(--site-frame-x)] max-md:px-6 min-[1180px]:h-[78px] min-[1280px]:h-[82px]">
-        <div
-          aria-hidden="true"
-          className="absolute right-0 top-3 hidden h-[54px] w-[min(760px,74vw)] bg-[#08090a] shadow-[0_18px_48px_rgba(0,0,0,0.22)] min-[1180px]:block min-[1280px]:h-[58px] min-[1280px]:w-[min(820px,74vw)]"
-        />
-
-        <nav className="pointer-events-auto relative z-10 flex items-center gap-[22px] max-md:gap-5 min-[1180px]:gap-[18px]">
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex h-[70px] items-center justify-between px-[var(--site-frame-x)] max-md:px-6 min-[1360px]:h-[82px]">
+        <nav className="pointer-events-auto relative z-10 flex items-center gap-[22px] max-md:gap-5 min-[1360px]:gap-[18px]">
           {SOCIALS.map((s) => (
             <a
               key={s.label}
@@ -446,16 +442,16 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
           <Link
             href="/"
             aria-label="All Together Capital — home"
-            className="pointer-events-auto absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-[19px] font-[900] tracking-normal text-[#ff4400] transition-opacity hover:opacity-70 max-md:text-[16px] min-[1180px]:hidden"
+            className="pointer-events-auto absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-[19px] font-[900] tracking-normal text-[#ff4400] transition-opacity hover:opacity-70 max-md:text-[16px] min-[1360px]:hidden"
           >
             All Together
           </Link>
         )}
 
-        <div className="pointer-events-auto relative z-10 ml-auto flex items-center gap-2">
+        <div className="pointer-events-auto relative z-10 ml-auto flex items-center gap-2 min-[1360px]:h-[58px] min-[1360px]:bg-[#08090a] min-[1360px]:px-2 min-[1360px]:shadow-[0_18px_48px_rgba(0,0,0,0.22)]">
           <nav
             aria-label="Primary"
-            className="hidden h-11 items-center gap-1 pl-2 min-[1180px]:flex min-[1280px]:h-12 min-[1280px]:gap-1.5 min-[1280px]:pl-3"
+            className="hidden h-12 items-center gap-1.5 pl-2 min-[1360px]:flex min-[1360px]:pl-3"
           >
             {NAV.map((item) => {
               const active = isNavItemActive(pathname, item.href);
@@ -485,7 +481,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
             aria-controls={SEARCH_DIALOG_ID}
             title="Search"
             onClick={openSearch}
-            className="hidden size-11 items-center justify-center border border-transparent bg-transparent text-white/90 transition-[background-color,border-color,color] duration-200 hover:border-[#ff4400] hover:bg-[#ff4400] hover:text-black focus-visible:border-[#ff4400] focus-visible:bg-[#ff4400] focus-visible:text-black focus-visible:outline-none min-[1180px]:inline-flex min-[1280px]:size-12"
+            className="hidden size-12 items-center justify-center border border-transparent bg-transparent text-white/90 transition-[background-color,border-color,color] duration-200 hover:border-[#ff4400] hover:bg-[#ff4400] hover:text-black focus-visible:border-[#ff4400] focus-visible:bg-[#ff4400] focus-visible:text-black focus-visible:outline-none min-[1360px]:inline-flex"
           >
             <Search className="size-[18px]" aria-hidden="true" />
           </button>
@@ -497,7 +493,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
             aria-controls={MENU_DIALOG_ID}
             title={open ? "Close menu" : "Menu"}
             onClick={() => setOpen((o) => !o)}
-            className="relative size-[70px] max-md:size-12 min-[1180px]:hidden"
+            className="relative size-[70px] max-md:size-12 min-[1360px]:hidden"
           >
             <span
               className="absolute left-1/2 top-1/2 h-[3px] w-[44px] -translate-x-1/2 bg-[#ff4400] transition-transform duration-300 max-md:w-9"
@@ -525,12 +521,12 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
           role="dialog"
           aria-modal="true"
           aria-label="Search"
-          className="fixed inset-0 z-[60] bg-black/70 px-4 pt-[78px] backdrop-blur-[10px] min-[380px]:px-6 md:pt-[94px] min-[1180px]:px-[var(--site-frame-x)]"
+          className="fixed inset-0 z-[60] bg-black/70 px-4 pt-[78px] backdrop-blur-[10px] min-[380px]:px-6 md:pt-[94px] min-[1360px]:px-[var(--site-frame-x)]"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) closeSearch();
           }}
         >
-          <div className="ml-auto w-full border border-[#ff4400]/35 bg-[#050505]/95 shadow-[0_28px_90px_rgba(0,0,0,0.5)] min-[1180px]:max-w-[680px] min-[1440px]:max-w-[720px]">
+          <div className="ml-auto w-full border border-[#ff4400]/35 bg-[#050505]/95 shadow-[0_28px_90px_rgba(0,0,0,0.5)] min-[1360px]:max-w-[680px] min-[1440px]:max-w-[720px]">
             <div className="flex h-16 items-center border-b border-white/10 px-4 md:h-[72px] md:px-5">
               <Search className="mr-3 size-5 shrink-0 text-[#ff4400]" aria-hidden="true" />
               <input
