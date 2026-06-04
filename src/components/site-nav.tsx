@@ -40,7 +40,7 @@ const SECTOR_STATS = SECTOR_GROUPS.map((g) => ({
 
 const MENU_DIALOG_ID = "site-menu";
 const SEARCH_DIALOG_ID = "site-search";
-const DESKTOP_NAV_QUERY = "(min-width: 1360px)";
+const DESKTOP_NAV_QUERY = "(min-width: 1280px)";
 
 type SearchItem = {
   title: string;
@@ -48,7 +48,6 @@ type SearchItem = {
   category: string;
   description: string;
   keywords?: string;
-  featured?: boolean;
   searchText: string;
 };
 
@@ -116,7 +115,6 @@ const SEARCH_INDEX: SearchItem[] = [
     category: "Page",
     description: "All Together Capital",
     keywords: "frontier hard tech venture capital",
-    featured: true,
   },
   {
     title: "Our companies",
@@ -124,7 +122,6 @@ const SEARCH_INDEX: SearchItem[] = [
     category: "Page",
     description: "Portfolio across AI, defense, energy, robotics, semiconductors, and space.",
     keywords: "portfolio investments startups",
-    featured: true,
   },
   {
     title: "Our founders",
@@ -132,7 +129,6 @@ const SEARCH_INDEX: SearchItem[] = [
     category: "Page",
     description: "Founders backed by All Together Capital.",
     keywords: "entrepreneurs builders people",
-    featured: true,
   },
   {
     title: "Our team",
@@ -140,7 +136,6 @@ const SEARCH_INDEX: SearchItem[] = [
     category: "Page",
     description: "The All Together Capital team.",
     keywords: "robert neir hisham el-husseini neo",
-    featured: true,
   },
   {
     title: "Contact",
@@ -150,7 +145,6 @@ const SEARCH_INDEX: SearchItem[] = [
     category: "Connect",
     description: "Reach the All Together Capital team.",
     keywords: "email mail",
-    featured: true,
   },
   ...LEGAL.map<SearchItemInput>((item) => ({
     title: item.label,
@@ -229,7 +223,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
     const normalizedQuery = normalizeSearch(query.trim());
 
     if (!normalizedQuery) {
-      return SEARCH_INDEX.filter((item) => item.featured).slice(0, 8);
+      return [];
     }
 
     return SEARCH_INDEX.filter((item) => item.searchText.includes(normalizedQuery))
@@ -240,6 +234,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
       )
       .slice(0, 12);
   }, [query]);
+  const hasSearchQuery = query.trim().length > 0;
 
   const openSearch = () => {
     setOpen(false);
@@ -321,7 +316,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
         role="dialog"
         aria-modal={open ? true : undefined}
         aria-label="Site menu"
-        className="fixed inset-0 z-40 bg-black/85 backdrop-blur-[8px] transition-opacity duration-500 min-[1360px]:hidden"
+        className="fixed inset-0 z-40 bg-black/85 backdrop-blur-[8px] transition-opacity duration-500 min-[1280px]:hidden"
         inert={!open ? true : undefined}
         style={{
           opacity: open ? 1 : 0,
@@ -422,8 +417,8 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
       </div>
 
       {/* HEADER (container is click-through; only the controls are interactive) */}
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex h-[70px] items-center justify-between px-[var(--site-frame-x)] max-md:px-6 min-[1360px]:h-[82px]">
-        <nav className="pointer-events-auto relative z-10 flex items-center gap-[22px] max-md:gap-5 min-[1360px]:gap-[18px]">
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex h-[70px] items-center justify-between px-[var(--site-frame-x)] max-md:px-6 min-[1280px]:h-[82px]">
+        <nav className="pointer-events-auto relative z-10 flex items-center gap-[22px] max-md:gap-5 min-[1280px]:gap-[18px]">
           {SOCIALS.map((s) => (
             <a
               key={s.label}
@@ -442,16 +437,16 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
           <Link
             href="/"
             aria-label="All Together Capital — home"
-            className="pointer-events-auto absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-[19px] font-[900] tracking-normal text-[#ff4400] transition-opacity hover:opacity-70 max-md:text-[16px] min-[1360px]:hidden"
+            className="pointer-events-auto absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-[19px] font-[900] tracking-normal text-[#ff4400] transition-opacity hover:opacity-70 max-md:text-[16px] min-[1280px]:hidden"
           >
             All Together
           </Link>
         )}
 
-        <div className="pointer-events-auto relative z-10 ml-auto flex items-center gap-2 min-[1360px]:h-[58px] min-[1360px]:bg-[#08090a] min-[1360px]:px-2 min-[1360px]:shadow-[0_18px_48px_rgba(0,0,0,0.22)]">
+        <div className="pointer-events-auto relative z-10 ml-auto flex items-center gap-2 min-[1280px]:h-[58px] min-[1280px]:bg-[#08090a] min-[1280px]:px-2 min-[1280px]:shadow-[0_18px_48px_rgba(0,0,0,0.22)]">
           <nav
             aria-label="Primary"
-            className="hidden h-12 items-center gap-1.5 pl-2 min-[1360px]:flex min-[1360px]:pl-3"
+            className="hidden h-12 items-center gap-1.5 pl-2 min-[1280px]:flex min-[1280px]:pl-3"
           >
             {NAV.map((item) => {
               const active = isNavItemActive(pathname, item.href);
@@ -481,7 +476,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
             aria-controls={SEARCH_DIALOG_ID}
             title="Search"
             onClick={openSearch}
-            className="hidden size-12 items-center justify-center border border-transparent bg-transparent text-white/90 transition-[background-color,border-color,color] duration-200 hover:border-[#ff4400] hover:bg-[#ff4400] hover:text-black focus-visible:border-[#ff4400] focus-visible:bg-[#ff4400] focus-visible:text-black focus-visible:outline-none min-[1360px]:inline-flex"
+            className="hidden size-12 items-center justify-center border border-transparent bg-transparent text-white/90 transition-[background-color,border-color,color] duration-200 hover:border-[#ff4400] hover:bg-[#ff4400] hover:text-black focus-visible:border-[#ff4400] focus-visible:bg-[#ff4400] focus-visible:text-black focus-visible:outline-none min-[1280px]:inline-flex"
           >
             <Search className="size-[18px]" aria-hidden="true" />
           </button>
@@ -493,7 +488,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
             aria-controls={MENU_DIALOG_ID}
             title={open ? "Close menu" : "Menu"}
             onClick={() => setOpen((o) => !o)}
-            className="relative size-[70px] max-md:size-12 min-[1360px]:hidden"
+            className="relative size-[70px] max-md:size-12 min-[1280px]:hidden"
           >
             <span
               className="absolute left-1/2 top-1/2 h-[3px] w-[44px] -translate-x-1/2 bg-[#ff4400] transition-transform duration-300 max-md:w-9"
@@ -521,12 +516,12 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
           role="dialog"
           aria-modal="true"
           aria-label="Search"
-          className="fixed inset-0 z-[60] bg-black/70 px-4 pt-[78px] backdrop-blur-[10px] min-[380px]:px-6 md:pt-[94px] min-[1360px]:px-[var(--site-frame-x)]"
+          className="fixed inset-0 z-[60] bg-black/70 px-4 pt-[78px] backdrop-blur-[10px] min-[380px]:px-6 md:pt-[94px] min-[1280px]:px-[var(--site-frame-x)]"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) closeSearch();
           }}
         >
-          <div className="ml-auto w-full border border-[#ff4400]/35 bg-[#050505]/95 shadow-[0_28px_90px_rgba(0,0,0,0.5)] min-[1360px]:max-w-[680px] min-[1440px]:max-w-[720px]">
+          <div className="ml-auto w-full border border-[#ff4400]/35 bg-[#050505]/95 shadow-[0_28px_90px_rgba(0,0,0,0.5)] min-[1280px]:max-w-[680px] min-[1440px]:max-w-[720px]">
             <div className="flex h-16 items-center border-b border-white/10 px-4 md:h-[72px] md:px-5">
               <Search className="mr-3 size-5 shrink-0 text-[#ff4400]" aria-hidden="true" />
               <input
@@ -534,6 +529,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search All Together"
+                autoFocus
                 className="h-full min-w-0 flex-1 bg-transparent text-[20px] font-semibold tracking-normal text-white outline-none placeholder:text-white/25 md:text-[28px]"
               />
               <button
@@ -546,37 +542,39 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
               </button>
             </div>
 
-            <div className="max-h-[min(620px,calc(100svh-164px))] overflow-y-auto overscroll-contain">
-              {searchResults.length > 0 ? (
-                searchResults.map((result) => (
-                  <NavLink
-                    key={`${result.href}-${result.title}`}
-                    href={result.href}
-                    onClick={closeSearch}
-                    className="group grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-t border-white/10 px-4 py-4 text-left transition-colors duration-200 first:border-t-0 hover:bg-[#ff4400] focus-visible:bg-[#ff4400] focus-visible:outline-none md:px-5 md:py-5"
-                  >
-                    <span className="min-w-0">
-                      <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ff4400]/80 transition-colors duration-200 group-hover:text-black/55 group-focus-visible:text-black/55">
-                        {result.category}
+            {hasSearchQuery && (
+              <div className="max-h-[min(620px,calc(100svh-164px))] overflow-y-auto overscroll-contain">
+                {searchResults.length > 0 ? (
+                  searchResults.map((result) => (
+                    <NavLink
+                      key={`${result.href}-${result.title}`}
+                      href={result.href}
+                      onClick={closeSearch}
+                      className="group grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-t border-white/10 px-4 py-4 text-left transition-colors duration-200 first:border-t-0 hover:bg-[#ff4400] focus-visible:bg-[#ff4400] focus-visible:outline-none md:px-5 md:py-5"
+                    >
+                      <span className="min-w-0">
+                        <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ff4400]/80 transition-colors duration-200 group-hover:text-black/55 group-focus-visible:text-black/55">
+                          {result.category}
+                        </span>
+                        <span className="mt-1 block truncate text-[18px] font-semibold leading-tight tracking-normal text-white transition-colors duration-200 group-hover:text-black group-focus-visible:text-black md:text-[22px]">
+                          {result.title}
+                        </span>
+                        <span className="mt-1 block truncate text-[13px] leading-relaxed text-white/45 transition-colors duration-200 group-hover:text-black/65 group-focus-visible:text-black/65 md:text-[14px]">
+                          {result.description}
+                        </span>
                       </span>
-                      <span className="mt-1 block truncate text-[18px] font-semibold leading-tight tracking-normal text-white transition-colors duration-200 group-hover:text-black group-focus-visible:text-black md:text-[22px]">
-                        {result.title}
-                      </span>
-                      <span className="mt-1 block truncate text-[13px] leading-relaxed text-white/45 transition-colors duration-200 group-hover:text-black/65 group-focus-visible:text-black/65 md:text-[14px]">
-                        {result.description}
-                      </span>
-                    </span>
-                    <ArrowUpRight className="size-5 text-white/35 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-black group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5 group-focus-visible:text-black" />
-                  </NavLink>
-                ))
-              ) : (
-                <div className="px-4 py-10 md:px-5">
-                  <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ff4400]/75">
-                    No results
-                  </p>
-                </div>
-              )}
-            </div>
+                      <ArrowUpRight className="size-5 text-white/35 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-black group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5 group-focus-visible:text-black" />
+                    </NavLink>
+                  ))
+                ) : (
+                  <div className="px-4 py-10 md:px-5">
+                    <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ff4400]/75">
+                      No results
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}
