@@ -126,6 +126,7 @@ async function warmImages(cancelled: () => boolean) {
 
   for (let index = 0; index < IMAGE_ASSETS.length && !cancelled(); index += batchSize) {
     const batch = IMAGE_ASSETS.slice(index, index + batchSize);
+    batch.forEach((src) => addPrefetch(src, "image"));
     await Promise.all(batch.map(warmImage));
     await wait(60);
   }
@@ -147,7 +148,6 @@ export function SitePreloader() {
 
     const cancelIdle = scheduleIdle(() => {
       PRECONNECT_ORIGINS.forEach(addPreconnect);
-      IMAGE_ASSETS.forEach((src) => addPrefetch(src, "image"));
       VIDEO_ASSETS.forEach((src) => addPrefetch(src, "video", "video/mp4"));
 
       void warmImages(isCancelled);
