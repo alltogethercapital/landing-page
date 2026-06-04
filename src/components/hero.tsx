@@ -58,6 +58,7 @@ const SLIDES: Slide[] = SLIDE_COPY.map((c) => {
 
 const IMAGE_HOLD_MS = 2000; // show each company image for two seconds before video
 const FADE_MS = 850; // crossfade from the ending video to the next company image
+const HOME_INTRO_SESSION_KEY = "all-together-home-intro-seen";
 const INTRO_VARIANTS = [
   { id: "ascii-boot", label: "ASCII Boot" },
   { id: "blue-smoke", label: "Blue Smoke" },
@@ -96,6 +97,35 @@ const INTRO_ASCII = [
   "CAPITAL",
   "SEATTLE",
 ];
+
+let homeIntroSeenInRuntime = false;
+
+function forceIntroFromUrl() {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).has("intro");
+}
+
+function hasSeenHomeIntroThisSession() {
+  if (typeof window === "undefined" || forceIntroFromUrl()) return false;
+  if (homeIntroSeenInRuntime) return true;
+
+  try {
+    return window.sessionStorage.getItem(HOME_INTRO_SESSION_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+function rememberHomeIntroSeen() {
+  homeIntroSeenInRuntime = true;
+
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.setItem(HOME_INTRO_SESSION_KEY, "true");
+  } catch {
+    /* Ignore browsers that block session storage. */
+  }
+}
 
 function getIntroVariantFromUrl(): IntroVariantId {
   if (typeof window === "undefined") return DEFAULT_INTRO_VARIANT;
@@ -1001,13 +1031,14 @@ function HeroVideoPlayer({
 }
 
 export function Hero() {
+  const [skipIntroOnMount] = useState(hasSeenHomeIntroThisSession);
   const [active, setActive] = useState(0);
   const [phase, setPhase] = useState<"image" | "video" | "fade">("image");
   const [muted, setMuted] = useState(true);
   // Brief "sound lives here" highlight on the audio button — pulsed on each
   // video start while still muted (see the flash effect below).
   const [flash, setFlash] = useState(false);
-  const [introComplete, setIntroComplete] = useState(false);
+  const [introComplete, setIntroComplete] = useState(skipIntroOnMount);
   // Whether the native video has visually revealed (faded in) for the current
   // slide — keeps atmosphere layers on screen until the video actually appears,
   // not just when the phase flips internally.
@@ -1020,6 +1051,11 @@ export function Hero() {
   useEffect(() => {
     const el = curtainRef.current;
     if (!el) return;
+    if (skipIntroOnMount) {
+      el.style.display = "none";
+      return;
+    }
+
     const hide = () => {
       if (curtainRef.current) curtainRef.current.style.display = "none";
       setIntroComplete(true);
@@ -1028,9 +1064,11 @@ export function Hero() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     if (reduce) {
+      rememberHomeIntroSeen();
       hide();
       return;
     }
+    rememberHomeIntroSeen();
     const variant = getIntroVariantFromUrl();
     const tween = playIntroVariant(el, variant, hide);
     const fallback = window.setTimeout(hide, 4200); // never leave it covering
@@ -1038,7 +1076,7 @@ export function Hero() {
       tween.kill();
       window.clearTimeout(fallback);
     };
-  }, []);
+  }, [skipIntroOnMount]);
 
   // Headline reveal: a masked character-rise at >=768px (where the headline is
   // whitespace-normal and SplitText behaves), and a simple, reliable fade-rise on
@@ -1051,6 +1089,11 @@ export function Hero() {
     let tween: gsap.core.Tween | undefined;
     let safety: number | undefined;
     const show = () => gsap.set(el, { autoAlpha: 1 });
+    if (skipIntroOnMount) {
+      show();
+      return;
+    }
+
     const fallback = window.setTimeout(show, 2500); // never leave it hidden
     const run = () => {
       window.clearTimeout(fallback);
@@ -1098,7 +1141,7 @@ export function Hero() {
       tween?.kill();
       split?.revert();
     };
-  }, []);
+  }, [skipIntroOnMount]);
 
   const slide = SLIDES[active];
   // Atmosphere layers stay on screen while the image is visible and fade once
@@ -1202,7 +1245,9 @@ export function Hero() {
       <div
         ref={curtainRef}
         aria-hidden="true"
+        suppressHydrationWarning
         className="intro-curtain pointer-events-none fixed inset-0 z-[200] overflow-hidden bg-[#0b0b0d]"
+        style={skipIntroOnMount ? { display: "none" } : undefined}
       >
         <div className="absolute inset-0">
           {Array.from({ length: 12 }).map((_, index) => (

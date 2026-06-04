@@ -3,7 +3,7 @@ import Image from "next/image";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { ArrowUpRight } from "@/components/icons";
-import { PORTFOLIO, type Company } from "@/lib/portfolio";
+import { PORTFOLIO, slugify, type Company } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
   title: "Our companies — All Together Capital",
@@ -19,7 +19,10 @@ function CompanyCard({
   const logoSrc = company.cardLogo ?? company.logo;
   const isPending = company.investmentStatus === "pending";
   return (
-    <div className="group relative block aspect-[4/3] overflow-hidden border-0 bg-transparent shadow-none outline-none">
+    <div
+      id={slugify(company.name)}
+      className="group relative block aspect-[4/3] scroll-mt-[104px] overflow-hidden border-0 bg-transparent shadow-none outline-none md:scroll-mt-[118px]"
+    >
       {isPending && (
         <span className="pointer-events-none absolute left-4 top-4 z-[2] inline-flex h-8 items-center border border-[#0b0b0d]/10 bg-white/80 px-3 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#0b0b0d]/70 backdrop-blur-sm md:left-5 md:top-5 md:h-9 md:text-[11px]">
           Pending
