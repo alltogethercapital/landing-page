@@ -98,7 +98,7 @@ function addPreconnect(origin: string) {
   document.head.appendChild(link);
 }
 
-function addPrefetch(href: string, as: "image" | "video", type?: string) {
+function addPrefetch(href: string, as: "document" | "image" | "video", type?: string) {
   if (document.head.querySelector(`link[rel="prefetch"][href="${href}"]`)) return;
 
   const link = document.createElement("link") as HTMLLinkElement & PriorityElement;
@@ -144,6 +144,7 @@ export function SitePreloader() {
 
     INTERNAL_ROUTES.forEach((href) => {
       router.prefetch(href);
+      addPrefetch(href, "document");
     });
 
     const cancelIdle = scheduleIdle(() => {
