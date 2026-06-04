@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, X } from "lucide-react";
@@ -47,6 +48,9 @@ type SearchItem = {
   href: string;
   category: string;
   description: string;
+  image?: string;
+  imageAlt?: string;
+  imageVariant?: "photo" | "logo" | "portrait";
   keywords?: string;
   searchText: string;
 };
@@ -59,6 +63,9 @@ const TEAM_SEARCH_ITEMS: SearchItemInput[] = [
     href: "/team#robert-neir",
     category: "Team",
     description: "Founding Partner",
+    image: "/leadership/robert-team-studio.png",
+    imageAlt: "Robert Neir",
+    imageVariant: "portrait",
     keywords: "leadership partner email",
   },
   {
@@ -66,6 +73,9 @@ const TEAM_SEARCH_ITEMS: SearchItemInput[] = [
     href: "/team#hisham-el-husseini",
     category: "Team",
     description: "Founding Partner",
+    image: "/leadership/hisham-team-studio.png",
+    imageAlt: "Hisham El-Husseini",
+    imageVariant: "portrait",
     keywords: "leadership partner email",
   },
   {
@@ -73,6 +83,9 @@ const TEAM_SEARCH_ITEMS: SearchItemInput[] = [
     href: "/team#neo",
     category: "Team",
     description: "Head of Robotics",
+    image: "/leadership/neo-team-studio.png",
+    imageAlt: "NEO",
+    imageVariant: "portrait",
     keywords: "robotics 1x",
   },
 ];
@@ -106,6 +119,30 @@ function isNavItemActive(pathname: string, href: string) {
   if (!href.startsWith("/")) return false;
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function companySearchMedia(company: (typeof PORTFOLIO)[number]) {
+  const photo = company.cardImage ?? company.image;
+  const logo = company.cardLogo ?? company.logo;
+  const image = photo ?? logo;
+
+  return image
+    ? {
+        image,
+        imageAlt: company.name,
+        imageVariant: photo ? ("photo" as const) : ("logo" as const),
+      }
+    : {};
+}
+
+function founderSearchMedia(founder: (typeof FOUNDERS)[number]) {
+  return founder.headshot
+    ? {
+        image: founder.headshot,
+        imageAlt: founder.name,
+        imageVariant: "portrait" as const,
+      }
+    : {};
 }
 
 const SEARCH_INDEX: SearchItem[] = [
@@ -159,6 +196,7 @@ const SEARCH_INDEX: SearchItem[] = [
     category: "Company",
     description: company.sectors.join(" / "),
     keywords: company.blurb,
+    ...companySearchMedia(company),
   })),
   ...FOUNDERS.map<SearchItemInput>((founder) => ({
     title: founder.name,
@@ -166,9 +204,38 @@ const SEARCH_INDEX: SearchItem[] = [
     category: "Founder",
     description: founder.companyName,
     keywords: founder.companyName,
+    ...founderSearchMedia(founder),
   })),
   ...TEAM_SEARCH_ITEMS,
 ].map(withSearchText);
+
+function SearchResultMedia({ result }: { result: SearchItem }) {
+  if (!result.image) return null;
+
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "relative block size-12 overflow-hidden border border-white/10 bg-white/[0.05] transition-colors duration-200 group-hover:border-black/15 group-hover:bg-black/[0.08] group-focus-visible:border-black/15 group-focus-visible:bg-black/[0.08] min-[420px]:size-14 md:size-[68px]",
+        result.imageVariant === "portrait" && "bg-[#101112]",
+        result.imageVariant === "logo" && "bg-white/[0.9]",
+      )}
+    >
+      <Image
+        src={result.image}
+        alt={result.imageAlt ?? ""}
+        fill
+        sizes="(min-width: 768px) 68px, 56px"
+        className={cn(
+          "transition-transform duration-300 group-hover:scale-[1.04] group-focus-visible:scale-[1.04]",
+          result.imageVariant === "photo" && "object-cover",
+          result.imageVariant === "portrait" && "object-contain object-bottom p-1",
+          result.imageVariant === "logo" && "object-contain p-2.5",
+        )}
+      />
+    </span>
+  );
+}
 
 function NavLink({
   href,
@@ -550,8 +617,14 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
                       key={`${result.href}-${result.title}`}
                       href={result.href}
                       onClick={closeSearch}
-                      className="group grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-t border-white/10 px-4 py-4 text-left transition-colors duration-200 first:border-t-0 hover:bg-[#ff4400] focus-visible:bg-[#ff4400] focus-visible:outline-none md:px-5 md:py-5"
+                      className={cn(
+                        "group grid items-center gap-4 border-t border-white/10 px-4 py-4 text-left transition-colors duration-200 first:border-t-0 hover:bg-[#ff4400] focus-visible:bg-[#ff4400] focus-visible:outline-none md:px-5 md:py-5",
+                        result.image
+                          ? "grid-cols-[3rem_minmax(0,1fr)_auto] min-[420px]:grid-cols-[3.5rem_minmax(0,1fr)_auto] md:grid-cols-[4.25rem_minmax(0,1fr)_auto]"
+                          : "grid-cols-[minmax(0,1fr)_auto]",
+                      )}
                     >
+                      <SearchResultMedia result={result} />
                       <span className="min-w-0">
                         <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ff4400]/80 transition-colors duration-200 group-hover:text-black/55 group-focus-visible:text-black/55">
                           {result.category}

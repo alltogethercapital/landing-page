@@ -67,6 +67,13 @@ type PriorityElement = {
 };
 
 type IdleHandle = ReturnType<typeof setTimeout> | number;
+type CancelFn = () => void;
+
+const IMAGE_BATCH_SIZE = 4;
+const IMAGE_BATCH_GAP_MS = 80;
+const MEDIA_START_DELAY_MS = 1800;
+const VIDEO_START_DELAY_MS = 5200;
+const INTERACTION_QUIET_MS = 900;
 
 declare global {
   interface Window {
@@ -86,6 +93,12 @@ function scheduleIdle(callback: () => void, timeout = 1600): () => void {
 
 function wait(ms: number) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+async function waitForQuiet(cancelled: () => boolean, shouldPause: () => boolean) {
+  while (!cancelled() && shouldPause()) {
+    await wait(180);
+  }
 }
 
 function addPreconnect(origin: string) {
@@ -121,15 +134,23 @@ function warmImage(src: string) {
   });
 }
 
-async function warmImages(cancelled: () => boolean) {
-  const batchSize = 4;
+async function warmImages(cancelled: () => boolean, shouldPause: () => boolean) {
+  for (let index = 0; index < IMAGE_ASSETS.length && !cancelled(); index += IMAGE_BATCH_SIZE) {
+    await waitForQuiet(cancelled, shouldPause);
+    if (cancelled()) break;
 
-  for (let index = 0; index < IMAGE_ASSETS.length && !cancelled(); index += batchSize) {
-    const batch = IMAGE_ASSETS.slice(index, index + batchSize);
+    const batch = IMAGE_ASSETS.slice(index, index + IMAGE_BATCH_SIZE);
     batch.forEach((src) => addPrefetch(src, "image"));
     await Promise.all(batch.map(warmImage));
-    await wait(60);
+    await wait(IMAGE_BATCH_GAP_MS);
   }
+}
+
+async function prefetchVideos(cancelled: () => boolean, shouldPause: () => boolean) {
+  await waitForQuiet(cancelled, shouldPause);
+  if (cancelled()) return;
+
+  VIDEO_ASSETS.forEach((src) => addPrefetch(src, "video", "video/mp4"));
 }
 
 export function SitePreloader() {
@@ -141,22 +162,54 @@ export function SitePreloader() {
 
     let cancelled = false;
     const isCancelled = () => cancelled;
+    let lastInteractionAt = 0;
+
+    const markInteraction = () => {
+      lastInteractionAt = window.performance.now();
+    };
+
+    const shouldPauseMediaPreload = () =>
+      document.visibilityState !== "visible" ||
+      window.performance.now() - lastInteractionAt < INTERACTION_QUIET_MS;
 
     INTERNAL_ROUTES.forEach((href) => {
       router.prefetch(href);
       addPrefetch(href, "document");
     });
 
-    const cancelIdle = scheduleIdle(() => {
-      PRECONNECT_ORIGINS.forEach(addPreconnect);
-      VIDEO_ASSETS.forEach((src) => addPrefetch(src, "video", "video/mp4"));
+    PRECONNECT_ORIGINS.forEach(addPreconnect);
 
-      void warmImages(isCancelled);
-    });
+    const interactionEvents = ["pointerdown", "keydown", "wheel", "touchstart", "scroll"];
+    interactionEvents.forEach((eventName) =>
+      window.addEventListener(eventName, markInteraction, { passive: true }),
+    );
+
+    let cancelMediaIdle: CancelFn | null = null;
+    let cancelVideoIdle: CancelFn | null = null;
+
+    const mediaTimer = window.setTimeout(() => {
+      if (cancelled) return;
+      cancelMediaIdle = scheduleIdle(() => {
+        void warmImages(isCancelled, shouldPauseMediaPreload);
+      }, 2400);
+    }, MEDIA_START_DELAY_MS);
+
+    const videoTimer = window.setTimeout(() => {
+      if (cancelled) return;
+      cancelVideoIdle = scheduleIdle(() => {
+        void prefetchVideos(isCancelled, shouldPauseMediaPreload);
+      }, 2800);
+    }, VIDEO_START_DELAY_MS);
 
     return () => {
       cancelled = true;
-      cancelIdle();
+      window.clearTimeout(mediaTimer);
+      window.clearTimeout(videoTimer);
+      cancelMediaIdle?.();
+      cancelVideoIdle?.();
+      interactionEvents.forEach((eventName) =>
+        window.removeEventListener(eventName, markInteraction),
+      );
     };
   }, [router]);
 
