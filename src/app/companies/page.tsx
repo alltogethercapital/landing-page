@@ -42,7 +42,7 @@ function CompanyCard({
         </div>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center px-8 text-center">
-          <span className="text-[clamp(28px,4vw,52px)] font-semibold leading-none tracking-[-0.04em] text-[#0b0b0d]">
+          <span className="font-sans text-[clamp(28px,4vw,52px)] font-semibold leading-none tracking-[-0.04em] text-[#0b0b0d]">
             {company.name}
           </span>
         </div>

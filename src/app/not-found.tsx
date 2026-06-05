@@ -11,7 +11,7 @@ export default function NotFound() {
         <p className="font-mono text-[13px] uppercase tracking-[0.25em] text-[#ff4400]">
           Error
         </p>
-        <div className="mt-4 select-none text-[clamp(96px,22vw,280px)] font-[900] leading-none tracking-[-0.05em] text-[#ff4400]">
+        <div className="mt-4 select-none font-sans text-[clamp(96px,22vw,280px)] font-[900] leading-none tracking-[-0.05em] text-[#ff4400]">
           404
         </div>
         <h1 className="mt-4 text-[24px] font-medium tracking-[-0.6px] md:text-[32px]">

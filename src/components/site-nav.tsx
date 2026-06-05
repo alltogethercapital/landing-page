@@ -398,7 +398,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
         <div className="flex h-full flex-col gap-10 overflow-y-auto px-6 pb-10 pt-[96px] md:px-10 md:pt-[104px] xl:block xl:overflow-visible xl:p-0">
           {/* location + portfolio stats — drops below the nav on mobile */}
           <div className="order-last xl:absolute xl:left-[var(--site-frame-x)] xl:top-[110px] xl:max-w-[560px] 2xl:max-w-[700px]">
-            <p className="text-[36px] font-semibold leading-[1.08] tracking-normal text-white min-[360px]:text-[40px] md:text-[54px] lg:text-[60px] xl:text-[64px] 2xl:text-[72px] 2xl:leading-[79.2px]">
+            <p className="font-sans text-[36px] font-semibold leading-[1.08] tracking-normal text-white min-[360px]:text-[40px] md:text-[54px] lg:text-[60px] xl:text-[64px] 2xl:text-[72px] 2xl:leading-[79.2px]">
               We are based in
               <br />
               <span className="text-[#ff4400]">Seattle, WA.</span>
@@ -437,7 +437,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
                     onClick={() => setOpen(false)}
                     ariaCurrent={active ? "page" : undefined}
                     className={cn(
-                      "text-[34px] font-semibold leading-[1.16] tracking-normal text-[#f6f6f6] transition-colors duration-200 hover:text-[#ff4400] min-[360px]:text-[38px] md:text-[56px] md:leading-[1.04] lg:text-[62px] xl:text-[76px] xl:leading-[1] 2xl:text-[84px] 2xl:leading-[84px]",
+                      "font-sans text-[34px] font-semibold leading-[1.16] tracking-normal text-[#f6f6f6] transition-colors duration-200 hover:text-[#ff4400] min-[360px]:text-[38px] md:text-[56px] md:leading-[1.04] lg:text-[62px] xl:text-[76px] xl:leading-[1] 2xl:text-[84px] 2xl:leading-[84px]",
                       active && "text-[#ff4400]",
                     )}
                     style={{
@@ -476,7 +476,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
                   key={item.label}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="text-[16px] font-medium leading-[1.5] tracking-normal text-[#f6f6f6] transition-colors duration-200 hover:text-[#ff4400] md:text-[22px] md:leading-[1.35] xl:text-[24px] 2xl:text-[28px] 2xl:leading-[33.6px]"
+                  className="font-sans text-[16px] font-medium leading-[1.5] tracking-normal text-[#f6f6f6] transition-colors duration-200 hover:text-[#ff4400] md:text-[22px] md:leading-[1.35] xl:text-[24px] 2xl:text-[28px] 2xl:leading-[33.6px]"
                 >
                   {item.label}
                 </Link>
@@ -507,7 +507,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
           <Link
             href="/"
             aria-label="All Together Capital — home"
-            className="pointer-events-auto absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-[19px] font-[900] tracking-normal text-[#ff4400] transition-opacity hover:opacity-70 max-md:text-[16px] min-[1280px]:hidden"
+            className="pointer-events-auto absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap font-sans text-[19px] font-[900] tracking-normal text-[#ff4400] transition-opacity hover:opacity-70 max-md:text-[16px] min-[1280px]:hidden"
           >
             All Together
           </Link>
@@ -600,7 +600,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search All Together"
                 autoFocus
-                className="h-full min-w-0 flex-1 bg-transparent text-[20px] font-semibold tracking-normal text-white outline-none placeholder:text-white/25 md:text-[28px]"
+                className="h-full min-w-0 flex-1 bg-transparent font-sans text-[20px] font-semibold tracking-normal text-white outline-none placeholder:text-white/25 md:text-[28px]"
               />
               <button
                 type="button"
@@ -632,7 +632,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
                         <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ff4400]/80 transition-colors duration-200 group-hover:text-black/55 group-focus-visible:text-black/55">
                           {result.category}
                         </span>
-                        <span className="mt-1 block truncate text-[18px] font-semibold leading-tight tracking-normal text-white transition-colors duration-200 group-hover:text-black group-focus-visible:text-black md:text-[22px]">
+                        <span className="mt-1 block truncate font-sans text-[18px] font-semibold leading-tight tracking-normal text-white transition-colors duration-200 group-hover:text-black group-focus-visible:text-black md:text-[22px]">
                           {result.title}
                         </span>
                         <span className="mt-1 block truncate text-[13px] leading-relaxed text-white/45 transition-colors duration-200 group-hover:text-black/65 group-focus-visible:text-black/65 md:text-[14px]">

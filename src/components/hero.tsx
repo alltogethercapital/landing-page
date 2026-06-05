@@ -1407,7 +1407,7 @@ export function Hero() {
                   </g>
                   <rect width="7.6" height="5.385" fill="#3c3b6e" />
                 </svg>
-                <p className="[font-family:var(--font-playfair)] font-normal leading-[1.3] tracking-normal text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] lg:leading-[1.16]">
+                <p className="[font-family:var(--font-rosart)] font-normal leading-[1.3] tracking-normal text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] lg:leading-[1.16]">
                   Investing in America&rsquo;s companies,
                   <br />
                   resurgence, and future.
@@ -1452,7 +1452,7 @@ export function Hero() {
           All Together
         </div>
         <div className="mt-[0.04em] text-right leading-none">
-          <span className="text-[clamp(12px,1.2vw,17px)] font-semibold uppercase tracking-[0.4em] text-white">
+          <span className="font-mono text-[clamp(12px,1.2vw,17px)] font-semibold uppercase tracking-[0.4em] text-white">
             Capital
           </span>
           <span className="ml-[0.35em] align-super text-[0.6em] font-semibold text-white/75">

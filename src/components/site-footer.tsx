@@ -46,12 +46,12 @@ export function SiteFooter() {
             aria-label="All Together Capital — home"
             className="inline-block transition-opacity hover:opacity-80"
           >
-            <span className="block whitespace-nowrap text-[clamp(44px,8vw,96px)] font-[900] leading-[0.9] tracking-[-0.05em] text-[#ff4400]">
+            <span className="block whitespace-nowrap font-sans text-[clamp(44px,8vw,96px)] font-[900] leading-[0.9] tracking-[-0.05em] text-[#ff4400]">
               All Together
             </span>
           </Link>
           <div className="md:pb-2 md:text-right">
-            <p className="[font-family:var(--font-playfair)] text-[26px] leading-[1.1] tracking-[-0.5px] text-white/90 md:text-[32px]">
+            <p className="[font-family:var(--font-rosart)] text-[26px] leading-[1.1] tracking-[-0.5px] text-white/90 md:text-[32px]">
               The frontier is
               <br />
               all that matters.
@@ -89,7 +89,7 @@ export function SiteFooter() {
 
         {/* Newsletter */}
         <div className="col-span-2 rounded-2xl border border-white/10 bg-white/[0.02] p-6 md:col-span-1">
-          <p className="text-[20px] font-semibold tracking-[-0.5px]">
+          <p className="font-sans text-[20px] font-semibold tracking-[-0.5px]">
             Stay in the loop
           </p>
           <p className="mt-3 text-[14px] leading-relaxed text-white/55">
