@@ -63,7 +63,7 @@ const TEAM_SEARCH_ITEMS: SearchItemInput[] = [
     href: "/team#robert-neir",
     category: "Team",
     description: "Founding Partner",
-    image: "/leadership/robert-team-studio.png",
+    image: "/leadership/webp/robert-team-studio.webp",
     imageAlt: "Robert Neir",
     imageVariant: "portrait",
     keywords: "leadership partner email",
@@ -73,7 +73,7 @@ const TEAM_SEARCH_ITEMS: SearchItemInput[] = [
     href: "/team#hisham-el-husseini",
     category: "Team",
     description: "Founding Partner",
-    image: "/leadership/hisham-team-studio.png",
+    image: "/leadership/webp/hisham-team-studio.webp",
     imageAlt: "Hisham El-Husseini",
     imageVariant: "portrait",
     keywords: "leadership partner email",
@@ -83,7 +83,7 @@ const TEAM_SEARCH_ITEMS: SearchItemInput[] = [
     href: "/team#neo",
     category: "Team",
     description: "Head of Robotics",
-    image: "/leadership/neo-team-studio.png",
+    image: "/leadership/webp/neo-team-studio.webp",
     imageAlt: "NEO",
     imageVariant: "portrait",
     keywords: "robotics 1x",
@@ -138,7 +138,9 @@ function companySearchMedia(company: (typeof PORTFOLIO)[number]) {
 function founderSearchMedia(founder: (typeof FOUNDERS)[number]) {
   return founder.headshot
     ? {
-        image: founder.headshot,
+        image: founder.headshot
+          .replace("/founders/cutouts/", "/founders/cutouts-webp/")
+          .replace(/\.png$/, ".webp"),
         imageAlt: founder.name,
         imageVariant: "portrait" as const,
       }
@@ -226,6 +228,7 @@ function SearchResultMedia({ result }: { result: SearchItem }) {
         alt={result.imageAlt ?? ""}
         fill
         sizes="(min-width: 768px) 68px, 56px"
+        unoptimized
         className={cn(
           "transition-transform duration-300 group-hover:scale-[1.04] group-focus-visible:scale-[1.04]",
           result.imageVariant === "photo" && "object-cover",

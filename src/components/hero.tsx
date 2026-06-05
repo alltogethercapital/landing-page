@@ -991,7 +991,7 @@ function HeroVideoPlayer({
         ref={videoRef}
         className="absolute inset-0 size-full object-cover"
         playsInline
-        preload="auto"
+        preload={visible ? "auto" : "metadata"}
         disablePictureInPicture
         controls={false}
         controlsList="nodownload noplaybackrate noremoteplayback"
@@ -1322,6 +1322,7 @@ export function Hero() {
                 fill
                 priority={i === 0}
                 quality={90}
+                unoptimized
                 sizes="100vw"
                 className="object-cover object-center"
               />

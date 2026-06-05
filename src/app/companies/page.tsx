@@ -36,7 +36,7 @@ function CompanyCard({
             alt={`${company.name} logo`}
             fill
             sizes="(max-width: 768px) 80vw, (max-width: 1024px) 40vw, 430px"
-            quality={100}
+            unoptimized
             className="object-contain transition-transform duration-300 ease-out group-hover:scale-[1.03]"
           />
         </div>

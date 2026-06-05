@@ -19,7 +19,9 @@ export const metadata: Metadata = {
 };
 
 function whiteHeadshotSrc(headshot: string) {
-  return headshot.replace("/founders/cutouts/", "/founders/white/");
+  return headshot
+    .replace("/founders/cutouts/", "/founders/white-webp/")
+    .replace(/\.png$/, ".webp");
 }
 
 function FounderCard({ founder }: { founder: Founder }) {
@@ -45,7 +47,7 @@ function FounderCard({ founder }: { founder: Founder }) {
             alt={founder.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            quality={100}
+            unoptimized
             className="object-contain object-center"
           />
         ) : (
@@ -105,6 +107,7 @@ function FounderCard({ founder }: { founder: Founder }) {
                     alt={`${company.name} logo`}
                     width={64}
                     height={64}
+                    unoptimized
                     className="size-full object-contain"
                   />
                 </span>
@@ -218,6 +221,7 @@ function CompactFounderTile({
                     alt={`${company.name} logo`}
                     width={56}
                     height={56}
+                    unoptimized
                     className="size-full object-contain"
                   />
                 </span>

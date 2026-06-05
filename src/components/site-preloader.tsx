@@ -8,9 +8,9 @@ import { PORTFOLIO } from "@/lib/portfolio";
 import { LEGAL, NAV } from "@/lib/site";
 
 const TEAM_IMAGES = [
-  "/leadership/robert-team-studio.png",
-  "/leadership/hisham-team-studio.png",
-  "/leadership/neo-team-studio.png",
+  "/leadership/webp/robert-team-studio.webp",
+  "/leadership/webp/hisham-team-studio.webp",
+  "/leadership/webp/neo-team-studio.webp",
 ];
 
 const STATIC_IMAGES = [
@@ -29,25 +29,41 @@ const INTERNAL_ROUTES = Array.from(
   ]),
 );
 
+const COMPANY_IMAGES = PORTFOLIO.flatMap((company) => [
+  company.logo,
+  company.cardLogo,
+  company.image,
+  company.cardImage,
+]);
+
+const FOUNDER_PAGE_IMAGES = FOUNDERS.flatMap((founder) =>
+  founder.headshot
+    ? [
+        founder.headshot
+          .replace("/founders/cutouts/", "/founders/white-webp/")
+          .replace(/\.png$/, ".webp"),
+      ]
+    : [],
+);
+
+const FOUNDER_SEARCH_IMAGES = FOUNDERS.flatMap((founder) =>
+  founder.headshot
+    ? [
+        founder.headshot
+          .replace("/founders/cutouts/", "/founders/cutouts-webp/")
+          .replace(/\.png$/, ".webp"),
+      ]
+    : [],
+);
+
 const IMAGE_ASSETS = Array.from(
   new Set(
     [
       ...STATIC_IMAGES,
       ...TEAM_IMAGES,
-      ...PORTFOLIO.flatMap((company) => [
-        company.logo,
-        company.cardLogo,
-        company.image,
-        company.cardImage,
-      ]),
-      ...FOUNDERS.flatMap((founder) =>
-        founder.headshot
-          ? [
-              founder.headshot,
-              founder.headshot.replace("/founders/cutouts/", "/founders/white/"),
-            ]
-          : [],
-      ),
+      ...FOUNDER_PAGE_IMAGES,
+      ...COMPANY_IMAGES,
+      ...FOUNDER_SEARCH_IMAGES,
     ].filter((asset): asset is string => Boolean(asset?.startsWith("/"))),
   ),
 );
@@ -69,9 +85,9 @@ type PriorityElement = {
 type IdleHandle = ReturnType<typeof setTimeout> | number;
 type CancelFn = () => void;
 
-const IMAGE_BATCH_SIZE = 4;
-const IMAGE_BATCH_GAP_MS = 80;
-const MEDIA_START_DELAY_MS = 1800;
+const IMAGE_BATCH_SIZE = 8;
+const IMAGE_BATCH_GAP_MS = 35;
+const MEDIA_START_DELAY_MS = 250;
 const VIDEO_START_DELAY_MS = 5200;
 const INTERACTION_QUIET_MS = 900;
 
@@ -135,12 +151,13 @@ function warmImage(src: string) {
 }
 
 async function warmImages(cancelled: () => boolean, shouldPause: () => boolean) {
+  IMAGE_ASSETS.forEach((src) => addPrefetch(src, "image"));
+
   for (let index = 0; index < IMAGE_ASSETS.length && !cancelled(); index += IMAGE_BATCH_SIZE) {
     await waitForQuiet(cancelled, shouldPause);
     if (cancelled()) break;
 
     const batch = IMAGE_ASSETS.slice(index, index + IMAGE_BATCH_SIZE);
-    batch.forEach((src) => addPrefetch(src, "image"));
     await Promise.all(batch.map(warmImage));
     await wait(IMAGE_BATCH_GAP_MS);
   }

@@ -6,7 +6,7 @@ import { FIRST_HERO_VIDEO } from "@/lib/hero-video-assets";
 export function HeroVideoPreload() {
   ReactDOM.preload(FIRST_HERO_VIDEO, {
     as: "video",
-    fetchPriority: "high",
+    fetchPriority: "low",
     type: "video/mp4",
   });
 

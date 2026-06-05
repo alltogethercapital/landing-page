@@ -4,6 +4,7 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { ArrowUpRight, LinkedInIcon, MailIcon } from "@/components/icons";
 import { slugify } from "@/lib/portfolio";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Our team — All Together Capital",
@@ -24,21 +25,21 @@ const MEMBERS: Member[] = [
   {
     name: "Robert Neir",
     role: "Founding Partner",
-    img: "/leadership/robert-team-studio.png",
+    img: "/leadership/webp/robert-team-studio.webp",
     linkedin: "https://www.linkedin.com/in/robertmneir/",
     email: "robertneir@alltogethercapital.com",
   },
   {
     name: "Hisham El-Husseini",
     role: "Founding Partner",
-    img: "/leadership/hisham-team-studio.png",
+    img: "/leadership/webp/hisham-team-studio.webp",
     linkedin: "https://www.linkedin.com/in/hisham-el-husseini/",
     email: "hisham@alltogethercapital.com",
   },
   {
     name: "NEO",
     role: "Head of Robotics",
-    img: "/leadership/neo-team-studio.png",
+    img: "/leadership/webp/neo-team-studio.webp",
     website: { label: "1x.tech", href: "https://www.1x.tech/" },
   },
 ];
@@ -58,7 +59,7 @@ function MemberCard({ m }: { m: Member }) {
           alt={m.name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          quality={100}
+          unoptimized
           className="object-contain object-center"
         />
 
@@ -134,12 +135,19 @@ function MemberCard({ m }: { m: Member }) {
 }
 
 export default function TeamPage() {
+  const centerSingleRow = MEMBERS.length <= 3;
+
   return (
     <main className="min-h-screen bg-white text-[#0b0b0d]">
       <SiteNav showLogo />
 
-      <section className="min-h-[100svh] px-6 pb-16 pt-[104px] md:px-[40px] md:pb-20 md:pt-[140px]">
-        <div className="mx-auto grid max-w-[1360px] grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+      <section
+        className={cn(
+          "min-h-[100svh] px-6 pb-16 pt-[104px] md:px-[40px] md:pb-20 md:pt-[140px]",
+          centerSingleRow && "lg:flex lg:items-center",
+        )}
+      >
+        <div className="mx-auto grid w-full max-w-[1360px] grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {MEMBERS.map((m) => (
             <MemberCard key={m.name} m={m} />
           ))}
