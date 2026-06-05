@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import type { CSSProperties, ReactNode } from "react";
 import { SitePreloader } from "@/components/site-preloader";
 import "./globals.css";
 
@@ -22,6 +23,11 @@ const SITE_TITLE = "The Future Is Built Together — All Together Capital";
 const SITE_DESCRIPTION =
   "All Together Capital backs the founders rebuilding the hard frontier — across AI, defense, energy, robotics, semiconductors, and space.";
 
+const hiddenScrollbarStyle: CSSProperties = {
+  msOverflowStyle: "none",
+  scrollbarWidth: "none",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: SITE_TITLE,
@@ -43,14 +49,15 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html
       lang="en"
       className={`${inter.variable} ${playfair.variable} h-full antialiased`}
+      style={hiddenScrollbarStyle}
     >
-      <body className="min-h-full">
+      <body className="min-h-full" style={hiddenScrollbarStyle}>
         <SitePreloader />
         {children}
       </body>
