@@ -513,7 +513,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
           </Link>
         )}
 
-        <div className="pointer-events-auto relative z-10 ml-auto flex items-center gap-2 min-[1280px]:h-[58px] min-[1280px]:bg-[#08090a] min-[1280px]:px-2 min-[1280px]:shadow-[0_18px_48px_rgba(0,0,0,0.22)]">
+        <div className="pointer-events-auto relative z-10 ml-auto flex items-center gap-2 min-[1280px]:h-[58px] min-[1280px]:border min-[1280px]:border-white/15 min-[1280px]:bg-black/[0.18] min-[1280px]:px-2 min-[1280px]:shadow-[0_10px_30px_rgba(0,0,0,0.22)] min-[1280px]:backdrop-blur-sm">
           <nav
             aria-label="Primary"
             className="hidden h-12 items-center gap-1.5 pl-2 min-[1280px]:flex min-[1280px]:pl-3"
@@ -528,8 +528,8 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
                   className={cn(
                     "group flex h-10 items-center border border-transparent bg-transparent px-2.5 font-mono text-[12px] font-semibold uppercase tracking-[0.11em] transition-[background-color,border-color,color] duration-200 focus-visible:border-[#ff4400] focus-visible:bg-[#ff4400] focus-visible:text-black focus-visible:outline-none min-[1280px]:h-11 min-[1280px]:px-3 min-[1440px]:px-3.5 min-[1440px]:text-[14px]",
                     active
-                      ? "border-[#ff4400]/70 bg-[#ff4400]/[0.07] text-[#ff4400] hover:border-[#ff4400] hover:bg-[#ff4400]/10 hover:text-[#ff4400]"
-                      : "text-white/[0.88] hover:border-white/75 hover:bg-white/[0.08] hover:text-white",
+                      ? "border-[#ff4400]/75 bg-black/[0.24] text-[#ff4400] hover:border-[#ff4400] hover:bg-black/[0.32] hover:text-[#ff4400]"
+                      : "text-white/[0.88] hover:border-white/55 hover:bg-black/[0.24] hover:text-white",
                   )}
                 >
                   {item.label}
@@ -546,7 +546,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
             aria-controls={SEARCH_DIALOG_ID}
             title="Search"
             onClick={openSearch}
-            className="hidden size-12 items-center justify-center border border-transparent bg-transparent text-white/90 transition-[background-color,border-color,color] duration-200 hover:border-[#ff4400] hover:bg-[#ff4400] hover:text-black focus-visible:border-[#ff4400] focus-visible:bg-[#ff4400] focus-visible:text-black focus-visible:outline-none min-[1280px]:inline-flex"
+            className="hidden size-12 items-center justify-center border border-transparent bg-transparent text-white/90 transition-[background-color,border-color,color] duration-200 hover:border-[#ff4400]/70 hover:bg-black/[0.32] hover:text-[#ff4400] focus-visible:border-[#ff4400]/70 focus-visible:bg-black/[0.32] focus-visible:text-[#ff4400] focus-visible:outline-none min-[1280px]:inline-flex"
           >
             <Search className="size-[18px]" aria-hidden="true" />
           </button>
