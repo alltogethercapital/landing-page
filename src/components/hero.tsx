@@ -1447,17 +1447,19 @@ export function Hero() {
       </div>
 
       {/* Giant wordmark + Capital lockup */}
-      <div className="pointer-events-none absolute inset-x-[var(--site-frame-x)] bottom-[22px] z-[8] mx-auto max-w-[1920px] [container-type:inline-size] max-md:inset-x-3 max-md:bottom-2">
-        <div className="hero-wordmark whitespace-nowrap text-[16.5cqw] font-[900] leading-[1.0] tracking-[-0.05em] text-[#ff4400]">
-          All Together
-        </div>
-        <div className="mt-[0.04em] text-right leading-none">
-          <span className="font-mono text-[clamp(12px,1.2vw,17px)] font-semibold uppercase tracking-[0.4em] text-white">
-            Capital
-          </span>
-          <span className="ml-[0.35em] align-super text-[0.6em] font-semibold text-white/75">
-            ®
-          </span>
+      <div className="hero-brand-lockup pointer-events-none absolute inset-x-[var(--site-frame-x)] z-[8] mx-auto flex max-w-[1920px] justify-center [container-type:inline-size] max-md:inset-x-3">
+        <div className="hero-brand-lockup-inner flex w-fit max-w-full flex-col items-end">
+          <div className="hero-wordmark whitespace-nowrap text-center font-[900] text-[#ff4400]">
+            All Together
+          </div>
+          <div className="hero-brand-capital leading-none">
+            <span className="font-mono font-semibold uppercase text-white">
+              Capital
+            </span>
+            <span className="ml-[0.35em] align-super text-[0.6em] font-semibold text-white/75">
+              ®
+            </span>
+          </div>
         </div>
       </div>
     </section>
