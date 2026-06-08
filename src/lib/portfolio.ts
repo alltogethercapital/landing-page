@@ -48,18 +48,6 @@ export const PORTFOLIO: Company[] = [
     video: "HK6y8DAPN_0", // Introducing Sora (OpenAI)
   },
   {
-    name: "Anthropic",
-    href: "https://www.anthropic.com/",
-    sectors: ["AI"],
-    investmentStatus: "pending",
-    blurb: "AI safety research and Claude, a frontier AI assistant.",
-    logo: "/logos/anthropic.png",
-    cardLogo: "/logos/cards/anthropic.png",
-    image: "/work/anthropic.jpg",
-    cardImage: "/work/cards/anthropic.jpg",
-    video: "oqUclC3gqKs", // A day with Claude (Anthropic)
-  },
-  {
     name: "Anduril",
     href: "https://www.anduril.com/",
     sectors: ["Defense", "AI"],

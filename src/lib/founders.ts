@@ -33,20 +33,6 @@ export const FOUNDERS: Founder[] = [
     x: "https://x.com/BerntBornich",
   },
   {
-    name: "Dario Amodei",
-    companyName: "Anthropic",
-    headshot: "/founders/cutouts/dario-amodei.png",
-    linkedin: "https://www.linkedin.com/in/dario-amodei-3934934/",
-    x: "https://x.com/DarioAmodei",
-  },
-  {
-    // Co-founder & President of Anthropic (sister of Dario).
-    name: "Daniela Amodei",
-    companyName: "Anthropic",
-    headshot: "/founders/cutouts/daniela-amodei.png",
-    linkedin: "https://www.linkedin.com/in/daniela-amodei-790bb22a/",
-  },
-  {
     name: "Palmer Luckey",
     companyName: "Anduril",
     headshot: "/founders/cutouts/palmer-luckey.png",
