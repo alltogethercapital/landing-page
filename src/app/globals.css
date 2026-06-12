@@ -178,6 +178,7 @@ body::-webkit-scrollbar {
   --cog-accent: #059f70;
   --cog-dark: #191919;
   --cog-mono: var(--font-pitch-sans), ui-monospace, "SF Mono", Menlo, monospace;
+  --site-max: 1520px;
 }
 
 body {
@@ -272,6 +273,26 @@ body {
   background-color: var(--cog-bg);
   color: var(--cog-ink);
   font-family: var(--font-rosart), Georgia, serif;
+}
+
+/* Cap the composition on wide screens: the content, the vertical rules, and
+   the fixed nav all center together inside --site-max. */
+@media (min-width: 1521px) {
+  .cog-page {
+    max-width: var(--site-max);
+    margin-inline: auto;
+  }
+
+  .cog-page::before {
+    left: 50%;
+    right: auto;
+    width: var(--site-max);
+    transform: translateX(-50%);
+  }
+
+  .cog-page .cog-desktop-nav {
+    left: calc((100vw - var(--site-max)) / 2 + 64px);
+  }
 }
 
 .cog-page::before {
