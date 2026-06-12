@@ -75,7 +75,7 @@ float glowAt(vec2 uv) {
       vec2 dp = abs((uv - uGlowPts[i]) * uCanvasPx);
       float d = max(dp.x, dp.y);
       float s = clamp(1.0 - d / uGlowRadiusPx, 0.0, 1.0);
-      s = pow(s, 0.35);
+      s = s * s * (3.0 - 2.0 * s); // soft shoulder, no hard plateau edge
       g = min(1.0, g + s * uGlowFade[i]);
     }
   }
@@ -93,7 +93,7 @@ void main() {
   float g = 0.0;
   if (uGlowCount > 0) {
     g = glowAt(center);
-    lum = clamp(lum + pow(g, 1.5) * 0.6, 0.0, 1.0);
+    lum = clamp(lum + pow(g, 1.5) * 0.5, 0.0, 1.0);
   }
 
   float idx = floor(lum * (GLYPH_COUNT - 1.0) + 0.5);
@@ -121,12 +121,12 @@ void main() {
   vec3 col = mix(base, lit, alpha);
 
   if (g > 0.0) {
-    vec3 boosted = clamp(col * 1.6, 0.0, 1.0);
+    vec3 boosted = clamp(col * 1.45, 0.0, 1.0);
     vec3 screened = 1.0 - (1.0 - col) * (1.0 - boosted);
     // Lift the glow toward the brand accent: a light green screen-blend
     // (#059f70 scaled down) so the trail reads as tinted, not just brighter.
-    vec3 tinted = 1.0 - (1.0 - screened) * (1.0 - ACCENT * 0.4);
-    col = mix(col, tinted, g);
+    vec3 tinted = 1.0 - (1.0 - screened) * (1.0 - ACCENT * 0.35);
+    col = mix(col, tinted, g * 0.9);
   }
 
   // Vividness: pull the final color away from its own gray.
@@ -402,7 +402,7 @@ export function AsciiHero() {
       gl.uniform1i(uGlowCount, state.glowCount);
       gl.uniform2fv(uGlowPts, state.glowPts);
       gl.uniform1fv(uGlowFade, state.glowFade);
-      gl.uniform1f(uGlowRadiusPx, state.cellDeviceW * 8);
+      gl.uniform1f(uGlowRadiusPx, state.cellDeviceW * 10);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
