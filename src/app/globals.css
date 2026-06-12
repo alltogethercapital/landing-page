@@ -13,8 +13,6 @@
   --font-serif: var(--font-rosart);
   --font-mono: var(--font-pitch-sans);
 
-  /* All Together — brand accent */
-  --color-orange: #ff4400;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -86,8 +84,6 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --site-frame-x: max(40px, calc((100vw - 1920px) / 2));
-  --hero-frame-x: max(100px, calc((100vw - 1920px) / 2));
 }
 
 .dark {
@@ -134,10 +130,7 @@
   html {
     @apply font-serif;
   }
-  :is(h1, h2, h3, h4, h5, h6),
-  .hero-headline,
-  .hero-wordmark,
-  [data-intro-mark] {
+  :is(h1, h2, h3, h4, h5, h6) {
     @apply font-sans;
   }
   /* Pointer cursor on interactive elements — Tailwind v4 resets buttons to the
@@ -171,272 +164,905 @@ body::-webkit-scrollbar {
   height: 0;
 }
 
-/* ── Animated light rays (hero) ──────────────────────────────
-   Subtle god-rays from the top + a breathing glow. GPU-only
-   (transform/opacity); blends to brighten the image beneath. */
-.light-rays {
-  mix-blend-mode: screen;
-  overflow: hidden;
+/* Editorial system. Three voices:
+   — Rosart (serif): prose.
+   — Unica (sans): headings, navigation, identity.
+   — Pitch Sans (mono): the index voice — it speaks only where the glyph
+     system speaks: company glyphs, clip captions, sector metadata, and the
+     ramp strip in the footer. */
+:root {
+  --cog-bg: #f7f6f5;
+  --cog-ink: #000000;
+  --cog-muted: rgba(0, 0, 0, 0.56);
+  --cog-line: rgba(0, 0, 0, 0.08);
+  --cog-accent: #059f70;
+  --cog-dark: #191919;
+  --cog-mono: var(--font-pitch-sans), ui-monospace, "SF Mono", Menlo, monospace;
 }
 
-/* breathing top glow — the "light source" */
-.light-rays::before {
-  content: "";
+body {
+  background: var(--cog-bg);
+  color: var(--cog-ink);
+}
+
+/* The accent is reserved for "live" states — selection included. */
+::selection {
+  background: var(--cog-accent);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cog-accent);
+  outline-offset: 2px;
+}
+
+/* A company's assigned character from the hero ramp. */
+.cog-glyph-chip {
+  display: inline-block;
+  margin-right: 9px;
+  font-family: var(--cog-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cog-accent);
+}
+
+/* Portrait develop: glyphs first, then the photograph. */
+.ascii-reveal {
+  pointer-events: none;
   position: absolute;
   inset: 0;
-  transform-origin: 50% 0;
-  background: radial-gradient(
-    145% 90% at 50% -22%,
-    rgba(234, 248, 255, 0.85) 0%,
-    rgba(182, 226, 255, 0.4) 34%,
-    rgba(150, 205, 255, 0.14) 54%,
-    transparent 74%
-  );
-  animation: rays-glow 8s ease-in-out infinite;
-  will-change: opacity, transform;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  opacity: 1;
+  transition: opacity 700ms ease;
 }
 
-/* drifting diagonal beams, faded out toward the middle */
-.light-rays::after {
+.ascii-reveal.is-developed {
+  opacity: 0;
+}
+
+/* Generated note covers are already in the brand palette — never run them
+   through the grayscale photo treatment. (grayscale(0) rather than `none`:
+   the optimizer strips initial-value declarations, losing the override.) */
+.cog-article-media img.cog-cover,
+.cog-article-card:hover img.cog-cover {
+  filter: grayscale(0);
+}
+
+.cog-note-stack .cog-legal-section p {
+  color: var(--cog-ink);
+}
+
+/* Heading for the landing-page notes strip. */
+.cog-strip-heading {
+  margin: 0 0 20px;
+  font-family: var(--font-unica), Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+/* The wordmark: ALL TOGETHER in Orbitron capitals. */
+.cog-wordmark {
+  display: block;
+  color: var(--cog-ink);
+  font-size: 13.5px;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+/* 404: the alphabet with nothing to render. */
+.cog-404-ramp {
+  margin: 34px 0 0;
+  max-width: 460px;
+  font-family: var(--cog-mono);
+  font-size: 15px;
+  line-height: 2;
+  letter-spacing: 0.42em;
+  word-break: break-all;
+  color: rgba(0, 0, 0, 0.22);
+}
+
+.cog-page {
+  position: relative;
+  overflow-x: hidden;
+  background-color: var(--cog-bg);
+  color: var(--cog-ink);
+  font-family: var(--font-rosart), Georgia, serif;
+}
+
+.cog-page::before {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
   content: "";
+  background-image:
+    linear-gradient(var(--cog-line), var(--cog-line)),
+    linear-gradient(var(--cog-line), var(--cog-line)),
+    linear-gradient(var(--cog-line), var(--cog-line)),
+    linear-gradient(var(--cog-line), var(--cog-line)),
+    linear-gradient(var(--cog-line), var(--cog-line));
+  background-repeat: no-repeat;
+  background-position:
+    64px 0,
+    291px 0,
+    367px 0,
+    calc(100% - 306px) 0,
+    calc(100% - 154px) 0;
+  background-size: 1px 100%;
+}
+
+.cog-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cog-desktop-nav {
+  position: fixed;
+  top: 148px;
+  left: 64px;
+  z-index: 30;
+  display: flex;
+  width: 164px;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--cog-ink);
+  font-family: var(--font-unica), Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.cog-nav-logo {
+  display: block;
+  margin-bottom: 22px;
+}
+
+.cog-nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.cog-nav-link,
+.cog-mobile-menu-link,
+.cog-footer-link {
+  color: var(--cog-ink);
+  text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color 160ms ease;
+}
+
+.cog-nav-link:hover,
+.cog-mobile-menu-link:hover,
+.cog-footer-link:hover,
+.cog-nav-link.is-active,
+.cog-mobile-menu-link.is-active {
+  color: var(--cog-accent);
+}
+
+.cog-nav-link.is-active {
+  position: relative;
+}
+
+.cog-nav-link.is-active::before {
   position: absolute;
-  inset: -40% -40% 0 -40%;
-  background: repeating-linear-gradient(
-    98deg,
-    transparent 0px,
-    transparent 52px,
-    rgba(232, 248, 255, 0.1) 80px,
-    rgba(232, 248, 255, 0.26) 104px,
-    rgba(232, 248, 255, 0.1) 128px,
-    transparent 158px,
-    transparent 228px
-  );
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), transparent 70%);
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), transparent 70%);
-  transform: translate3d(-90px, 0, 0) skewX(-9deg);
-  animation: rays-drift 22s ease-in-out infinite alternate;
-  will-change: transform;
+  top: 0.22em;
+  left: -12px;
+  width: 2px;
+  height: 0.92em;
+  background: var(--cog-accent);
+  content: "";
 }
 
-@keyframes rays-glow {
-  0%,
-  100% {
-    opacity: 0.68;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.09);
-  }
+.cog-nav-button,
+.cog-button {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--cog-ink);
+  background: transparent;
+  padding: 5px 10px 6px;
+  color: var(--cog-ink);
+  font-family: var(--font-unica), Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.25;
+  text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease;
 }
 
-@keyframes rays-drift {
-  from {
-    transform: translate3d(-90px, 0, 0) skewX(-9deg);
-  }
-  to {
-    transform: translate3d(90px, 0, 0) skewX(-9deg);
-  }
+.cog-nav-button {
+  margin-top: 14px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .light-rays::before,
-  .light-rays::after {
-    animation: none;
-  }
+.cog-button {
+  background: var(--cog-dark);
+  color: var(--cog-bg);
 }
 
-/* ── Hero smoke — soft, subtle haze drifting over each slide.
-   GPU-only (transform/opacity); a different variant per image so the
-   motion isn't identical across slides. No canvas/SVG-turbulence, so
-   it's very cheap to render. */
-.hero-smoke {
+.cog-nav-button:hover,
+.cog-button:hover {
+  background: var(--cog-ink);
+  color: var(--cog-bg);
+}
+
+.cog-mobile-header,
+.cog-mobile-menu {
+  display: none;
+}
+
+/* ASCII video hero (landing page) — boxed inside the page's vertical rules:
+   left edge on the 291px rule (clear of the fixed nav), right edge on the
+   calc(100% - 154px) rule. */
+.ascii-hero {
+  position: relative;
+  margin-right: 154px;
+  margin-left: 291px;
+  height: min(86vh, 940px);
+  height: min(86svh, 940px);
+  min-height: min(440px, 100vh);
+  min-height: min(440px, 100svh);
   overflow: hidden;
+  background: #000;
+}
+
+@media (min-width: 900px) and (max-width: 1180px) {
+  .ascii-hero {
+    height: min(64vh, 720px);
+    height: min(64svh, 720px);
+  }
+}
+
+.ascii-hero-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ascii-hero-caption {
+  z-index: 1;
+}
+
+.ascii-hero-source {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
   pointer-events: none;
 }
-.hero-smoke::before,
-.hero-smoke::after {
-  content: "";
+
+.ascii-hero-fallback {
   position: absolute;
-  inset: -25%;
-  background-repeat: no-repeat;
-  will-change: transform;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.hero-smoke--a::before {
-  background:
-    radial-gradient(38% 32% at 22% 30%, rgba(255, 255, 255, 0.12), transparent 72%),
-    radial-gradient(46% 40% at 78% 66%, rgba(200, 225, 255, 0.09), transparent 72%);
-  animation: smoke-a1 30s ease-in-out infinite alternate;
+
+.ascii-hero-caption {
+  position: absolute;
+  right: 28px;
+  bottom: 20px;
+  margin: 0;
+  font-family: var(--cog-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
 }
-.hero-smoke--a::after {
-  background: radial-gradient(
-    44% 38% at 60% 16%,
-    rgba(255, 255, 255, 0.08),
-    transparent 70%
-  );
-  animation: smoke-a2 44s ease-in-out infinite alternate;
+
+.ascii-hero + .cog-hero-section {
+  min-height: auto;
+  padding-top: 110px;
 }
-.hero-smoke--b::before {
-  background:
-    radial-gradient(42% 36% at 72% 28%, rgba(255, 255, 255, 0.11), transparent 72%),
-    radial-gradient(48% 42% at 26% 72%, rgba(205, 228, 255, 0.09), transparent 72%);
-  animation: smoke-b1 34s ease-in-out infinite alternate;
+
+.cog-section {
+  display: grid;
+  grid-template-columns: 227px 76px minmax(0, 1fr);
+  padding-right: 64px;
+  padding-left: 64px;
 }
-.hero-smoke--b::after {
-  background: radial-gradient(
-    40% 36% at 42% 20%,
-    rgba(255, 255, 255, 0.08),
-    transparent 70%
-  );
-  animation: smoke-b2 48s ease-in-out infinite alternate;
+
+.cog-section + .cog-section {
+  margin-top: 96px;
 }
-@keyframes smoke-a1 {
-  from {
-    transform: translate3d(-4%, 3%, 0) scale(1.05) rotate(-2deg);
+
+.cog-hero-section {
+  min-height: 570px;
+  padding-top: 180px;
+}
+
+.cog-page > .cog-section:first-of-type:not(.cog-hero-section) {
+  min-height: 420px;
+  padding-top: 180px;
+}
+
+.cog-logo-section {
+  margin-top: 0;
+}
+
+.cog-section-index {
+  grid-column: 2;
+  padding-top: 7px;
+  color: var(--cog-muted);
+  font-size: 10px;
+  line-height: 1;
+}
+
+.cog-section-body {
+  grid-column: 3;
+  width: min(100%, 531px);
+}
+
+.cog-section--wide .cog-section-body {
+  width: min(100%, 760px);
+}
+
+.cog-kicker,
+.cog-article-meta,
+.cog-footer-meta {
+  margin: 0;
+  color: var(--cog-muted);
+  font-family: var(--font-unica), Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.cog-kicker {
+  margin-bottom: 12px;
+}
+
+.cog-title {
+  margin: 0;
+  color: var(--cog-ink);
+  font-family: var(--font-unica), Arial, sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.cog-body-copy,
+.cog-copy-stack p,
+.cog-company-blurb,
+.cog-legal-section p {
+  color: var(--cog-ink);
+  font-size: 16px;
+  line-height: 1.48;
+}
+
+.cog-copy-stack {
+  margin-top: 22px;
+}
+
+.cog-copy-stack p {
+  margin: 0;
+}
+
+.cog-copy-stack p + p {
+  margin-top: 22px;
+}
+
+.cog-body-copy {
+  margin: 22px 0 0;
+}
+
+/* One contained box for all company logos — opaque so the page's vertical
+   rules never cross the marks. */
+.cog-logo-mosaic {
+  display: grid;
+  width: min(100%, 816px);
+  grid-template-columns: repeat(5, minmax(0, 152px));
+  grid-auto-rows: 76px;
+  padding: 28px;
+  border: 1px solid var(--cog-line);
+  background: #fff;
+}
+
+.cog-logo-cell {
+  position: relative;
+  display: block;
+  min-width: 0;
+  padding: 18px;
+  opacity: 0.46;
+  filter: grayscale(1);
+  transition: opacity 160ms ease, filter 160ms ease;
+}
+
+.cog-logo-cell:hover {
+  opacity: 0.82;
+  filter: grayscale(1) contrast(1.18);
+}
+
+.cog-logo-word {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-unica), Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.1;
+}
+
+.cog-strip {
+  margin-top: 96px;
+  padding-right: 64px;
+  padding-left: 64px;
+}
+
+/* Inner pages: align card grids to the content column, right of the nav line. */
+.cog-strip--inset {
+  padding-left: 367px;
+}
+
+.cog-strip-label {
+  margin-bottom: 18px;
+  color: var(--cog-muted);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.cog-article-grid,
+.cog-person-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.cog-article-card,
+.cog-person-card,
+.cog-company-row {
+  color: var(--cog-ink);
+  text-decoration: none;
+}
+
+.cog-article-media,
+.cog-person-media,
+.cog-company-media {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.035);
+}
+
+.cog-article-media {
+  aspect-ratio: 303 / 170;
+}
+
+.cog-person-media {
+  aspect-ratio: 303 / 350;
+  background: #fff;
+}
+
+.cog-article-media img,
+.cog-person-media img,
+.cog-company-media img {
+  filter: grayscale(1);
+  transition: filter 180ms ease, transform 180ms ease;
+}
+
+.cog-article-card:hover img,
+.cog-person-card:hover img,
+.cog-company-row:hover img {
+  filter: grayscale(0.35);
+  transform: scale(1.015);
+}
+
+.cog-article-title,
+.cog-person-title,
+.cog-company-title {
+  display: block;
+  margin: 13px 0 0;
+  color: var(--cog-ink);
+  font-family: var(--font-rosart), Georgia, serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+/* Sector/role metadata speaks in the index voice. */
+.cog-article-meta {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--cog-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+}
+
+.cog-article-fallback,
+.cog-person-initials {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  font-family: var(--font-unica), Arial, sans-serif;
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.cog-company-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 34px 8px;
+}
+
+.cog-company-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.86fr) minmax(0, 1fr);
+  gap: 18px;
+  border-top: 1px solid var(--cog-line);
+  padding-top: 8px;
+}
+
+.cog-company-media {
+  aspect-ratio: 16 / 10;
+}
+
+.cog-company-title {
+  margin-top: 4px;
+  font-family: var(--font-unica), Arial, sans-serif;
+}
+
+.cog-company-logo {
+  position: relative;
+  display: block;
+  width: 200px;
+  max-width: 100%;
+  height: 32px;
+  margin-top: 8px;
+}
+
+.cog-company-blurb {
+  margin: 20px 0 0;
+  color: var(--cog-muted);
+}
+
+.cog-arrow-icon {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--cog-line);
+  color: var(--cog-ink);
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.cog-arrow-icon:hover {
+  background: var(--cog-dark);
+  color: var(--cog-bg);
+}
+
+.cog-person-copy {
+  padding-top: 2px;
+}
+
+.cog-person-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 14px;
+  color: var(--cog-muted);
+  font-family: var(--font-unica), Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.cog-person-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.cog-person-links a:hover {
+  color: var(--cog-accent);
+}
+
+.cog-legal-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  margin-top: 52px;
+}
+
+.cog-legal-section h2 {
+  margin: 0;
+  font-family: var(--font-unica), Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.cog-legal-section p {
+  margin: 12px 0 0;
+  color: var(--cog-muted);
+}
+
+.cog-footer {
+  margin-top: 120px;
+  border-top: 1px solid var(--cog-line);
+  padding: 42px 64px 28px 64px;
+}
+
+.cog-footer-mark {
+  margin-bottom: 44px;
+}
+
+.cog-footer-wordmark {
+  font-size: 17px;
+}
+
+.cog-footer-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(120px, 1fr));
+  gap: 28px;
+}
+
+.cog-footer-heading {
+  margin: 0;
+  font-family: var(--font-unica), Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.cog-footer-copy {
+  max-width: 310px;
+  margin: 12px 0 18px;
+  color: var(--cog-muted);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.cog-footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.cog-footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-unica), Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+/* The index strip: the hero's full luminance ramp; portfolio companies are
+   live characters, the dim ones are not written yet. */
+.cog-footer-ramp {
+  margin-top: 64px;
+}
+
+.cog-footer-ramp-strip {
+  margin: 0;
+  font-family: var(--cog-mono);
+  font-size: 15px;
+  line-height: 1.9;
+  letter-spacing: 0.42em;
+  word-break: break-all;
+  color: rgba(0, 0, 0, 0.18);
+}
+
+.cog-footer-ramp-strip a {
+  color: var(--cog-ink);
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.cog-footer-ramp-strip a:hover {
+  color: var(--cog-accent);
+}
+
+.cog-footer-ramp-note {
+  margin: 10px 0 0;
+  font-family: var(--cog-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--cog-muted);
+}
+
+.cog-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 54px;
+  color: var(--cog-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+@media (max-width: 1180px) {
+  .cog-article-grid,
+  .cog-person-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  to {
-    transform: translate3d(5%, -4%, 0) scale(1.18) rotate(2deg);
-  }
-}
-@keyframes smoke-a2 {
-  from {
-    transform: translate3d(3%, -2%, 0) scale(1.12);
-  }
-  to {
-    transform: translate3d(-4%, 4%, 0) scale(1);
-  }
-}
-@keyframes smoke-b1 {
-  from {
-    transform: translate3d(4%, -3%, 0) scale(1.08) rotate(2deg);
-  }
-  to {
-    transform: translate3d(-5%, 4%, 0) scale(1.2) rotate(-2deg);
-  }
-}
-@keyframes smoke-b2 {
-  from {
-    transform: translate3d(-3%, 3%, 0) scale(1.14);
-  }
-  to {
-    transform: translate3d(4%, -3%, 0) scale(1.02);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-smoke::before,
-  .hero-smoke::after {
-    animation: none;
+
+  .cog-company-list {
+    grid-template-columns: 1fr;
   }
 }
 
-/* ── Muted hero video → pulsing ring on the unmute button ───────
-   Draws the eye to "tap for sound" without moving it front-and-center. */
-.sound-pulse {
-  animation: sound-pulse 2.2s ease-out infinite;
-}
-@keyframes sound-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(255, 68, 0, 0.6);
-  }
-  70% {
-    box-shadow: 0 0 0 16px rgba(255, 68, 0, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(255, 68, 0, 0);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .sound-pulse {
-    animation: none;
-  }
-}
-
-/* ── Unmute button → brief primary-color flash to hint "sound lives here" ──
-   The button is always visible; this one-shot flash is re-triggered (via the
-   `unmute-flash` class toggled in React) each time a video starts while still
-   muted, then fades back to the see-through glass state. */
-.unmute-flash {
-  animation: unmute-flash 1.5s ease-out;
-}
-@keyframes unmute-flash {
-  0%,
-  20% {
-    border-color: #ff4400;
-    background-color: rgba(11, 11, 13, 0.5);
-    color: #ff4400;
-    box-shadow:
-      0 0 0 1px #ff4400,
-      0 0 18px 2px rgba(255, 68, 0, 0.45);
-  }
-  100% {
-    border-color: rgba(255, 255, 255, 0.2);
-    background-color: rgba(0, 0, 0, 0.25);
-    color: #fff;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0),
-      0 0 0 0 rgba(255, 68, 0, 0);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .unmute-flash {
-    animation: none;
-  }
-}
-
-.hero-brand-lockup {
-  bottom: clamp(18px, 2.8svh, 36px);
-}
-
-.hero-wordmark {
-  font-size: min(16.5cqw, 25svh);
-  line-height: 0.78;
-  letter-spacing: -0.055em;
-}
-
-.hero-brand-capital {
-  margin-top: clamp(10px, 1.15svh, 16px);
-  padding-right: 0.18em;
-}
-
-.hero-brand-capital span:first-child {
-  font-size: clamp(12px, 1.08vw, 17px);
-  letter-spacing: 0.4em;
-}
-
-@media (max-width: 767.98px) {
-  .hero-brand-lockup {
-    bottom: clamp(12px, 2.2svh, 18px);
+@media (max-width: 899px) {
+  .cog-page::before {
+    background-image:
+      linear-gradient(var(--cog-line), var(--cog-line)),
+      linear-gradient(var(--cog-line), var(--cog-line));
+    background-position:
+      20px 0,
+      calc(100% - 36px) 0;
+    background-size: 1px 100%;
   }
 
-  .hero-wordmark {
-    font-size: min(17.25cqw, 17svh);
-    line-height: 0.82;
+  .cog-desktop-nav {
+    display: none;
   }
 
-  .hero-brand-capital {
-    margin-top: 8px;
-    padding-right: 0.1em;
+  .cog-mobile-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 40;
+    display: flex;
+    height: 66px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: linear-gradient(to bottom, var(--cog-bg), rgba(247, 246, 245, 0.82));
+    font-family: var(--font-unica), Arial, sans-serif;
   }
 
-  .hero-brand-capital span:first-child {
-    font-size: clamp(9px, 2.2vw, 12px);
-    letter-spacing: 0.34em;
+  .cog-mobile-menu-button {
+    border: 0;
+    background: transparent;
+    color: var(--cog-ink);
+    font-family: var(--font-unica), Arial, sans-serif;
+    font-size: 16px;
   }
-}
 
-/* Short desktop windows (e.g. 1366×768 laptops ≈648px viewport, or wide+short
-   windows): lift the brand headline so the giant wordmark can't crowd it. */
-@media (min-width: 1024px) and (max-height: 820px) {
-  .hero-headline-wrap {
-    top: 112px;
+  .cog-mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    display: block;
+    background: var(--cog-bg);
+    padding: 92px 20px 28px;
   }
-  .hero-wordmark {
-    font-size: min(16.2cqw, 23svh);
+
+  .cog-mobile-menu-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  .hero-brand-lockup {
-    bottom: 18px;
+
+  .cog-mobile-menu-link {
+    font-family: var(--font-unica), Arial, sans-serif;
+    font-size: 36px;
+    line-height: 1.14;
   }
-  .hero-thesis-wrap {
-    top: 120px;
+
+  .ascii-hero {
+    margin: 78px 36px 0 20px;
+    height: 60vh;
+    height: 60svh;
+    min-height: min(380px, 100vh);
+    min-height: min(380px, 100svh);
+  }
+
+  .ascii-hero-caption {
+    right: 16px;
+    bottom: 14px;
+  }
+
+  .cog-section {
+    display: block;
+    padding-right: 36px;
+    padding-left: 20px;
+  }
+
+  .cog-section + .cog-section {
+    margin-top: 74px;
+  }
+
+  .cog-section-index {
+    display: none;
+  }
+
+  .cog-section-body,
+  .cog-section--wide .cog-section-body {
+    width: 100%;
+  }
+
+  .cog-hero-section {
+    min-height: auto;
+    padding-top: 92px;
+  }
+
+  .cog-page > .cog-section:first-of-type:not(.cog-hero-section) {
+    min-height: auto;
+    padding-top: 92px;
+  }
+
+  .cog-title {
+    font-size: 24px;
+    line-height: 1.2;
+  }
+
+  .cog-body-copy,
+  .cog-copy-stack p,
+  .cog-company-blurb,
+  .cog-legal-section p {
+    font-size: 16px;
+    line-height: 1.45;
+  }
+
+  .cog-logo-mosaic {
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 62px;
+    padding: 14px;
+  }
+
+  .cog-logo-cell {
+    padding: 15px;
+  }
+
+  .cog-strip {
+    margin-top: 74px;
+    padding-right: 36px;
+    padding-left: 20px;
+  }
+
+  .cog-article-grid,
+  .cog-person-grid,
+  .cog-company-list {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .cog-person-grid--short {
+    gap: 28px;
+  }
+
+  .cog-company-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cog-footer {
+    margin-top: 82px;
+    padding: 34px 36px 24px 20px;
+  }
+
+  .cog-footer-body {
+    grid-template-columns: 1fr 1fr;
+    gap: 34px 22px;
+  }
+
+  .cog-footer-body > div:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .cog-footer-bottom {
+    flex-direction: column;
+    margin-top: 42px;
   }
 }

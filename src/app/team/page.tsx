@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { SiteNav } from "@/components/site-nav";
-import { SiteFooter } from "@/components/site-footer";
+import {
+  ArrowLink,
+  CognitionPage,
+  CognitionSection,
+  CognitionStrip,
+} from "@/components/cognition-layout";
+import { AsciiReveal } from "@/components/ascii-reveal";
 import { ArrowUpRight, LinkedInIcon, MailIcon } from "@/components/icons";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteNav } from "@/components/site-nav";
+import { CONTACT_MAILTO } from "@/lib/site";
 import { slugify } from "@/lib/portfolio";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Our team — All Together Capital",
+  title: "Our team — All Together",
   description:
-    "All Together Capital is led by founding partners Robert Neir and Hisham El-Husseini.",
+    "All Together is led by founding partners Robert Neir and Hisham El-Husseini.",
 };
 
 type Member = {
@@ -44,117 +51,98 @@ const MEMBERS: Member[] = [
   },
 ];
 
-function MemberCard({ m }: { m: Member }) {
-  const profile = m.linkedin ?? m.website?.href ?? (m.email ? `mailto:${m.email}` : undefined);
-  const profileLabel = m.linkedin ? "LinkedIn" : m.website ? m.website.label : "email";
+function MemberCard({ member }: { member: Member }) {
+  const profile =
+    member.linkedin ?? member.website?.href ?? (member.email ? `mailto:${member.email}` : undefined);
+  const profileLabel = member.linkedin ? "LinkedIn" : member.website ? member.website.label : "email";
 
   return (
-    <div
-      id={slugify(m.name)}
-      className="group founder-card relative grid aspect-[674/720] scroll-mt-[118px] grid-rows-[minmax(0,1fr)_auto] border-0 bg-transparent shadow-none outline-none max-md:aspect-[4/5]"
-    >
-      <div className="relative min-h-0 overflow-hidden bg-white">
+    <article id={slugify(member.name)} className="cog-person-card">
+      <a
+        href={profile ?? CONTACT_MAILTO}
+        target={profile && !profile.startsWith("mailto:") ? "_blank" : undefined}
+        rel={profile && !profile.startsWith("mailto:") ? "noopener noreferrer" : undefined}
+        aria-label={`${member.name} on ${profileLabel}`}
+        className="cog-person-media"
+      >
         <Image
-          src={m.img}
-          alt={m.name}
+          src={member.img}
+          alt={member.name}
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          sizes="(max-width: 768px) 82vw, 303px"
           unoptimized
-          className="object-contain object-center"
+          className="object-contain object-bottom"
         />
+        <AsciiReveal src={member.img} />
+      </a>
 
-        <div className="pointer-events-none absolute bottom-4 left-4 z-[2] max-w-[calc(100%-2rem)] translate-y-3 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 md:bottom-5 md:left-5 max-lg:translate-y-0 max-lg:opacity-100 [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100">
-          <h3 className="rounded-lg border border-white/60 bg-white/70 px-3.5 py-2 text-[19px] font-medium leading-[1.02] tracking-[-0.3px] text-[#0b0b0d] shadow-[0_12px_34px_rgba(0,0,0,0.16)] backdrop-blur-md md:text-[24px]">
-            {m.name}
-          </h3>
-        </div>
-      </div>
-
-      {profile && (
-        <a
-          href={profile}
-          target={profile.startsWith("mailto:") ? undefined : "_blank"}
-          rel={profile.startsWith("mailto:") ? undefined : "noopener noreferrer"}
-          aria-label={`${m.name} on ${profileLabel}`}
-          className="absolute inset-0 z-[1]"
-        />
-      )}
-
-      {profile && (
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute right-4 top-4 z-[2] flex size-11 items-center justify-center bg-black/[0.06] text-[#0b0b0d] backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-5 md:top-5 md:size-12"
-        >
-          <ArrowUpRight className="size-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-7" />
-        </span>
-      )}
-
-      <div className="pointer-events-none relative z-[2] min-h-[72px] px-5 py-4 md:px-6">
-        <div className="flex h-full min-w-0 items-center">
-          <p className="min-w-0 max-w-[calc(100%-4.75rem)] truncate text-[14px] font-medium text-[#0b0b0d]/70 md:text-[15px]">
-            {m.role}
-          </p>
-
-          <div className="pointer-events-none absolute right-5 top-1/2 z-[3] flex -translate-y-1/2 translate-x-1 items-center gap-1.5 opacity-0 transition-all duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-x-0 group-focus-within:opacity-100 md:right-6 max-lg:pointer-events-auto max-lg:translate-x-0 max-lg:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:translate-x-0 [@media(hover:none)]:opacity-100">
-            {m.website && (
-              <a
-                href={m.website.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${m.name} - ${m.website.label}`}
-                className="flex size-8 items-center justify-center rounded-full border border-black/10 text-[#0b0b0d]/60 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
-              >
-                <ArrowUpRight className="size-4" />
-              </a>
-            )}
-            {m.linkedin && (
-              <a
-                href={m.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${m.name} on LinkedIn`}
-                className="flex size-8 items-center justify-center rounded-full border border-black/10 text-[#0b0b0d]/60 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
-              >
-                <LinkedInIcon className="size-4" />
-              </a>
-            )}
-            {m.email && (
-              <a
-                href={`mailto:${m.email}`}
-                aria-label={`Email ${m.name}`}
-                className="flex size-8 items-center justify-center rounded-full border border-black/10 text-[#0b0b0d]/60 transition-colors hover:border-[#ff4400]/60 hover:text-[#ff4400]"
-              >
-                <MailIcon className="size-4" />
-              </a>
-            )}
+      <div className="cog-person-copy">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="cog-person-title">{member.name}</h2>
+            <p className="cog-article-meta">{member.role}</p>
           </div>
+          {profile && (
+            <a
+              href={profile}
+              target={profile.startsWith("mailto:") ? undefined : "_blank"}
+              rel={profile.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+              aria-label={`${member.name} on ${profileLabel}`}
+              className="cog-arrow-icon"
+            >
+              <ArrowUpRight className="size-4" />
+            </a>
+          )}
+        </div>
+
+        <div className="cog-person-links">
+          {member.website && (
+            <a href={member.website.href} target="_blank" rel="noopener noreferrer">
+              {member.website.label}
+            </a>
+          )}
+          {member.linkedin && (
+            <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
+              <LinkedInIcon className="size-3.5" />
+              LinkedIn
+            </a>
+          )}
+          {member.email && (
+            <a href={`mailto:${member.email}`}>
+              <MailIcon className="size-3.5" />
+              Email
+            </a>
+          )}
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
 export default function TeamPage() {
-  const centerSingleRow = MEMBERS.length <= 3;
-
   return (
-    <main className="min-h-screen bg-white text-[#0b0b0d]">
-      <SiteNav showLogo />
+    <CognitionPage>
+      <SiteNav />
 
-      <section
-        className={cn(
-          "min-h-[100svh] px-6 pb-16 pt-[104px] md:px-[40px] md:pb-20 md:pt-[140px]",
-          centerSingleRow && "lg:flex lg:items-center",
-        )}
-      >
-        <div className="mx-auto grid w-full max-w-[1360px] grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {MEMBERS.map((m) => (
-            <MemberCard key={m.name} m={m} />
+      <CognitionSection label="Our team" title="Our team.">
+        <p className="cog-body-copy">
+          All Together is led by founding partners Robert Neir and
+          Hisham El-Husseini.
+        </p>
+        <ArrowLink href={CONTACT_MAILTO} className="mt-8">
+          Email
+        </ArrowLink>
+      </CognitionSection>
+
+      <CognitionStrip className="cog-strip--inset">
+        <div className="cog-person-grid cog-person-grid--short">
+          {MEMBERS.map((member) => (
+            <MemberCard key={member.name} member={member} />
           ))}
         </div>
-      </section>
+      </CognitionStrip>
 
       <SiteFooter />
-    </main>
+    </CognitionPage>
   );
 }

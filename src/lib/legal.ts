@@ -7,7 +7,7 @@ export type LegalDoc = {
 };
 
 const UPDATED = "May 19, 2026";
-const ENTITY = "All Together Capital";
+const ENTITY = "All Together";
 
 export const LEGAL_DOCS: Record<string, LegalDoc> = {
   "privacy-policy": {
@@ -18,8 +18,8 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       {
         heading: "Information we collect",
         body: [
-          "Information you provide directly — for example, your name and email address when you contact us or send us materials.",
-          "Information collected automatically — such as your browser type, device, approximate location, and how you interact with the site, gathered through standard logs and analytics.",
+          "Information you provide directly, for example, your name and email address when you contact us or send us materials.",
+          "Information collected automatically, such as your browser type, device, approximate location, and how you interact with the site, gathered through standard logs and analytics.",
         ],
       },
       {

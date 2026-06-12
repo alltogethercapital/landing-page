@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { FOUNDERS } from "@/lib/founders";
-import { HERO_VIDEOS } from "@/lib/hero-video-assets";
 import { PORTFOLIO } from "@/lib/portfolio";
 import { LEGAL, NAV } from "@/lib/site";
 
@@ -13,13 +12,7 @@ const TEAM_IMAGES = [
   "/leadership/webp/neo-team-studio.webp",
 ];
 
-const STATIC_IMAGES = [
-  "/hero-drones.jpg",
-  "/hero-robots.jpg",
-  "/logo-orange.png",
-  "/logo-white.png",
-  "/logo-black.png",
-];
+const STATIC_IMAGES: string[] = [];
 
 const INTERNAL_ROUTES = Array.from(
   new Set([
@@ -68,16 +61,6 @@ const IMAGE_ASSETS = Array.from(
   ),
 );
 
-const VIDEO_ASSETS = Array.from(
-  new Set(Object.values(HERO_VIDEOS).flatMap((sources) => sources.map((source) => source.src))),
-);
-
-const PRECONNECT_ORIGINS = [
-  "https://www.youtube-nocookie.com",
-  "https://www.youtube.com",
-  "https://i.ytimg.com",
-];
-
 type PriorityElement = {
   fetchPriority?: "high" | "low" | "auto";
 };
@@ -88,7 +71,6 @@ type CancelFn = () => void;
 const IMAGE_BATCH_SIZE = 8;
 const IMAGE_BATCH_GAP_MS = 35;
 const MEDIA_START_DELAY_MS = 250;
-const VIDEO_START_DELAY_MS = 5200;
 const INTERACTION_QUIET_MS = 900;
 
 declare global {
@@ -117,17 +99,7 @@ async function waitForQuiet(cancelled: () => boolean, shouldPause: () => boolean
   }
 }
 
-function addPreconnect(origin: string) {
-  if (document.head.querySelector(`link[rel="preconnect"][href="${origin}"]`)) return;
-
-  const link = document.createElement("link");
-  link.rel = "preconnect";
-  link.href = origin;
-  link.crossOrigin = "anonymous";
-  document.head.appendChild(link);
-}
-
-function addPrefetch(href: string, as: "document" | "image" | "video", type?: string) {
+function addPrefetch(href: string, as: "document" | "image", type?: string) {
   if (document.head.querySelector(`link[rel="prefetch"][href="${href}"]`)) return;
 
   const link = document.createElement("link") as HTMLLinkElement & PriorityElement;
@@ -163,13 +135,6 @@ async function warmImages(cancelled: () => boolean, shouldPause: () => boolean) 
   }
 }
 
-async function prefetchVideos(cancelled: () => boolean, shouldPause: () => boolean) {
-  await waitForQuiet(cancelled, shouldPause);
-  if (cancelled()) return;
-
-  VIDEO_ASSETS.forEach((src) => addPrefetch(src, "video", "video/mp4"));
-}
-
 export function SitePreloader() {
   const router = useRouter();
 
@@ -194,15 +159,12 @@ export function SitePreloader() {
       addPrefetch(href, "document");
     });
 
-    PRECONNECT_ORIGINS.forEach(addPreconnect);
-
     const interactionEvents = ["pointerdown", "keydown", "wheel", "touchstart", "scroll"];
     interactionEvents.forEach((eventName) =>
       window.addEventListener(eventName, markInteraction, { passive: true }),
     );
 
     let cancelMediaIdle: CancelFn | null = null;
-    let cancelVideoIdle: CancelFn | null = null;
 
     const mediaTimer = window.setTimeout(() => {
       if (cancelled) return;
@@ -211,19 +173,10 @@ export function SitePreloader() {
       }, 2400);
     }, MEDIA_START_DELAY_MS);
 
-    const videoTimer = window.setTimeout(() => {
-      if (cancelled) return;
-      cancelVideoIdle = scheduleIdle(() => {
-        void prefetchVideos(isCancelled, shouldPauseMediaPreload);
-      }, 2800);
-    }, VIDEO_START_DELAY_MS);
-
     return () => {
       cancelled = true;
       window.clearTimeout(mediaTimer);
-      window.clearTimeout(videoTimer);
       cancelMediaIdle?.();
-      cancelVideoIdle?.();
       interactionEvents.forEach((eventName) =>
         window.removeEventListener(eventName, markInteraction),
       );

@@ -1,88 +1,124 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { SiteNav } from "@/components/site-nav";
+import {
+  ArrowLink,
+  CognitionPage,
+  CognitionSection,
+  CognitionStrip,
+} from "@/components/cognition-layout";
 import { SiteFooter } from "@/components/site-footer";
+import { SiteNav } from "@/components/site-nav";
 import { ArrowUpRight } from "@/components/icons";
+import { glyphFor } from "@/lib/glyphs";
 import { PORTFOLIO, slugify, type Company } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
-  title: "Our companies — All Together Capital",
+  title: "Our companies — All Together",
   description:
-    "Our companies — across AI, defense, energy, robotics, semiconductors, and space.",
+    "Our companies, across AI, defense, energy, robotics, semiconductors, and space.",
 };
 
-function CompanyCard({
-  company,
-}: {
-  company: Company;
-}) {
-  const logoSrc = company.cardLogo ?? company.logo;
+function CompanyArticle({ company }: { company: Company }) {
+  const image = company.cardImage ?? company.image;
+  const logo = company.cardLogo ?? company.logo;
   const isPending = company.investmentStatus === "pending";
+
   return (
-    <div
-      id={slugify(company.name)}
-      className="group relative block aspect-[4/3] scroll-mt-[104px] overflow-hidden border-0 bg-transparent shadow-none outline-none md:scroll-mt-[118px]"
-    >
-      {isPending && (
-        <span className="pointer-events-none absolute left-4 top-4 z-[2] inline-flex h-8 items-center border border-[#0b0b0d]/10 bg-white/80 px-3 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#0b0b0d]/70 backdrop-blur-sm md:left-5 md:top-5 md:h-9 md:text-[11px]">
-          Pending
-        </span>
-      )}
-
-      {logoSrc ? (
-        <div className="absolute inset-x-[12%] top-1/2 h-[42%] -translate-y-1/2">
-          <Image
-            src={logoSrc}
-            alt={`${company.name} logo`}
-            fill
-            sizes="(max-width: 768px) 80vw, (max-width: 1024px) 40vw, 430px"
-            unoptimized
-            className="object-contain transition-transform duration-300 ease-out group-hover:scale-[1.03]"
-          />
-        </div>
-      ) : (
-        <div className="absolute inset-0 flex items-center justify-center px-8 text-center">
-          <span className="font-sans text-[clamp(28px,4vw,52px)] font-semibold leading-none tracking-[-0.04em] text-[#0b0b0d]">
-            {company.name}
-          </span>
-        </div>
-      )}
-
-      {/* Stretched link — the whole card opens the company site */}
+    <article id={slugify(company.name)} className="cog-company-row">
       <a
         href={company.href}
         target="_blank"
         rel="noopener noreferrer"
+        className="cog-company-media"
         aria-label={`Visit ${company.name}`}
-        className="absolute inset-0 z-[1]"
-      />
-
-      {/* Open affordance — bigger arrow, top-right; color variants for light vs dark */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute right-4 top-4 z-[2] flex size-11 items-center justify-center bg-black/[0.06] text-[#0b0b0d] backdrop-blur-sm transition-all duration-300 group-hover:bg-[#ff4400] group-hover:text-black md:right-5 md:top-5 md:size-12"
       >
-        <ArrowUpRight className="size-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 md:size-7" />
-      </span>
-    </div>
+        {image ? (
+          <Image
+            src={image}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 420px"
+            unoptimized
+            className="object-cover"
+          />
+        ) : logo ? (
+          <Image
+            src={logo}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 420px"
+            unoptimized
+            className="object-contain p-12"
+          />
+        ) : (
+          <span className="cog-article-fallback">{company.name}</span>
+        )}
+      </a>
+
+      <div className="cog-company-copy">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="cog-article-meta">
+              <span className="cog-glyph-chip" aria-hidden="true">
+                {glyphFor(company.name)}
+              </span>
+              {isPending ? "Pending / " : ""}
+              {company.sectors.join(" / ")}
+            </p>
+            {logo ? (
+              <span className="cog-company-logo">
+                <Image
+                  src={logo}
+                  alt={company.name}
+                  fill
+                  sizes="200px"
+                  unoptimized
+                  className="object-contain object-left"
+                />
+              </span>
+            ) : (
+              <h2 className="cog-company-title">{company.name}</h2>
+            )}
+          </div>
+          <a
+            href={company.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Visit ${company.name}`}
+            className="cog-arrow-icon"
+          >
+            <ArrowUpRight className="size-4" />
+          </a>
+        </div>
+        {company.blurb && <p className="cog-company-blurb">{company.blurb}</p>}
+      </div>
+    </article>
   );
 }
 
 export default function CompaniesPage() {
   return (
-    <main className="min-h-screen bg-white text-[#0b0b0d]">
-      <SiteNav showLogo />
+    <CognitionPage>
+      <SiteNav />
 
-      {/* Grid */}
-      <section className="min-h-[100svh] px-6 pb-16 pt-[104px] md:px-[40px] md:pb-20 md:pt-[118px]">
-        <div className="mx-auto grid max-w-[1360px] grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+      <CognitionSection label="Our companies" title="Our companies.">
+        <p className="cog-body-copy">
+          Across AI, defense, energy, robotics, semiconductors, and space.
+        </p>
+        <ArrowLink href="/founders" className="mt-8">
+          Meet the founders
+        </ArrowLink>
+      </CognitionSection>
+
+      <CognitionStrip className="cog-strip--inset">
+        <div className="cog-company-list">
           {PORTFOLIO.map((company) => (
-            <CompanyCard key={company.name} company={company} />
+            <CompanyArticle key={company.name} company={company} />
           ))}
         </div>
-      </section>
+      </CognitionStrip>
 
       <SiteFooter />
-    </main>
+    </CognitionPage>
   );
 }

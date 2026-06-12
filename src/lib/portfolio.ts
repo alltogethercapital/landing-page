@@ -6,13 +6,13 @@ export type Company = {
   blurb?: string; // short one-liner (revealed on hover)
   logo?: string; // /public path to the company's logo mark
   image?: string; // /public product image — falls back to a sector gradient when absent
-  cardImage?: string; // legacy /companies card image; current companies page uses `cardLogo`
+  cardImage?: string; // product image used on the /companies page
   cardLogo?: string; // /public path to a transparent-PNG wordmark for the /companies card
   video?: string; // YouTube video id (11 chars) — shows a "Watch video" button when present
   videoStart?: number; // optional start time (seconds) for the video
 };
 
-// All Together Capital portfolio (alltogethercapital.com/portfolio)
+// All Together portfolio (alltogethercapital.com/portfolio)
 export const PORTFOLIO: Company[] = [
   {
     name: "Shield AI",
@@ -22,6 +22,7 @@ export const PORTFOLIO: Company[] = [
     logo: "/logos/shield-ai.png",
     cardLogo: "/logos/cards/shield-ai.png",
     image: "/hero-drones.jpg",
+    cardImage: "/work/cards/shield-ai.jpg",
     video: "OnpuNlE3UxU", // X-BAT: Earth Is Our Runway (Shield AI)
     videoStart: 32,
   },
@@ -40,7 +41,7 @@ export const PORTFOLIO: Company[] = [
     name: "OpenAI",
     href: "https://openai.com/",
     sectors: ["AI"],
-    blurb: "Frontier AI research — creators of ChatGPT and the GPT models.",
+    blurb: "Frontier AI research, the creators of ChatGPT and the GPT models.",
     logo: "/logos/openai.png",
     cardLogo: "/logos/cards/openai.png",
     image: "/work/openai.jpg",
@@ -62,7 +63,7 @@ export const PORTFOLIO: Company[] = [
     name: "Aurelius Systems",
     href: "https://www.aureliussystems.com/",
     sectors: ["Defense", "Directed Energy"],
-    blurb: "Archimedes — an autonomous directed-energy counter-drone laser.",
+    blurb: "Archimedes, an autonomous directed-energy counter-drone laser.",
     logo: "/logos/aurelius.png",
     cardLogo: "/logos/cards/aurelius.png",
     image: "/work/aurelius.jpg",
@@ -120,7 +121,7 @@ export const PORTFOLIO: Company[] = [
     name: "Apptronik",
     href: "https://apptronik.com/",
     sectors: ["AI", "Robotics"],
-    blurb: "Apollo — a general-purpose humanoid robot for industry.",
+    blurb: "Apollo, a general-purpose humanoid robot for industry.",
     logo: "/logos/apptronik.png",
     cardLogo: "/logos/cards/apptronik.png",
     image: "/work/apptronik.jpg",
@@ -232,6 +233,7 @@ export const PORTFOLIO: Company[] = [
     blurb: "An accredited online college expanding access to elite education.",
     logo: "/logos/campus.png",
     cardLogo: "/logos/cards/campus.png",
+    cardImage: "/work/cards/campus.jpg",
   },
   {
     name: "Bud Break Innovations",
@@ -248,7 +250,7 @@ export const PORTFOLIO: Company[] = [
     name: "Maven Robotics",
     href: "https://www.mavenrobotics.ai/",
     sectors: ["AI", "Robotics"],
-    blurb: "A new kind of working robot — general-purpose AI for industry.",
+    blurb: "A new kind of working robot with general-purpose AI for industry.",
     logo: "/logos/maven.png",
     cardLogo: "/logos/cards/maven.png",
     cardImage: "/work/cards/maven.jpg",
@@ -277,6 +279,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Healthcare"],
     blurb: "Value-based specialty care, from orthopedics to whole-body health.",
     cardLogo: "/logos/cards/commons-clinic.png",
+    cardImage: "/work/cards/commons-clinic.jpg",
   },
   {
     name: "Corgi",
@@ -284,6 +287,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Insurance", "AI"],
     blurb: "AI-native, full-stack insurance built for startups.",
     cardLogo: "/logos/cards/corgi.png",
+    cardImage: "/work/cards/corgi.jpg",
   },
   {
     name: "Aformic",
@@ -292,6 +296,7 @@ export const PORTFOLIO: Company[] = [
     blurb:
       "Autonomous mobile robots and fleet software for warehouse and factory intralogistics.",
     cardLogo: "/logos/cards/aformic.png",
+    cardImage: "/work/cards/aformic.jpg",
   },
 ];
 

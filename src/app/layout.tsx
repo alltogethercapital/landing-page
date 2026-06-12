@@ -76,9 +76,9 @@ const pitchSans = localFont({
 // metadataBase is required so Next.js can resolve the opengraph-image
 // route to an absolute URL in the rendered og:image meta tag.
 const SITE_URL = "https://alltogethercapital.com";
-const SITE_TITLE = "The Future Is Built Together — All Together Capital";
+const SITE_TITLE = "The Future Is Built Together — All Together";
 const SITE_DESCRIPTION =
-  "All Together Capital backs the founders rebuilding the hard frontier — across AI, defense, energy, robotics, semiconductors, and space.";
+  "All Together backs the founders rebuilding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.";
 
 const hiddenScrollbarStyle: CSSProperties = {
   msOverflowStyle: "none",
@@ -93,7 +93,7 @@ export const metadata: Metadata = {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
-    siteName: "All Together Capital",
+    siteName: "All Together",
     type: "website",
   },
   twitter: {

@@ -28,7 +28,7 @@ export const NAV = [
   { label: "Our companies", href: "/companies" },
   { label: "Our founders", href: "/founders" },
   { label: "Our team", href: "/team" },
-  { label: "Contact", href: CONTACT_MAILTO },
+  { label: "Updates", href: "/updates" },
 ];
 
 export const LEGAL = [

@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/.codex/mcp/google-drive-shared/node_modules
 /.pnp
 .pnp.*
 .yarn/*
