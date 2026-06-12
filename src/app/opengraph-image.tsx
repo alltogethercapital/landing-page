@@ -14,73 +14,194 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function OpenGraphImage() {
-  const [interBlack, interSemibold] = await Promise.all([
+  const [
+    orbitron,
+    interBlack,
+    interSemibold,
+    aformicCover,
+    arrayLabsCover,
+    mavenCover,
+    volantisCover,
+  ] = await Promise.all([
+    readFile(join(process.cwd(), "public/fonts/Orbitron-SemiBold.ttf")),
     readFile(join(process.cwd(), "public/fonts/Inter-Black.ttf")),
     readFile(join(process.cwd(), "public/fonts/Inter-SemiBold.ttf")),
+    readFile(join(process.cwd(), "public/work/cards/aformic.jpg")),
+    readFile(join(process.cwd(), "public/work/cards/array-labs.jpg")),
+    readFile(join(process.cwd(), "public/work/cards/maven.jpg")),
+    readFile(join(process.cwd(), "public/work/cards/volantis.jpg")),
   ]);
+  const productCovers = [aformicCover, arrayLabsCover, mavenCover, volantisCover].map(
+    (image) => `data:image/jpeg;base64,${image.toString("base64")}`,
+  );
+  const verticalRules = [64, 291, 367, 894, 1046];
 
   return new ImageResponse(
     (
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
+          position: "relative",
           width: "100%",
           height: "100%",
-          backgroundColor: "#0a0a0b",
-          padding: "0 80px",
+          overflow: "hidden",
+          backgroundColor: "#f7f6f5",
+          color: "#000000",
+          fontFamily: "Inter",
         }}
       >
-        <div
-          style={{
-            fontFamily: "Inter",
-            fontSize: 78,
-            lineHeight: 1,
-            letterSpacing: 8,
-            color: "#ffffff",
-            whiteSpace: "nowrap",
-          }}
-        >
-          ALL TOGETHER
-        </div>
+        {verticalRules.map((x) => (
+          <div
+            key={x}
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: x,
+              width: 1,
+              backgroundColor: "rgba(0, 0, 0, 0.08)",
+            }}
+          />
+        ))}
 
-        <div
-          style={{
-            marginTop: 30,
-            fontFamily: "Inter",
-            fontSize: 24,
-            fontWeight: 600,
-            color: "#059f70",
-          }}
-        >
-          The future is built together. The future is built now.
-        </div>
-
-        {/* The brand alphabet — the ramp that renders the hero. */}
         <div
           style={{
             position: "absolute",
-            left: 0,
-            right: 0,
-            bottom: 44,
+            top: 72,
+            left: 80,
             display: "flex",
-            justifyContent: "center",
-            fontFamily: "Inter",
-            fontSize: 22,
+            flexDirection: "column",
+            width: 164,
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "Orbitron",
+              fontSize: 16,
+              fontWeight: 600,
+              letterSpacing: 2,
+              lineHeight: 1.1,
+              color: "#000000",
+            }}
+          >
+            ALL TOGETHER
+          </div>
+          <div
+            style={{
+              marginTop: 30,
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              color: "rgba(0, 0, 0, 0.54)",
+              fontSize: 14,
+              lineHeight: 1.25,
+            }}
+          >
+            <span>companies</span>
+            <span>founders</span>
+            <span>updates</span>
+          </div>
+        </div>
+
+        <div
+          style={{
+            position: "absolute",
+            top: 92,
+            left: 367,
+            display: "flex",
+            flexDirection: "column",
+            width: 760,
+          }}
+        >
+          <div
+            style={{
+              color: "#059f70",
+              fontSize: 15,
+              fontWeight: 600,
+              lineHeight: 1,
+            }}
+          >
+            [all together]
+          </div>
+          <div
+            style={{
+              marginTop: 26,
+              display: "flex",
+              flexDirection: "column",
+              fontSize: 48,
+              fontWeight: 600,
+              lineHeight: 1.08,
+              letterSpacing: -1,
+              color: "#000000",
+            }}
+          >
+            <span>The future is built together.</span>
+            <span>The future is built now.</span>
+          </div>
+          <div
+            style={{
+              marginTop: 28,
+              width: 610,
+              fontSize: 20,
+              fontWeight: 600,
+              lineHeight: 1.35,
+              color: "rgba(0, 0, 0, 0.72)",
+            }}
+          >
+            Backing founders across AI, defense, energy, robotics, semiconductors, and space.
+          </div>
+        </div>
+
+        <div
+          style={{
+            position: "absolute",
+            left: 367,
+            right: 64,
+            bottom: 82,
+            display: "flex",
+            gap: 8,
+          }}
+        >
+          {productCovers.map((src, index) => (
+            <img
+              key={index}
+              alt=""
+              src={src}
+              width={184}
+              height={106}
+              style={{
+                width: 184,
+                height: 106,
+                objectFit: "cover",
+                border: "1px solid rgba(0, 0, 0, 0.10)",
+              }}
+            />
+          ))}
+        </div>
+
+        <div
+          style={{
+            position: "absolute",
+            left: 367,
+            right: 64,
+            bottom: 34,
+            display: "flex",
+            overflow: "hidden",
+            fontSize: 18,
             fontWeight: 600,
-            letterSpacing: 6,
-            color: "rgba(255, 255, 255, 0.30)",
+            letterSpacing: 4,
+            color: "rgba(0, 0, 0, 0.26)",
             whiteSpace: "nowrap",
           }}
         >
-          {GLYPH_RAMP.trim()}
+          {GLYPH_RAMP}
         </div>
       </div>
     ),
     {
       ...size,
       fonts: [
+        { name: "Orbitron", data: orbitron, style: "normal", weight: 600 },
         { name: "Inter", data: interBlack, style: "normal", weight: 900 },
         { name: "Inter", data: interSemibold, style: "normal", weight: 600 },
       ],
