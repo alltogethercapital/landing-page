@@ -389,6 +389,10 @@ body {
   width: 164px;
   flex-direction: column;
   align-items: flex-start;
+  /* Paper backing so in-flow content can never render through the nav, even
+     on short viewports where it floats over strips or the footer. */
+  background: var(--cog-bg);
+  box-shadow: 0 0 0 10px var(--cog-bg);
   color: var(--cog-ink);
   font-family: var(--font-unica), Arial, sans-serif;
   font-size: 15px;
