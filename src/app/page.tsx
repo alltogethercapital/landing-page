@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { AsciiHero } from "@/components/ascii-hero";
 import {
   ArrowLink,
@@ -9,11 +8,21 @@ import {
 } from "@/components/cognition-layout";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
+import { UpdatesCarousel } from "@/components/updates-carousel";
 import { ARTICLES } from "@/lib/articles";
 import { PORTFOLIO } from "@/lib/portfolio";
 
 const logoCompanies = PORTFOLIO.filter((company) => company.cardLogo ?? company.logo).slice(0, 24);
-const latestUpdates = ARTICLES.slice(0, 4);
+const homepageUpdates = ARTICLES.map(
+  ({ slug, title, date, dateISO, category, image }) => ({
+    slug,
+    title,
+    date,
+    dateISO,
+    category,
+    image,
+  }),
+);
 
 export default function Home() {
   return (
@@ -73,32 +82,7 @@ export default function Home() {
       </CognitionSection>
 
       <CognitionStrip>
-        <h2 className="cog-strip-heading">Updates</h2>
-        <div className="cog-article-grid">
-          {latestUpdates.map((article) => (
-            <Link
-              key={article.slug}
-              href={`/updates/${article.slug}`}
-              className="cog-article-card"
-            >
-              <span className="cog-article-media">
-                <Image
-                  src={article.image}
-                  alt=""
-                  fill
-                  sizes="(max-width: 768px) 82vw, 303px"
-                  unoptimized
-                  className="cog-cover object-cover"
-                />
-              </span>
-              <span className="cog-article-title">{article.title}</span>
-              <span className="cog-article-meta">
-                <time dateTime={article.dateISO}>{article.date}</time> ·{" "}
-                {article.category}
-              </span>
-            </Link>
-          ))}
-        </div>
+        <UpdatesCarousel articles={homepageUpdates} />
         <ArrowLink href="/updates" className="mt-10">
           All updates
         </ArrowLink>
