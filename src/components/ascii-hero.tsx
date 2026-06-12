@@ -60,6 +60,7 @@ const float GAMMA = 1.6;
 const float TILE_OPACITY = 0.58;
 const float CHAR_ASPECT = 0.85;
 const float VIVID = 1.28;
+const vec3 ACCENT = vec3(0.020, 0.624, 0.439); // #059f70
 const float GLYPH_COUNT = ${GLYPH_RAMP.length}.0;
 const vec2 ATLAS_GRID = vec2(${ATLAS_COLS}.0, ${ATLAS_ROWS}.0);
 const float ATLAS_PAD = ${(2 / ATLAS_TILE).toFixed(5)};
@@ -122,7 +123,10 @@ void main() {
   if (g > 0.0) {
     vec3 boosted = clamp(col * 1.6, 0.0, 1.0);
     vec3 screened = 1.0 - (1.0 - col) * (1.0 - boosted);
-    col = mix(col, screened, g);
+    // Lift the glow toward the brand accent: a light green screen-blend
+    // (#059f70 scaled down) so the trail reads as tinted, not just brighter.
+    vec3 tinted = 1.0 - (1.0 - screened) * (1.0 - ACCENT * 0.4);
+    col = mix(col, tinted, g);
   }
 
   // Vividness: pull the final color away from its own gray.
