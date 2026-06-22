@@ -76,15 +76,15 @@ export default async function OpenGraphImage() {
         >
           <div
             style={{
-              fontFamily: "Atlas Typewriter",
-              fontSize: 16,
-              fontWeight: 500,
+              fontFamily: "Martina Plantijn",
+              fontSize: 23,
+              fontWeight: 600,
               letterSpacing: 0,
               lineHeight: 1.1,
               color: "#000000",
             }}
           >
-            ALL TOGETHER
+            All Together
           </div>
           <div
             style={{

@@ -29,11 +29,11 @@ export function ATMark({ className }: { className?: string }) {
   );
 }
 
-// The wordmark: "ALL TOGETHER" set in the site's identity type with the AT mark.
+// The wordmark uses the serif logo voice, paired with the AT mark.
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-wordmark", className)}>
-      <span className="cog-wordmark-text">ALL TOGETHER</span>
+      <span className="cog-wordmark-text">All Together</span>
       <ATMark className="cog-wordmark-mark" />
     </span>
   );
