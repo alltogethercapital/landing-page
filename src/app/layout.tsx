@@ -100,6 +100,19 @@ const atlasTypewriter = localFont({
   ],
 });
 
+const brandSerif = localFont({
+  variable: "--font-brand-serif",
+  display: "swap",
+  fallback: ["Georgia", "Times New Roman", "serif"],
+  src: [
+    {
+      path: "./fonts/brand/YoungSerif-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+});
+
 // metadataBase is required so Next.js can resolve the opengraph-image
 // route to an absolute URL in the rendered og:image meta tag.
 const SITE_URL = "https://alltogethercapital.com";
@@ -138,7 +151,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${martinaPlantijn.variable} ${atlasTypewriter.variable} h-full antialiased`}
+      className={`${martinaPlantijn.variable} ${atlasTypewriter.variable} ${brandSerif.variable} h-full antialiased`}
       style={hiddenScrollbarStyle}
     >
       <body className="min-h-full" style={hiddenScrollbarStyle}>
