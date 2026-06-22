@@ -1,16 +1,40 @@
 import Link from "next/link";
-import { Orbitron } from "next/font/google";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
-const orbitron = Orbitron({ weight: "600", subsets: ["latin"], display: "swap" });
+export function ATMark({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 128 128"
+      className={cn("cog-at-mark", className)}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect width="128" height="128" fill="var(--cog-accent)" />
+      <text
+        x="64"
+        y="67"
+        className="cog-at-mark-text"
+        fill="currentColor"
+        fontSize="56"
+        fontWeight="500"
+        letterSpacing="0"
+        textAnchor="middle"
+        dominantBaseline="middle"
+      >
+        AT
+      </text>
+    </svg>
+  );
+}
 
-// The wordmark: "ALL TOGETHER" set in Orbitron — square geometric capitals.
+// The wordmark: "ALL TOGETHER" set in the site's identity type with the AT mark.
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <span className={cn(orbitron.className, "cog-wordmark", className)}>
-      ALL TOGETHER
+    <span className={cn("cog-wordmark", className)}>
+      <span className="cog-wordmark-text">ALL TOGETHER</span>
+      <ATMark className="cog-wordmark-mark" />
     </span>
   );
 }

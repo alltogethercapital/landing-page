@@ -8,10 +8,10 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --font-sans: var(--font-unica);
-  --font-display: var(--font-unica);
-  --font-serif: var(--font-rosart);
-  --font-mono: var(--font-pitch-sans);
+  --font-sans: var(--font-atlas-typewriter);
+  --font-display: var(--font-atlas-typewriter);
+  --font-serif: var(--font-martina-plantijn);
+  --font-mono: var(--font-atlas-typewriter);
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -164,20 +164,20 @@ body::-webkit-scrollbar {
   height: 0;
 }
 
-/* Editorial system. Three voices:
-   — Rosart (serif): prose.
-   — Unica (sans): headings, navigation, identity.
-   — Pitch Sans (mono): the index voice — it speaks only where the glyph
-     system speaks: company glyphs, clip captions, sector metadata, and the
-     ramp strip in the footer. */
+/* Editorial system mirrors Paradigm's main font roles:
+   — Martina Plantijn: prose.
+   — Atlas Typewriter: navigation, identity, metadata, and glyph systems. */
 :root {
   --cog-bg: #f7f6f5;
   --cog-ink: #000000;
   --cog-muted: rgba(0, 0, 0, 0.56);
   --cog-line: rgba(0, 0, 0, 0.08);
-  --cog-accent: #059f70;
+  --cog-accent: #00E100;
   --cog-dark: #191919;
-  --cog-mono: var(--font-pitch-sans), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-unica: var(--font-atlas-typewriter);
+  --font-rosart: var(--font-martina-plantijn);
+  --font-pitch-sans: var(--font-atlas-typewriter);
+  --cog-mono: var(--font-atlas-typewriter), ui-monospace, "SF Mono", Menlo, monospace;
   --site-max: 1520px;
 }
 
@@ -189,7 +189,7 @@ body {
 /* The accent is reserved for "live" states — selection included. */
 ::selection {
   background: var(--cog-accent);
-  color: #fff;
+  color: #000;
 }
 
 :focus-visible {
@@ -239,7 +239,7 @@ body {
 /* Heading for the landing-page notes strip. */
 .cog-strip-heading {
   margin: 0 0 20px;
-  font-family: var(--font-unica), Arial, sans-serif;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   font-size: 20px;
   font-weight: 400;
   line-height: 1.3;
@@ -303,14 +303,43 @@ body {
   scroll-snap-align: start;
 }
 
-/* The wordmark: ALL TOGETHER in Orbitron capitals. */
+/* The wordmark uses the same typewriter voice as Paradigm's nav and tags. */
 .cog-wordmark {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.58em;
   color: var(--cog-ink);
+  font-family: var(--cog-mono);
   font-size: 13.5px;
-  letter-spacing: 0.1em;
+  font-weight: 500;
+  letter-spacing: 0;
   line-height: 1.1;
   white-space: nowrap;
+}
+
+.cog-wordmark-text {
+  display: block;
+}
+
+.cog-at-mark {
+  display: inline-block;
+  width: var(--at-mark-size, 1.6em);
+  height: var(--at-mark-size, 1.6em);
+  flex: none;
+  color: #fff;
+  vertical-align: middle;
+}
+
+.cog-at-mark-text {
+  font-family: var(--cog-mono);
+  font-size: 56px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.cog-wordmark-mark {
+  --at-mark-size: 20px;
+  transform: translateY(-0.02em);
 }
 
 /* 404: the alphabet with nothing to render. */
@@ -330,7 +359,7 @@ body {
   overflow-x: hidden;
   background-color: var(--cog-bg);
   color: var(--cog-ink);
-  font-family: var(--font-rosart), Georgia, serif;
+  font-family: var(--font-martina-plantijn), Georgia, serif;
 }
 
 /* Cap the composition on wide screens: the content, the vertical rules, and
@@ -394,7 +423,7 @@ body {
   background: var(--cog-bg);
   box-shadow: 0 0 0 10px var(--cog-bg);
   color: var(--cog-ink);
-  font-family: var(--font-unica), Arial, sans-serif;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   font-size: 15px;
   line-height: 1.3;
 }
@@ -453,7 +482,7 @@ body {
   background: transparent;
   padding: 5px 10px 6px;
   color: var(--cog-ink);
-  font-family: var(--font-unica), Arial, sans-serif;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   font-size: 15px;
   line-height: 1.25;
   text-decoration: none;
@@ -469,8 +498,7 @@ body {
   color: var(--cog-bg);
 }
 
-/* Hover: accent green with ink text (6.2:1 contrast — white on this green
-   would fail readability at button sizes). */
+/* Hover: Paradigm green with ink text for readable contrast. */
 .cog-nav-button:hover,
 .cog-button:hover {
   border-color: var(--cog-accent);
@@ -515,6 +543,15 @@ body {
 
 .ascii-hero-caption {
   z-index: 1;
+}
+
+.ascii-hero-logo {
+  --at-mark-size: 64px;
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .ascii-hero-source {
@@ -597,7 +634,7 @@ body {
 .cog-footer-meta {
   margin: 0;
   color: var(--cog-muted);
-  font-family: var(--font-unica), Arial, sans-serif;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   font-size: 13px;
   line-height: 1.3;
   letter-spacing: 0;
@@ -610,7 +647,7 @@ body {
 .cog-title {
   margin: 0;
   color: var(--cog-ink);
-  font-family: var(--font-unica), Arial, sans-serif;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   font-size: 36px;
   font-weight: 400;
   line-height: 1.1;
@@ -679,7 +716,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-family: var(--font-unica), Arial, sans-serif;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   font-size: 15px;
   line-height: 1.1;
 }
@@ -754,7 +791,7 @@ body {
   display: block;
   margin: 13px 0 0;
   color: var(--cog-ink);
-  font-family: var(--font-rosart), Georgia, serif;
+  font-family: var(--font-martina-plantijn), Georgia, serif;
   font-size: 18px;
   font-weight: 400;
   line-height: 1.2;
@@ -778,7 +815,7 @@ body {
   justify-content: center;
   padding: 20px;
   text-align: center;
-  font-family: var(--font-unica), Arial, sans-serif;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   font-size: 22px;
   line-height: 1.1;
 }
@@ -803,16 +840,7 @@ body {
 
 .cog-company-title {
   margin-top: 4px;
-  font-family: var(--font-unica), Arial, sans-serif;
-}
-
-.cog-company-logo {
-  position: relative;
-  display: block;
-  width: 190px;
-  max-width: 100%;
-  height: 28px;
-  margin-top: 10px;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
 }
 
 .cog-company-blurb {
@@ -848,7 +876,7 @@ body {
   gap: 10px 14px;
   margin-top: 14px;
   color: var(--cog-muted);
-  font-family: var(--font-unica), Arial, sans-serif;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   font-size: 13px;
   line-height: 1.3;
 }
@@ -874,7 +902,7 @@ body {
 
 .cog-legal-section h2 {
   margin: 0;
-  font-family: var(--font-unica), Arial, sans-serif;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   font-size: 20px;
   font-weight: 400;
   line-height: 1.3;
@@ -908,7 +936,7 @@ body {
 
 .cog-footer-heading {
   margin: 0;
-  font-family: var(--font-unica), Arial, sans-serif;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   font-size: 20px;
   line-height: 1.3;
 }
@@ -932,7 +960,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--font-unica), Arial, sans-serif;
+  font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   font-size: 15px;
   line-height: 1.3;
 }
@@ -1023,14 +1051,14 @@ body {
     justify-content: space-between;
     padding: 0 20px;
     background: linear-gradient(to bottom, var(--cog-bg), rgba(247, 246, 245, 0.82));
-    font-family: var(--font-unica), Arial, sans-serif;
+    font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   }
 
   .cog-mobile-menu-button {
     border: 0;
     background: transparent;
     color: var(--cog-ink);
-    font-family: var(--font-unica), Arial, sans-serif;
+    font-family: var(--font-atlas-typewriter), Arial, sans-serif;
     font-size: 16px;
   }
 
@@ -1050,7 +1078,7 @@ body {
   }
 
   .cog-mobile-menu-link {
-    font-family: var(--font-unica), Arial, sans-serif;
+    font-family: var(--font-atlas-typewriter), Arial, sans-serif;
     font-size: 36px;
     line-height: 1.14;
   }
@@ -1066,6 +1094,12 @@ body {
   .ascii-hero-caption {
     right: 16px;
     bottom: 14px;
+  }
+
+  .ascii-hero-logo {
+    --at-mark-size: 52px;
+    top: 14px;
+    left: 14px;
   }
 
   .cog-section {

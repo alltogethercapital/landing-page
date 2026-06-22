@@ -15,17 +15,17 @@ export const contentType = "image/png";
 
 export default async function OpenGraphImage() {
   const [
-    orbitron,
-    interBlack,
-    interSemibold,
+    atlasMedium,
+    martinaRegular,
+    martinaMedium,
     aformicCover,
     arrayLabsCover,
     mavenCover,
     volantisCover,
   ] = await Promise.all([
-    readFile(join(process.cwd(), "public/fonts/Orbitron-SemiBold.ttf")),
-    readFile(join(process.cwd(), "public/fonts/Inter-Black.ttf")),
-    readFile(join(process.cwd(), "public/fonts/Inter-SemiBold.ttf")),
+    readFile(join(process.cwd(), "public/fonts/AtlasTypewriter-Medium-Web.ttf")),
+    readFile(join(process.cwd(), "public/fonts/martina-plantijn-regular.ttf")),
+    readFile(join(process.cwd(), "public/fonts/martina-plantijn-medium.ttf")),
     readFile(join(process.cwd(), "public/work/cards/aformic.jpg")),
     readFile(join(process.cwd(), "public/work/cards/array-labs.jpg")),
     readFile(join(process.cwd(), "public/work/cards/maven.jpg")),
@@ -47,7 +47,7 @@ export default async function OpenGraphImage() {
           overflow: "hidden",
           backgroundColor: "#f7f6f5",
           color: "#000000",
-          fontFamily: "Inter",
+          fontFamily: "Martina Plantijn",
         }}
       >
         {verticalRules.map((x) => (
@@ -76,10 +76,10 @@ export default async function OpenGraphImage() {
         >
           <div
             style={{
-              fontFamily: "Orbitron",
+              fontFamily: "Atlas Typewriter",
               fontSize: 16,
-              fontWeight: 600,
-              letterSpacing: 2,
+              fontWeight: 500,
+              letterSpacing: 0,
               lineHeight: 1.1,
               color: "#000000",
             }}
@@ -93,6 +93,7 @@ export default async function OpenGraphImage() {
               flexDirection: "column",
               gap: 8,
               color: "rgba(0, 0, 0, 0.54)",
+              fontFamily: "Atlas Typewriter",
               fontSize: 14,
               lineHeight: 1.25,
             }}
@@ -115,9 +116,10 @@ export default async function OpenGraphImage() {
         >
           <div
             style={{
-              color: "#059f70",
+              color: "#00E100",
+              fontFamily: "Atlas Typewriter",
               fontSize: 15,
-              fontWeight: 600,
+              fontWeight: 500,
               lineHeight: 1,
             }}
           >
@@ -128,10 +130,11 @@ export default async function OpenGraphImage() {
               marginTop: 26,
               display: "flex",
               flexDirection: "column",
-              fontSize: 48,
-              fontWeight: 600,
+              fontFamily: "Atlas Typewriter",
+              fontSize: 44,
+              fontWeight: 500,
               lineHeight: 1.08,
-              letterSpacing: -1,
+              letterSpacing: 0,
               color: "#000000",
             }}
           >
@@ -143,7 +146,7 @@ export default async function OpenGraphImage() {
               marginTop: 28,
               width: 610,
               fontSize: 20,
-              fontWeight: 600,
+              fontWeight: 400,
               lineHeight: 1.35,
               color: "rgba(0, 0, 0, 0.72)",
             }}
@@ -187,8 +190,9 @@ export default async function OpenGraphImage() {
             bottom: 34,
             display: "flex",
             overflow: "hidden",
+            fontFamily: "Atlas Typewriter",
             fontSize: 18,
-            fontWeight: 600,
+            fontWeight: 500,
             letterSpacing: 4,
             color: "rgba(0, 0, 0, 0.26)",
             whiteSpace: "nowrap",
@@ -201,9 +205,9 @@ export default async function OpenGraphImage() {
     {
       ...size,
       fonts: [
-        { name: "Orbitron", data: orbitron, style: "normal", weight: 600 },
-        { name: "Inter", data: interBlack, style: "normal", weight: 900 },
-        { name: "Inter", data: interSemibold, style: "normal", weight: 600 },
+        { name: "Atlas Typewriter", data: atlasMedium, style: "normal", weight: 500 },
+        { name: "Martina Plantijn", data: martinaRegular, style: "normal", weight: 400 },
+        { name: "Martina Plantijn", data: martinaMedium, style: "normal", weight: 600 },
       ],
     },
   );

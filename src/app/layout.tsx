@@ -4,71 +4,98 @@ import type { CSSProperties, ReactNode } from "react";
 import { SitePreloader } from "@/components/site-preloader";
 import "./globals.css";
 
-const unica = localFont({
-  variable: "--font-unica",
-  display: "swap",
-  fallback: ["BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
-  src: [
-    {
-      path: "./fonts/sequoia/Unica77LLWeb-Regular.1492eabb.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/sequoia/Unica77LLWeb-Italic.5bb94689.woff2",
-      weight: "400",
-      style: "italic",
-    },
-    {
-      path: "./fonts/sequoia/Unica77LLWeb-Bold.3928012f.woff2",
-      weight: "600",
-      style: "normal",
-    },
-  ],
-});
-
-const rosart = localFont({
-  variable: "--font-rosart",
+const martinaPlantijn = localFont({
+  variable: "--font-martina-plantijn",
   display: "swap",
   fallback: ["Georgia", "Times New Roman", "serif"],
   src: [
     {
-      path: "./fonts/sequoia/Rosart-Regular.e5cb9549.woff",
+      path: "./fonts/paradigm/martina-plantijn-light.woff2",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "./fonts/paradigm/martina-plantijn-light-italic.woff2",
+      weight: "300",
+      style: "italic",
+    },
+    {
+      path: "./fonts/paradigm/martina-plantijn-regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/sequoia/Rosart-RegularItalic.b97b7c23.woff",
+      path: "./fonts/paradigm/martina-plantijn-italic.woff2",
       weight: "400",
       style: "italic",
     },
     {
-      path: "./fonts/sequoia/Rosart-SemiBold.03e6f509.woff",
-      weight: "500",
+      path: "./fonts/paradigm/martina-plantijn-medium.woff2",
+      weight: "600",
       style: "normal",
+    },
+    {
+      path: "./fonts/paradigm/martina-plantijn-medium-italic.woff2",
+      weight: "600",
+      style: "italic",
+    },
+    {
+      path: "./fonts/paradigm/martina-plantijn-bold.woff2",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "./fonts/paradigm/martina-plantijn-bold-italic.woff2",
+      weight: "800",
+      style: "italic",
     },
   ],
 });
 
-const pitchSans = localFont({
-  variable: "--font-pitch-sans",
+const atlasTypewriter = localFont({
+  variable: "--font-atlas-typewriter",
   display: "swap",
-  fallback: ["BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
+  fallback: ["ui-monospace", "SFMono-Regular", "SF Mono", "Consolas", "monospace"],
   src: [
     {
-      path: "./fonts/sequoia/PitchSansApp-Regular.07f66690.woff2",
+      path: "./fonts/paradigm/AtlasTypewriter-Light-Web.woff2",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "./fonts/paradigm/AtlasTypewriter-LightItalic-Web.woff2",
+      weight: "300",
+      style: "italic",
+    },
+    {
+      path: "./fonts/paradigm/AtlasTypewriter-Regular-Web.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/sequoia/PitchSansApp-Medium.4e29e2bf.woff2",
+      path: "./fonts/paradigm/AtlasTypewriter-RegularItalic-Web.woff2",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./fonts/paradigm/AtlasTypewriter-Medium-Web.woff2",
       weight: "500",
       style: "normal",
     },
     {
-      path: "./fonts/sequoia/PitchSansApp-Bold.e62747bf.woff2",
-      weight: "600",
+      path: "./fonts/paradigm/AtlasTypewriter-MediumItalic-Web.woff2",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "./fonts/paradigm/AtlasTypewriter-Bold-Web.woff2",
+      weight: "800",
       style: "normal",
+    },
+    {
+      path: "./fonts/paradigm/AtlasTypewriter-BoldItalic-Web.woff2",
+      weight: "800",
+      style: "italic",
     },
   ],
 });
@@ -111,7 +138,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${unica.variable} ${rosart.variable} ${pitchSans.variable} h-full antialiased`}
+      className={`${martinaPlantijn.variable} ${atlasTypewriter.variable} h-full antialiased`}
       style={hiddenScrollbarStyle}
     >
       <body className="min-h-full" style={hiddenScrollbarStyle}>

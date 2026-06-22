@@ -147,7 +147,7 @@ export function AsciiReveal({ src }: { src: string }) {
             );
           } else if (since < FLASH_MS) {
             // The developing edge: settles in green, then fades to ink.
-            ctx.fillStyle = "#059f70";
+            ctx.fillStyle = "#00E100";
             ctx.fillText(
               cell.glyph,
               (cell.x + 0.5) * cellW,

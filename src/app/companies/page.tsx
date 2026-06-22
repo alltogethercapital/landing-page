@@ -65,20 +65,7 @@ function CompanyArticle({ company }: { company: Company }) {
               {isPending ? "Pending / " : ""}
               {company.sectors.join(" / ")}
             </p>
-            {logo ? (
-              <span className="cog-company-logo">
-                <Image
-                  src={logo}
-                  alt={company.name}
-                  fill
-                  sizes="200px"
-                  unoptimized
-                  className="object-contain object-left"
-                />
-              </span>
-            ) : (
-              <h2 className="cog-company-title">{company.name}</h2>
-            )}
+            <h2 className="cog-company-title">{company.name}</h2>
           </div>
           <a
             href={company.href}
