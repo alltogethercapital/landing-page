@@ -60,6 +60,26 @@ export const FOUNDERS: Founder[] = [
     x: "https://x.com/amasad",
   },
   {
+    name: "Jeffrey Quesnelle",
+    companyName: "Nous Research",
+    linkedin: "https://www.linkedin.com/in/jeffrey-quesnelle-2490a524",
+    x: "https://x.com/theemozilla",
+  },
+  {
+    name: "Karan Malhotra",
+    companyName: "Nous Research",
+  },
+  {
+    name: "Teknium",
+    companyName: "Nous Research",
+    x: "https://x.com/Teknium1",
+  },
+  {
+    name: "Shivani Mitra",
+    companyName: "Nous Research",
+    linkedin: "https://www.linkedin.com/in/shivani-mitra",
+  },
+  {
     name: "Qasar Younis",
     companyName: "Applied Intuition",
     headshot: "/founders/cutouts/qasar-younis.png",

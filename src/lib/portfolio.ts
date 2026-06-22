@@ -49,6 +49,14 @@ export const PORTFOLIO: Company[] = [
     video: "HK6y8DAPN_0", // Introducing Sora (OpenAI)
   },
   {
+    name: "Nous Research",
+    href: "https://nousresearch.com/",
+    sectors: ["AI", "Open Source"],
+    blurb: "Open-source AI research lab building models, agents, and decentralized training infrastructure.",
+    cardLogo: "/logos/cards/nous-research.png",
+    cardImage: "/work/cards/nous-research.jpg",
+  },
+  {
     name: "Anduril",
     href: "https://www.anduril.com/",
     sectors: ["Defense", "AI"],
