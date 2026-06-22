@@ -715,7 +715,7 @@ body {
 
 .cog-logo-cell img {
   box-sizing: border-box;
-  padding: 24px 26px;
+  padding: 18px 22px;
 }
 
 .cog-logo-cell:hover {
@@ -1196,7 +1196,7 @@ body {
   }
 
   .cog-logo-cell img {
-    padding: 15px;
+    padding: 12px 14px;
   }
 
   .cog-strip {
