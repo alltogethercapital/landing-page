@@ -3,38 +3,25 @@ import type { ReactNode } from "react";
 import { ArrowUpRight } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
-export function ATMark({ className }: { className?: string }) {
+export function BrandDot({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 128 128"
-      className={cn("cog-at-mark", className)}
+      className={cn("cog-brand-dot", className)}
       aria-hidden="true"
       focusable="false"
     >
-      <rect width="128" height="128" fill="var(--cog-accent)" />
-      <text
-        x="64"
-        y="67"
-        className="cog-at-mark-text"
-        fill="currentColor"
-        fontSize="56"
-        fontWeight="500"
-        letterSpacing="0"
-        textAnchor="middle"
-        dominantBaseline="middle"
-      >
-        AT
-      </text>
+      <circle cx="64" cy="64" r="64" fill="var(--cog-accent)" />
     </svg>
   );
 }
 
-// The wordmark uses the serif logo voice, paired with the AT mark.
+// The wordmark uses the serif logo voice, paired with the brand dot.
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-wordmark", className)}>
       <span className="cog-wordmark-text">All Together</span>
-      <ATMark className="cog-wordmark-mark" />
+      <BrandDot className="cog-wordmark-mark" />
     </span>
   );
 }

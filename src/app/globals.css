@@ -321,20 +321,12 @@ body {
   display: block;
 }
 
-.cog-at-mark {
+.cog-brand-dot {
   display: inline-block;
   width: var(--at-mark-size, 1.6em);
   height: var(--at-mark-size, 1.6em);
   flex: none;
-  color: #fff;
   vertical-align: middle;
-}
-
-.cog-at-mark-text {
-  font-family: var(--cog-mono);
-  font-size: 56px;
-  font-weight: 500;
-  letter-spacing: 0;
 }
 
 .cog-wordmark-mark {
