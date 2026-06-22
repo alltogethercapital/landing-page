@@ -1,5 +1,5 @@
 export type AsciiHeroClip = {
-  /** Company shown in the clip — rendered as the hero caption. */
+  /** Company/product represented by the clip. Used only for internal clip identity. */
   label: string;
   /** Short, low-res (480×270) loop encoded specifically for the ASCII shader. */
   src: string;

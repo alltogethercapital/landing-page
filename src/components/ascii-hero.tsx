@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { ASCII_HERO_CLIPS } from "@/lib/ascii-hero-assets";
-import { glyphFor } from "@/lib/glyphs";
 
 // Video rendered as colored ASCII glyphs, in the spirit of generalintuition.com.
 // One WebGL draw per frame: the current video frame (TEXTURE0) is sampled once
@@ -194,7 +193,6 @@ export function AsciiHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [clipIndex, setClipIndex] = useState(0);
   const [webglOk, setWebglOk] = useState(true);
 
   // OS reduced-motion preference, tracked live.
@@ -480,7 +478,6 @@ export function AsciiHero() {
     const advanceClip = () => {
       if (state.destroyed || state.contextLost) return;
       state.clip = (state.clip + 1) % ASCII_HERO_CLIPS.length;
-      setClipIndex(state.clip);
       video.src = ASCII_HERO_CLIPS[state.clip].src;
       video.load();
       playCurrent();
@@ -670,14 +667,6 @@ export function AsciiHero() {
         aria-hidden="true"
         tabIndex={-1}
       />
-      {webglOk && (
-        <p className="ascii-hero-caption" aria-live="off">
-          {glyphFor(ASCII_HERO_CLIPS[clipIndex].label)
-            ? `${glyphFor(ASCII_HERO_CLIPS[clipIndex].label)} `
-            : ""}
-          {ASCII_HERO_CLIPS[clipIndex].label}
-        </p>
-      )}
     </section>
   );
 }
