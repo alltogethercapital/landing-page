@@ -428,8 +428,48 @@ body {
 
 .cog-nav-links {
   display: flex;
+  position: relative;
+  isolation: isolate;
   flex-direction: column;
   align-items: flex-start;
+  --nav-hover-left: 0px;
+  --nav-hover-top: 0px;
+  --nav-hover-width: 0px;
+  --nav-hover-height: 0px;
+}
+
+.cog-mobile-menu-links {
+  position: relative;
+  isolation: isolate;
+  --nav-hover-left: 0px;
+  --nav-hover-top: 0px;
+  --nav-hover-width: 0px;
+  --nav-hover-height: 0px;
+}
+
+.cog-nav-hover-plate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: var(--nav-hover-width);
+  height: var(--nav-hover-height);
+  pointer-events: none;
+  background: rgba(0, 225, 0, 0.11);
+  border: 1px solid rgba(0, 225, 0, 0.22);
+  opacity: 0;
+  transform: translate3d(var(--nav-hover-left), var(--nav-hover-top), 0);
+  transition:
+    transform 220ms cubic-bezier(0.5, 0, 0.5, 1),
+    width 220ms cubic-bezier(0.5, 0, 0.5, 1),
+    height 220ms cubic-bezier(0.5, 0, 0.5, 1),
+    opacity 140ms ease;
+  will-change: transform, width, height;
+}
+
+.cog-nav-links[data-hover-ready="true"] .cog-nav-hover-plate,
+.cog-mobile-menu-links[data-hover-ready="true"] .cog-nav-hover-plate {
+  opacity: 1;
 }
 
 .cog-nav-link,
@@ -442,9 +482,32 @@ body {
   transition: color 160ms ease;
 }
 
+.cog-nav-link,
+.cog-mobile-menu-link {
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.cog-nav-link {
+  margin-left: -8px;
+  padding: 2px 8px 3px;
+}
+
+.cog-mobile-menu-link {
+  margin-left: -10px;
+  padding: 2px 10px 5px;
+}
+
+.cog-footer-link:hover {
+  color: var(--cog-accent);
+}
+
 .cog-nav-link:hover,
-.cog-mobile-menu-link:hover,
-.cog-footer-link:hover,
+.cog-mobile-menu-link:hover {
+  color: var(--cog-ink);
+}
+
 .cog-nav-link.is-active,
 .cog-mobile-menu-link.is-active {
   color: var(--cog-accent);
@@ -457,11 +520,17 @@ body {
 .cog-nav-link.is-active::before {
   position: absolute;
   top: 0.22em;
-  left: -12px;
+  left: -4px;
   width: 2px;
   height: 0.92em;
   background: var(--cog-accent);
   content: "";
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cog-nav-hover-plate {
+    transition: opacity 120ms ease;
+  }
 }
 
 .cog-nav-button,

@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FocusEvent,
+  type PointerEvent,
+  type ReactNode,
+} from "react";
 import { LogoMark } from "@/components/cognition-layout";
 import { CONTACT_MAILTO, NAV } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -11,6 +19,13 @@ function isNavItemActive(pathname: string, href: string) {
   if (!href.startsWith("/")) return false;
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+const TRACKED_NAV_LINK_SELECTOR = "a.cog-nav-link, a.cog-mobile-menu-link";
+
+function getTrackedNavLink(target: EventTarget | null) {
+  if (!(target instanceof Element)) return null;
+  return target.closest<HTMLElement>(TRACKED_NAV_LINK_SELECTOR);
 }
 
 function NavLink({
@@ -46,6 +61,72 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
 
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const desktopNavLinksRef = useRef<HTMLElement>(null);
+  const mobileNavLinksRef = useRef<HTMLElement>(null);
+
+  const syncHoverPlate = useCallback((nav: HTMLElement | null, target?: HTMLElement | null) => {
+    if (!nav) return;
+
+    const link =
+      target ??
+      nav.querySelector<HTMLElement>('[aria-current="page"]') ??
+      nav.querySelector<HTMLElement>(TRACKED_NAV_LINK_SELECTOR);
+
+    if (!link) {
+      nav.dataset.hoverReady = "false";
+      return;
+    }
+
+    const navRect = nav.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+
+    nav.style.setProperty("--nav-hover-left", `${linkRect.left - navRect.left}px`);
+    nav.style.setProperty("--nav-hover-top", `${linkRect.top - navRect.top}px`);
+    nav.style.setProperty("--nav-hover-width", `${linkRect.width}px`);
+    nav.style.setProperty("--nav-hover-height", `${linkRect.height}px`);
+    nav.dataset.hoverReady = "true";
+  }, []);
+
+  const resetHoverPlate = useCallback(
+    (nav: HTMLElement | null) => {
+      syncHoverPlate(nav);
+    },
+    [syncHoverPlate],
+  );
+
+  const handleNavPointerOver = useCallback(
+    (event: PointerEvent<HTMLElement>) => {
+      const link = getTrackedNavLink(event.target);
+      if (!link || !event.currentTarget.contains(link)) return;
+      syncHoverPlate(event.currentTarget, link);
+    },
+    [syncHoverPlate],
+  );
+
+  const handleNavPointerLeave = useCallback(
+    (event: PointerEvent<HTMLElement>) => {
+      resetHoverPlate(event.currentTarget);
+    },
+    [resetHoverPlate],
+  );
+
+  const handleNavFocus = useCallback(
+    (event: FocusEvent<HTMLElement>) => {
+      const link = getTrackedNavLink(event.target);
+      if (!link || !event.currentTarget.contains(link)) return;
+      syncHoverPlate(event.currentTarget, link);
+    },
+    [syncHoverPlate],
+  );
+
+  const handleNavBlur = useCallback(
+    (event: FocusEvent<HTMLElement>) => {
+      const nextTarget = event.relatedTarget;
+      if (nextTarget instanceof Node && event.currentTarget.contains(nextTarget)) return;
+      resetHoverPlate(event.currentTarget);
+    },
+    [resetHoverPlate],
+  );
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -63,6 +144,17 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  useEffect(() => {
+    const syncAll = () => {
+      syncHoverPlate(desktopNavLinksRef.current);
+      syncHoverPlate(mobileNavLinksRef.current);
+    };
+
+    syncAll();
+    window.addEventListener("resize", syncAll);
+    return () => window.removeEventListener("resize", syncAll);
+  }, [open, pathname, syncHoverPlate]);
+
   return (
     <>
       <aside className="cog-desktop-nav" aria-label="Primary">
@@ -70,7 +162,15 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
           <LogoMark />
         </Link>
 
-        <nav className="cog-nav-links">
+        <nav
+          className="cog-nav-links"
+          ref={desktopNavLinksRef}
+          onPointerOver={handleNavPointerOver}
+          onPointerLeave={handleNavPointerLeave}
+          onFocus={handleNavFocus}
+          onBlur={handleNavBlur}
+        >
+          <span className="cog-nav-hover-plate" aria-hidden="true" />
           {NAV.map((item) => {
             const active = isNavItemActive(pathname, item.href);
             return (
@@ -113,7 +213,15 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
 
       {open && (
         <div className="cog-mobile-menu" role="dialog" aria-modal="true" aria-label="Site menu">
-          <nav className="cog-mobile-menu-links">
+          <nav
+            className="cog-mobile-menu-links"
+            ref={mobileNavLinksRef}
+            onPointerOver={handleNavPointerOver}
+            onPointerLeave={handleNavPointerLeave}
+            onFocus={handleNavFocus}
+            onBlur={handleNavBlur}
+          >
+            <span className="cog-nav-hover-plate" aria-hidden="true" />
             {NAV.map((item) => {
               const active = isNavItemActive(pathname, item.href);
               return (
