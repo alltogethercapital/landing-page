@@ -545,15 +545,6 @@ body {
   z-index: 1;
 }
 
-.ascii-hero-logo {
-  --at-mark-size: 64px;
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  z-index: 2;
-  pointer-events: none;
-}
-
 .ascii-hero-source {
   position: absolute;
   width: 1px;
@@ -1094,12 +1085,6 @@ body {
   .ascii-hero-caption {
     right: 16px;
     bottom: 14px;
-  }
-
-  .ascii-hero-logo {
-    --at-mark-size: 52px;
-    top: 14px;
-    left: 14px;
   }
 
   .cog-section {

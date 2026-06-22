@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { ATMark } from "@/components/cognition-layout";
 import { ASCII_HERO_CLIPS } from "@/lib/ascii-hero-assets";
 import { glyphFor } from "@/lib/glyphs";
 
@@ -647,7 +646,6 @@ export function AsciiHero() {
 
   return (
     <section ref={sectionRef} className="ascii-hero" aria-label="All Together film reel">
-      <ATMark className="ascii-hero-logo" />
       <canvas ref={canvasRef} className="ascii-hero-canvas" aria-hidden="true" />
       {!webglOk && (
         <video
