@@ -18,12 +18,12 @@ export const PORTFOLIO: Company[] = [
     name: "Shield AI",
     href: "https://shield.ai/",
     sectors: ["Defense", "AI"],
-    blurb: "AI pilots for aircraft, and the X-BAT autonomous fighter jet.",
+    blurb: "AI pilots for aircraft, and the X‑BAT autonomous fighter jet.",
     logo: "/logos/shield-ai.png",
     cardLogo: "/logos/cards/shield-ai.png",
     image: "/hero-drones.jpg",
     cardImage: "/work/cards/shield-ai.jpg",
-    video: "OnpuNlE3UxU", // X-BAT: Earth Is Our Runway (Shield AI)
+    video: "OnpuNlE3UxU", // X‑BAT: Earth Is Our Runway (Shield AI)
     videoStart: 32,
   },
   {

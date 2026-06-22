@@ -616,6 +616,18 @@ body {
   width: min(100%, 531px);
 }
 
+.cog-hero-section .cog-section-body {
+  width: min(100%, 680px);
+}
+
+.cog-hero-section .cog-copy-stack {
+  max-width: 531px;
+}
+
+.cog-hero-section .cog-copy-stack p {
+  text-wrap: balance;
+}
+
 .cog-section--wide .cog-section-body {
   width: min(100%, 760px);
 }
@@ -639,10 +651,19 @@ body {
   margin: 0;
   color: var(--cog-ink);
   font-family: var(--font-atlas-typewriter), Arial, sans-serif;
-  font-size: 36px;
+  font-size: 34px;
   font-weight: 400;
-  line-height: 1.1;
+  line-height: 1.14;
   letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.cog-title-line {
+  display: block;
+}
+
+.cog-title-keep {
+  white-space: nowrap;
 }
 
 .cog-body-copy,
@@ -652,6 +673,7 @@ body {
   color: var(--cog-ink);
   font-size: 16px;
   line-height: 1.48;
+  text-wrap: pretty;
 }
 
 .cog-copy-stack {
@@ -787,6 +809,8 @@ body {
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: 0;
+  overflow-wrap: break-word;
+  text-wrap: balance;
 }
 
 /* Sector/role metadata speaks in the index voice. */
@@ -837,6 +861,7 @@ body {
 .cog-company-blurb {
   margin: 20px 0 0;
   color: var(--cog-muted);
+  text-wrap: balance;
 }
 
 .cog-arrow-icon {
@@ -940,6 +965,10 @@ body {
   line-height: 1.45;
 }
 
+.cog-footer-copy-line {
+  display: block;
+}
+
 .cog-footer-column {
   display: flex;
   flex-direction: column;
@@ -998,6 +1027,24 @@ body {
   color: var(--cog-muted);
   font-size: 13px;
   line-height: 1.4;
+}
+
+@media (min-width: 1021px) and (max-width: 1180px) {
+  .cog-hero-section .cog-section-body {
+    width: min(100%, 620px);
+  }
+
+  .cog-hero-section .cog-title {
+    font-size: 30px;
+    line-height: 1.16;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1020px) {
+  .cog-hero-section .cog-title {
+    font-size: 25px;
+    line-height: 1.18;
+  }
 }
 
 @media (max-width: 1180px) {
@@ -1106,6 +1153,10 @@ body {
     width: 100%;
   }
 
+  .cog-hero-section .cog-section-body {
+    width: 100%;
+  }
+
   .cog-hero-section {
     min-height: auto;
     padding-top: 92px;
@@ -1119,6 +1170,10 @@ body {
   .cog-title {
     font-size: 24px;
     line-height: 1.2;
+  }
+
+  .cog-title-line {
+    max-width: 100%;
   }
 
   .cog-body-copy,
@@ -1186,5 +1241,28 @@ body {
   .cog-footer-bottom {
     flex-direction: column;
     margin-top: 42px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cog-title {
+    font-size: 20px;
+    line-height: 1.22;
+  }
+
+  .cog-title-line + .cog-title-line {
+    margin-top: 0.08em;
+  }
+
+  .cog-mobile-menu-link {
+    font-size: 30px;
+    line-height: 1.18;
+  }
+}
+
+@media (max-width: 360px) {
+  .cog-title {
+    font-size: 17px;
+    line-height: 1.26;
   }
 }

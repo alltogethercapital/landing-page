@@ -34,9 +34,14 @@ export default function Home() {
       <CognitionSection
         title={
           <>
-            The future is built together.
-            <br />
-            The future is built now.
+            <span className="cog-title-line">
+              <span className="cog-title-keep">The future is built</span>{" "}
+              <span>together.</span>
+            </span>
+            <span className="cog-title-line">
+              <span className="cog-title-keep">The future is built</span>{" "}
+              <span>now.</span>
+            </span>
           </>
         }
         className="cog-hero-section"

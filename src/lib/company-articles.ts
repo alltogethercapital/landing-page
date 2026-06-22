@@ -11,26 +11,26 @@ export const COMPANY_ARTICLES: Article[] = [
     dateISO: "2026-06-03",
     category: "Portfolio",
     author: "All Together",
-    excerpt: "Shield AI builds Hivemind, an AI pilot for military aircraft, and X-BAT, a runway-independent autonomous fighter jet.",
+    excerpt: "Shield AI builds Hivemind, an AI pilot for military aircraft, and X‑BAT, a runway-independent autonomous fighter jet.",
     image: "/updates/covers/shield-ai.jpg",
     sections: [
     {
       body: [
         "Shield AI builds AI pilots for aircraft. The company's stated mission is to protect service members and civilians with intelligent systems. Its core product is Hivemind, an autonomy stack that flies military aircraft when GPS is denied, communications are cut, and a remote operator is no longer an option.",
-        "Hivemind has moved past the single-airframe demo. It flies V-BAT, Shield AI's runway-independent aircraft for reconnaissance and targeting on the electronic-warfare battlefield, and it has flown on jets including the Avenger, Firejet, and the VISTA test aircraft. The premise is plain. In a contested fight the links break, and the aircraft that finishes the mission is the one carrying its pilot in software.",
+        "Hivemind has moved past the single-airframe demo. It flies V‑BAT, Shield AI's runway-independent aircraft for reconnaissance and targeting on the electronic-warfare battlefield, and it has flown on jets including the Avenger, Firejet, and the VISTA test aircraft. The premise is plain. In a contested fight the links break, and the aircraft that finishes the mission is the one carrying its pilot in software.",
       ],
     },
     {
       heading: "What they're building",
       body: [
-        "The next product is X-BAT, which Shield AI calls the first AI-piloted VTOL fighter jet. It takes off and lands vertically with no runway required, which lets it operate from ships and remote islands, or from austere forward bases. Internal bays carry air-to-air and air-to-surface weapons, with external hardpoints for large strike weapons, and the company lists a maximum range above 2,000 nautical miles and a ceiling above 50,000 feet. Hivemind is the pilot, and a single commander flies a team of X-BATs at once.",
-        "The schedule is public. First flight is planned for 2026, with production beginning in 2029. Shield AI says three X-BATs fit in the deck space of one legacy fighter. Flight test and weapons integration sit between those two dates, along with manufacturing at rate.",
+        "The next product is X‑BAT, which Shield AI calls the first AI-piloted VTOL fighter jet. It takes off and lands vertically with no runway required, which lets it operate from ships and remote islands, or from austere forward bases. Internal bays carry air-to-air and air-to-surface weapons, with external hardpoints for large strike weapons, and the company lists a maximum range above 2,000 nautical miles and a ceiling above 50,000 feet. Hivemind is the pilot, and a single commander flies a team of X‑BATs at once.",
+        "The schedule is public. First flight is planned for 2026, with production beginning in 2029. Shield AI says three X‑BATs fit in the deck space of one legacy fighter. Flight test and weapons integration sit between those two dates, along with manufacturing at rate.",
       ],
     },
     {
       heading: "Why we backed the founders and team",
       body: [
-        "Defense autonomy sits squarely on the frontier we back: software that has to work on real hardware, under jamming, with program offices and test ranges in the loop. Shield AI did the work in the right order. It built the pilot first and proved it on other people's airframes. Then it built the airframe the pilot makes possible. X-BAT assembles autonomy, propulsion, airframe, and weapons into one machine.",
+        "Defense autonomy sits squarely on the frontier we back: software that has to work on real hardware, under jamming, with program offices and test ranges in the loop. Shield AI did the work in the right order. It built the pilot first and proved it on other people's airframes. Then it built the airframe the pilot makes possible. X‑BAT assembles autonomy, propulsion, airframe, and weapons into one machine.",
         "Most of what happens between now and production will be sorties, integration, and tooling rather than announcements. It is the long middle, where nothing demos well. A fighter that needs no runway changes the math of basing and sortie generation in a contested theater. That is worth building through, and Shield AI is doing it.",
       ],
     },

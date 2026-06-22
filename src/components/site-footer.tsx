@@ -86,7 +86,8 @@ export function SiteFooter() {
       <div className="cog-footer-body">
         <div>
           <p className="cog-footer-copy">
-            The future is built together. The future is built now.
+            <span className="cog-footer-copy-line">The future is built together.</span>
+            <span className="cog-footer-copy-line">The future is built now.</span>
           </p>
           <p className="cog-footer-meta">Seattle, WA</p>
         </div>
