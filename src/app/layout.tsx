@@ -100,14 +100,14 @@ const atlasTypewriter = localFont({
   ],
 });
 
-const brandSerif = localFont({
-  variable: "--font-brand-serif",
+const brandDisplay = localFont({
+  variable: "--font-brand-display",
   display: "swap",
-  fallback: ["Georgia", "Times New Roman", "serif"],
+  fallback: ["Arial", "Helvetica", "sans-serif"],
   src: [
     {
-      path: "./fonts/brand/YoungSerif-Regular.ttf",
-      weight: "400",
+      path: "./fonts/brand/Syne-Bold.ttf",
+      weight: "700",
       style: "normal",
     },
   ],
@@ -151,7 +151,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${martinaPlantijn.variable} ${atlasTypewriter.variable} ${brandSerif.variable} h-full antialiased`}
+      className={`${martinaPlantijn.variable} ${atlasTypewriter.variable} ${brandDisplay.variable} h-full antialiased`}
       style={hiddenScrollbarStyle}
     >
       <body className="min-h-full" style={hiddenScrollbarStyle}>
