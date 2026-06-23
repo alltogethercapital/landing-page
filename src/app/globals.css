@@ -303,18 +303,18 @@ body {
   scroll-snap-align: start;
 }
 
-/* The wordmark uses a distinctive technical display face with fund-mark restraint. */
+/* The wordmark uses Roman serif capitals in the same quiet fund-mark register as Coatue. */
 .cog-wordmark {
   display: inline-flex;
   align-items: center;
-  gap: 0.4em;
+  gap: 0.44em;
   color: var(--cog-ink);
-  font-family: var(--font-brand-display), Arial, Helvetica, sans-serif;
-  font-size: 19px;
-  font-weight: 700;
-  letter-spacing: 0;
-  word-spacing: 0.22em;
+  font-family: var(--font-brand-display), "Times New Roman", Times, serif;
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
   line-height: 1;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
@@ -331,8 +331,8 @@ body {
 }
 
 .cog-wordmark-mark {
-  --brand-dot-size: 0.86em;
-  transform: translateY(0.01em);
+  --brand-dot-size: 0.8em;
+  transform: translateY(0.02em);
 }
 
 /* 404: the alphabet with nothing to render. */

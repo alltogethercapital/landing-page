@@ -103,11 +103,11 @@ const atlasTypewriter = localFont({
 const brandDisplay = localFont({
   variable: "--font-brand-display",
   display: "swap",
-  fallback: ["Arial", "Helvetica", "sans-serif"],
+  fallback: ["Times New Roman", "Times", "serif"],
   src: [
     {
-      path: "./fonts/brand/Syne-Bold.ttf",
-      weight: "700",
+      path: "./fonts/brand/MarcellusSC-Regular.ttf",
+      weight: "400",
       style: "normal",
     },
   ],
