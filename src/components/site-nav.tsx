@@ -67,12 +67,9 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
   const syncHoverPlate = useCallback((nav: HTMLElement | null, target?: HTMLElement | null) => {
     if (!nav) return;
 
-    const link =
-      target ??
-      nav.querySelector<HTMLElement>('[aria-current="page"]') ??
-      nav.querySelector<HTMLElement>(TRACKED_NAV_LINK_SELECTOR);
+    const link = target ?? null;
 
-    if (!link) {
+    if (!link || link.getAttribute("aria-current") === "page") {
       nav.dataset.hoverReady = "false";
       return;
     }
