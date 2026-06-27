@@ -80,6 +80,31 @@ export const FOUNDERS: Founder[] = [
     linkedin: "https://www.linkedin.com/in/shivani-mitra",
   },
   {
+    name: "Jerry Tworek",
+    companyName: "Core Automation",
+    x: "https://x.com/MillionInt",
+  },
+  {
+    name: "Rohan Anil",
+    companyName: "Core Automation",
+    x: "https://x.com/_arohan_",
+  },
+  {
+    name: "Joanne Jang",
+    companyName: "Core Automation",
+    x: "https://x.com/joannejang",
+  },
+  {
+    name: "Anmol Gulati",
+    companyName: "Core Automation",
+    x: "https://x.com/anmol01gulati",
+  },
+  {
+    name: "Julia Villagra",
+    companyName: "Core Automation",
+    x: "https://x.com/juliacvillagra",
+  },
+  {
     name: "Qasar Younis",
     companyName: "Applied Intuition",
     headshot: "/founders/cutouts/qasar-younis.png",
@@ -191,6 +216,17 @@ export const FOUNDERS: Founder[] = [
     companyName: "Commons Clinic",
     headshot: "/founders/cutouts/paulo-da-costa.png",
     linkedin: "https://www.linkedin.com/in/paulo-da-costa-9abb739/",
+  },
+  {
+    name: "Eyad Abdalla",
+    companyName: "Plena Health",
+    linkedin: "https://www.linkedin.com/in/eyadabd/",
+    x: "https://x.com/eebadaeebada",
+  },
+  {
+    name: "Ahmed Al Mudarris",
+    companyName: "Plena Health",
+    linkedin: "https://ca.linkedin.com/in/ahmed-al-mudarris-11a5381bb",
   },
   {
     // Co-founder & CEO (Jose Isaac Robledo is the other co-founder).

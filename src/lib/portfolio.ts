@@ -49,6 +49,14 @@ export const PORTFOLIO: Company[] = [
     video: "HK6y8DAPN_0", // Introducing Sora (OpenAI)
   },
   {
+    name: "Core Automation",
+    href: "https://www.coreauto.com/",
+    sectors: ["AI", "Research"],
+    blurb: "Building the world's most automated AI lab.",
+    cardLogo: "/logos/cards/core-automation.png",
+    cardImage: "/work/cards/core-automation.jpg",
+  },
+  {
     name: "Nous Research",
     href: "https://nousresearch.com/",
     sectors: ["AI", "Open Source"],
@@ -290,6 +298,14 @@ export const PORTFOLIO: Company[] = [
     cardImage: "/work/cards/commons-clinic.jpg",
   },
   {
+    name: "Plena Health",
+    href: "https://www.plena.health/",
+    sectors: ["Healthcare", "AI"],
+    blurb: "The AI operating system for specialty medical practices.",
+    cardLogo: "/logos/cards/plena-health.png",
+    cardImage: "/work/cards/plena-health.jpg",
+  },
+  {
     name: "Corgi",
     href: "https://www.corgi.insure/",
     sectors: ["Insurance", "AI"],
@@ -322,6 +338,7 @@ const SECTOR_GRADIENTS: Record<string, string> = {
   Education: "from-[#0c1724] via-[#102338] to-[#17324d]",
   Healthcare: "from-[#06241f] via-[#0a352f] to-[#114a40]",
   Insurance: "from-[#0a1b2b] via-[#0e2a3f] to-[#163c54]",
+  Research: "from-[#161616] via-[#202020] to-[#2a2a2a]",
 };
 
 export function gradientFor(company: Company): string {

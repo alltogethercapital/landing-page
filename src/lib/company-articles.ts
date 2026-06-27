@@ -101,6 +101,38 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "core-automation",
+    title: "Core Automation.",
+    date: "June 26, 2026",
+    dateISO: "2026-06-26",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt: "Core Automation is building the world's most automated AI lab, starting by automating research itself.",
+    image: "/updates/covers/core-automation.jpg",
+    sections: [
+    {
+      body: [
+        "Core Automation is building an automated AI lab. The company's stated objective is systems that optimize and automate work, starting with research itself. The first customer is the lab. Automate the work of asking questions, running experiments, reading results, and deciding what to try next, then use that loop to build better systems.",
+        "That is a different shape from a normal AI company. Most teams start with a model or an application. Core is starting with the machinery of research: agents, evaluation loops, experiment infrastructure, and the operating model for a small team that wants to do work normally reserved for a much larger organization.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "The research agenda is aimed below the product surface. Core says it is pursuing new learning algorithms that supersede large-scale pretraining and reinforcement learning, and architectures that scale better than transformers. Those are not incremental claims. They are bets on the substrate of frontier AI: how models learn, how they are organized, and how much human labor it takes to move the frontier forward.",
+        "The method is recursive. Core starts by automating its own work. The more of the research loop the system can handle, the more ambitious the team can be. Each automation makes room for harder questions, and each hard question reveals the next thing to automate. If it works, the lab becomes both the product and the proof.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "We back founders who are willing to attack the bottleneck instead of the visible symptom. In AI, one bottleneck is research labor: the number of good ideas a small team can test, discard, combine, and push through to something real. Core's bet is that highly capable agents can change the throughput of research itself, not just the workflows around it.",
+        "Jerry, Rohan, Joanne, Anmol, and Julia have the right kind of ambition for that problem. The work will be quiet for a while. It is experiment harnesses, evaluations, new architectures, and the uncomfortable middle where most results are negative. But if small teams with automated research systems can take on work that once required entire organizations, the leverage is enormous. Core is building for that world.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "nous-research",
     title: "Nous Research.",
     date: "May 26, 2026",
@@ -831,6 +863,38 @@ export const COMPANY_ARTICLES: Article[] = [
       body: [
         "We back companies that build through certification, contracts, and physical plant, the parts that don't demo well. Care delivery is all of that. Standing up a surgery center means leases, licensure, payer negotiations, surgeon recruitment, and operating-room logistics. That work compounds slowly and is hard to copy. A bundled price is easy to put on a website and hard to honor; you can only quote one number if you control every line item underneath it. Commons built that control the long way, by owning the stack.",
         "Healthcare is one of the largest industries in the country and one of the least assembled. Commons is assembling a piece of it, one clinic, contract, and operating room at a time.",
+      ],
+    },
+    ],
+  },
+  {
+    slug: "plena-health",
+    title: "Plena Health.",
+    date: "March 15, 2026",
+    dateISO: "2026-03-15",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt: "Plena Health is the AI operating system for specialty medical practices, automating the back-office work that keeps clinics running.",
+    image: "/updates/covers/plena-health.jpg",
+    sections: [
+    {
+      body: [
+        "Plena Health builds the AI operating system for specialty medical practices. The company automates the administrative workflows that keep clinics running: referrals, fax intake, scheduling, procedure compliance, records, prior authorizations, billing, and collections. It is aimed at the work around the medicine rather than the medicine itself.",
+        "The important architectural choice is that Plena does not ask practices to rip out the systems they already use. It runs across EHRs, faxes, phones, clearinghouses, payer portals, and patient communication tools, taking over the rote work end to end while leaving the practice's existing stack in place.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "Specialty practices are operationally dense. A single referral can mean reading a fax, matching a patient, extracting clinical details, checking insurance, updating the EHR, attaching documents, routing tasks, and chasing missing information. Multiply that across dozens of workflows every day and the clinic becomes a system of people manually bridging software that was never built to talk to itself.",
+        "Plena's answer is a base platform of reusable workflow primitives, integrations, and agent harnesses that can be assembled around each practice. Customers can start with one painful workflow, such as referrals, collections, or scheduling, and expand as the system proves itself. That is the wedge: do the work, then become the operating layer.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "We like companies that choose the ugly, operationally real version of a market. Healthcare AI is full of demos. Plena is focused on the back office: faxes, portals, phone calls, insurance checks, and the exact handoffs that decide whether a clinic runs smoothly. Those are not glamorous workflows, but they are where labor, revenue, and patient access actually get stuck.",
+        "Eyad and Ahmed grew up around medicine and then built in serious engineering environments: Datadog, Shopify, AWS, and nuclear systems. That combination matters. Selling into specialty practices requires empathy for clinical operations, and building the product requires infrastructure that does not fall over. Plena is taking on both.",
       ],
     },
     ],

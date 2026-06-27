@@ -17,7 +17,7 @@ export type Article = {
 };
 
 // Updates: the firm's writing. Newest first.
-export const ARTICLES: Article[] = [
+const ARTICLE_ENTRIES: Article[] = [
   {
     slug: "the-future-is-built-together",
     title: "The future is built together.",
@@ -61,6 +61,10 @@ export const ARTICLES: Article[] = [
   },
   ...COMPANY_ARTICLES,
 ];
+
+export const ARTICLES: Article[] = [...ARTICLE_ENTRIES].sort((a, b) =>
+  b.dateISO.localeCompare(a.dateISO),
+);
 
 export function articleBySlug(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
