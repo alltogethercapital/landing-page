@@ -1109,13 +1109,18 @@ body {
 }
 
 @media (max-width: 899px) {
+  :root {
+    --mobile-gutter: 20px;
+    --mobile-header-height: 58px;
+  }
+
   .cog-page::before {
     background-image:
       linear-gradient(var(--cog-line), var(--cog-line)),
       linear-gradient(var(--cog-line), var(--cog-line));
     background-position:
-      20px 0,
-      calc(100% - 36px) 0;
+      var(--mobile-gutter) 0,
+      calc(100% - var(--mobile-gutter)) 0;
     background-size: 1px 100%;
   }
 
@@ -1128,61 +1133,73 @@ body {
     top: 0;
     right: 0;
     left: 0;
-    z-index: 40;
+    z-index: 50;
     display: flex;
-    height: 66px;
+    height: var(--mobile-header-height);
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    background: linear-gradient(to bottom, var(--cog-bg), rgba(247, 246, 245, 0.82));
+    border-bottom: 1px solid rgba(0, 0, 0, 0.045);
+    padding: 0 var(--mobile-gutter);
+    background: color-mix(in srgb, var(--cog-bg) 88%, transparent);
+    backdrop-filter: blur(12px);
     font-family: var(--font-atlas-typewriter), Arial, sans-serif;
   }
 
+  .cog-mobile-logo {
+    display: flex;
+    align-items: center;
+  }
+
   .cog-mobile-menu-button {
+    min-width: 64px;
+    min-height: 42px;
     border: 0;
     background: transparent;
     color: var(--cog-ink);
     font-family: var(--font-atlas-typewriter), Arial, sans-serif;
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1;
+    text-align: right;
   }
 
   .cog-mobile-menu {
     position: fixed;
     inset: 0;
-    z-index: 35;
+    z-index: 45;
     display: block;
     background: var(--cog-bg);
-    padding: 92px 20px 28px;
+    padding: calc(var(--mobile-header-height) + 28px) var(--mobile-gutter) 30px;
   }
 
   .cog-mobile-menu-links {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 3px;
   }
 
   .cog-mobile-menu-link {
+    min-height: 44px;
     font-family: var(--font-atlas-typewriter), Arial, sans-serif;
-    font-size: 36px;
-    line-height: 1.14;
+    font-size: 30px;
+    line-height: 1.16;
   }
 
   .ascii-hero {
-    margin: 78px 36px 0 20px;
-    height: 60vh;
-    height: 60svh;
-    min-height: min(380px, 100vh);
-    min-height: min(380px, 100svh);
+    margin: calc(var(--mobile-header-height) + 14px) var(--mobile-gutter) 0;
+    height: min(46vh, 420px);
+    height: min(46svh, 420px);
+    min-height: 300px;
   }
 
   .cog-section {
     display: block;
-    padding-right: 36px;
-    padding-left: 20px;
+    padding-right: var(--mobile-gutter);
+    padding-left: var(--mobile-gutter);
   }
 
   .cog-section + .cog-section {
-    margin-top: 74px;
+    margin-top: 58px;
   }
 
   .cog-section-index {
@@ -1200,7 +1217,11 @@ body {
 
   .cog-hero-section {
     min-height: auto;
-    padding-top: 92px;
+    padding-top: 56px;
+  }
+
+  .ascii-hero + .cog-hero-section {
+    padding-top: 56px;
   }
 
   .cog-page > .cog-section:first-of-type:not(.cog-hero-section) {
@@ -1209,8 +1230,8 @@ body {
   }
 
   .cog-title {
-    font-size: 24px;
-    line-height: 1.2;
+    font-size: 25px;
+    line-height: 1.16;
   }
 
   .cog-title-line {
@@ -1222,14 +1243,22 @@ body {
   .cog-company-blurb,
   .cog-legal-section p {
     font-size: 16px;
-    line-height: 1.45;
+    line-height: 1.48;
+  }
+
+  .cog-copy-stack {
+    margin-top: 18px;
+  }
+
+  .cog-copy-stack p + p {
+    margin-top: 18px;
   }
 
   .cog-logo-mosaic {
     width: 100%;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-rows: 62px;
-    padding: 14px;
+    grid-auto-rows: 56px;
+    padding: 12px;
   }
 
   .cog-logo-cell {
@@ -1237,42 +1266,106 @@ body {
   }
 
   .cog-logo-cell img {
-    padding: 12px 14px;
+    padding: 9px 12px;
   }
 
   .cog-strip {
-    margin-top: 74px;
-    padding-right: 36px;
-    padding-left: 20px;
+    margin-top: 50px;
+    padding-right: var(--mobile-gutter);
+    padding-left: var(--mobile-gutter);
   }
 
   .cog-article-grid,
-  .cog-person-grid,
+  .cog-person-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 8px;
+  }
+
   .cog-company-list {
     grid-template-columns: 1fr;
-    gap: 26px;
+    gap: 14px;
   }
 
   .cog-updates-track .cog-article-card {
-    flex-basis: 100%;
+    flex-basis: min(84%, 310px);
   }
 
   .cog-person-grid--short {
-    gap: 28px;
+    gap: 22px 8px;
   }
 
   .cog-company-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(112px, 34%) minmax(0, 1fr);
+    gap: 14px;
+    min-height: 132px;
+    padding-top: 10px;
+  }
+
+  .cog-company-media {
+    aspect-ratio: 1 / 1;
+  }
+
+  .cog-company-title {
+    font-size: 17px;
+    line-height: 1.18;
+  }
+
+  .cog-company-blurb {
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.36;
+    text-wrap: pretty;
+  }
+
+  .cog-article-title,
+  .cog-person-title {
+    margin-top: 9px;
+    font-size: 16px;
+    line-height: 1.18;
+  }
+
+  .cog-article-meta {
+    font-size: 10.5px;
+    line-height: 1.35;
+  }
+
+  .cog-person-media {
+    aspect-ratio: 1 / 1;
+  }
+
+  .cog-person-links {
+    gap: 6px 10px;
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  .cog-person-links a:first-child {
+    flex-basis: 100%;
+  }
+
+  .cog-arrow-icon,
+  .cog-carousel-button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .cog-legal-stack {
+    gap: 30px;
+    margin-top: 34px;
+  }
+
+  .cog-article-media[style] {
+    margin-top: 20px !important;
   }
 
   .cog-footer {
-    margin-top: 82px;
-    padding: 34px 36px 24px 20px;
+    margin-top: 64px;
+    padding: 28px var(--mobile-gutter) 22px;
   }
 
   .cog-footer-body {
     grid-template-columns: 1fr 1fr;
-    gap: 34px 22px;
+    gap: 24px 20px;
   }
 
   .cog-footer-body > div:first-child {
@@ -1281,7 +1374,31 @@ body {
 
   .cog-footer-bottom {
     flex-direction: column;
-    margin-top: 42px;
+    gap: 6px;
+    margin-top: 30px;
+  }
+
+  .cog-footer-mark {
+    margin-bottom: 30px;
+  }
+
+  .cog-footer-copy {
+    margin-bottom: 14px;
+  }
+
+  .cog-footer-ramp {
+    margin-top: 36px;
+  }
+
+  .cog-footer-ramp-strip {
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0.28em;
+  }
+
+  .cog-footer-ramp-note {
+    margin-top: 8px;
+    font-size: 10.5px;
   }
 }
 
