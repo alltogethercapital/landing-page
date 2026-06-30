@@ -166,6 +166,14 @@ export const PORTFOLIO: Company[] = [
     video: "u9m6tCZa2-k", // Starcloud Constellation (Starcloud)
   },
   {
+    name: "Reflect Orbital",
+    href: "https://www.reflectorbital.com/",
+    sectors: ["Space", "Energy"],
+    blurb: "Space-enabled infrastructure for sunlight after dark.",
+    cardLogo: "/logos/cards/reflect-orbital.png",
+    cardImage: "/work/cards/reflect-orbital.jpg",
+  },
+  {
     name: "Exowatt",
     href: "https://www.exowatt.com/",
     sectors: ["Energy"],

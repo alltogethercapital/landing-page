@@ -453,6 +453,38 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "reflect-orbital",
+    title: "Reflect Orbital.",
+    date: "June 30, 2026",
+    dateISO: "2026-06-30",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt: "Reflect Orbital is building space-enabled infrastructure to redirect sunlight from orbit to precise locations on Earth.",
+    image: "/updates/covers/reflect-orbital.jpg",
+    sections: [
+    {
+      body: [
+        "Reflect Orbital is building space-enabled infrastructure for sunlight after dark. The company's direction is deliberately simple to say and hard to execute: redirect sunlight from orbit to a precise location on Earth, turning orbital mechanics, reflectors, pointing, scheduling, and ground operations into a service.",
+        "That makes it an energy company wearing a space company shell. The power source already exists. The hard part is making it useful after sunset, at a place and time a customer can actually use. Reflect is going after the interface between the sun and the ground.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "Reflect organizes the product around Light and Energy. Both depend on the same core stack: satellites in orbit, deployable reflective surfaces, accurate pointing, customer scheduling, and the operating discipline to deliver illumination to a specific location without asking the customer to become a space operator.",
+        "The product is infrastructure, not a science project. A working system has to survive launch, deploy in orbit, hold attitude, track ground targets, coordinate with customers, and earn trust around safety and reliability. Each piece is hard on its own. The company is assembling them into one service.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "Ben Nowack and Tristan Semmelhack are building in the zone we care about: a simple customer promise that requires serious hardware, software, and operations underneath. The obvious version of this company is a rendering. The real version is optics, structures, controls, orbital operations, and commercial discipline.",
+        "We like teams that make physical infrastructure feel inevitable before it is obvious. If Reflect works, sunlight becomes a schedulable resource instead of a daily window. That is the kind of frontier company we want to back: weird at first glance, practical once the engineering catches up, and enormous if it compounds.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "exowatt",
     title: "Exowatt.",
     date: "April 24, 2026",

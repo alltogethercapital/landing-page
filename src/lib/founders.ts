@@ -144,6 +144,16 @@ export const FOUNDERS: Founder[] = [
     linkedin: "https://www.linkedin.com/in/johnstonphilip/",
   },
   {
+    name: "Ben Nowack",
+    companyName: "Reflect Orbital",
+    linkedin: "https://www.linkedin.com/in/ben-nowack/",
+  },
+  {
+    name: "Tristan Semmelhack",
+    companyName: "Reflect Orbital",
+    linkedin: "https://www.linkedin.com/in/tristan-semmelhack-6a1ba0149/",
+  },
+  {
     name: "Hannan Happi",
     companyName: "Exowatt",
     headshot: "/founders/cutouts/hannan-happi.png",
