@@ -303,23 +303,23 @@ body {
   scroll-snap-align: start;
 }
 
-/* The wordmark uses a monospaced display face with a restrained fund-mark lockup. */
+/* The wordmark uses a compact all-caps sans voice with a restrained fund-mark lockup. */
 .cog-wordmark {
   display: inline-flex;
   align-items: center;
-  gap: 0.46em;
+  gap: 0.5em;
   color: var(--cog-ink);
-  font-family: var(--font-brand-display), ui-monospace, "SFMono-Regular", "SF Mono", Consolas,
-    monospace;
-  font-size: 17px;
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-family: var(--font-brand-display), Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.055em;
   line-height: 1;
   white-space: nowrap;
 }
 
 .cog-wordmark-text {
   display: block;
+  text-transform: uppercase;
 }
 
 .cog-brand-dot {
@@ -331,8 +331,8 @@ body {
 }
 
 .cog-wordmark-mark {
-  --brand-dot-size: 0.9em;
-  transform: translateY(0.03em);
+  --brand-dot-size: 0.78em;
+  transform: translateY(0.02em);
 }
 
 /* 404: the alphabet with nothing to render. */
@@ -987,7 +987,7 @@ body {
 }
 
 .cog-footer-wordmark {
-  font-size: 17px;
+  font-size: 14px;
 }
 
 .cog-footer-body {

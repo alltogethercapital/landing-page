@@ -103,11 +103,16 @@ const atlasTypewriter = localFont({
 const brandDisplay = localFont({
   variable: "--font-brand-display",
   display: "swap",
-  fallback: ["ui-monospace", "SFMono-Regular", "SF Mono", "Consolas", "monospace"],
+  fallback: ["Arial", "Helvetica", "sans-serif"],
   src: [
     {
-      path: "./fonts/brand/MajorMonoDisplay-Regular.ttf",
+      path: "./fonts/sequoia/Unica77LLWeb-Regular.1492eabb.woff2",
       weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/sequoia/Unica77LLWeb-Bold.3928012f.woff2",
+      weight: "700",
       style: "normal",
     },
   ],
