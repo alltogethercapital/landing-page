@@ -30,7 +30,7 @@ export default function NotesPage() {
 
       <CognitionStrip className="cog-strip--inset">
         <div className="cog-article-grid">
-          {ARTICLES.map((article) => (
+          {ARTICLES.map((article, index) => (
             <Link
               key={article.slug}
               href={`/updates/${article.slug}`}
@@ -41,8 +41,9 @@ export default function NotesPage() {
                   src={article.image}
                   alt=""
                   fill
-                  sizes="(max-width: 768px) 82vw, 303px"
+                  sizes="(max-width: 899px) calc((100vw - 48px) / 2), 303px"
                   unoptimized
+                  loading={index < 4 ? "eager" : "lazy"}
                   className="cog-cover object-cover"
                 />
               </span>

@@ -53,7 +53,7 @@ export default async function NotePage({
             src={article.image}
             alt=""
             fill
-            sizes="(max-width: 899px) calc(100vw - 56px), 760px"
+            sizes="(max-width: 899px) calc(100vw - 40px), 760px"
             unoptimized
             loading="eager"
             className="cog-cover object-cover"

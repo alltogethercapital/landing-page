@@ -30,7 +30,7 @@ function whiteHeadshotSrc(headshot: string) {
     .replace(/\.png$/, ".webp");
 }
 
-function FounderCard({ founder }: { founder: Founder }) {
+function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boolean }) {
   const company = companyForFounder(founder);
   const profile = founder.linkedin ?? founder.x;
   const profileLabel = founder.linkedin ? "LinkedIn" : "X";
@@ -50,8 +50,9 @@ function FounderCard({ founder }: { founder: Founder }) {
               src={whiteHeadshotSrc(founder.headshot)}
               alt={founder.name}
               fill
-              sizes="(max-width: 768px) 82vw, 303px"
+              sizes="(max-width: 899px) calc((100vw - 48px) / 2), 303px"
               unoptimized
+              loading={eager ? "eager" : "lazy"}
               className="object-contain object-bottom"
             />
             <AsciiReveal src={whiteHeadshotSrc(founder.headshot)} />
@@ -120,8 +121,12 @@ export default function FoundersPage() {
 
       <CognitionStrip className="cog-strip--inset">
         <div className="cog-person-grid">
-          {FOUNDERS.map((founder) => (
-            <FounderCard key={founderAnchor(founder)} founder={founder} />
+          {FOUNDERS.map((founder, index) => (
+            <FounderCard
+              key={founderAnchor(founder)}
+              founder={founder}
+              eager={index < 4}
+            />
           ))}
         </div>
       </CognitionStrip>

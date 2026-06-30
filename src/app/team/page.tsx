@@ -51,7 +51,7 @@ const MEMBERS: Member[] = [
   },
 ];
 
-function MemberCard({ member }: { member: Member }) {
+function MemberCard({ member, eager = false }: { member: Member; eager?: boolean }) {
   const profile =
     member.linkedin ?? member.website?.href ?? (member.email ? `mailto:${member.email}` : undefined);
   const profileLabel = member.linkedin ? "LinkedIn" : member.website ? member.website.label : "email";
@@ -69,8 +69,9 @@ function MemberCard({ member }: { member: Member }) {
           src={member.img}
           alt={member.name}
           fill
-          sizes="(max-width: 768px) 82vw, 303px"
+          sizes="(max-width: 899px) calc((100vw - 48px) / 2), 303px"
           unoptimized
+          loading={eager ? "eager" : "lazy"}
           className="object-contain object-bottom"
         />
         <AsciiReveal src={member.img} />
@@ -137,7 +138,7 @@ export default function TeamPage() {
       <CognitionStrip className="cog-strip--inset">
         <div className="cog-person-grid cog-person-grid--short">
           {MEMBERS.map((member) => (
-            <MemberCard key={member.name} member={member} />
+            <MemberCard key={member.name} member={member} eager />
           ))}
         </div>
       </CognitionStrip>

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "Our companies, across AI, defense, energy, robotics, semiconductors, and space.",
 };
 
-function CompanyArticle({ company }: { company: Company }) {
+function CompanyArticle({ company, eager = false }: { company: Company; eager?: boolean }) {
   const image = company.cardImage ?? company.image;
   const logo = company.cardLogo ?? company.logo;
   const isPending = company.investmentStatus === "pending";
@@ -37,8 +37,9 @@ function CompanyArticle({ company }: { company: Company }) {
             src={image}
             alt=""
             fill
-            sizes="(max-width: 768px) 100vw, 420px"
+            sizes="(max-width: 899px) 34vw, 420px"
             unoptimized
+            loading={eager ? "eager" : "lazy"}
             className="object-cover"
           />
         ) : logo ? (
@@ -46,8 +47,9 @@ function CompanyArticle({ company }: { company: Company }) {
             src={logo}
             alt=""
             fill
-            sizes="(max-width: 768px) 100vw, 420px"
+            sizes="(max-width: 899px) 34vw, 420px"
             unoptimized
+            loading={eager ? "eager" : "lazy"}
             className="object-contain p-12"
           />
         ) : (
@@ -99,8 +101,8 @@ export default function CompaniesPage() {
 
       <CognitionStrip className="cog-strip--inset">
         <div className="cog-company-list">
-          {PORTFOLIO.map((company) => (
-            <CompanyArticle key={company.name} company={company} />
+          {PORTFOLIO.map((company, index) => (
+            <CompanyArticle key={company.name} company={company} eager={index < 4} />
           ))}
         </div>
       </CognitionStrip>

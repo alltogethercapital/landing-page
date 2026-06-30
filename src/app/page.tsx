@@ -76,7 +76,7 @@ export default function Home() {
                   src={logo}
                   alt={company.name}
                   fill
-                  sizes="(max-width: 768px) 28vw, 152px"
+                  sizes="(max-width: 899px) calc((100vw - 64px) / 3), 152px"
                   unoptimized
                   className="object-contain"
                 />

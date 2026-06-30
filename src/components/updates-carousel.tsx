@@ -92,7 +92,7 @@ export function UpdatesCarousel({
       </div>
 
       <div ref={trackRef} className="cog-updates-track" aria-label="Latest updates">
-        {articles.map((article) => (
+        {articles.map((article, index) => (
           <Link
             key={article.slug}
             href={`/updates/${article.slug}`}
@@ -103,8 +103,9 @@ export function UpdatesCarousel({
                 src={article.image}
                 alt=""
                 fill
-                sizes="(max-width: 768px) 82vw, 303px"
+                sizes="(max-width: 899px) 84vw, 303px"
                 unoptimized
+                loading={index === 0 ? "eager" : "lazy"}
                 className="cog-cover object-cover"
               />
             </span>
