@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
+import { Newsreader } from "next/font/google";
 import localFont from "next/font/local";
 import type { CSSProperties, ReactNode } from "react";
 import { SitePreloader } from "@/components/site-preloader";
 import "./globals.css";
+
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+  display: "swap",
+  fallback: ["Times New Roman", "Georgia", "serif"],
+});
 
 const martinaPlantijn = localFont({
   variable: "--font-martina-plantijn",
@@ -156,7 +164,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${martinaPlantijn.variable} ${atlasTypewriter.variable} ${brandDisplay.variable} h-full antialiased`}
+      className={`${newsreader.variable} ${martinaPlantijn.variable} ${atlasTypewriter.variable} ${brandDisplay.variable} h-full antialiased`}
       style={hiddenScrollbarStyle}
     >
       <body className="min-h-full" style={hiddenScrollbarStyle}>

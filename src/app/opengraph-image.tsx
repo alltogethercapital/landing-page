@@ -16,16 +16,16 @@ export const contentType = "image/png";
 export default async function OpenGraphImage() {
   const [
     atlasMedium,
-    martinaRegular,
-    martinaMedium,
+    newsreaderRegular,
+    newsreaderSemiBold,
     aformicCover,
     arrayLabsCover,
     mavenCover,
     volantisCover,
   ] = await Promise.all([
     readFile(join(process.cwd(), "public/fonts/AtlasTypewriter-Medium-Web.ttf")),
-    readFile(join(process.cwd(), "public/fonts/martina-plantijn-regular.ttf")),
-    readFile(join(process.cwd(), "public/fonts/martina-plantijn-medium.ttf")),
+    readFile(join(process.cwd(), "public/fonts/Newsreader-Regular.ttf")),
+    readFile(join(process.cwd(), "public/fonts/Newsreader-SemiBold.ttf")),
     readFile(join(process.cwd(), "public/work/cards/aformic.jpg")),
     readFile(join(process.cwd(), "public/work/cards/array-labs.jpg")),
     readFile(join(process.cwd(), "public/work/cards/maven.jpg")),
@@ -47,7 +47,7 @@ export default async function OpenGraphImage() {
           overflow: "hidden",
           backgroundColor: "#f7f6f5",
           color: "#000000",
-          fontFamily: "Martina Plantijn",
+          fontFamily: "Newsreader",
         }}
       >
         {verticalRules.map((x) => (
@@ -76,10 +76,10 @@ export default async function OpenGraphImage() {
         >
           <div
             style={{
-              fontFamily: "Martina Plantijn",
+              fontFamily: "Newsreader",
               fontSize: 23,
               fontWeight: 600,
-              letterSpacing: 0,
+              letterSpacing: -0.8,
               lineHeight: 1.1,
               color: "#000000",
             }}
@@ -130,11 +130,11 @@ export default async function OpenGraphImage() {
               marginTop: 26,
               display: "flex",
               flexDirection: "column",
-              fontFamily: "Atlas Typewriter",
-              fontSize: 44,
-              fontWeight: 500,
-              lineHeight: 1.08,
-              letterSpacing: 0,
+              fontFamily: "Newsreader",
+              fontSize: 55,
+              fontWeight: 400,
+              lineHeight: 0.96,
+              letterSpacing: -1.8,
               color: "#000000",
             }}
           >
@@ -206,8 +206,8 @@ export default async function OpenGraphImage() {
       ...size,
       fonts: [
         { name: "Atlas Typewriter", data: atlasMedium, style: "normal", weight: 500 },
-        { name: "Martina Plantijn", data: martinaRegular, style: "normal", weight: 400 },
-        { name: "Martina Plantijn", data: martinaMedium, style: "normal", weight: 600 },
+        { name: "Newsreader", data: newsreaderRegular, style: "normal", weight: 400 },
+        { name: "Newsreader", data: newsreaderSemiBold, style: "normal", weight: 600 },
       ],
     },
   );
