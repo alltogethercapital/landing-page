@@ -57,14 +57,6 @@ export const PORTFOLIO: Company[] = [
     cardImage: "/work/cards/core-automation.jpg",
   },
   {
-    name: "Nous Research",
-    href: "https://nousresearch.com/",
-    sectors: ["AI", "Open Source"],
-    blurb: "Open-source AI research lab building models, agents, and decentralized training infrastructure.",
-    cardLogo: "/logos/cards/nous-research.png",
-    cardImage: "/work/cards/nous-research.jpg",
-  },
-  {
     name: "Anduril",
     href: "https://www.anduril.com/",
     sectors: ["Defense", "AI"],

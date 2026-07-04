@@ -133,38 +133,6 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
-    slug: "nous-research",
-    title: "Nous Research.",
-    date: "May 26, 2026",
-    dateISO: "2026-05-26",
-    category: "Portfolio",
-    author: "All Together",
-    excerpt: "Nous Research builds open-source AI models and agent infrastructure, from Hermes 4 to Psyche Network and Hermes Agent.",
-    image: "/updates/covers/nous-research.jpg",
-    sections: [
-    {
-      body: [
-        "Nous Research is an American open-source AI lab. The company builds human-centric language models and the infrastructure around them: model releases, agent software, and distributed training systems that make frontier work more accessible to builders outside the largest closed labs.",
-        "The important thing about Nous is not just that the work is public. It is that the public work compounds. A model release becomes a developer base. The developer base finds the edge cases. The edge cases become the next training run, the next evaluation, the next agent loop, and the next product surface.",
-      ],
-    },
-    {
-      heading: "What they're building",
-      body: [
-        "Hermes 4 is the model family: frontier hybrid reasoning models that can switch between explicit reasoning mode and normal LLM response mode. The goal is practical usefulness, where a model can slow down for hard problems and stay fast for everyday work.",
-        "Hermes Agent is the action layer, an open-source agent with persistent memory, scheduling, delegation, browser automation, and multiple surfaces. Psyche Network is the training layer, a permissionless network for collaborative model training. Together they form a clear stack: models, agents, and the distributed training substrate behind them.",
-      ],
-    },
-    {
-      heading: "Why we backed the founders and team",
-      body: [
-        "Open-source AI needs teams with real research taste and the patience to ship public artifacts again and again. Nous has that shape. The company is not waiting for one closed product reveal; it keeps putting models, agents, tooling, and infrastructure into the world where serious users can test them.",
-        "We backed the founders and team because the frontier will not be built by closed labs alone. The builders who make advanced models usable, inspectable, and extensible will matter a lot. Nous is building for that world.",
-      ],
-    },
-    ],
-  },
-  {
     slug: "anduril",
     title: "Anduril.",
     date: "May 25, 2026",
@@ -279,7 +247,7 @@ export const COMPANY_ARTICLES: Article[] = [
     {
       heading: "What they're building",
       body: [
-        "The product centers on Agent 4, which Replit says \"writes production-ready code, evolves it, and stays out of your way.\" Agents run in parallel on separate tasks, and a visual design surface called Infinite Canvas lets users direct design changes without writing code. Around the agent sits the infrastructure. Authentication, database, hosting, and monitoring are built in, along with more than 100 integrations including OpenAI, Stripe, and Google Workspace.",
+        "The product centers on Agent 4, which Replit says \"writes production-ready code, evolves it, and stays out of your way.\" Agents run in parallel on separate tasks, and a visual design surface called Infinite Canvas lets users direct design changes without writing code. Around the agent sits the infrastructure. Authentication, database, hosting, and monitoring are built in, along with more than 100 integrations including OpenAI, Google Workspace, and other developer tools.",
         "The distinction from other coding tools matters. Most of them produce text and leave the user to assemble an environment around it. Replit gives the agent a computer where it can execute, test, deploy, and observe what it built. That step turns generated code into shipped software.",
       ],
     },
