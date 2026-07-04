@@ -304,24 +304,37 @@ body {
   scroll-snap-align: start;
 }
 
-/* Alljoined's logo is an SVG wordmark; Newsreader gives our live text the same serif register. */
+/* Framed all-caps identity, echoing the supplied Benchmark reference. */
 .cog-wordmark {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.5em;
+  justify-content: center;
+  border: 1px solid currentColor;
+  padding: 6px 10px 5px;
   color: var(--cog-ink);
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 0.96;
+  font-family: var(--font-brand-display), "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  line-height: 1;
   white-space: nowrap;
-  word-spacing: 0.08em;
+}
+
+.cog-wordmark::after {
+  position: absolute;
+  right: -1px;
+  bottom: -4px;
+  left: -1px;
+  height: 1px;
+  background: currentColor;
+  content: "";
 }
 
 .cog-wordmark-text {
   display: block;
-  text-transform: none;
+  margin-right: -0.34em;
+  text-transform: uppercase;
 }
 
 .cog-brand-dot {
@@ -994,7 +1007,7 @@ body {
 }
 
 .cog-footer-wordmark {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .cog-footer-body {

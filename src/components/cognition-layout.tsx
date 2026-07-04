@@ -16,12 +16,11 @@ export function BrandDot({ className }: { className?: string }) {
   );
 }
 
-// The wordmark uses the serif logo voice, paired with the brand dot.
+// Framed all-caps wordmark, tuned to echo the supplied Benchmark reference.
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-wordmark", className)}>
-      <span className="cog-wordmark-text">All Together</span>
-      <BrandDot className="cog-wordmark-mark" />
+      <span className="cog-wordmark-text">ALLTOGETHER</span>
     </span>
   );
 }

@@ -76,15 +76,32 @@ export default async function OpenGraphImage() {
         >
           <div
             style={{
-              fontFamily: "Newsreader",
-              fontSize: 23,
-              fontWeight: 600,
-              letterSpacing: -0.8,
-              lineHeight: 1.1,
+              position: "relative",
+              display: "flex",
+              width: 154,
+              height: 31,
+              alignItems: "center",
+              justifyContent: "center",
+              border: "1.5px solid #000000",
+              fontFamily: "Atlas Typewriter",
+              fontSize: 13,
+              fontWeight: 500,
+              letterSpacing: 4.2,
+              lineHeight: 1,
               color: "#000000",
             }}
           >
-            All Together
+            <span style={{ marginRight: -4.2 }}>ALLTOGETHER</span>
+            <div
+              style={{
+                position: "absolute",
+                right: -1.5,
+                bottom: -5,
+                left: -1.5,
+                height: 1.5,
+                backgroundColor: "#000000",
+              }}
+            />
           </div>
           <div
             style={{
