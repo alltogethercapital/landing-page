@@ -15,23 +15,23 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/hero-videos/:path*",
+        source: "/hero-videos/:path*\\.(mp4|webm|mov)",
         headers: immutableAssetHeaders,
       },
       {
-        source: "/founders/:path*",
+        source: "/founders/:path*\\.(png|jpg|jpeg|webp|avif)",
         headers: immutableAssetHeaders,
       },
       {
-        source: "/leadership/:path*",
+        source: "/leadership/:path*\\.(png|jpg|jpeg|webp|avif)",
         headers: immutableAssetHeaders,
       },
       {
-        source: "/logos/:path*",
+        source: "/logos/:path*\\.(png|jpg|jpeg|webp|avif|svg)",
         headers: immutableAssetHeaders,
       },
       {
-        source: "/work/:path*",
+        source: "/work/:path*\\.(png|jpg|jpeg|webp|avif)",
         headers: immutableAssetHeaders,
       },
       {
