@@ -485,6 +485,38 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "apollo-atomics",
+    title: "Apollo Atomics.",
+    date: "July 8, 2026",
+    dateISO: "2026-07-08",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt: "Apollo Atomics builds compact pressurized-water reactors designed to turn nuclear power from a megaproject into a factory-built machine.",
+    image: "/updates/covers/apollo-atomics.jpg",
+    sections: [
+    {
+      body: [
+        "Apollo Atomics is building compact pressurized-water reactors. The company starts with the nuclear technology that already powers most of the world's commercial reactors, then changes the part that makes the plant too large and too slow to deploy: the steam generator.",
+        "That is the point of the company. Apollo is not trying to make nuclear work by betting everything on exotic fuel, a new coolant, or a supply chain that has to be invented from scratch. It keeps light water, low-enriched uranium, and familiar qualified components, then makes the steam system compact enough for a plant that can be factory-built and shipped.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "The core product is a compact steam generator that replaces the massive, hand-built steam generator inside a conventional pressurized-water reactor with a component that is roughly twenty times smaller. Apollo says that change makes its reactor roughly forty times more compact, while preserving the physics and operating base regulators and utilities already know.",
+        "The roadmap is a family of truckable reactors: A-10 at 10 megawatts electric, A-50 at 50 megawatts electric, and A-300 at 300 megawatts electric. The first customers are the ones that cannot wait a decade for power: data centers, industrial offtakers, and utilities that need firm clean electricity or process heat on a deployment timeline measured in years, not generations.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "Nuclear is usually discussed as physics, but most of the failure mode is delivery. Plants arrive late because the work is bespoke, construction-heavy, and hard to repeat. Apollo's wedge is a manufacturing wedge: make the key component compact, testable, transportable, and contracted at a fixed price, then let the rest of the plant shrink around it.",
+        "Assil and Drew have the right kind of founder mix for that job. Assil brings reactor design and operating depth from MIT and commercial nuclear work. Drew brings manufacturing and operations experience from electric hardware companies and the White House. We backed the founders and team because compact nuclear only matters if it can actually ship, and Apollo is built around that constraint.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "aalo-atomics",
     title: "Aalo Atomics.",
     date: "April 22, 2026",

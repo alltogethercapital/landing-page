@@ -140,6 +140,16 @@ export const FOUNDERS: Founder[] = [
     linkedin: "https://www.linkedin.com/in/hannanhappi/",
   },
   {
+    name: "Assil Halimi",
+    companyName: "Apollo Atomics",
+    linkedin: "https://www.linkedin.com/in/aahalimi/",
+  },
+  {
+    name: "Drew Walker",
+    companyName: "Apollo Atomics",
+    linkedin: "https://www.linkedin.com/in/drewwalkerrr/",
+  },
+  {
     name: "Matt Loszak",
     companyName: "Aalo Atomics",
     headshot: "/founders/cutouts/matt-loszak.png",

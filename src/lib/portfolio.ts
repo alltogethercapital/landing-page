@@ -177,6 +177,14 @@ export const PORTFOLIO: Company[] = [
     video: "kQgvCo5XG18", // Exowatt Power Summit 25 Sizzle Reel (Exowatt)
   },
   {
+    name: "Apollo Atomics",
+    href: "https://www.apolloatomics.com/",
+    sectors: ["Energy", "Nuclear"],
+    blurb: "Compact pressurized-water reactors built for factory deployment.",
+    cardLogo: "/logos/cards/apollo-atomics.png",
+    cardImage: "/work/cards/apollo-atomics.jpg",
+  },
+  {
     name: "Aalo Atomics",
     href: "https://www.aalo.com/",
     sectors: ["Energy", "Nuclear"],
