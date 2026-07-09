@@ -193,6 +193,21 @@ export const FOUNDERS: Founder[] = [
     linkedin: "https://www.linkedin.com/in/beth-esponnette-66763023/",
   },
   {
+    name: "Aaron Pempel",
+    companyName: "MAV Unlimited",
+    linkedin: "https://www.linkedin.com/in/aaron-pempel",
+  },
+  {
+    name: "Robert Shepherd",
+    companyName: "MAV Unlimited",
+    linkedin: "https://www.linkedin.com/in/rob-shepherd-phd-mba-7743683",
+  },
+  {
+    name: "T.J. Wallin",
+    companyName: "MAV Unlimited",
+    linkedin: "https://www.linkedin.com/in/thomas-wallin-689a9228",
+  },
+  {
     name: "Caleb Chan",
     companyName: "Lance",
     headshot: "/founders/cutouts/caleb-chan.png",

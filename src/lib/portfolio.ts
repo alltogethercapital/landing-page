@@ -234,6 +234,14 @@ export const PORTFOLIO: Company[] = [
     video: "lLvn0o-jhuI", // 3D weaving | Vega by unspun (unspun)
   },
   {
+    name: "MAV Unlimited",
+    href: "https://mav-unlimited.com/",
+    sectors: ["Manufacturing", "Materials"],
+    blurb: "Volumetric 3D printing for engineering-grade parts in minutes.",
+    cardLogo: "/logos/cards/mav-unlimited.png",
+    cardImage: "/work/cards/mav-unlimited.jpg",
+  },
+  {
     name: "Lance",
     href: "https://www.lance.live/",
     sectors: ["Software"],
@@ -359,6 +367,8 @@ const SECTOR_GRADIENTS: Record<string, string> = {
   Software: "from-[#0b1016] via-[#121a24] to-[#1c2734]",
   Infrastructure: "from-[#08140f] via-[#0d2019] to-[#143329]",
   "Supply Chain": "from-[#0a1714] via-[#10261f] to-[#173c31]",
+  Manufacturing: "from-[#11140f] via-[#1b2119] to-[#273021]",
+  Materials: "from-[#12130f] via-[#1f211a] to-[#303126]",
   Bio: "from-[#091505] via-[#10240b] to-[#1a3a14]",
   Compute: "from-[#0c0a1e] via-[#141233] to-[#241f4a]",
   Education: "from-[#0c1724] via-[#102338] to-[#17324d]",

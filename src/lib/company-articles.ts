@@ -677,6 +677,38 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "mav-unlimited",
+    title: "MAV Unlimited.",
+    date: "July 9, 2026",
+    dateISO: "2026-07-09",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt: "MAV Unlimited builds volumetric 3D printers that cure whole engineering-grade parts in minutes instead of printing layer by layer for hours.",
+    image: "/updates/covers/mav-unlimited.jpg",
+    sections: [
+    {
+      body: [
+        "MAV Unlimited is building volumetric manufacturing. Conventional 3D printers build parts one layer at a time, which makes them slow and leaves layer interfaces where parts can fail or scatter light. MAV projects light images into resin and cures the whole part at once.",
+        "The result is a different manufacturing loop. The company says it can make optically clear, layerless parts in about three minutes, versus roughly five hours for a typical engineering-grade part on a commercial printer. That matters because speed is not just convenience. It changes whether additive manufacturing can become production rather than prototyping.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "MAV's machine uses volumetric printing to cure parts inside a resin volume rather than tracing toolpaths through layers. The company says the process can handle materials up to 100 times more viscous than traditional 3D printing resins, which expands the path toward structurally useful, engineering-grade parts. It can also print around inclusions, curing polymer around metals, electronics, sensors, antennas, magnets, and board assemblies that would otherwise need to be added in a later step.",
+        "The origin is serious research. Computed axial lithography proved that parts could be printed volumetrically, nearly all at once. MAV co-founder Professor Robert Shepherd patented a new approach that the company says prints 30 times the volume of the original invention at 10 times the speed. The Engine describes MAV as developing a large-format volumetric additive manufacturing system up to 50 times faster than the next fastest commercial 3D printer, aimed at high-performance, customized parts across aerospace, defense, medical, footwear, and other markets.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "Manufacturing is one of the places where the hard frontier becomes visible. The bottleneck is not a dashboard. It is tooling, cycle time, material properties, and whether a part can be made locally at a cost and quality that customers will accept. MAV is attacking those constraints at the process level.",
+        "Aaron, Robert, T.J., and the team combine business operating experience, materials science, mechanical engineering, and a manufacturing process that changes the geometry of the problem. If it works, parts move from hours to minutes, from layers to volumes, and from centralized runs to local, on-demand production. That is exactly the kind of physical leverage we like to back.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "lance",
     title: "Lance.",
     date: "April 11, 2026",
