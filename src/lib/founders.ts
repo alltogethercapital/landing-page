@@ -60,6 +60,21 @@ export const FOUNDERS: Founder[] = [
     x: "https://x.com/amasad",
   },
   {
+    name: "Dean Leitersdorf",
+    companyName: "Decart",
+    linkedin: "https://www.linkedin.com/in/dean-leitersdorf",
+  },
+  {
+    name: "Orian Leitersdorf",
+    companyName: "Decart",
+    linkedin: "https://il.linkedin.com/in/orian-leitersdorf-11956a240",
+  },
+  {
+    name: "Moshe Shalev",
+    companyName: "Decart",
+    linkedin: "https://il.linkedin.com/in/moshe-shalev",
+  },
+  {
     name: "Jerry Tworek",
     companyName: "Core Automation",
     x: "https://x.com/MillionInt",
@@ -89,6 +104,15 @@ export const FOUNDERS: Founder[] = [
     companyName: "Applied Intuition",
     headshot: "/founders/cutouts/qasar-younis.png",
     linkedin: "https://www.linkedin.com/in/qasar/",
+  },
+  {
+    name: "Peter Cetale",
+    companyName: "Sourcerer",
+    linkedin: "https://www.linkedin.com/in/petercetale",
+  },
+  {
+    name: "Robert Magee",
+    companyName: "Sourcerer",
   },
   {
     name: "Brett Adcock",

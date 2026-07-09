@@ -49,6 +49,14 @@ export const PORTFOLIO: Company[] = [
     video: "HK6y8DAPN_0", // Introducing Sora (OpenAI)
   },
   {
+    name: "Decart",
+    href: "https://decart.ai/",
+    sectors: ["AI", "Infrastructure"],
+    blurb: "Real-time world models and inference infrastructure for live AI.",
+    cardLogo: "/logos/cards/decart.png",
+    cardImage: "/work/cards/decart.jpg",
+  },
+  {
     name: "Core Automation",
     href: "https://www.coreauto.com/",
     sectors: ["AI", "Research"],
@@ -98,6 +106,14 @@ export const PORTFOLIO: Company[] = [
     image: "/work/replit.jpg",
     cardImage: "/work/cards/replit.jpg",
     video: "-2xHmkpmCBM", // Replit Agent 4 Launch Announcement (Replit)
+  },
+  {
+    name: "Sourcerer",
+    href: "https://sourcererai.com/",
+    sectors: ["AI", "Supply Chain"],
+    blurb: "AI-native distributor automating sourcing, freight, and trade finance.",
+    cardLogo: "/logos/cards/sourcerer.png",
+    cardImage: "/work/cards/sourcerer.jpg",
   },
   {
     name: "Applied Intuition",
@@ -341,6 +357,8 @@ const SECTOR_GRADIENTS: Record<string, string> = {
   Space: "from-[#0c0a1e] via-[#141233] to-[#241f4a]",
   Semiconductors: "from-[#08140f] via-[#0d2019] to-[#143329]",
   Software: "from-[#0b1016] via-[#121a24] to-[#1c2734]",
+  Infrastructure: "from-[#08140f] via-[#0d2019] to-[#143329]",
+  "Supply Chain": "from-[#0a1714] via-[#10261f] to-[#173c31]",
   Bio: "from-[#091505] via-[#10240b] to-[#1a3a14]",
   Compute: "from-[#0c0a1e] via-[#141233] to-[#241f4a]",
   Education: "from-[#0c1724] via-[#102338] to-[#17324d]",

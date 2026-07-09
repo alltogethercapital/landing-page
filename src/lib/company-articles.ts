@@ -101,6 +101,38 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "decart",
+    title: "Decart.",
+    date: "July 9, 2026",
+    dateISO: "2026-07-09",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt: "Decart builds the infrastructure and real-time models behind live AI, from faster inference to interactive world models.",
+    image: "/updates/covers/decart.jpg",
+    sections: [
+    {
+      body: [
+        "Decart builds infrastructure for live AI. The company works at the layer where models stop being offline artifacts and start responding in real time: inference, optimization, video generation, world models, and the compute stack underneath them.",
+        "That distinction matters. A model that is impressive in a batch pipeline can still feel too slow or too expensive to become a product. Decart is focused on the part of AI that has to run at the speed of interaction, where latency, cost, and hardware utilization decide what can exist.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "The company describes its Decart Optimization Stack as software that runs across NVIDIA GPUs, AWS Trainium, and Google TPUs. The goal is to make large models cheaper and faster to train and serve, without tying the entire system to one chip vendor or one cloud. That is infrastructure work in the practical sense: memory, kernels, scheduling, and the unglamorous machinery that turns compute into usable product.",
+        "On top of that infrastructure, Decart is building interactive models. Oasis is a real-time world model aimed at physical AI use cases including robotics, autonomous vehicles, manufacturing, and drones. Lucy is a live video editing model that transforms video as it runs. Both products point at the same premise: AI should be able to generate, simulate, and respond while the user or machine is still in the loop.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "Dean, Orian, Moshe, and the Decart team are building in the part of AI where demos collide with physics. A real-time model is not just a better checkpoint. It is a systems problem across chips, serving infrastructure, model design, and product constraints. That is the kind of assembly we like.",
+        "The frontier is moving from text boxes into worlds: robots, vehicles, games, factories, and live video. Those systems need models that are fast enough to steer reality instead of merely describing it afterward. Decart is building the stack for that moment.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "core-automation",
     title: "Core Automation.",
     date: "June 26, 2026",
@@ -256,6 +288,38 @@ export const COMPANY_ARTICLES: Article[] = [
       body: [
         "AI now writes a growing share of the world's code, but code is not a product until it runs somewhere (provisioned, secured, deployed, watched). Replit spent years on that layer, executing arbitrary programs from anyone on the internet safely and packaging compilers, containers, and databases into something a browser tab can hold. None of it demos well, but all of it compounds.",
         "When capable coding agents arrived, Replit was one of the few companies that could hand them a complete machine instead of a text box. Model, runtime, and infrastructure were joined into one loop and owned end to end. That is the assembly we look for. The number of people who can ship software is about to grow by orders of magnitude, and Replit built the factory floor before the workers showed up.",
+      ],
+    },
+    ],
+  },
+  {
+    slug: "sourcerer",
+    title: "Sourcerer.",
+    date: "July 9, 2026",
+    dateISO: "2026-07-09",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt: "Sourcerer is building an AI-native distributor that automates sourcing, supplier quotes, freight, and trade finance.",
+    image: "/updates/covers/sourcerer.jpg",
+    sections: [
+    {
+      body: [
+        "Sourcerer is building an AI-native distributor for global trade. The company starts with a basic customer problem: a business needs parts, products, or materials, and the process of finding suppliers, comparing quotes, arranging freight, and financing the order is still slow and fragmented.",
+        "Most software in procurement helps a human manage the work. Sourcerer is aiming at the work itself. Its agents identify suppliers, negotiate quotes, arrange logistics, and package the result into a single buying flow.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "The product combines AI agents with operational infrastructure. A customer can bring a product spec, invoice, or description, and Sourcerer handles the search across suppliers, price comparison, freight, and credit terms. The company is not trying to be another dashboard that watches the supply chain from the side. It wants to become the supplier of record, which means owning the outcome instead of only routing the task.",
+        "That is a harder shape, but a more useful one. Procurement is not one workflow. It is tariffs, logistics, supplier reliability, currency, trade credit, shipping schedules, and documentation, all changing while the buyer is trying to make a decision. Agents are useful here only if they are connected to the operating rails that can actually move goods and money.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "Peter and Robert are going after a market where the software surface has been underbuilt because the physical world is messy. The opportunity is not merely to make procurement prettier. It is to collapse the distance between needing something and getting a committed, financed, shippable quote.",
+        "We like companies that take responsibility for the real transaction. Sourcerer is doing that in global trade, where a better interface is not enough and the winner has to combine software, operations, and trust into one machine.",
       ],
     },
     ],
