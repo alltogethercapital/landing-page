@@ -845,17 +845,23 @@ body {
 }
 
 .cog-article-media img,
-.cog-person-media img,
-.cog-company-media img {
+.cog-person-media img {
   filter: grayscale(1);
   transition: filter 180ms ease, transform 180ms ease;
 }
 
+.cog-company-media img {
+  transition: transform 180ms ease;
+}
+
 .cog-article-card:hover img,
-.cog-person-card:hover img,
-.cog-company-row:hover img {
+.cog-person-card:hover img {
   filter: grayscale(0.35);
   transform: scale(1.015);
+}
+
+.cog-company-row:hover .cog-company-media img {
+  transform: scale(1.018);
 }
 
 .cog-article-title,
@@ -915,8 +921,22 @@ body {
 }
 
 .cog-company-title {
-  margin-top: 4px;
+  display: flex;
+  width: min(100%, 260px);
+  height: 34px;
+  align-items: center;
+  margin-top: 10px;
   font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+}
+
+.cog-company-wordmark {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 31px;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .cog-company-blurb {
@@ -1326,8 +1346,14 @@ body {
   }
 
   .cog-company-title {
+    width: min(100%, 224px);
+    height: 31px;
     font-size: 24px;
     line-height: 1;
+  }
+
+  .cog-company-wordmark {
+    max-height: 28px;
   }
 
   .cog-company-blurb {

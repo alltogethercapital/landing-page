@@ -67,7 +67,21 @@ function CompanyArticle({ company, eager = false }: { company: Company; eager?: 
               {isPending ? "Pending / " : ""}
               {company.sectors.join(" / ")}
             </p>
-            <h2 className="cog-company-title">{company.name}</h2>
+            <h2 className="cog-company-title">
+              {logo ? (
+                <Image
+                  src={logo}
+                  alt={company.name}
+                  width={280}
+                  height={80}
+                  unoptimized
+                  loading={eager ? "eager" : "lazy"}
+                  className="cog-company-wordmark"
+                />
+              ) : (
+                company.name
+              )}
+            </h2>
           </div>
           <a
             href={company.href}
