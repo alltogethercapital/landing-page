@@ -14,8 +14,8 @@ export function BrandDot({ className }: { className?: string }) {
       <defs>
         <radialGradient id="cog-brand-dot-fade" cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="var(--cog-accent)" stopOpacity="1" />
-          <stop offset="58%" stopColor="var(--cog-accent)" stopOpacity="1" />
-          <stop offset="78%" stopColor="var(--cog-accent)" stopOpacity="0.62" />
+          <stop offset="94%" stopColor="var(--cog-accent)" stopOpacity="1" />
+          <stop offset="98%" stopColor="var(--cog-accent)" stopOpacity="0.72" />
           <stop offset="100%" stopColor="var(--cog-accent)" stopOpacity="0" />
         </radialGradient>
       </defs>
