@@ -310,8 +310,9 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   border: 1px solid currentColor;
-  padding: 6px 10px 5px;
+  padding: 6px 8px 5px 10px;
   color: var(--cog-ink);
   font-family: var(--font-brand-display), "Helvetica Neue", Arial, sans-serif;
   font-size: 12px;
@@ -346,7 +347,7 @@ body {
 }
 
 .cog-wordmark-mark {
-  --brand-dot-size: 0.52em;
+  --brand-dot-size: 1.04em;
   transform: translateY(0.01em);
 }
 
