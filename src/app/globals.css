@@ -346,11 +346,6 @@ body {
   vertical-align: middle;
 }
 
-.cog-wordmark-mark {
-  --brand-dot-size: 1.04em;
-  transform: translateY(0.01em);
-}
-
 /* 404: the alphabet with nothing to render. */
 .cog-404-ramp {
   margin: 34px 0 0;

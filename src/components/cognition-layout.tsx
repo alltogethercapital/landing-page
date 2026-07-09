@@ -29,7 +29,6 @@ export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-wordmark", className)}>
       <span className="cog-wordmark-text">ALLTOGETHER</span>
-      <BrandDot className="cog-wordmark-mark" />
     </span>
   );
 }
