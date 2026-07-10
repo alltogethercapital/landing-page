@@ -372,6 +372,7 @@ body {
   .cog-page {
     max-width: var(--site-max);
     margin-inline: auto;
+    overflow-x: visible;
   }
 
   .cog-page::before {
@@ -899,16 +900,23 @@ body {
 }
 
 .cog-strip--portfolio {
+  position: relative;
+  isolation: isolate;
   margin-top: 88px;
   padding-top: 88px;
   padding-bottom: 92px;
+}
+
+.cog-strip--portfolio::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0 calc(50% - 50vw);
+  content: "";
   background-color: #e8dfd7;
   background-image:
     radial-gradient(rgba(0, 0, 0, 0.045) 0.75px, transparent 0.75px);
   background-position: 0 0;
   background-size: 7px 7px;
-  box-shadow: 0 0 0 100vmax #e8dfd7;
-  clip-path: inset(0 -100vmax);
 }
 
 .cog-company-card {
