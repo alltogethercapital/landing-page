@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "Our companies, across AI, defense, energy, robotics, semiconductors, and space.",
 };
 
-function CompanyArticle({ company, eager = false }: { company: Company; eager?: boolean }) {
+function CompanyArticle({ company }: { company: Company }) {
   const logo = company.cardLogo ?? company.logo;
 
   return (
@@ -41,7 +41,7 @@ function CompanyArticle({ company, eager = false }: { company: Company; eager?: 
                 width={320}
                 height={120}
                 unoptimized
-                loading={eager ? "eager" : "lazy"}
+                loading="eager"
                 className="cog-company-card-logo"
               />
             ) : (
@@ -73,8 +73,8 @@ export default function CompaniesPage() {
 
       <CognitionStrip className="cog-strip--inset cog-strip--portfolio">
         <div className="cog-company-list">
-          {PORTFOLIO.map((company, index) => (
-            <CompanyArticle key={company.name} company={company} eager={index < 4} />
+          {PORTFOLIO.map((company) => (
+            <CompanyArticle key={company.name} company={company} />
           ))}
         </div>
       </CognitionStrip>
