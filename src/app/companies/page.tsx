@@ -9,7 +9,6 @@ import {
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { ArrowUpRight } from "@/components/icons";
-import { glyphFor } from "@/lib/glyphs";
 import { PORTFOLIO, slugify, type Company } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
@@ -19,82 +18,41 @@ export const metadata: Metadata = {
 };
 
 function CompanyArticle({ company, eager = false }: { company: Company; eager?: boolean }) {
-  const image = company.cardImage ?? company.image;
   const logo = company.cardLogo ?? company.logo;
-  const isPending = company.investmentStatus === "pending";
 
   return (
-    <article id={slugify(company.name)} className="cog-company-row">
+    <article id={slugify(company.name)} className="cog-company-card">
       <a
         href={company.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="cog-company-media"
+        className="cog-company-card-link"
         aria-label={`Visit ${company.name}`}
       >
-        {image ? (
-          <Image
-            src={image}
-            alt=""
-            fill
-            sizes="(max-width: 899px) 34vw, 420px"
-            unoptimized
-            loading={eager ? "eager" : "lazy"}
-            className="object-cover"
-          />
-        ) : logo ? (
-          <Image
-            src={logo}
-            alt=""
-            fill
-            sizes="(max-width: 899px) 34vw, 420px"
-            unoptimized
-            loading={eager ? "eager" : "lazy"}
-            className="object-contain p-12"
-          />
-        ) : (
-          <span className="cog-article-fallback">{company.name}</span>
-        )}
+        <span className="cog-company-card-arrow" aria-hidden="true">
+          <ArrowUpRight className="size-4" />
+        </span>
+        <span className="cog-company-card-content">
+          <span className="cog-company-logo-wrap">
+            {logo ? (
+              <Image
+                src={logo}
+                alt={company.name}
+                width={320}
+                height={120}
+                unoptimized
+                loading={eager ? "eager" : "lazy"}
+                className="cog-company-card-logo"
+              />
+            ) : (
+              <span className="cog-company-card-title">{company.name}</span>
+            )}
+          </span>
+          {company.blurb && (
+            <span className="cog-company-card-description">{company.blurb}</span>
+          )}
+        </span>
       </a>
-
-      <div className="cog-company-copy">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="cog-article-meta">
-              <span className="cog-glyph-chip" aria-hidden="true">
-                {glyphFor(company.name)}
-              </span>
-              {isPending ? "Pending / " : ""}
-              {company.sectors.join(" / ")}
-            </p>
-            <h2 className="cog-company-title">
-              {logo ? (
-                <Image
-                  src={logo}
-                  alt={company.name}
-                  width={280}
-                  height={80}
-                  unoptimized
-                  loading={eager ? "eager" : "lazy"}
-                  className="cog-company-wordmark"
-                />
-              ) : (
-                company.name
-              )}
-            </h2>
-          </div>
-          <a
-            href={company.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Visit ${company.name}`}
-            className="cog-arrow-icon"
-          >
-            <ArrowUpRight className="size-4" />
-          </a>
-        </div>
-        {company.blurb && <p className="cog-company-blurb">{company.blurb}</p>}
-      </div>
     </article>
   );
 }
@@ -113,7 +71,7 @@ export default function CompaniesPage() {
         </ArrowLink>
       </CognitionSection>
 
-      <CognitionStrip className="cog-strip--inset">
+      <CognitionStrip className="cog-strip--inset cog-strip--portfolio">
         <div className="cog-company-list">
           {PORTFOLIO.map((company, index) => (
             <CompanyArticle key={company.name} company={company} eager={index < 4} />
