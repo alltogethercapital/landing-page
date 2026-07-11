@@ -101,6 +101,38 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "higgsfield",
+    title: "Higgsfield.",
+    date: "July 10, 2026",
+    dateISO: "2026-07-10",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt: "Higgsfield builds AI video and image creation workflows for creators, marketing teams, and enterprise content teams.",
+    image: "/updates/covers/higgsfield.jpg",
+    sections: [
+    {
+      body: [
+        "Higgsfield builds AI video and image creation software for people who need to make content fast. The product is not just a single model endpoint. It is a creative workspace with image tools, video tools, a Supercomputer layer for assembling workflows, plugins, and studio products for shorts, explainers, cinema, and marketing work.",
+        "The company is aimed at the practical middle of generative media. Creators, agencies, and marketing teams do not only need a model to produce one impressive clip. They need repeatable workflows, references, edits, formats, and speed, because the output has to become campaigns, posts, product videos, and branded creative on a real calendar.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "Higgsfield describes its product as infrastructure for AI video and image generation. The interface brings together image generation, video generation, cinematic controls, creator apps, and enterprise-oriented workflows. Its public product surface also includes integrations with major models and tools, including workflow paths for teams that want AI-generated content to move from idea to finished asset without leaving the system.",
+        "That matters because video generation is becoming less about a one-shot prompt and more about control. The user wants to keep a person, product, style, shot, or brand coherent across multiple outputs. Higgsfield is building around that workflow reality: fast exploration at the front, then enough structure to turn the output into something a company can actually publish.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "Alex, Yerzat, Mahi, and the Higgsfield team are building where consumer creation and enterprise marketing are starting to collapse into the same toolchain. The hard part is not only model quality. It is product assembly: creative UX, speed, model orchestration, distribution, and trust from professional teams that need the work to land.",
+        "We like companies that make frontier technology usable by the people who will pull it into daily operations. Higgsfield is doing that for AI media. The models will keep changing, but the workflow layer that lets people plan, generate, edit, and publish is where the leverage compounds.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "decart",
     title: "Decart.",
     date: "July 9, 2026",

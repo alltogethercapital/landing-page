@@ -49,6 +49,16 @@ export const PORTFOLIO: Company[] = [
     video: "HK6y8DAPN_0", // Introducing Sora (OpenAI)
   },
   {
+    name: "Higgsfield",
+    href: "https://higgsfield.ai/",
+    sectors: ["AI", "Video"],
+    blurb: "AI video and image creation workflows for creators and marketing teams.",
+    logo: "/logos/higgsfield.png",
+    cardLogo: "/logos/cards/higgsfield.png",
+    image: "/work/cards/higgsfield.jpg",
+    cardImage: "/work/cards/higgsfield.jpg",
+  },
+  {
     name: "Decart",
     href: "https://decart.ai/",
     sectors: ["AI", "Infrastructure"],
