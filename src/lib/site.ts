@@ -26,7 +26,7 @@ export const SOCIALS: SocialLink[] = [
 export const NAV = [
   { label: "Home", href: "/" },
   { label: "Our companies", href: "/companies" },
-  { label: "Our founders", href: "/founders" },
+  { label: "Our entrepreneurs", href: "/founders" },
   { label: "Our team", href: "/team" },
   { label: "Updates", href: "/updates" },
 ];
