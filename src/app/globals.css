@@ -921,8 +921,8 @@ body {
 
 .cog-company-card {
   position: relative;
-  height: 0;
-  padding-bottom: 116%;
+  min-height: 330px;
+  aspect-ratio: 1 / 1.24;
   transition:
     opacity 200ms ease-in-out,
     transform 200ms ease-in-out;
@@ -938,7 +938,7 @@ body {
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  padding: 32px 56px 32px 32px;
+  padding: 32px 32px 42px;
   background: #fff;
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 36px), calc(100% - 36px) 100%, 0 100%);
   color: var(--cog-ink);
@@ -998,6 +998,7 @@ body {
   display: flex;
   min-height: 92px;
   align-items: flex-start;
+  padding-right: 48px;
 }
 
 .cog-company-card-logo {
@@ -1022,8 +1023,8 @@ body {
   margin-top: auto;
   color: rgba(0, 0, 0, 0.62);
   font-family: var(--font-atlas-typewriter), Arial, sans-serif;
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 12.5px;
+  line-height: 1.42;
   text-wrap: pretty;
 }
 
@@ -1405,7 +1406,8 @@ body {
   }
 
   .cog-company-card {
-    padding-bottom: 75%;
+    min-height: 238px;
+    aspect-ratio: 1 / 0.74;
   }
 
   .cog-company-card-link {
@@ -1422,6 +1424,7 @@ body {
 
   .cog-company-logo-wrap {
     min-height: 66px;
+    padding-right: 40px;
   }
 
   .cog-company-card-logo {
@@ -1530,7 +1533,8 @@ body {
   }
 
   .cog-company-card {
-    padding-bottom: 40%;
+    min-height: 186px;
+    aspect-ratio: 2.25 / 1;
   }
 
   .cog-company-card-link {
@@ -1547,6 +1551,7 @@ body {
 
   .cog-company-logo-wrap {
     min-height: 38px;
+    padding-right: 34px;
   }
 
   .cog-company-card-logo {
