@@ -101,6 +101,38 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "supabase",
+    title: "Supabase.",
+    date: "July 28, 2026",
+    dateISO: "2026-07-28",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt: "Supabase is the open-source Postgres development platform for building apps with database, auth, APIs, realtime, storage, functions, and vectors.",
+    image: "/updates/covers/supabase.jpg",
+    sections: [
+    {
+      body: [
+        "Supabase builds the Postgres development platform: database, authentication, data APIs, Edge Functions, Realtime, Storage, and Vector in one open-source stack. The company's line is simple: build in a weekend, scale to millions. That is the right promise for a generation of builders who want production infrastructure without spending the first month stitching together the basics.",
+        "At the center is Postgres. Each Supabase project starts as an isolated Postgres database, then gets the surrounding primitives developers expect: auth, row-level security, realtime streams, auto-generated APIs, file storage, serverless functions, and a web interface. The product feels like a backend a small team can start with and a larger team can keep.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "The product is not just hosted Postgres. Supabase is turning the database into an application platform. A developer can start with tables and policies, wire in auth, expose APIs, store files, run functions, subscribe to changes, and add vector search without leaving the same operating surface.",
+        "That matters more as AI pushes more people to ship software. Agents and builders can generate interfaces quickly, but the backend still has to be trustworthy: data model, permissions, logs, migrations, and production controls. Supabase gives that work a real substrate instead of a throwaway prototype stack.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "Paul, Ant, and the Supabase team built with the right wedge: make Postgres feel immediate without hiding the database. They also chose open source early, which turns trust into distribution. Developers can inspect it, self-host it, contribute to it, and still choose the managed product when they want speed.",
+        "We like infrastructure that starts as a developer favorite and hardens into company-critical software. Supabase has that shape. It is simple enough for the first weekend and serious enough for the million-user version. That combination is rare, and it is why we backed the founders and team.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "higgsfield",
     title: "Higgsfield.",
     date: "July 10, 2026",

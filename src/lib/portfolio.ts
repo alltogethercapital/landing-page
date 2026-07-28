@@ -49,6 +49,16 @@ export const PORTFOLIO: Company[] = [
     video: "HK6y8DAPN_0", // Introducing Sora (OpenAI)
   },
   {
+    name: "Supabase",
+    href: "https://supabase.com/",
+    sectors: ["Software", "Infrastructure"],
+    blurb: "Open-source Postgres, auth, APIs, realtime, storage, functions, and vectors for builders.",
+    logo: "/logos/supabase.png",
+    cardLogo: "/logos/cards/supabase.png",
+    image: "/work/cards/supabase.jpg",
+    cardImage: "/work/cards/supabase.jpg",
+  },
+  {
     name: "Higgsfield",
     href: "https://higgsfield.ai/",
     sectors: ["AI", "Video"],
