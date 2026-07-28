@@ -133,6 +133,38 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "valstad",
+    title: "Valstad.",
+    date: "July 28, 2026",
+    dateISO: "2026-07-28",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt: "Valstad builds AI-enabled robotic fabrication systems for distributed ship production and repair.",
+    image: "/updates/covers/valstad.jpg",
+    sections: [
+    {
+      body: [
+        "Valstad builds AI-enabled manufacturing systems for distributed ship production and repair. The product starts with structural panel kits and autonomous robotic fabrication cells, but the deeper bet is larger: turn shipbuilding into a software-defined production system that can move faster than the capacity-constrained yards America relies on today.",
+        "The company's mission is to supercharge America's maritime industrial base. That is not a slogan problem. It is steel, labor, welding, planning, supply chains, and throughput. Valstad is attacking the factory itself, building systems that let more production happen across existing industrial partners instead of waiting for a single new shipyard to solve the bottleneck.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "Valstad's modular robotic cells perform common shipbuilding operations autonomously: primary stiffening, micropanel and T-beam fabrication, material handling, welding, and inspection. The system is designed to fit in a smaller footprint than traditional shipyard automation, which matters if the goal is distributed production instead of one-off megaprojects.",
+        "The software layer is the other half. Feed in a 3D model, and Valstad's planning engine generates a build sequence: every cut, weld, robotic motion, and inspection point. When reality moves, it can replan. Around that, Valstad is developing phased array laser welding for thick structural steel, with the aim of making long welds faster, cleaner, and less dependent on scarce manual labor.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "Dustin and the Valstad team are working on the kind of unglamorous bottleneck that decides national capacity. Shipbuilding is not short on demand. It is short on production systems that can scale when labor is tight, yards are full, and the customer needs finished hardware instead of a roadmap.",
+        "We like companies that assemble software, robotics, manufacturing process, and industrial urgency into one operating system. Valstad is doing that for ships. If the machine that builds the ships works, it does not just make one yard better. It gives the maritime industrial base a repeatable way to add capacity.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "higgsfield",
     title: "Higgsfield.",
     date: "July 10, 2026",

@@ -59,6 +59,16 @@ export const PORTFOLIO: Company[] = [
     cardImage: "/work/cards/supabase.jpg",
   },
   {
+    name: "Valstad",
+    href: "https://valstad.com/",
+    sectors: ["Defense", "Robotics"],
+    blurb: "AI-enabled robotic fabrication systems for distributed ship production and repair.",
+    logo: "/logos/valstad.png",
+    cardLogo: "/logos/cards/valstad.png",
+    image: "/work/cards/valstad.jpg",
+    cardImage: "/work/cards/valstad.jpg",
+  },
+  {
     name: "Higgsfield",
     href: "https://higgsfield.ai/",
     sectors: ["AI", "Video"],
