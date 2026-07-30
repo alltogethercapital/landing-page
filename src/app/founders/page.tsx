@@ -19,9 +19,9 @@ import {
 } from "@/lib/founders";
 
 export const metadata: Metadata = {
-  title: "Our founders — All Together",
+  title: "Our entrepreneurs — All Together",
   description:
-    "The founders we back, building the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
+    "The entrepreneurs we back, building the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
 };
 
 function whiteHeadshotSrc(headshot: string) {
@@ -109,10 +109,10 @@ export default function FoundersPage() {
     <CognitionPage>
       <SiteNav />
 
-      <CognitionSection label="Our founders" title="Our founders.">
+      <CognitionSection label="Our entrepreneurs" title="Our entrepreneurs.">
         <p className="cog-body-copy">
-          The founders we back, building the hard frontier across AI, defense,
-          energy, robotics, semiconductors, and space.
+          The entrepreneurs we back, building the hard frontier across AI,
+          defense, energy, robotics, semiconductors, and space.
         </p>
         <ArrowLink href="/companies" className="mt-8">
           See companies

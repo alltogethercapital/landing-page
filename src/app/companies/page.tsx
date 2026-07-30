@@ -67,7 +67,7 @@ export default function CompaniesPage() {
           Across AI, defense, energy, robotics, semiconductors, and space.
         </p>
         <ArrowLink href="/founders" className="mt-8">
-          Meet the founders
+          Meet the entrepreneurs
         </ArrowLink>
       </CognitionSection>
 
