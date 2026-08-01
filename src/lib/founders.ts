@@ -78,6 +78,19 @@ export const FOUNDERS: Founder[] = [
     x: "https://x.com/DustinWalper",
   },
   {
+    name: "Alex Pachikov",
+    companyName: "Sunflower Labs",
+  },
+  {
+    name: "Chris Eheim",
+    companyName: "Sunflower Labs",
+    linkedin: "https://ch.linkedin.com/in/ceheim",
+  },
+  {
+    name: "Nick de Palézieux",
+    companyName: "Sunflower Labs",
+  },
+  {
     name: "Alex Mashrabov",
     companyName: "Higgsfield",
     linkedin: "https://www.linkedin.com/in/amashrabov",

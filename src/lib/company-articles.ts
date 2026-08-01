@@ -165,6 +165,39 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "sunflower-labs",
+    title: "Sunflower Labs.",
+    date: "July 31, 2026",
+    dateISO: "2026-07-31",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt:
+      "Sunflower Labs builds autonomous drone security systems that combine perimeter sensors, docking stations, and autonomous Bee drones.",
+    image: "/updates/covers/sunflower-labs.jpg",
+    sections: [
+    {
+      body: [
+        "Sunflower Labs builds autonomous security systems for large properties. The company turns a perimeter into a sensor network, then gives that network an aerial responder: Sentry sensor columns, Hive docking stations, and Bee drones that launch when the system needs to understand what is happening.",
+        "The product is aimed at homes, estates, and larger sites where fixed cameras and alarms leave too much ambiguity. A camera can record an event. A guard can investigate one place at a time. Sunflower is building the machine that notices, verifies, and shows the owner what is happening from the air.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "The system starts with Sentries placed around a property. They use motion, vibration, acoustic sensing, lights, and AI to detect activity and decide whether it is worth escalating. When an event needs investigation, a Bee drone deploys from a Hive, flies autonomously to the area, streams video back to the owner or security team, then returns to recharge. One Sentry covers roughly 1.5 acres, and one Bee covers up to 20 acres, so the system can scale across larger properties by adding more hardware.",
+        "Sunflower reached an important deployment milestone in 2025, when it announced nationwide FAA approval for a fully automated residential drone security system. The company also closed a $16 million Series B led by Sequoia Capital. General Catalyst backed the company from the seed round, and we were glad to invest in a company that has drawn the kind of patient, serious capital hard robotics requires.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "Alex, Chris, Nick, and the Sunflower team are working on a category that looks simple only from far away. A security drone has to be quiet enough to live near people, safe enough to launch without a pilot, useful enough to beat a fixed camera, and reliable enough that owners trust it when they are not home. That means robotics, perception, autonomy, industrial design, regulation, and customer trust all have to be assembled into one product.",
+        "We like companies where the demo is only the surface of the work. Sunflower has had to build through FAA approvals, hardware reliability, on-property deployment, sensor fusion, and the user experience of handing someone an autonomous security team. If the system works, the property gets a new nervous system: something that watches, moves, verifies, and returns to base without waiting for a person to notice first.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "higgsfield",
     title: "Higgsfield.",
     date: "July 10, 2026",

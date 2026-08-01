@@ -69,6 +69,16 @@ export const PORTFOLIO: Company[] = [
     cardImage: "/work/cards/valstad.jpg",
   },
   {
+    name: "Sunflower Labs",
+    href: "https://sunflower-labs.com/",
+    sectors: ["Robotics", "Security"],
+    blurb: "Autonomous drone security systems for homes, estates, and large properties.",
+    logo: "/logos/sunflower-labs.png",
+    cardLogo: "/logos/cards/sunflower-labs.png",
+    image: "/work/cards/sunflower-labs.jpg",
+    cardImage: "/work/cards/sunflower-labs.jpg",
+  },
+  {
     name: "Higgsfield",
     href: "https://higgsfield.ai/",
     sectors: ["AI", "Video"],
@@ -405,6 +415,7 @@ const SECTOR_GRADIENTS: Record<string, string> = {
   Healthcare: "from-[#06241f] via-[#0a352f] to-[#114a40]",
   Insurance: "from-[#0a1b2b] via-[#0e2a3f] to-[#163c54]",
   Research: "from-[#161616] via-[#202020] to-[#2a2a2a]",
+  Security: "from-[#071815] via-[#0c2923] to-[#123d34]",
 };
 
 export function gradientFor(company: Company): string {
