@@ -1,15 +1,25 @@
 import type { Metadata } from "next";
-import { Newsreader } from "next/font/google";
 import localFont from "next/font/local";
 import type { CSSProperties, ReactNode } from "react";
 import { SitePreloader } from "@/components/site-preloader";
 import "./globals.css";
 
-const newsreader = Newsreader({
+const newsreader = localFont({
   variable: "--font-newsreader",
-  subsets: ["latin"],
   display: "swap",
   fallback: ["Times New Roman", "Georgia", "serif"],
+  src: [
+    {
+      path: "../../public/fonts/Newsreader-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Newsreader-SemiBold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
 });
 
 const martinaPlantijn = localFont({
