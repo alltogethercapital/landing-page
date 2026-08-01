@@ -91,6 +91,11 @@ export const FOUNDERS: Founder[] = [
     companyName: "Sunflower Labs",
   },
   {
+    name: "Travis Kalanick",
+    companyName: "Atoms",
+    x: "https://x.com/travisk",
+  },
+  {
     name: "Alex Mashrabov",
     companyName: "Higgsfield",
     linkedin: "https://www.linkedin.com/in/amashrabov",

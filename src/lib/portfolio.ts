@@ -79,6 +79,16 @@ export const PORTFOLIO: Company[] = [
     cardImage: "/work/cards/sunflower-labs.jpg",
   },
   {
+    name: "Atoms",
+    href: "https://atoms.co/",
+    sectors: ["Robotics", "AI"],
+    blurb: "Physical automation for food, mining, and transport.",
+    logo: "/logos/atoms.png",
+    cardLogo: "/logos/cards/atoms.png",
+    image: "/work/cards/atoms.jpg",
+    cardImage: "/work/cards/atoms.jpg",
+  },
+  {
     name: "Higgsfield",
     href: "https://higgsfield.ai/",
     sectors: ["AI", "Video"],

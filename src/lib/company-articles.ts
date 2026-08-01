@@ -198,6 +198,39 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "atoms",
+    title: "Atoms.",
+    date: "August 1, 2026",
+    dateISO: "2026-08-01",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt:
+      "Atoms builds physical automation across food, mining, and transport, turning industrial work into specialized, gainfully employed robots.",
+    image: "/updates/covers/atoms.jpg",
+    sections: [
+    {
+      body: [
+        "Atoms builds physical automation for food, mining, and transport. Travis Kalanick describes the company as the continuation of a long arc: digitizing the physical world, first through Uber, then through CloudKitchens, and now through a broader industrial automation platform.",
+        "The company is organized around a simple premise. The physical world can be understood, predicted, and controlled with software, sensors, robotics, AI, manufacturing, real estate, and operations tied together. Atoms calls the result atoms-based computers: manufacturing as CPU, real estate as storage, and transport as the network.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "Atoms has three public operating areas. Atoms Food builds infrastructure for better food. Atoms Mining is aimed at more productive mines, with Pronto's autonomous haulage system becoming a core technology engine after its acquisition by Atoms. Atoms Transport is described as the wheelbase for robots. The connective tissue is not humanoid theater. It is specialized machines with productive jobs in high-throughput industrial settings.",
+        "The company came out of stealth in 2026 and announced a $1.7 billion equity investment led by a16z, with Ben Horowitz joining the board. Atoms also lists Bain Capital, Uber, Fifth Wall, Chemistry, A*, K5 Global, Abstract, SV Angel, and Alpha Square Group among its equity partners. That capital matches the ambition. Building physical automation across major industrial sectors takes time, balance sheet, and an organization willing to own messy real-world systems.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "Travis has spent his career building networks that move the physical world. Atoms is the next version of that work, and it is pointed at the right bottleneck: not a single robot demo, but the operating systems underneath food production, mining, logistics, and transport.",
+        "We like companies that refuse to stop at software interfaces when the constraint is physical. Atoms is taking on labor, land, fleets, kitchens, mines, robotics, and operations in one system. That is hard in exactly the way we care about. If physical AI becomes real at industrial scale, it will look less like a stage demo and more like specialized machines doing valuable work every day. Atoms is building for that version of the future.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "higgsfield",
     title: "Higgsfield.",
     date: "July 10, 2026",
