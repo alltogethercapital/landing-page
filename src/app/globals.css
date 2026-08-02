@@ -895,8 +895,9 @@ body {
 
 .cog-company-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
-  gap: 44px 38px;
+  max-width: 1240px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 38px 32px;
 }
 
 .cog-strip--portfolio {
@@ -921,8 +922,8 @@ body {
 
 .cog-company-card {
   position: relative;
-  min-height: 330px;
-  aspect-ratio: 1 / 1.24;
+  min-height: 300px;
+  aspect-ratio: 1 / 1.08;
   transition:
     opacity 200ms ease-in-out,
     transform 200ms ease-in-out;
@@ -997,7 +998,7 @@ body {
 
 .cog-company-logo-wrap {
   display: flex;
-  min-height: 92px;
+  min-height: 78px;
   align-items: flex-start;
   padding-right: 48px;
 }
@@ -1007,7 +1008,7 @@ body {
   width: auto;
   max-width: 92%;
   height: auto;
-  max-height: 88px;
+  max-height: 72px;
   object-fit: contain;
   object-position: left top;
 }
@@ -1575,7 +1576,7 @@ body {
   }
 
   .cog-company-card {
-    min-height: 212px;
+    min-height: 190px;
     aspect-ratio: 2 / 1;
   }
 
