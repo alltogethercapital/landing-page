@@ -11,9 +11,12 @@ import { PORTFOLIO } from "@/lib/portfolio";
 export const GLYPH_RAMP =
   "$@B%8&WM#*oahkbdpqwmZO0QLCJUYZXcvunxrj/ft\\|()1{}[]?_-+~<>i!lI;:\",^'. ";
 
-// Characters legible enough to stand alone as a company's mark (the faint tail
-// of the ramp — quotes, dots, space — stays unassigned).
-const ASSIGNABLE = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYZXcvunxrj";
+// Characters legible enough to stand alone as a company's mark. Keep this
+// derived from the full ramp so adding companies cannot silently exhaust the
+// fixed glyph pool and trap the build in the probing loop.
+const ASSIGNABLE = Array.from(
+  new Set([...GLYPH_RAMP].filter((glyph) => glyph !== " ")),
+);
 
 function hashName(name: string): number {
   let h = 0;
@@ -29,9 +32,17 @@ export const COMPANY_GLYPHS: ReadonlyMap<string, string> = (() => {
   const map = new Map<string, string>();
   for (const company of PORTFOLIO) {
     let i = hashName(company.name) % ASSIGNABLE.length;
-    while (taken.has(ASSIGNABLE[i])) i = (i + 1) % ASSIGNABLE.length;
-    taken.add(ASSIGNABLE[i]);
-    map.set(company.name, ASSIGNABLE[i]);
+    let probes = 0;
+    while (taken.has(ASSIGNABLE[i]) && probes < ASSIGNABLE.length) {
+      i = (i + 1) % ASSIGNABLE.length;
+      probes += 1;
+    }
+    const glyph = ASSIGNABLE[i];
+    if (!glyph || taken.has(glyph)) {
+      throw new Error("Not enough unique glyphs for the portfolio index.");
+    }
+    taken.add(glyph);
+    map.set(company.name, glyph);
   }
   return map;
 })();
