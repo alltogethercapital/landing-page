@@ -1364,8 +1364,17 @@ body {
     line-height: 0.98;
   }
 
+  .cog-hero-section .cog-title {
+    font-size: clamp(23px, 7.1vw, 36px);
+    line-height: 1.05;
+  }
+
   .cog-title-line {
     max-width: 100%;
+  }
+
+  .cog-hero-section .cog-title-line {
+    white-space: nowrap;
   }
 
   .cog-body-copy,
@@ -1573,6 +1582,11 @@ body {
   .cog-title {
     font-size: 34px;
     line-height: 0.98;
+  }
+
+  .cog-hero-section .cog-title {
+    font-size: clamp(23px, 7.1vw, 31px);
+    line-height: 1.05;
   }
 
   .cog-company-card {
