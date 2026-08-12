@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import type { CSSProperties, ReactNode } from "react";
+import { SiteSearch } from "@/components/site-search";
 import { SitePreloader } from "@/components/site-preloader";
+import { buildSearchIndex } from "@/lib/search";
 import "./globals.css";
 
 const newsreader = localFont({
@@ -179,6 +181,7 @@ export default function RootLayout({
     >
       <body className="min-h-full" style={hiddenScrollbarStyle}>
         <SitePreloader />
+        <SiteSearch index={buildSearchIndex()} />
         {children}
       </body>
     </html>
