@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { FOUNDERS } from "@/lib/founders";
 import { PORTFOLIO } from "@/lib/portfolio";
@@ -17,7 +17,9 @@ const STATIC_IMAGES: string[] = [];
 const INTERNAL_ROUTES = Array.from(
   new Set([
     "/",
-    ...NAV.map((item) => item.href).filter((href) => href.startsWith("/")),
+    ...NAV.map((item) => item.href).filter(
+      (href) => href.startsWith("/") && href !== "/lp-login",
+    ),
     ...LEGAL.map((item) => item.href),
   ]),
 );
@@ -137,8 +139,10 @@ async function warmImages(cancelled: () => boolean, shouldPause: () => boolean) 
 
 export function SitePreloader() {
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
+    if (pathname.startsWith("/lp")) return;
     if (window.__allTogetherPreloadStarted) return;
     window.__allTogetherPreloadStarted = true;
 
@@ -181,7 +185,7 @@ export function SitePreloader() {
         window.removeEventListener(eventName, markInteraction),
       );
     };
-  }, [router]);
+  }, [pathname, router]);
 
   return null;
 }

@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# All Together
+
+The All Together public site and private LP staging portal.
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies and run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## LP staging portal
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The navbar exposes `LP Login`, which leads to a password-gated staging portal. Configure it with server-only environment variables:
 
-## Learn More
+```bash
+LP_PORTAL_PASSWORD="a-long-staging-password"
+LP_SESSION_SECRET="a-random-secret-at-least-32-bytes-long"
+```
 
-To learn more about Next.js, take a look at the following resources:
+The portal uses signed, eight-hour, HTTP-only sessions; no password or Drive identifier is sent to the browser. Staging data comes from an approved snapshot of the private Drive Schedule of Investments. The snapshot intentionally excludes current fair value, NAV, IRR, and LP capital accounts until an administrator-backed valuation process supplies those figures.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run the checks with:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm lint
+pnpm exec tsc --noEmit
+pnpm build
+PLAYWRIGHT_BASE_URL=http://localhost:3000 pnpm exec playwright test --config=playwright.lp.config.ts
+```
 
-## Deploy on Vercel
+See [docs/LP_PORTAL.md](docs/LP_PORTAL.md) for the security boundary and Drive publication workflow.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Production
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The shared staging password is not production LP authentication. Production requires individual identities, MFA/passkeys, vehicle-level entitlements, an external rate-limit store, audit logs, and reconciliation to administrator statements before financial reporting is enabled.

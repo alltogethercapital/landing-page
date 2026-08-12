@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -64,6 +64,7 @@ type ResultGroup = {
 
 export function SiteSearch({ index }: { index: SearchResult[] }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -101,6 +102,7 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
   );
   const totalMatches = groups.reduce((total, group) => total + group.total, 0);
   const activeResult = visibleResults[activeIndex];
+  const isPortalRoute = pathname.startsWith("/lp");
 
   const closeSearch = useCallback(() => {
     setOpen(false);
@@ -194,7 +196,7 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
 
   return (
     <>
-      <button
+      {!isPortalRoute && <button
         ref={triggerRef}
         type="button"
         className="cog-search-trigger"
@@ -204,7 +206,7 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
         onClick={openSearch}
       >
         <SearchGlyph />
-      </button>
+      </button>}
 
       {open && (
         <div
