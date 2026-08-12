@@ -183,10 +183,10 @@ function compileProgram(gl: WebGLRenderingContext): WebGLProgram | null {
 }
 
 function cellSizeCss(viewportW: number): number {
-  if (viewportW <= 480) return 6.5;
-  if (viewportW <= 768) return 7;
-  if (viewportW <= 1024) return 7.5;
-  return 8.5;
+  if (viewportW <= 480) return 4.5;
+  if (viewportW <= 768) return 5;
+  if (viewportW <= 1024) return 5.5;
+  return 6;
 }
 
 export function AsciiHero() {
@@ -320,9 +320,9 @@ export function AsciiHero() {
       }
       gl.viewport(0, 0, w, h);
 
-      const cellW = Math.max(4, cellSizeCss(window.innerWidth) * dpr * scale);
+      const cellW = Math.max(3, cellSizeCss(window.innerWidth) * dpr * scale);
       const cellH = cellW / 0.6;
-      const cols = Math.min(240, Math.max(24, Math.floor(w / cellW)));
+      const cols = Math.min(360, Math.max(24, Math.floor(w / cellW)));
       const rows = Math.max(8, Math.floor(h / cellH));
       state.cellDeviceW = w / cols;
 
