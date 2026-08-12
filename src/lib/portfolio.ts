@@ -49,6 +49,15 @@ export const PORTFOLIO: Company[] = [
     video: "HK6y8DAPN_0", // Introducing Sora (OpenAI)
   },
   {
+    name: "Blue Origin",
+    href: "https://www.blueorigin.com/",
+    sectors: ["Space", "Aerospace"],
+    blurb: "Reusable rockets, engines, lunar systems, and in-space infrastructure.",
+    cardLogo: "/logos/cards/blue-origin.png",
+    image: "/work/cards/blue-origin.jpg",
+    cardImage: "/work/cards/blue-origin.jpg",
+  },
+  {
     name: "Weave Robotics",
     href: "https://www.weaverobotics.com/",
     sectors: ["Robotics", "AI"],

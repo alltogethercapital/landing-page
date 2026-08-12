@@ -101,6 +101,39 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "blue-origin",
+    title: "Blue Origin.",
+    date: "August 12, 2026",
+    dateISO: "2026-08-12",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt:
+      "Blue Origin builds reusable rockets, engines, lunar systems, and in-space infrastructure.",
+    image: "/updates/covers/blue-origin.jpg",
+    sections: [
+    {
+      body: [
+        "Blue Origin builds the transportation and infrastructure required to expand human activity in space. Founded by Jeff Bezos, the company develops reusable launch vehicles, rocket engines, lunar landers, and systems for moving and operating beyond Earth.",
+        "New Glenn is the company's orbital workhorse: a heavy-lift rocket designed around a reusable first stage and a single configuration for civil, national-security, and commercial missions. The cover image is courtesy of Blue Origin.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "New Glenn stands more than 320 feet tall, carries a seven-meter payload fairing, and is designed to lift 45 metric tons to low Earth orbit or more than 13 metric tons to geostationary transfer orbit. Its first stage is built for at least 25 flights and is powered by seven reusable BE-4 engines; the same engine family also powers United Launch Alliance's Vulcan rocket.",
+        "Around that vehicle sits a broader space platform. New Shepard flies people and research payloads on suborbital missions. Blue Moon is the company's lunar-lander family. Blue Ring is designed to host and move payloads across orbits. Blue Origin also develops the propulsion, robotics, and exploration systems that connect those programs.",
+      ],
+    },
+    {
+      heading: "Why we backed the founder and team",
+      body: [
+        "Space infrastructure rewards teams willing to build through long technical and industrial cycles. Engines, launch vehicles, landing systems, factories, and mission operations all have to work as one system, and the feedback loop is measured in hardware and flights rather than software releases.",
+        "Blue Origin has assembled those capabilities under one roof and kept building toward a durable road to space. We backed the founder and team because reusable launch and in-space infrastructure can lower the cost of reaching orbit, expand what can be built there, and compound into an enduring industrial platform.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "weave-robotics",
     title: "Weave Robotics.",
     date: "August 11, 2026",

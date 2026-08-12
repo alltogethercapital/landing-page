@@ -60,6 +60,10 @@ export const FOUNDERS: Founder[] = [
     x: "https://x.com/amasad",
   },
   {
+    name: "Jeff Bezos",
+    companyName: "Blue Origin",
+  },
+  {
     name: "Kaan Dogrusoz",
     companyName: "Weave Robotics",
     linkedin: "https://www.linkedin.com/in/kaan-dogrusoz-073b748a/",
