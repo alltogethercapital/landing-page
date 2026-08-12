@@ -49,6 +49,15 @@ export const PORTFOLIO: Company[] = [
     video: "HK6y8DAPN_0", // Introducing Sora (OpenAI)
   },
   {
+    name: "Weave Robotics",
+    href: "https://www.weaverobotics.com/",
+    sectors: ["Robotics", "AI"],
+    blurb: "Practical home robots that fold laundry and take on the daily reset.",
+    cardLogo: "/logos/cards/weave-robotics.png",
+    image: "/work/cards/weave-robotics.jpg",
+    cardImage: "/work/cards/weave-robotics.jpg",
+  },
+  {
     name: "Supabase",
     href: "https://supabase.com/",
     sectors: ["Software", "Infrastructure"],

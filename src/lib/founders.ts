@@ -60,6 +60,16 @@ export const FOUNDERS: Founder[] = [
     x: "https://x.com/amasad",
   },
   {
+    name: "Kaan Dogrusoz",
+    companyName: "Weave Robotics",
+    linkedin: "https://www.linkedin.com/in/kaan-dogrusoz-073b748a/",
+  },
+  {
+    name: "Evan Wineland",
+    companyName: "Weave Robotics",
+    linkedin: "https://www.linkedin.com/in/ecwineland/",
+  },
+  {
     name: "Paul Copplestone",
     companyName: "Supabase",
     linkedin: "https://www.linkedin.com/in/paulcopplestone",

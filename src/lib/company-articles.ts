@@ -101,6 +101,39 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "weave-robotics",
+    title: "Weave Robotics.",
+    date: "August 11, 2026",
+    dateISO: "2026-08-11",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt:
+      "Weave Robotics builds Isaac, a practical home robot that folds laundry and takes on the daily reset.",
+    image: "/updates/covers/weave-robotics.jpg",
+    sections: [
+    {
+      body: [
+        "Most home robots still live in staged demos. Weave Robotics starts from a simpler test: can a robot do an unwanted household chore, in a real home, often enough that someone would keep it? Its first product, Isaac 0, folds laundry and is already shipping across California.",
+        "That deployment matters. Weave says Isaac 0 has logged more than 2,000 hours in the field and now folds more than 1,000 pounds of laundry each week. The company is using that foundation to build Isaac 1, a mobile home robot designed to take on more of the daily reset.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "Isaac 1 is a seated, wheeled robot with two arms. It is designed to fold laundry, move through a home, tidy rooms, and help with recurring household work. Weave expects first shipments in fall 2026.",
+        "Rather than assembling off-the-shelf parts, Weave builds its own actuators, end-effectors, and linkage systems, then assembles the robots in California. The design puts safety, quiet operation, reliability, physical camera shutters, and a compact charging home ahead of spectacle.",
+      ],
+    },
+    {
+      heading: "Why we backed the founders and team",
+      body: [
+        "Kaan Dogrusoz and Evan Wineland have known each other since Carnegie Mellon and bring experience shipping consumer hardware and AI products at Apple. That pairing matters in home robotics, where the machine has to be technically ambitious and still feel like a product someone can live with.",
+        "A useful home robot requires manipulation, perception, hardware reliability, safety, service, and a steady stream of real-world learning to work as one system. Weave chose a pragmatic form and a chore people already want to hand off, then put robots into homes early. We backed the founders and team because they are building through the unglamorous deployment work that turns a robot from a video into an appliance.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "supabase",
     title: "Supabase.",
     date: "July 28, 2026",
