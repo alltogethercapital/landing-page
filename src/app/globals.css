@@ -220,6 +220,12 @@ body {
   transition: opacity 700ms ease;
 }
 
+@media (max-width: 899px) {
+  .ascii-reveal {
+    display: none;
+  }
+}
+
 .ascii-reveal.is-developed {
   opacity: 0;
 }

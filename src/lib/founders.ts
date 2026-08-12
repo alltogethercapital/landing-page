@@ -3,15 +3,13 @@ import { PORTFOLIO, slugify, type Company } from "./portfolio";
 export type Founder = {
   name: string; // founder's name
   companyName: string; // must match a company `name` in PORTFOLIO
-  headshot?: string; // /founders/cutouts/<slug>.png — omit to render a placeholder
+  headshot?: string; // /founders/cutouts/<slug>.png — omit only when no verified public image exists
   linkedin?: string; // full URL to LinkedIn profile
   x?: string; // full URL to X (Twitter) profile
 };
 
-// One representative founder per company.
-// NOTE: names + profile links are from public record — please verify each.
-// Headshots are intentionally omitted (placeholders render) — drop image files
-// into /public/founders/cutouts/ and set `headshot` to the cutout PNG.
+// Founder names, profiles, and portraits are grounded in public company,
+// investor, publication, LinkedIn, or founder-owned social sources.
 export const FOUNDERS: Founder[] = [
   {
     name: "Brandon Tseng",
@@ -62,107 +60,131 @@ export const FOUNDERS: Founder[] = [
   {
     name: "Jeff Bezos",
     companyName: "Blue Origin",
+    headshot: "/founders/cutouts/jeff-bezos.png",
   },
   {
     name: "Kaan Dogrusoz",
     companyName: "Weave Robotics",
+    headshot: "/founders/cutouts/kaan-dogrusoz.png",
     linkedin: "https://www.linkedin.com/in/kaan-dogrusoz-073b748a/",
   },
   {
     name: "Evan Wineland",
     companyName: "Weave Robotics",
+    headshot: "/founders/cutouts/evan-wineland.png",
     linkedin: "https://www.linkedin.com/in/ecwineland/",
   },
   {
     name: "Paul Copplestone",
     companyName: "Supabase",
+    headshot: "/founders/cutouts/paul-copplestone.png",
     linkedin: "https://www.linkedin.com/in/paulcopplestone",
     x: "https://x.com/kiwicopple",
   },
   {
     name: "Ant Wilson",
     companyName: "Supabase",
+    headshot: "/founders/cutouts/ant-wilson.png",
     linkedin: "https://uk.linkedin.com/in/ant-wilson-46179937",
     x: "https://x.com/AntWilson",
   },
   {
     name: "Dustin Walper",
     companyName: "Valstad",
+    headshot: "/founders/cutouts/dustin-walper.png",
     linkedin: "https://www.linkedin.com/in/dustinwalper",
     x: "https://x.com/DustinWalper",
   },
   {
     name: "Alex Pachikov",
     companyName: "Sunflower Labs",
+    headshot: "/founders/cutouts/alex-pachikov.png",
+    linkedin: "https://www.linkedin.com/in/alexpach",
   },
   {
     name: "Chris Eheim",
     companyName: "Sunflower Labs",
+    headshot: "/founders/cutouts/chris-eheim.png",
     linkedin: "https://ch.linkedin.com/in/ceheim",
   },
   {
     name: "Nick de Palézieux",
     companyName: "Sunflower Labs",
+    headshot: "/founders/cutouts/nick-de-palezieux.png",
+    linkedin:
+      "https://ch.linkedin.com/in/nicolas-de-pal%C3%A9zieux-a8a4b598",
   },
   {
     name: "Travis Kalanick",
     companyName: "Atoms",
+    headshot: "/founders/cutouts/travis-kalanick.png",
     x: "https://x.com/travisk",
   },
   {
     name: "Alex Mashrabov",
     companyName: "Higgsfield",
+    headshot: "/founders/cutouts/alex-mashrabov.png",
     linkedin: "https://www.linkedin.com/in/amashrabov",
     x: "https://x.com/alexmashrabov",
   },
   {
     name: "Yerzat Dulat",
     companyName: "Higgsfield",
+    headshot: "/founders/cutouts/yerzat-dulat.png",
     x: "https://x.com/codentropy",
   },
   {
     name: "Mahi de Silva",
     companyName: "Higgsfield",
+    headshot: "/founders/cutouts/mahi-de-silva.png",
     linkedin: "https://www.linkedin.com/in/mdesilva",
   },
   {
     name: "Dean Leitersdorf",
     companyName: "Decart",
+    headshot: "/founders/cutouts/dean-leitersdorf.png",
     linkedin: "https://www.linkedin.com/in/dean-leitersdorf",
   },
   {
     name: "Orian Leitersdorf",
     companyName: "Decart",
+    headshot: "/founders/cutouts/orian-leitersdorf.png",
     linkedin: "https://il.linkedin.com/in/orian-leitersdorf-11956a240",
   },
   {
     name: "Moshe Shalev",
     companyName: "Decart",
+    headshot: "/founders/cutouts/moshe-shalev.png",
     linkedin: "https://il.linkedin.com/in/moshe-shalev",
   },
   {
     name: "Jerry Tworek",
     companyName: "Core Automation",
+    headshot: "/founders/cutouts/jerry-tworek.png",
     x: "https://x.com/MillionInt",
   },
   {
     name: "Rohan Anil",
     companyName: "Core Automation",
+    headshot: "/founders/cutouts/rohan-anil.png",
     x: "https://x.com/_arohan_",
   },
   {
     name: "Joanne Jang",
     companyName: "Core Automation",
+    headshot: "/founders/cutouts/joanne-jang.png",
     x: "https://x.com/joannejang",
   },
   {
     name: "Anmol Gulati",
     companyName: "Core Automation",
+    headshot: "/founders/cutouts/anmol-gulati.png",
     x: "https://x.com/anmol01gulati",
   },
   {
     name: "Julia Villagra",
     companyName: "Core Automation",
+    headshot: "/founders/cutouts/julia-villagra.png",
     x: "https://x.com/juliacvillagra",
   },
   {
@@ -174,11 +196,8 @@ export const FOUNDERS: Founder[] = [
   {
     name: "Peter Cetale",
     companyName: "Sourcerer",
+    headshot: "/founders/cutouts/peter-cetale.png",
     linkedin: "https://www.linkedin.com/in/petercetale",
-  },
-  {
-    name: "Robert Magee",
-    companyName: "Sourcerer",
   },
   {
     name: "Brett Adcock",
@@ -216,11 +235,13 @@ export const FOUNDERS: Founder[] = [
   {
     name: "Ben Nowack",
     companyName: "Reflect Orbital",
+    headshot: "/founders/cutouts/ben-nowack.png",
     linkedin: "https://www.linkedin.com/in/ben-nowack/",
   },
   {
     name: "Tristan Semmelhack",
     companyName: "Reflect Orbital",
+    headshot: "/founders/cutouts/tristan-semmelhack.png",
     linkedin: "https://www.linkedin.com/in/tristan-semmelhack-6a1ba0149/",
   },
   {
@@ -232,11 +253,13 @@ export const FOUNDERS: Founder[] = [
   {
     name: "Assil Halimi",
     companyName: "Apollo Atomics",
+    headshot: "/founders/cutouts/assil-halimi.png",
     linkedin: "https://www.linkedin.com/in/aahalimi/",
   },
   {
     name: "Drew Walker",
     companyName: "Apollo Atomics",
+    headshot: "/founders/cutouts/drew-walker.png",
     linkedin: "https://www.linkedin.com/in/drewwalkerrr/",
   },
   {
@@ -261,16 +284,19 @@ export const FOUNDERS: Founder[] = [
   {
     name: "Aaron Pempel",
     companyName: "MAV Unlimited",
+    headshot: "/founders/cutouts/aaron-pempel.png",
     linkedin: "https://www.linkedin.com/in/aaron-pempel",
   },
   {
     name: "Robert Shepherd",
     companyName: "MAV Unlimited",
+    headshot: "/founders/cutouts/robert-shepherd.png",
     linkedin: "https://www.linkedin.com/in/rob-shepherd-phd-mba-7743683",
   },
   {
     name: "T.J. Wallin",
     companyName: "MAV Unlimited",
+    headshot: "/founders/cutouts/tj-wallin.png",
     linkedin: "https://www.linkedin.com/in/thomas-wallin-689a9228",
   },
   {
@@ -325,12 +351,14 @@ export const FOUNDERS: Founder[] = [
   {
     name: "Eyad Abdalla",
     companyName: "Plena Health",
+    headshot: "/founders/cutouts/eyad-abdalla.png",
     linkedin: "https://www.linkedin.com/in/eyadabd/",
     x: "https://x.com/eebadaeebada",
   },
   {
     name: "Ahmed Al Mudarris",
     companyName: "Plena Health",
+    headshot: "/founders/cutouts/ahmed-al-mudarris.png",
     linkedin: "https://ca.linkedin.com/in/ahmed-al-mudarris-11a5381bb",
   },
   {
