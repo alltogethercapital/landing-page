@@ -104,7 +104,7 @@ export function LpPortfolioTable({
           </thead>
           <tbody>
             {filtered.map((investment) => (
-              <tr key={investment.id} data-status={investment.reviewStatus}>
+              <tr key={investment.id}>
                 <td>
                   <Link href={`/lp/investments/${investment.id}`} className="lp-company-cell" aria-label={`View ${investment.company}`}>
                     <span className={`lp-company-logo${investment.logoTreatment === "inverse" ? " lp-logo--inverse" : ""}`}>
@@ -114,11 +114,6 @@ export function LpPortfolioTable({
                       <strong>{investment.company}</strong>
                       <small>
                         {investment.platform}
-                        {investment.reviewStatus !== "verified" && (
-                          <span className={`lp-status lp-status--${investment.reviewStatus}`}>
-                            {investment.reviewStatus === "pending" ? "Pending" : "Review"}
-                          </span>
-                        )}
                       </small>
                     </span>
                   </Link>
@@ -142,7 +137,7 @@ export function LpPortfolioTable({
 
       <div className="lp-portfolio-mobile" aria-label="Investment records">
         {filtered.map((investment) => (
-          <article key={investment.id} data-status={investment.reviewStatus}>
+          <article key={investment.id}>
             <Link
               href={`/lp/investments/${investment.id}`}
               className="lp-mobile-investment-link"
@@ -156,11 +151,6 @@ export function LpPortfolioTable({
                   <strong>{investment.company}</strong>
                   <small>
                     {investment.platform}
-                    {investment.reviewStatus !== "verified" && (
-                      <span className={`lp-status lp-status--${investment.reviewStatus}`}>
-                        {investment.reviewStatus === "pending" ? "Pending" : "Review"}
-                      </span>
-                    )}
                   </small>
                 </span>
                 <span className="lp-mobile-investment-arrow" aria-hidden="true">→</span>

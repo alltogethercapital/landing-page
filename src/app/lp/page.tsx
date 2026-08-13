@@ -34,7 +34,8 @@ export default async function LpPortfolioPage({
   };
   const snapshot = getLpSnapshot();
   const investedCost = investments.reduce((total, item) => total + item.investedCost, 0);
-  const uniqueCompanies = new Set(investments.map((item) => item.company.toLocaleLowerCase())).size;
+  const projectedValue = investments.reduce((total, item) => total + item.projection.projectedValue, 0);
+  const projectedGrossMultiple = projectedValue / investedCost;
   const sourceDate = new Intl.DateTimeFormat("en-US", {
     month: "short", day: "numeric", year: "numeric", timeZone: "America/Los_Angeles",
   }).format(new Date(snapshot.sourceModifiedAt));
@@ -45,14 +46,15 @@ export default async function LpPortfolioPage({
 
       <dl className="lp-summary-grid" aria-label="Portfolio summary">
         <div><dt>Invested cost</dt><dd>{currency(investedCost)}</dd></div>
-        <div><dt>Companies</dt><dd>{uniqueCompanies}</dd></div>
-        <div><dt>As of</dt><dd>{sourceDate}</dd></div>
+        <div><dt>Projected value</dt><dd>{currency(projectedValue)}</dd></div>
+        <div><dt>Projected gross multiple</dt><dd>{projectedGrossMultiple.toFixed(2)}×</dd></div>
       </dl>
 
       <div className="lp-disclosure">
         <p>
-          Cost basis and entry terms from the Schedule of Investments. Current value and
-          performance are shown only after approval.
+          Projection as of {snapshot.projectionAsOf}: positions with a sourced comparable financing
+          are marked to that valuation; all others remain at cost. Gross, undiluted estimate before
+          fees, carry, taxes, and future dilution—not audited NAV.
         </p>
       </div>
 
