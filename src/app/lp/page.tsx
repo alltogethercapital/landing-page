@@ -36,50 +36,32 @@ export default async function LpPortfolioPage({
   const snapshot = getLpSnapshot();
   const investedCost = investments.reduce((total, item) => total + item.investedCost, 0);
   const uniqueCompanies = new Set(investments.map((item) => item.company.toLocaleLowerCase())).size;
-  const pending = investments.filter((item) => item.reviewStatus !== "verified").length;
+  const sourceDate = new Intl.DateTimeFormat("en-US", {
+    month: "short", day: "numeric", year: "numeric", timeZone: "America/Los_Angeles",
+  }).format(new Date(snapshot.sourceModifiedAt));
 
   return (
     <div className="lp-portal-shell">
       <h1 className="sr-only">Portfolio</h1>
 
-      <section className="lp-summary-grid" aria-label="Portfolio summary">
-        <article>
-          <p>Invested cost</p>
-          <strong>{currency(investedCost)}</strong>
-          <span>Across all recorded investments</span>
-        </article>
-        <article>
-          <p>Portfolio companies</p>
-          <strong>{uniqueCompanies}</strong>
-          <span>{investments.length} investment records</span>
-        </article>
-        <article>
-          <p>Latest investment</p>
-          <strong>Aug 12</strong>
-          <span>Blue Origin · pending acceptance</span>
-        </article>
-        <article>
-          <p>Items to review</p>
-          <strong>{pending}</strong>
-          <span>Excluded from approved reporting</span>
-        </article>
-      </section>
+      <dl className="lp-summary-grid" aria-label="Portfolio summary">
+        <div><dt>Invested cost</dt><dd>{currency(investedCost)}</dd></div>
+        <div><dt>Companies</dt><dd>{uniqueCompanies}</dd></div>
+        <div><dt>As of</dt><dd>{sourceDate}</dd></div>
+      </dl>
 
       <div className="lp-disclosure">
-        <span>i</span>
         <p>
-          This staging view reports invested cost and entry terms from the Drive schedule.
-          It does not present current fair value, NAV, IRR, or LP capital accounts until
-          those figures are supported by an approved accounting and valuation process. Source
-          updated Aug 12, 2026 at 12:58 PM PT · {snapshot.status}.
+          Cost basis and entry terms from the Schedule of Investments. Current value and
+          performance are shown only after approval.
         </p>
       </div>
 
       <LpPortfolioTable investments={investments} view={view} />
 
       <footer className="lp-portal-footer">
-        <span>{snapshot.source}</span>
-        <span>Private and confidential · Preliminary staging view</span>
+        <span>{snapshot.source} · Updated {sourceDate}</span>
+        <span>Private and confidential</span>
       </footer>
     </div>
   );

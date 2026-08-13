@@ -13,6 +13,38 @@ const publicPortfolio = new Map(
   PORTFOLIO.map((company) => [company.name.toLocaleLowerCase(), company]),
 );
 
+function assertLpData() {
+  const ids = new Set<string>();
+  const chronologies = new Set<number>();
+
+  for (const investment of LP_INVESTMENTS) {
+    if (ids.has(investment.id)) throw new Error(`Duplicate LP investment id: ${investment.id}`);
+    if (chronologies.has(investment.chronology)) {
+      throw new Error(`Duplicate LP chronology: ${investment.chronology}`);
+    }
+    if (investment.investedCost <= 0) throw new Error(`Invalid invested cost: ${investment.id}`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(investment.investmentDate)) {
+      throw new Error(`Invalid investment date: ${investment.id}`);
+    }
+    if (!investment.logo.startsWith("/logos/cards/")) {
+      throw new Error(`Invalid local logo path: ${investment.id}`);
+    }
+    if (investment.performance) {
+      const mark = investment.performance;
+      if (mark.currentValue < 0 || mark.distributions < 0) {
+        throw new Error(`Invalid performance value: ${investment.id}`);
+      }
+      if (!mark.asOf || !mark.method || !mark.source || !mark.approvedBy || !mark.approvedAt) {
+        throw new Error(`Incomplete performance approval: ${investment.id}`);
+      }
+    }
+    ids.add(investment.id);
+    chronologies.add(investment.chronology);
+  }
+}
+
+assertLpData();
+
 function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
   const { driveFolderId: _privateDriveFolderId, ...safeInvestment } = investment;
   void _privateDriveFolderId;

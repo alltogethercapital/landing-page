@@ -11,15 +11,6 @@ export type LpTableView = {
   direction?: "asc" | "desc";
 };
 
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toLocaleUpperCase();
-}
-
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -88,10 +79,7 @@ export function LpPortfolioTable({
   return (
     <section className="lp-portfolio-section" aria-labelledby="lp-portfolio-heading">
       <div className="lp-table-heading">
-        <div>
-          <p className="lp-eyebrow">Portfolio ledger</p>
-          <h2 id="lp-portfolio-heading">Investments</h2>
-        </div>
+        <h2 id="lp-portfolio-heading">Investments</h2>
         <p>{filtered.length} of {investments.length} records</p>
       </div>
 
@@ -125,20 +113,15 @@ export function LpPortfolioTable({
               <th scope="col">Instrument</th>
               <th scope="col">Entry valuation</th>
               <th scope="col" className="is-number"><Link href={sortHref(view, "investedCost")}>{sortLabel("investedCost", "Cost")}</Link></th>
-              <th scope="col"><span className="sr-only">Open investment</span></th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((investment) => (
               <tr key={investment.id} data-status={investment.reviewStatus}>
                 <td>
-                  <Link href={`/lp/investments/${investment.id}`} className="lp-company-cell" aria-label={investment.company}>
-                    <span className="lp-company-logo">
-                      {investment.logo ? (
-                        <Image src={investment.logo} alt="" width={92} height={36} unoptimized />
-                      ) : (
-                        <span>{initials(investment.company)}</span>
-                      )}
+                  <Link href={`/lp/investments/${investment.id}`} className="lp-company-cell" aria-label={`View ${investment.company}`}>
+                    <span className={`lp-company-logo${investment.logoTreatment === "inverse" ? " lp-logo--inverse" : ""}`}>
+                      <Image src={investment.logo} alt="" width={92} height={36} unoptimized />
                     </span>
                     <span className="lp-company-name">
                       <strong>{investment.company}</strong>
@@ -158,7 +141,6 @@ export function LpPortfolioTable({
                 <td>{investment.instrument}</td>
                 <td>{investment.entryValuation}</td>
                 <td className="is-number">{formatCurrency(investment.investedCost)}</td>
-                <td><Link href={`/lp/investments/${investment.id}`} aria-label={`View ${investment.company}`}>↗</Link></td>
               </tr>
             ))}
           </tbody>
@@ -180,12 +162,8 @@ export function LpPortfolioTable({
               aria-label={`View ${investment.company}`}
             >
               <span className="lp-mobile-investment-head">
-                <span className="lp-company-logo">
-                  {investment.logo ? (
-                    <Image src={investment.logo} alt="" width={92} height={36} unoptimized />
-                  ) : (
-                    <span>{initials(investment.company)}</span>
-                  )}
+                <span className={`lp-company-logo${investment.logoTreatment === "inverse" ? " lp-logo--inverse" : ""}`}>
+                  <Image src={investment.logo} alt="" width={92} height={36} unoptimized />
                 </span>
                 <span className="lp-mobile-investment-title">
                   <strong>{investment.company}</strong>
@@ -198,7 +176,7 @@ export function LpPortfolioTable({
                     )}
                   </small>
                 </span>
-                <span className="lp-mobile-investment-arrow" aria-hidden="true">↗</span>
+                <span className="lp-mobile-investment-arrow" aria-hidden="true">→</span>
               </span>
               <dl className="lp-mobile-investment-facts">
                 <div><dt>Invested</dt><dd>{formatDate(investment.investmentDate)}</dd></div>
