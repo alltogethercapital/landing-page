@@ -2118,13 +2118,11 @@ body {
   z-index: 0;
   background-image:
     linear-gradient(var(--lp-line), var(--lp-line)),
-    linear-gradient(var(--lp-line), var(--lp-line)),
     linear-gradient(var(--lp-line), var(--lp-line));
   background-repeat: no-repeat;
   background-position:
     var(--lp-page-gutter) 0,
-    var(--lp-rail-end) 0,
-    calc(var(--lp-rail-end) + var(--lp-content-gutter)) 0;
+    var(--lp-rail-end) 0;
   background-size: 1px 100%;
   content: "";
 }

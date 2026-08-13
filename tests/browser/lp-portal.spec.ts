@@ -64,6 +64,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     { name: "phone", width: 390, height: 844 },
     { name: "tablet", width: 768, height: 1024 },
     { name: "compact-desktop", width: 1285, height: 1320 },
+    { name: "review-desktop", width: 1297, height: 1297 },
     { name: "desktop", width: 1440, height: 1000 },
     { name: "wide", width: 1920, height: 1080 },
   ];
@@ -89,6 +90,11 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page).toHaveURL(/\/lp$/);
     await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+
+    const portalGuideCount = await page.locator(".lp-portal-page").evaluate((element) =>
+      (getComputedStyle(element, "::before").backgroundImage.match(/linear-gradient/g) ?? []).length,
+    );
+    expect(portalGuideCount).toBe(2);
 
     const pageBox = await page.locator(".lp-portal-page").boundingBox();
     const summaryBox = await page.locator(".lp-summary-grid").boundingBox();
