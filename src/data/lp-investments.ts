@@ -13,15 +13,26 @@ export type InvestmentRecord = {
   instrument: string;
   platform: string;
   driveFolderId: string;
-  logo?: string;
+  logo: string;
+  logoTreatment?: "inverse";
   description?: string;
   reviewStatus: InvestmentReviewStatus;
   reviewNote?: string;
+  performance?: {
+    currentValue: number;
+    distributions: number;
+    asOf: string;
+    method: string;
+    source: string;
+    approvedBy: string;
+    approvedAt: string;
+  };
 };
 
-// Approved staging snapshot of the All Together Drive Schedule of Investments.
+// Approved cost-basis snapshot of the All Together Drive Schedule of Investments.
 // Generated 2026-08-12. Values are preserved exactly from the source sheet;
 // suspicious values are flagged for review rather than silently corrected.
+// Performance fields remain absent until a sourced, dated mark is approved.
 export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "01-budbreak-innovations", chronology: 1, company: "Budbreak Innovations", investedCost: 10000, investmentDate: "2026-04-19", round: "Seed", entryValuation: "$25M post-money cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "1iS2O7ATyv0UgTfRDReE5Uv8MD7Lo8n-N", logo: "/logos/cards/budbreak.png", description: "The robotics platform for agriculture.", reviewStatus: "verified" },
   { id: "02-exowatt", chronology: 2, company: "Exowatt", investedCost: 20000, investmentDate: "2026-04-20", round: "Series B", entryValuation: "$695M public valuation", instrument: "Equity", platform: "AngelList", driveFolderId: "1WFOOg5tHSYWhUE1XZzJGKTE413MVv_Hr", logo: "/logos/cards/exowatt.png", description: "Modular solar-thermal energy for the AI compute era.", reviewStatus: "verified" },
@@ -31,7 +42,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "06-quaise-energy", chronology: 6, company: "Quaise Energy", investedCost: 10000, investmentDate: "2026-05-03", round: "Series B", entryValuation: "$312.5M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "10EI2AksDVmz6SLnGaAdgJ50KuuPk9Fmx", logo: "/logos/cards/quaise.png", description: "Ultra-deep geothermal to unlock clean baseload energy.", reviewStatus: "verified" },
   { id: "07-shield-ai", chronology: 7, company: "Shield AI", investedCost: 20000, investmentDate: "2026-05-04", round: "Series G", entryValuation: "$10.5B valuation", instrument: "Equity", platform: "Sydecar", driveFolderId: "1azcwyu3tpDuI3Q9J2_obryec9G67fT-K", logo: "/logos/cards/shield-ai.png", description: "AI pilots for aircraft and autonomous defense systems.", reviewStatus: "verified" },
   { id: "08-samply", chronology: 8, company: "Samply", investedCost: 2000, investmentDate: "2026-05-04", round: "Seed", entryValuation: "$10M post-money cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "19mk9zCueHMx8jVBE6KSEtU9Hk4yKjwE1", logo: "/logos/cards/samply.png", description: "Sample management for modern music producers.", reviewStatus: "verified" },
-  { id: "09-h256-series-3", chronology: 9, company: "H256 LLC Series 3", investedCost: 200000, investmentDate: "2026-05-06", round: "N/A", entryValuation: "No company valuation", instrument: "SPV", platform: "Direct", driveFolderId: "1c4ssc43ICTMjZO-BS_yYBBMLMHj4PUim", description: "Special-purpose vehicle with exposure to frontier technology companies.", reviewStatus: "verified" },
+  { id: "09-h256-series-3", chronology: 9, company: "H256 LLC Series 3", investedCost: 200000, investmentDate: "2026-05-06", round: "N/A", entryValuation: "No company valuation", instrument: "SPV", platform: "Direct", driveFolderId: "1c4ssc43ICTMjZO-BS_yYBBMLMHj4PUim", logo: "/logos/cards/h256-series-3.svg", description: "Special-purpose vehicle with exposure to frontier technology companies.", reviewStatus: "verified" },
   { id: "10-starcloud", chronology: 10, company: "Starcloud", investedCost: 37097.38, investmentDate: "2026-05-08", round: "Series A+", entryValuation: "$2B pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1W17VCUKpqxFQrlKhbLRwf0Iy5SyIXzw4", logo: "/logos/cards/starcloud.png", description: "Data centers in orbit, powered by the sun.", reviewStatus: "verified" },
   { id: "11-openai", chronology: 11, company: "OpenAI", investedCost: 50000, investmentDate: "2026-05-12", round: "Series G", entryValuation: "$852B post-money", instrument: "Equity", platform: "Sydecar", driveFolderId: "1yuyYyZjOiTDP5FWD1lY0VHI6qb_c6ipG", logo: "/logos/cards/openai.png", description: "Frontier AI research and products.", reviewStatus: "verified" },
   { id: "12-apptronik", chronology: 12, company: "Apptronik", investedCost: 30000, investmentDate: "2026-05-13", round: "Series A", entryValuation: "~$4.9B post-money", instrument: "Secondary", platform: "AngelList", driveFolderId: "1xr2MFkdyzodS6PgKsiaWG3e3lrdu4Wy-", logo: "/logos/cards/apptronik.png", description: "General-purpose humanoid robots for industry.", reviewStatus: "verified" },
@@ -49,11 +60,11 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "24-1x-series-b", chronology: 24, company: "1X", investedCost: 3511, investmentDate: "2026-04-30", round: "Series B", entryValuation: "$4.59B post-money", instrument: "Equity", platform: "Echo", driveFolderId: "1oZJ8W19XxhBZkzvp2DV7DM9zPC1-XC-p", logo: "/logos/cards/1x.png", description: "Humanoid robots engineered for the home.", reviewStatus: "verified" },
   { id: "25-figure-ai", chronology: 25, company: "Figure AI", investedCost: 13068, investmentDate: "2025-12-17", round: "Series C", entryValuation: "$30B post-money", instrument: "Secondary", platform: "Echo", driveFolderId: "16n-o8ge-FbpgN7ucZ9qE2G0xwy96OzCq", logo: "/logos/cards/figure.png", description: "General-purpose humanoid robots for the workforce.", reviewStatus: "verified" },
   { id: "26-campus", chronology: 26, company: "Campus", investedCost: 10000, investmentDate: "2026-06-02", round: "Series B+", entryValuation: "$500M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1ZgkaUf9s2i0PIUoduaH_KBy74MecgLjU", logo: "/logos/cards/campus.png", description: "An accredited online college expanding access to education.", reviewStatus: "verified" },
-  { id: "27-compresr", chronology: 27, company: "Compresr", investedCost: 4953, investmentDate: "2026-06-11", round: "Seed", entryValuation: "$30M post-money", instrument: "SAFE", platform: "AngelList", driveFolderId: "1bdmsrORNNGUruOUYklpOOK_J-hjrkdWj", reviewStatus: "verified" },
-  { id: "28-rendezvous-robotics", chronology: 28, company: "Rendezvous Robotics", investedCost: 5000, investmentDate: "2026-06-11", round: "Seed", entryValuation: "$35M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1qa3idkYDk50l0ek1goo_gUq6J1buGfbc", reviewStatus: "verified" },
-  { id: "29-raspire", chronology: 29, company: "Raspire", investedCost: 3000, investmentDate: "2026-06-14", round: "Seed", entryValuation: "$35M post-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1LyvwbBiIP_JWaOhZiJYSRNqg1wXqfXe5", reviewStatus: "verified" },
-  { id: "30-matforge", chronology: 30, company: "Matforge", investedCost: 4934.26, investmentDate: "2026-06-17", round: "Seed", entryValuation: "$60M post-money", instrument: "SAFE", platform: "AngelList", driveFolderId: "1XfTB-qQWDyf2Nkjcevqzo5Z1p7J0fOoZ", reviewStatus: "verified" },
-  { id: "31-stripe", chronology: 31, company: "Stripe", investedCost: 30000, investmentDate: "2026-06-18", round: "Tender", entryValuation: "$180B", instrument: "SPV", platform: "Sydecar", driveFolderId: "1Y-V3aIee-LQTqewWwLvgSHW84kKvue35", description: "Payments and financial infrastructure for the internet.", reviewStatus: "verified" },
+  { id: "27-compresr", chronology: 27, company: "Compresr", investedCost: 4953, investmentDate: "2026-06-11", round: "Seed", entryValuation: "$30M post-money", instrument: "SAFE", platform: "AngelList", driveFolderId: "1bdmsrORNNGUruOUYklpOOK_J-hjrkdWj", logo: "/logos/cards/compresr.svg", description: "Context compression infrastructure for LLM applications and agents.", reviewStatus: "verified" },
+  { id: "28-rendezvous-robotics", chronology: 28, company: "Rendezvous Robotics", investedCost: 5000, investmentDate: "2026-06-11", round: "Seed", entryValuation: "$35M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1qa3idkYDk50l0ek1goo_gUq6J1buGfbc", logo: "/logos/cards/rendezvous-robotics.svg", logoTreatment: "inverse", description: "Spacecraft that autonomously assemble into large structures in orbit.", reviewStatus: "verified" },
+  { id: "29-raspire", chronology: 29, company: "Raspire", investedCost: 3000, investmentDate: "2026-06-14", round: "Seed", entryValuation: "$35M post-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1LyvwbBiIP_JWaOhZiJYSRNqg1wXqfXe5", logo: "/logos/cards/raspire.svg", logoTreatment: "inverse", description: "No-code runtime security for mobile applications.", reviewStatus: "verified" },
+  { id: "30-matforge", chronology: 30, company: "Matforge", investedCost: 4934.26, investmentDate: "2026-06-17", round: "Seed", entryValuation: "$60M post-money", instrument: "SAFE", platform: "AngelList", driveFolderId: "1XfTB-qQWDyf2Nkjcevqzo5Z1p7J0fOoZ", logo: "/logos/cards/matforge.svg", description: "AI scientists for semiconductor materials discovery.", reviewStatus: "verified" },
+  { id: "31-stripe", chronology: 31, company: "Stripe", investedCost: 30000, investmentDate: "2026-06-18", round: "Tender", entryValuation: "$180B", instrument: "SPV", platform: "Sydecar", driveFolderId: "1Y-V3aIee-LQTqewWwLvgSHW84kKvue35", logo: "/logos/cards/stripe.svg", description: "Payments and financial infrastructure for the internet.", reviewStatus: "verified" },
   { id: "32-plena-health", chronology: 32, company: "Plena Health", investedCost: 4966.32, investmentDate: "2026-06-23", round: "Seed", entryValuation: "$50 post-money", instrument: "SAFE", platform: "AngelList", driveFolderId: "1JBSBUXA7Wdg32HmSF3Rm53WkbSJFesRY", logo: "/logos/cards/plena-health.png", reviewStatus: "review", reviewNote: "Source valuation appears to be missing a magnitude suffix; confirm against closing documents before publication." },
   { id: "33-core-automation", chronology: 33, company: "Core Automation", investedCost: 4090.62, investmentDate: "2026-06-27", round: "Series A", entryValuation: "$3.4B post-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1BqbLQuK-XJCwzeWMt-oobXJij6S6qDf0", logo: "/logos/cards/core-automation.png", description: "Building highly automated AI research infrastructure.", reviewStatus: "verified", reviewNote: "Final allocation reflects an oversubscription adjustment." },
   { id: "34-reflect-orbital", chronology: 34, company: "Reflect Orbital", investedCost: 9992.82, investmentDate: "2026-06-30", round: "Series A+", entryValuation: "$600M post-money", instrument: "SAFE", platform: "AngelList", driveFolderId: "1HqFP0rMX7ODBijh_F6Pxqe0lO7uxrRwx", logo: "/logos/cards/reflect-orbital.png", description: "Space-enabled infrastructure for sunlight after dark.", reviewStatus: "verified" },
@@ -74,5 +85,5 @@ export const LP_SNAPSHOT = {
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
   sourceModifiedAt: "2026-08-12T19:58:27.753Z",
   publishedAt: "2026-08-12T21:00:00.000Z",
-  status: "Preliminary staging data",
+  status: "Performance pending approval",
 } as const;

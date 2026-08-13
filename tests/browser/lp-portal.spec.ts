@@ -16,7 +16,12 @@ test("protects, authenticates, filters, and opens an investment", async ({ page 
   await page.getByRole("button", { name: /Enter portal/ }).click();
   await expect(page).toHaveURL(/\/lp$/);
   await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
-  await expect(page.getByText("44 investment records")).toBeVisible();
+  await expect(page.getByText("44 of 44 records")).toBeVisible();
+  await expect(page.locator(".lp-portfolio-table .lp-company-logo img")).toHaveCount(44);
+  const brokenLogos = await page.locator(".lp-portfolio-table .lp-company-logo img").evaluateAll((logos) =>
+    logos.filter((logo) => !(logo as HTMLImageElement).complete || (logo as HTMLImageElement).naturalWidth === 0).length,
+  );
+  expect(brokenLogos).toBe(0);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-desktop.png", fullPage: true });
 
   const search = page.getByPlaceholder("Search company, round, instrument…");
@@ -26,7 +31,8 @@ test("protects, authenticates, filters, and opens an investment", async ({ page 
   await page.getByRole("link", { name: "View Blue Origin" }).click();
   await expect(page).toHaveURL(/44-blue-origin$/);
   await expect(page.getByText("Pending acceptance", { exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Awaiting approved valuation data." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Performance" })).toBeVisible();
+  await expect(page.getByText("Awaiting approved mark", { exact: true })).toBeVisible();
   await page.screenshot({ path: "output/playwright/lp-portal/detail-desktop.png", fullPage: true });
 });
 
@@ -65,8 +71,6 @@ test("renders the login, portfolio, and detail views at every supported layout",
       expect(navBox!.height).toBeLessThanOrEqual(60);
     } else {
       expect(navBox!.height).toBeGreaterThan(120);
-      await expect(page.getByText("Documents", { exact: true })).toBeVisible();
-      await expect(page.getByText("Updates", { exact: true })).toBeVisible();
     }
 
     await page.screenshot({

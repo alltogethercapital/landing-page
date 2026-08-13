@@ -13,8 +13,6 @@ export function LpPortalNav() {
       </Link>
       <nav aria-label="Investor portal">
         <Link href="/lp" aria-current="page" className="is-active">Portfolio</Link>
-        <span aria-disabled="true">Documents</span>
-        <span aria-disabled="true">Updates</span>
       </nav>
       <form action="/api/lp/logout" method="post">
         <button type="submit">Sign out</button>
