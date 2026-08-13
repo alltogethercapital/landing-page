@@ -170,6 +170,52 @@ export function LpPortfolioTable({
           </div>
         )}
       </div>
+
+      <div className="lp-portfolio-mobile" aria-label="Investment records">
+        {filtered.map((investment) => (
+          <article key={investment.id} data-status={investment.reviewStatus}>
+            <Link
+              href={`/lp/investments/${investment.id}`}
+              className="lp-mobile-investment-link"
+              aria-label={`View ${investment.company}`}
+            >
+              <span className="lp-mobile-investment-head">
+                <span className="lp-company-logo">
+                  {investment.logo ? (
+                    <Image src={investment.logo} alt="" width={92} height={36} unoptimized />
+                  ) : (
+                    <span>{initials(investment.company)}</span>
+                  )}
+                </span>
+                <span className="lp-mobile-investment-title">
+                  <strong>{investment.company}</strong>
+                  <small>
+                    {investment.platform}
+                    {investment.reviewStatus !== "verified" && (
+                      <span className={`lp-status lp-status--${investment.reviewStatus}`}>
+                        {investment.reviewStatus === "pending" ? "Pending" : "Review"}
+                      </span>
+                    )}
+                  </small>
+                </span>
+                <span className="lp-mobile-investment-arrow" aria-hidden="true">↗</span>
+              </span>
+              <dl className="lp-mobile-investment-facts">
+                <div><dt>Invested</dt><dd>{formatDate(investment.investmentDate)}</dd></div>
+                <div><dt>Cost</dt><dd>{formatCurrency(investment.investedCost)}</dd></div>
+                <div><dt>Round</dt><dd>{investment.round}</dd></div>
+                <div><dt>Entry valuation</dt><dd>{investment.entryValuation}</dd></div>
+              </dl>
+            </Link>
+          </article>
+        ))}
+        {filtered.length === 0 && (
+          <div className="lp-table-empty">
+            <p>No investments match this view.</p>
+            <Link href="/lp">Clear filters</Link>
+          </div>
+        )}
+      </div>
     </section>
   );
 }
