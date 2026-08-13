@@ -12,6 +12,19 @@ export type LpInvestmentDto = Omit<
 const publicPortfolio = new Map(
   PORTFOLIO.map((company) => [company.name.toLocaleLowerCase(), company]),
 );
+const publicPortfolioAliases = new Map([
+  ["budbreak innovations", "bud break innovations"],
+  ["decart.ai", "decart"],
+  ["lance ai", "lance"],
+]);
+const lpWebsiteFallbacks = new Map([
+  ["compresr", "https://www.compresr.com/"],
+  ["matforge", "https://discoveredmaterials.com/"],
+  ["raspire", "https://raspire.com/"],
+  ["rendezvous robotics", "https://www.rdvrobotics.com/"],
+  ["stripe", "https://stripe.com/"],
+]);
+const investmentsWithoutCompanyWebsite = new Set(["09-h256-series-3"]);
 
 function assertLpData() {
   const ids = new Set<string>();
@@ -29,6 +42,9 @@ function assertLpData() {
     }
     if (!investment.logo.startsWith("/logos/cards/")) {
       throw new Error(`Invalid local logo path: ${investment.id}`);
+    }
+    if (!investmentsWithoutCompanyWebsite.has(investment.id) && !getCompanyContext(investment.company)?.website) {
+      throw new Error(`Missing LP company website: ${investment.id}`);
     }
     if (investment.performance) {
       const mark = investment.performance;
@@ -76,12 +92,15 @@ export const getLpInvestment = cache(async (id: string) => {
 });
 
 export function getCompanyContext(name: string) {
-  const company = publicPortfolio.get(name.toLocaleLowerCase());
-  if (!company) return null;
+  const requestedName = name.toLocaleLowerCase();
+  const portfolioName = publicPortfolioAliases.get(requestedName) || requestedName;
+  const company = publicPortfolio.get(portfolioName);
+  const website = company?.href || lpWebsiteFallbacks.get(requestedName);
+  if (!company && !website) return null;
   return {
-    sectors: company.sectors,
-    website: company.href,
-    description: company.blurb,
+    sectors: company?.sectors || [],
+    website,
+    description: company?.blurb,
   };
 }
 

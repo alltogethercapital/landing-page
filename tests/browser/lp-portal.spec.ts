@@ -33,8 +33,12 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await page.getByRole("link", { name: "View Blue Origin" }).click();
   await expect(page).toHaveURL(/44-blue-origin$/);
   await expect(page.getByText("Pending acceptance", { exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Performance" })).toBeVisible();
-  await expect(page.getByText("Awaiting approved mark", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Visit Blue Origin website" })).toHaveAttribute("href", "https://www.blueorigin.com/");
+  await expect(page.getByRole("heading", { name: "Position" })).toBeVisible();
+  await expect(page.getByText("$15,000", { exact: true })).toHaveCount(2);
+  await expect(page.getByText("1.00×", { exact: true })).toBeVisible();
+  await expect(page.getByText("Not reported", { exact: true })).toBeVisible();
+  await expect(page.getByText(/not fair-value estimates/i)).toBeVisible();
   await page.screenshot({ path: "output/playwright/lp-portal/detail-desktop.png", fullPage: true });
 });
 
@@ -102,6 +106,8 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await page.getByRole("link", { name: "View Blue Origin" }).click();
     await expect(page).toHaveURL(/44-blue-origin$/);
     await expect(page.getByRole("heading", { name: "Blue Origin" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Visit Blue Origin website" })).toBeVisible();
+    await expect(page.getByText("1.00×", { exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     await page.screenshot({
       path: `output/playwright/lp-portal/detail-${viewport.name}.png`,

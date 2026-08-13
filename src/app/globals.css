@@ -2606,12 +2606,39 @@ body {
   letter-spacing: 0.04em;
 }
 
+.lp-detail-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  align-self: start;
+  margin-top: 4px;
+}
+
+.lp-company-website {
+  display: flex;
+  min-width: 146px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid var(--lp-ink);
+  padding: 9px 11px 10px;
+  color: var(--lp-ink);
+  font-size: 14px;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.lp-company-website:hover {
+  border-color: var(--lp-green);
+  background: var(--lp-green);
+}
+
 .lp-detail-status {
   display: flex;
   align-items: center;
   gap: 8px;
-  align-self: start;
-  margin-top: 4px;
   font-family: var(--cog-mono);
   font-size: 10px;
   text-transform: uppercase;
@@ -2734,6 +2761,17 @@ body {
   font-size: 25px;
 }
 
+.lp-performance dl small {
+  display: block;
+  margin-top: 5px;
+  color: var(--lp-muted);
+  font-family: var(--cog-mono);
+  font-size: 8px;
+  line-height: 1.35;
+  text-transform: uppercase;
+  letter-spacing: 0.035em;
+}
+
 .lp-performance > p {
   margin: 16px 0 0;
 }
@@ -2772,7 +2810,7 @@ body {
   .lp-detail-facts > div:nth-child(n + 3) { border-top: 1px solid var(--lp-line); }
   .lp-detail-hero { grid-template-columns: 150px minmax(0, 1fr); }
   .lp-detail-logo { width: 150px; }
-  .lp-detail-status { grid-column: 2; }
+  .lp-detail-actions { grid-column: 2; align-items: flex-start; margin-top: 0; }
 }
 
 @media (max-width: 899px) {
@@ -2795,7 +2833,7 @@ body {
   .lp-detail-hero { display: block; padding: 26px 0 34px; }
   .lp-detail-logo { width: 150px; height: 100px; margin-bottom: 28px; }
   .lp-detail-logo img { width: 112px; height: 50px; }
-  .lp-detail-status { margin-top: 24px; }
+  .lp-detail-actions { margin-top: 24px; }
   .lp-detail-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 40px; }
   .lp-detail-facts > div { padding: 18px 12px 20px 0; }
   .lp-detail-facts > div + div { padding-left: 12px; }

@@ -24,6 +24,12 @@ function date(value: string) {
   }).format(new Date(`${value}T00:00:00Z`));
 }
 
+function snapshotDate(value: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long", day: "numeric", year: "numeric", timeZone: "America/Los_Angeles",
+  }).format(new Date(value));
+}
+
 export default async function LpInvestmentDetailPage({
   params,
 }: {
@@ -35,9 +41,10 @@ export default async function LpInvestmentDetailPage({
   const context = getCompanyContext(investment.company);
   const snapshot = getLpSnapshot();
   const performance = investment.performance;
+  const reportedValue = performance?.currentValue ?? investment.investedCost;
   const grossMoic = performance
     ? (performance.currentValue + performance.distributions) / investment.investedCost
-    : null;
+    : 1;
 
   return (
     <div className="lp-portal-shell lp-detail-shell">
@@ -52,12 +59,25 @@ export default async function LpInvestmentDetailPage({
           <p>{investment.description || context?.description || "Portfolio investment."}</p>
           <p className="lp-detail-meta">{investment.platform} · {investment.instrument}</p>
         </div>
-        {investment.reviewStatus !== "verified" && (
-          <div className={`lp-detail-status lp-detail-status--${investment.reviewStatus}`}>
-            <span />
-            {investment.reviewStatus === "pending" ? "Pending acceptance" : "Needs review"}
-          </div>
-        )}
+        <div className="lp-detail-actions">
+          {context?.website && (
+            <a
+              href={context.website}
+              target="_blank"
+              rel="noreferrer"
+              className="lp-company-website"
+              aria-label={`Visit ${investment.company} website`}
+            >
+              Company website <span aria-hidden="true">↗</span>
+            </a>
+          )}
+          {investment.reviewStatus !== "verified" && (
+            <div className={`lp-detail-status lp-detail-status--${investment.reviewStatus}`}>
+              <span />
+              {investment.reviewStatus === "pending" ? "Pending acceptance" : "Needs review"}
+            </div>
+          )}
+        </div>
       </header>
 
       {investment.reviewNote && (
@@ -76,15 +96,36 @@ export default async function LpInvestmentDetailPage({
 
       <section className="lp-performance" aria-labelledby="lp-performance-heading">
         <header>
-          <h2 id="lp-performance-heading">Performance</h2>
-          <span>{performance ? `As of ${date(performance.asOf)}` : "Awaiting approved mark"}</span>
+          <h2 id="lp-performance-heading">Position</h2>
+          <span>
+            {performance
+              ? `Approved as of ${date(performance.asOf)}`
+              : `At cost as of ${snapshotDate(snapshot.sourceModifiedAt)}`}
+          </span>
         </header>
         <dl>
-          <div><dt>Current value</dt><dd>{performance ? currency(performance.currentValue) : "—"}</dd></div>
-          <div><dt>Distributions</dt><dd>{performance ? currency(performance.distributions) : "—"}</dd></div>
-          <div><dt>Gross MOIC</dt><dd>{grossMoic === null ? "—" : `${grossMoic.toFixed(2)}×`}</dd></div>
+          <div>
+            <dt>Current value</dt>
+            <dd>{currency(reportedValue)}</dd>
+            <small>{performance ? "Approved mark" : "Held at invested cost"}</small>
+          </div>
+          <div>
+            <dt>Distributions</dt>
+            <dd>{performance ? currency(performance.distributions) : "Not reported"}</dd>
+            <small>{performance ? "Cumulative" : "Not tracked in the SOI"}</small>
+          </div>
+          <div>
+            <dt>Gross MOIC</dt>
+            <dd>{grossMoic.toFixed(2)}×</dd>
+            <small>{performance ? "Based on approved mark" : "Cost-basis baseline"}</small>
+          </div>
         </dl>
-        {!performance && <p>Published after the quarter-end mark is sourced and approved.</p>}
+        {!performance && (
+          <p>
+            No approved current mark or distribution schedule is recorded. Current value and MOIC
+            are shown at cost and are not fair-value estimates.
+          </p>
+        )}
       </section>
 
       <footer className="lp-portal-footer">
