@@ -32,13 +32,6 @@ export default async function LpLoginPage({
           supporting records.
         </p>
         <LpLoginForm error={error} />
-        <div className="lp-login-meta" aria-label="Portal status">
-          <span>
-            <i aria-hidden="true" />
-            Private access
-          </span>
-          <span>Staging environment</span>
-        </div>
       </CognitionSection>
     </CognitionPage>
   );
