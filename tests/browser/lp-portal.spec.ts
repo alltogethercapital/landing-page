@@ -8,12 +8,12 @@ test("protects, authenticates, filters, and opens an investment", async ({ page 
   await expect(page.getByRole("heading", { name: "Investor portal." })).toBeVisible();
 
   await page.getByLabel("Access password").fill("incorrect-password");
-  await page.getByRole("button", { name: /Enter portal/ }).click();
+  await page.getByRole("button", { name: /Sign in/ }).click();
   await expect(page).toHaveURL(/\/lp-login\?error=invalid$/);
   await expect(page.locator("#lp-login-error")).toContainText("not valid");
 
   await page.getByLabel("Access password").fill(password);
-  await page.getByRole("button", { name: /Enter portal/ }).click();
+  await page.getByRole("button", { name: /Sign in/ }).click();
   await expect(page).toHaveURL(/\/lp$/);
   await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
   await expect(page.getByText("44 of 44 records")).toBeVisible();
@@ -52,6 +52,9 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await page.goto("/lp-login");
     await expect(page.getByRole("heading", { name: "Investor portal." })).toBeVisible();
     await expect(page.getByLabel("Access password")).toBeVisible();
+    const loginFrame = page.locator(".lp-login-input-row");
+    await expect(loginFrame).toHaveCSS("border-left-width", "1px");
+    await expect(loginFrame).toHaveCSS("border-left-style", "solid");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     await page.screenshot({
       path: `output/playwright/lp-portal/login-${viewport.name}.png`,
@@ -59,7 +62,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     });
 
     await page.getByLabel("Access password").fill(password);
-    await page.getByRole("button", { name: /Enter portal/ }).click();
+    await page.getByRole("button", { name: /Sign in/ }).click();
     await expect(page).toHaveURL(/\/lp$/);
     await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);

@@ -2010,13 +2010,13 @@ body {
 }
 
 .lp-login-form {
-  width: min(100%, 470px);
+  width: min(100%, 430px);
   margin-top: 40px;
 }
 
 .lp-login-form > label {
   display: block;
-  margin-bottom: 9px;
+  margin-bottom: 8px;
   color: var(--lp-muted);
   font-family: var(--cog-mono);
   font-size: 11px;
@@ -2026,31 +2026,48 @@ body {
 
 .lp-login-input-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  border-top: 1px solid var(--lp-ink);
-  border-bottom: 1px solid var(--lp-ink);
+  grid-template-columns: minmax(0, 1fr) 124px;
+  border: 1px solid var(--lp-ink);
+  background: rgba(255, 255, 255, 0.48);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.lp-login-input-row:focus-within {
+  border-color: var(--lp-ink);
+  box-shadow: 0 0 0 1px rgba(18, 17, 16, 0.32);
+}
+
+.lp-login-input-row.has-error {
+  border-color: #a12519;
+  box-shadow: 0 0 0 1px #a12519;
 }
 
 .lp-login-input-row input {
   min-width: 0;
-  height: 48px;
+  height: 50px;
   border: 0;
   background: transparent;
-  padding: 0 18px 0 0;
+  padding: 0 15px;
   color: var(--lp-ink);
   font-family: var(--cog-mono);
   font-size: 16px;
   letter-spacing: 0.16em;
 }
 
+.lp-login-input-row input:focus-visible {
+  outline: 0;
+}
+
 .lp-login-input-row button {
   display: flex;
-  height: 48px;
+  height: 50px;
   align-items: center;
-  gap: 14px;
+  justify-content: space-between;
+  gap: 12px;
   border: 0;
+  border-left: 1px solid var(--lp-ink);
   background: var(--lp-ink);
-  padding: 0 15px;
+  padding: 0 14px;
   color: var(--lp-white);
   font-family: var(--font-newsreader), Georgia, serif;
   font-size: 15px;
@@ -2058,9 +2075,13 @@ body {
 }
 
 .lp-login-input-row button:hover:not(:disabled) {
-  border-color: var(--lp-green);
   background: var(--lp-green);
   color: var(--lp-ink);
+}
+
+.lp-login-input-row button:focus-visible {
+  outline: 2px solid var(--lp-green);
+  outline-offset: -4px;
 }
 
 .lp-login-input-row button:disabled {
@@ -2068,10 +2089,9 @@ body {
   opacity: 0.5;
 }
 
-.lp-login-note,
 .lp-login-error {
-  min-height: 36px;
-  margin: 14px 0 0;
+  min-height: 30px;
+  margin: 11px 0 0;
   color: var(--lp-muted);
   font-size: 13px;
   line-height: 1.4;
@@ -2966,8 +2986,8 @@ body {
 
 @media (max-width: 560px) {
   .lp-login-input-row { grid-template-columns: 1fr; }
-  .lp-login-input-row input { height: 56px; padding-right: 0; }
-  .lp-login-input-row button { height: 56px; justify-content: space-between; font-size: 17px; }
+  .lp-login-input-row input { height: 54px; padding-inline: 14px; }
+  .lp-login-input-row button { height: 54px; border-top: 1px solid var(--lp-ink); border-left: 0; font-size: 17px; }
 
   .cog-article-grid,
   .cog-person-grid,
