@@ -18,10 +18,9 @@ test("protects, authenticates, filters, and opens an investment", async ({ page 
   await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
   await expect(page.getByText("44 of 44 records")).toBeVisible();
   await expect(page.locator(".lp-portfolio-table .lp-company-logo img")).toHaveCount(44);
-  const brokenLogos = await page.locator(".lp-portfolio-table .lp-company-logo img").evaluateAll((logos) =>
-    logos.filter((logo) => !(logo as HTMLImageElement).complete || (logo as HTMLImageElement).naturalWidth === 0).length,
-  );
-  expect(brokenLogos).toBe(0);
+  await expect.poll(() => page.locator(".lp-portfolio-table .lp-company-logo img").evaluateAll((logos) =>
+    logos.filter((logo) => (logo as HTMLImageElement).complete && (logo as HTMLImageElement).naturalWidth > 0).length,
+  )).toBe(44);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-desktop.png", fullPage: true });
 
   const search = page.getByPlaceholder("Search company, round, instrument…");
