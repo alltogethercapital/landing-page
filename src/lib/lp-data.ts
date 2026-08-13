@@ -16,6 +16,7 @@ const publicPortfolio = new Map(
 function assertLpData() {
   const ids = new Set<string>();
   const chronologies = new Set<number>();
+  let investedCostTotal = 0;
 
   for (const investment of LP_INVESTMENTS) {
     if (ids.has(investment.id)) throw new Error(`Duplicate LP investment id: ${investment.id}`);
@@ -40,6 +41,21 @@ function assertLpData() {
     }
     ids.add(investment.id);
     chronologies.add(investment.chronology);
+    investedCostTotal += investment.investedCost;
+  }
+
+  if (LP_INVESTMENTS.length !== LP_SNAPSHOT.recordCount) {
+    throw new Error(
+      `LP snapshot count mismatch: expected ${LP_SNAPSHOT.recordCount}, received ${LP_INVESTMENTS.length}`,
+    );
+  }
+  for (let chronology = 1; chronology <= LP_SNAPSHOT.recordCount; chronology += 1) {
+    if (!chronologies.has(chronology)) throw new Error(`Missing LP chronology: ${chronology}`);
+  }
+  if (Math.round(investedCostTotal * 100) !== Math.round(LP_SNAPSHOT.investedCostTotal * 100)) {
+    throw new Error(
+      `LP snapshot cost mismatch: expected ${LP_SNAPSHOT.investedCostTotal}, received ${investedCostTotal}`,
+    );
   }
 }
 

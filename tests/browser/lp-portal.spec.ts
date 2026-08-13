@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const password = process.env.LP_TEST_PASSWORD || "StagingPortalPassphrase-2026";
 
-test("protects, authenticates, filters, and opens an investment", async ({ page }) => {
+test("protects, authenticates, searches, and opens an investment", async ({ page }) => {
   await page.goto("/lp");
   await expect(page).toHaveURL(/\/lp-login$/);
   await expect(page.getByRole("heading", { name: "Investor portal." })).toBeVisible();
@@ -17,13 +17,16 @@ test("protects, authenticates, filters, and opens an investment", async ({ page 
   await expect(page).toHaveURL(/\/lp$/);
   await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
   await expect(page.getByText("44 of 44 records")).toBeVisible();
+  await expect(page.getByText("$701,014.25", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-portfolio-table").getByText("No co. val; $50M fund / $1M SPV", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-portfolio-table").getByText("No val; $50M model financing", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-portfolio-table .lp-company-logo img")).toHaveCount(44);
   await expect.poll(() => page.locator(".lp-portfolio-table .lp-company-logo img").evaluateAll((logos) =>
     logos.filter((logo) => (logo as HTMLImageElement).complete && (logo as HTMLImageElement).naturalWidth > 0).length,
   )).toBe(44);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-desktop.png", fullPage: true });
 
-  const search = page.getByPlaceholder("Search company, round, instrument…");
+  const search = page.getByPlaceholder("Search investments…");
   await search.fill("Blue Origin");
   await search.press("Enter");
   await expect(page.getByText(/1 of 44 records/)).toBeVisible();
@@ -41,6 +44,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
   const viewports = [
     { name: "phone", width: 390, height: 844 },
     { name: "tablet", width: 768, height: 1024 },
+    { name: "compact-desktop", width: 1285, height: 1320 },
     { name: "desktop", width: 1440, height: 1000 },
     { name: "wide", width: 1920, height: 1080 },
   ];
@@ -66,6 +70,21 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page).toHaveURL(/\/lp$/);
     await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+
+    const pageBox = await page.locator(".lp-portal-page").boundingBox();
+    const summaryBox = await page.locator(".lp-summary-grid").boundingBox();
+    expect(pageBox).not.toBeNull();
+    expect(summaryBox).not.toBeNull();
+    const rightGutter = pageBox!.x + pageBox!.width - summaryBox!.x - summaryBox!.width;
+    if (viewport.width <= 719) {
+      expect(Math.abs(summaryBox!.x - pageBox!.x - rightGutter)).toBeLessThanOrEqual(1);
+    } else {
+      const railEnd = await page.locator(".lp-portal-page").evaluate((element) =>
+        Number.parseFloat(getComputedStyle(element).getPropertyValue("--lp-rail-end")),
+      );
+      const leftGutter = summaryBox!.x - pageBox!.x - railEnd;
+      expect(Math.abs(leftGutter - rightGutter)).toBeLessThanOrEqual(1);
+    }
 
     const navBox = await page.locator(".lp-portal-nav").boundingBox();
     expect(navBox).not.toBeNull();

@@ -11,7 +11,8 @@ function currency(value: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(value);
 }
 
@@ -20,8 +21,7 @@ export default async function LpPortfolioPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const investments = await getLpPortfolio();
-  const params = await searchParams;
+  const [investments, params] = await Promise.all([getLpPortfolio(), searchParams]);
   const value = (key: string) => typeof params[key] === "string" ? params[key] : undefined;
   const requestedSort = value("sort");
   const sort: LpTableSort = ["chronology", "company", "investedCost", "investmentDate"].includes(requestedSort || "")
@@ -29,7 +29,6 @@ export default async function LpPortfolioPage({
     : "chronology";
   const view = {
     query: value("query"),
-    platform: value("platform"),
     sort,
     direction: value("direction") === "asc" ? "asc" as const : "desc" as const,
   };

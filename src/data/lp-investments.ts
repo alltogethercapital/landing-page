@@ -30,7 +30,7 @@ export type InvestmentRecord = {
 };
 
 // Approved cost-basis snapshot of the All Together Drive Schedule of Investments.
-// Generated 2026-08-12. Values are preserved exactly from the source sheet;
+// Reconciled 2026-08-13. Values are preserved exactly from the source sheet;
 // suspicious values are flagged for review rather than silently corrected.
 // Performance fields remain absent until a sourced, dated mark is approved.
 export const LP_INVESTMENTS: InvestmentRecord[] = [
@@ -42,7 +42,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "06-quaise-energy", chronology: 6, company: "Quaise Energy", investedCost: 10000, investmentDate: "2026-05-03", round: "Series B", entryValuation: "$312.5M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "10EI2AksDVmz6SLnGaAdgJ50KuuPk9Fmx", logo: "/logos/cards/quaise.png", description: "Ultra-deep geothermal to unlock clean baseload energy.", reviewStatus: "verified" },
   { id: "07-shield-ai", chronology: 7, company: "Shield AI", investedCost: 20000, investmentDate: "2026-05-04", round: "Series G", entryValuation: "$10.5B valuation", instrument: "Equity", platform: "Sydecar", driveFolderId: "1azcwyu3tpDuI3Q9J2_obryec9G67fT-K", logo: "/logos/cards/shield-ai.png", description: "AI pilots for aircraft and autonomous defense systems.", reviewStatus: "verified" },
   { id: "08-samply", chronology: 8, company: "Samply", investedCost: 2000, investmentDate: "2026-05-04", round: "Seed", entryValuation: "$10M post-money cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "19mk9zCueHMx8jVBE6KSEtU9Hk4yKjwE1", logo: "/logos/cards/samply.png", description: "Sample management for modern music producers.", reviewStatus: "verified" },
-  { id: "09-h256-series-3", chronology: 9, company: "H256 LLC Series 3", investedCost: 200000, investmentDate: "2026-05-06", round: "N/A", entryValuation: "No company valuation", instrument: "SPV", platform: "Direct", driveFolderId: "1c4ssc43ICTMjZO-BS_yYBBMLMHj4PUim", logo: "/logos/cards/h256-series-3.svg", description: "Special-purpose vehicle with exposure to frontier technology companies.", reviewStatus: "verified" },
+  { id: "09-h256-series-3", chronology: 9, company: "H256 LLC Series 3", investedCost: 200000, investmentDate: "2026-05-06", round: "N/A", entryValuation: "No co. val; $50M fund / $1M SPV", instrument: "SPV", platform: "Direct", driveFolderId: "1c4ssc43ICTMjZO-BS_yYBBMLMHj4PUim", logo: "/logos/cards/h256-series-3.svg", description: "Special-purpose vehicle with exposure to frontier technology companies.", reviewStatus: "verified" },
   { id: "10-starcloud", chronology: 10, company: "Starcloud", investedCost: 37097.38, investmentDate: "2026-05-08", round: "Series A+", entryValuation: "$2B pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1W17VCUKpqxFQrlKhbLRwf0Iy5SyIXzw4", logo: "/logos/cards/starcloud.png", description: "Data centers in orbit, powered by the sun.", reviewStatus: "verified" },
   { id: "11-openai", chronology: 11, company: "OpenAI", investedCost: 50000, investmentDate: "2026-05-12", round: "Series G", entryValuation: "$852B post-money", instrument: "Equity", platform: "Sydecar", driveFolderId: "1yuyYyZjOiTDP5FWD1lY0VHI6qb_c6ipG", logo: "/logos/cards/openai.png", description: "Frontier AI research and products.", reviewStatus: "verified" },
   { id: "12-apptronik", chronology: 12, company: "Apptronik", investedCost: 30000, investmentDate: "2026-05-13", round: "Series A", entryValuation: "~$4.9B post-money", instrument: "Secondary", platform: "AngelList", driveFolderId: "1xr2MFkdyzodS6PgKsiaWG3e3lrdu4Wy-", logo: "/logos/cards/apptronik.png", description: "General-purpose humanoid robots for industry.", reviewStatus: "verified" },
@@ -52,7 +52,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "16-salient-motion", chronology: 16, company: "Salient Motion", investedCost: 4585.65, investmentDate: "2026-05-15", round: "Series A", entryValuation: "$70M post-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1yR3pzxCRLviyb2EJVpqVn1T1V0PezA2h", logo: "/logos/cards/salient.png", description: "Critical actuation systems for aviation and defense.", reviewStatus: "verified" },
   { id: "17-hark", chronology: 17, company: "Hark", investedCost: 10000, investmentDate: "2026-05-15", round: "Series A", entryValuation: "$5.775B pre-money", instrument: "SPV", platform: "Sydecar", driveFolderId: "1QlPSw6g8aDSgc3i6ynyMkBRwFi8O6x9N", logo: "/logos/cards/hark.png", description: "AI-powered tools for the way people work.", reviewStatus: "verified" },
   { id: "18-eccentric-machines", chronology: 18, company: "Eccentric Machines", investedCost: 9763, investmentDate: "2026-05-20", round: "Seed", entryValuation: "$15M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1sWjrKX4F0TGp-cfDEPdnOBTVMWU23P72", logo: "/logos/cards/eccentric.png", description: "Intelligent robotic motion systems.", reviewStatus: "verified" },
-  { id: "19-maven-robotics", chronology: 19, company: "Maven Robotics", investedCost: 9733.38, investmentDate: "2026-05-20", round: "Series A", entryValuation: "No valuation disclosed", instrument: "Equity", platform: "AngelList", driveFolderId: "17xTbyu31b01wbAHIeg6bUMMOkuHTP4ha", logo: "/logos/cards/maven.png", description: "General-purpose AI robots for industry.", reviewStatus: "verified" },
+  { id: "19-maven-robotics", chronology: 19, company: "Maven Robotics", investedCost: 9733.38, investmentDate: "2026-05-20", round: "Series A", entryValuation: "No val; $50M model financing", instrument: "Equity", platform: "AngelList", driveFolderId: "17xTbyu31b01wbAHIeg6bUMMOkuHTP4ha", logo: "/logos/cards/maven.png", description: "General-purpose AI robots for industry.", reviewStatus: "verified" },
   { id: "20-array-labs", chronology: 20, company: "Array Labs", investedCost: 10000, investmentDate: "2026-05-23", round: "Series A+", entryValuation: "$90M public valuation", instrument: "Equity", platform: "AngelList", driveFolderId: "1rctopc9sizaPH0jZYsW0kBW96cZqHOlG", logo: "/logos/cards/array-labs.png", description: "Satellite swarms mapping Earth in real time.", reviewStatus: "verified" },
   { id: "21-corgi", chronology: 21, company: "Corgi", investedCost: 10000, investmentDate: "2026-05-25", round: "Series B+", entryValuation: "$2.5B valuation cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "1MIfGNQQEAMqb0vXDUeJ-n5B_GWDBaSIt", logo: "/logos/cards/corgi.png", reviewStatus: "verified" },
   { id: "22-aformic", chronology: 22, company: "Aformic", investedCost: 4910, investmentDate: "2026-05-27", round: "Pre-seed", entryValuation: "$35M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1lWVnqP_P6ZYSYpZAVD7mwQevfxR4rXRE", logo: "/logos/cards/aformic.png", reviewStatus: "verified" },
@@ -83,7 +83,10 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
 export const LP_SNAPSHOT = {
   source: "All Together Drive · Schedule of Investments",
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
-  sourceModifiedAt: "2026-08-12T19:58:27.753Z",
-  publishedAt: "2026-08-12T21:00:00.000Z",
+  sourceRange: "Sheet1!A2:J45",
+  sourceModifiedAt: "2026-08-13T14:06:15.453Z",
+  publishedAt: "2026-08-13T19:02:48.000Z",
+  recordCount: 44,
+  investedCostTotal: 701014.25,
   status: "Performance pending approval",
 } as const;
