@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { LogoMark } from "@/components/cognition-layout";
+import { CognitionPage, CognitionSection } from "@/components/cognition-layout";
 import { LpLoginForm } from "@/components/lp-login-form";
 import { SiteNav } from "@/components/site-nav";
 import { hasValidLpSession } from "@/lib/lp-auth";
@@ -20,28 +20,26 @@ export default async function LpLoginPage({
   const { error } = await searchParams;
 
   return (
-    <main className="cog-page lp-login-page min-h-screen">
+    <CognitionPage className="lp-login-page">
       <SiteNav />
-      <section className="lp-login-shell">
-        <div className="lp-login-heading">
-          <p className="cog-kicker">Limited partner access</p>
-          <h1>Information, clearly held.</h1>
-          <p>
-            A private view of the All Together portfolio, investment activity,
-            and the source information behind it.
-          </p>
+      <CognitionSection
+        label="Limited partner access"
+        title="Investor portal."
+        className="lp-login-section"
+      >
+        <p className="cog-body-copy lp-login-intro">
+          Sign in to view All Together&apos;s private investment portfolio and
+          supporting records.
+        </p>
+        <LpLoginForm error={error} />
+        <div className="lp-login-meta" aria-label="Portal status">
+          <span>
+            <i aria-hidden="true" />
+            Private access
+          </span>
+          <span>Staging environment</span>
         </div>
-        <div className="lp-login-panel">
-          <div className="lp-login-panel-head">
-            <LogoMark />
-            <span>Investor portal</span>
-          </div>
-          <LpLoginForm error={error} />
-        </div>
-      </section>
-      <p className="lp-login-footnote">
-        Staging · Values are preliminary until formally approved.
-      </p>
-    </main>
+      </CognitionSection>
+    </CognitionPage>
   );
 }

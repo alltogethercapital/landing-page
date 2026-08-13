@@ -36,7 +36,7 @@ export function LpLoginForm({ error }: { error?: string }) {
         </p>
       ) : (
         <p id="lp-login-note" className="lp-login-note">
-          Investor information is private and intended only for authorized limited partners.
+          Authorized limited partners only.
         </p>
       )}
     </form>

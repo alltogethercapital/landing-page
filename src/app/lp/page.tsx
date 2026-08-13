@@ -40,23 +40,7 @@ export default async function LpPortfolioPage({
 
   return (
     <div className="lp-portal-shell">
-      <header className="lp-portal-hero">
-        <div>
-          <p className="lp-eyebrow">All Together · Investment overview</p>
-          <h1>The portfolio, at a glance.</h1>
-          <p className="lp-portal-deck">
-            One clear record of every investment, its entry terms, source,
-            and current review status.
-          </p>
-        </div>
-        <div className="lp-freshness">
-          <span className="lp-live-dot" aria-hidden="true" />
-          <div>
-            <strong>{snapshot.status}</strong>
-            <span>Source updated Aug 12, 2026 · 12:58 PM PT</span>
-          </div>
-        </div>
-      </header>
+      <h1 className="sr-only">Portfolio</h1>
 
       <section className="lp-summary-grid" aria-label="Portfolio summary">
         <article>
@@ -86,7 +70,8 @@ export default async function LpPortfolioPage({
         <p>
           This staging view reports invested cost and entry terms from the Drive schedule.
           It does not present current fair value, NAV, IRR, or LP capital accounts until
-          those figures are supported by an approved accounting and valuation process.
+          those figures are supported by an approved accounting and valuation process. Source
+          updated Aug 12, 2026 at 12:58 PM PT · {snapshot.status}.
         </p>
       </div>
 
