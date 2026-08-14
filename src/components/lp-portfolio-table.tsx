@@ -6,7 +6,6 @@ export type LpTableSort = "chronology" | "company" | "investedCost" | "investmen
 
 export type LpTableView = {
   query?: string;
-  platform?: string;
   sort?: LpTableSort;
   direction?: "asc" | "desc";
 };
@@ -32,7 +31,6 @@ function formatDate(value: string) {
 function sortHref(view: LpTableView, key: LpTableSort) {
   const params = new URLSearchParams();
   if (view.query) params.set("query", view.query);
-  if (view.platform && view.platform !== "All platforms") params.set("platform", view.platform);
   params.set("sort", key);
   params.set("direction", view.sort === key && view.direction !== "asc" ? "asc" : "desc");
   return `/lp?${params}`;
@@ -46,13 +44,8 @@ export function LpPortfolioTable({
   view: LpTableView;
 }) {
   const query = view.query?.trim() || "";
-  const platform = view.platform || "All platforms";
   const sort = view.sort || "chronology";
   const ascending = view.direction === "asc";
-  const platforms = [
-    "All platforms",
-    ...Array.from(new Set(investments.map((item) => item.platform))).sort(),
-  ];
   const normalizedQuery = query.toLocaleLowerCase();
   const filtered = investments
     .filter((investment) => {
@@ -62,7 +55,7 @@ export function LpPortfolioTable({
           .join(" ")
           .toLocaleLowerCase()
           .includes(normalizedQuery);
-      return matchesQuery && (platform === "All platforms" || investment.platform === platform);
+      return matchesQuery;
     })
     .sort((left, right) => {
       const direction = ascending ? 1 : -1;
@@ -90,17 +83,11 @@ export function LpPortfolioTable({
           <input
             name="query"
             type="search"
-            placeholder="Search company, round, instrument…"
+            placeholder="Search investments…"
             defaultValue={query}
           />
         </label>
-        <label>
-          <span className="sr-only">Filter by platform</span>
-          <select name="platform" defaultValue={platform}>
-            {platforms.map((item) => <option key={item}>{item}</option>)}
-          </select>
-        </label>
-        <button type="submit" className="lp-filter-submit">Apply</button>
+        <button type="submit" className="lp-filter-submit">Search</button>
       </form>
 
       <div className="lp-table-wrap">
@@ -117,7 +104,7 @@ export function LpPortfolioTable({
           </thead>
           <tbody>
             {filtered.map((investment) => (
-              <tr key={investment.id} data-status={investment.reviewStatus}>
+              <tr key={investment.id}>
                 <td>
                   <Link href={`/lp/investments/${investment.id}`} className="lp-company-cell" aria-label={`View ${investment.company}`}>
                     <span className={`lp-company-logo${investment.logoTreatment === "inverse" ? " lp-logo--inverse" : ""}`}>
@@ -127,11 +114,6 @@ export function LpPortfolioTable({
                       <strong>{investment.company}</strong>
                       <small>
                         {investment.platform}
-                        {investment.reviewStatus !== "verified" && (
-                          <span className={`lp-status lp-status--${investment.reviewStatus}`}>
-                            {investment.reviewStatus === "pending" ? "Pending" : "Review"}
-                          </span>
-                        )}
                       </small>
                     </span>
                   </Link>
@@ -148,14 +130,14 @@ export function LpPortfolioTable({
         {filtered.length === 0 && (
           <div className="lp-table-empty">
             <p>No investments match this view.</p>
-            <Link href="/lp">Clear filters</Link>
+            <Link href="/lp">Clear search</Link>
           </div>
         )}
       </div>
 
       <div className="lp-portfolio-mobile" aria-label="Investment records">
         {filtered.map((investment) => (
-          <article key={investment.id} data-status={investment.reviewStatus}>
+          <article key={investment.id}>
             <Link
               href={`/lp/investments/${investment.id}`}
               className="lp-mobile-investment-link"
@@ -169,11 +151,6 @@ export function LpPortfolioTable({
                   <strong>{investment.company}</strong>
                   <small>
                     {investment.platform}
-                    {investment.reviewStatus !== "verified" && (
-                      <span className={`lp-status lp-status--${investment.reviewStatus}`}>
-                        {investment.reviewStatus === "pending" ? "Pending" : "Review"}
-                      </span>
-                    )}
                   </small>
                 </span>
                 <span className="lp-mobile-investment-arrow" aria-hidden="true">→</span>
@@ -190,7 +167,7 @@ export function LpPortfolioTable({
         {filtered.length === 0 && (
           <div className="lp-table-empty">
             <p>No investments match this view.</p>
-            <Link href="/lp">Clear filters</Link>
+            <Link href="/lp">Clear search</Link>
           </div>
         )}
       </div>

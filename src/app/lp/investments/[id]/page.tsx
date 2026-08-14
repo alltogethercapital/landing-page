@@ -34,10 +34,7 @@ export default async function LpInvestmentDetailPage({
   if (!investment) notFound();
   const context = getCompanyContext(investment.company);
   const snapshot = getLpSnapshot();
-  const performance = investment.performance;
-  const grossMoic = performance
-    ? (performance.currentValue + performance.distributions) / investment.investedCost
-    : null;
+  const projection = investment.projection;
 
   return (
     <div className="lp-portal-shell lp-detail-shell">
@@ -52,20 +49,20 @@ export default async function LpInvestmentDetailPage({
           <p>{investment.description || context?.description || "Portfolio investment."}</p>
           <p className="lp-detail-meta">{investment.platform} · {investment.instrument}</p>
         </div>
-        {investment.reviewStatus !== "verified" && (
-          <div className={`lp-detail-status lp-detail-status--${investment.reviewStatus}`}>
-            <span />
-            {investment.reviewStatus === "pending" ? "Pending acceptance" : "Needs review"}
-          </div>
-        )}
+        <div className="lp-detail-actions">
+          {context?.website && (
+            <a
+              href={context.website}
+              target="_blank"
+              rel="noreferrer"
+              className="lp-company-website"
+              aria-label={`Visit ${investment.company} website`}
+            >
+              Company website <span aria-hidden="true">↗</span>
+            </a>
+          )}
+        </div>
       </header>
-
-      {investment.reviewNote && (
-        <aside className={`lp-review-note lp-review-note--${investment.reviewStatus}`}>
-          <p className="lp-eyebrow">Data status</p>
-          <strong>{investment.reviewNote}</strong>
-        </aside>
-      )}
 
       <dl className="lp-detail-facts" aria-label="Investment facts">
         <div><dt>Invested cost</dt><dd>{currency(investment.investedCost)}</dd></div>
@@ -76,15 +73,38 @@ export default async function LpInvestmentDetailPage({
 
       <section className="lp-performance" aria-labelledby="lp-performance-heading">
         <header>
-          <h2 id="lp-performance-heading">Performance</h2>
-          <span>{performance ? `As of ${date(performance.asOf)}` : "Awaiting approved mark"}</span>
+          <h2 id="lp-performance-heading">Position</h2>
+          <span>Projection as of {date(snapshot.projectionAsOf)}</span>
         </header>
         <dl>
-          <div><dt>Current value</dt><dd>{performance ? currency(performance.currentValue) : "—"}</dd></div>
-          <div><dt>Distributions</dt><dd>{performance ? currency(performance.distributions) : "—"}</dd></div>
-          <div><dt>Gross MOIC</dt><dd>{grossMoic === null ? "—" : `${grossMoic.toFixed(2)}×`}</dd></div>
+          <div>
+            <dt>Projected value</dt>
+            <dd>{currency(projection.projectedValue)}</dd>
+            <small>{projection.basis === "cost" ? "Held at invested cost" : "Based on valuation reference"}</small>
+          </div>
+          <div>
+            <dt>Latest company valuation</dt>
+            <dd>{projection.latestCompanyValuation}</dd>
+            <small>{projection.basis === "cost" ? "Entry terms; no newer comparable mark" : `As of ${date(projection.valuationAsOf)}`}</small>
+          </div>
+          <div>
+            <dt>Distributions</dt>
+            <dd>{currency(projection.distributions)}</dd>
+            <small>Assumed in this projection</small>
+          </div>
+          <div>
+            <dt>Projected gross multiple</dt>
+            <dd>{projection.grossMultiple.toFixed(2)}×</dd>
+            <small>Before fees, carry, taxes, and dilution</small>
+          </div>
         </dl>
-        {!performance && <p>Published after the quarter-end mark is sourced and approved.</p>}
+        <p className="lp-projection-source">
+          Basis: {projection.source}
+          {projection.sourceUrl && (
+            <> · <a href={projection.sourceUrl} target="_blank" rel="noreferrer">View source ↗</a></>
+          )}
+          . This gross estimate is not audited NAV.
+        </p>
       </section>
 
       <footer className="lp-portal-footer">

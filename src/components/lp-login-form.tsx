@@ -13,7 +13,7 @@ export function LpLoginForm({ error }: { error?: string }) {
   return (
     <form className="lp-login-form" action="/api/lp/session" method="post">
       <label htmlFor="lp-password">Access password</label>
-      <div className="lp-login-input-row">
+      <div className={`lp-login-input-row${message ? " has-error" : ""}`}>
         <input
           id="lp-password"
           name="password"
@@ -23,22 +23,19 @@ export function LpLoginForm({ error }: { error?: string }) {
           required
           minLength={12}
           maxLength={256}
-          aria-describedby={message ? "lp-login-error" : "lp-login-note"}
+          aria-invalid={Boolean(message)}
+          aria-describedby={message ? "lp-login-error" : undefined}
         />
         <button type="submit">
-          Enter portal
-          <span aria-hidden="true">↗</span>
+          Sign in
+          <span aria-hidden="true">→</span>
         </button>
       </div>
       {message ? (
         <p id="lp-login-error" className="lp-login-error" role="alert">
           {message}
         </p>
-      ) : (
-        <p id="lp-login-note" className="lp-login-note">
-          Authorized limited partners only.
-        </p>
-      )}
+      ) : null}
     </form>
   );
 }

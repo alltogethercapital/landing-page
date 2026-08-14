@@ -12,7 +12,7 @@ import { UpdatesCarousel } from "@/components/updates-carousel";
 import { ARTICLES } from "@/lib/articles";
 import { PORTFOLIO } from "@/lib/portfolio";
 
-const logoCompanies = PORTFOLIO.filter((company) => company.cardLogo ?? company.logo).slice(0, 24);
+const logoCompanies = PORTFOLIO.filter((company) => company.cardLogo ?? company.logo);
 const homepageUpdates = ARTICLES.map(
   ({ slug, title, date, dateISO, category, image }) => ({
     slug,
