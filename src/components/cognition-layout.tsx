@@ -29,14 +29,16 @@ export function BrandDot({ className }: { className?: string }) {
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-brand-lockup", className)}>
-      <Image
-        src="/brand/all-together-character-mark.png"
-        alt=""
-        width="34"
-        height="34"
-        className="cog-character-mark"
-        unoptimized
-      />
+      <span className="cog-character-mark-wrap" aria-hidden="true">
+        <Image
+          src="/brand/all-together-character-mark.png"
+          alt=""
+          width="34"
+          height="34"
+          className="cog-character-mark"
+          unoptimized
+        />
+      </span>
       <span className="cog-wordmark">
         <span className="cog-wordmark-text">ALLTOGETHER</span>
       </span>

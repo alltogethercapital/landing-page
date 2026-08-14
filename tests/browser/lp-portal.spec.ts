@@ -2,6 +2,74 @@ import { expect, test } from "@playwright/test";
 
 const password = process.env.LP_TEST_PASSWORD || "StagingPortalPassphrase-2026";
 
+test("keeps the public navigation integrated while scrolling", async ({ page }) => {
+  await page.setViewportSize({ width: 1195, height: 788 });
+
+  for (const route of ["/companies", "/founders", "/team", "/updates"]) {
+    await page.goto(route);
+
+    const nav = page.locator(".cog-desktop-nav");
+    await expect(nav).toBeVisible();
+    const initialBox = await nav.boundingBox();
+    expect(initialBox).not.toBeNull();
+
+    await page.evaluate(() => window.scrollTo(0, 900));
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(250);
+
+    const scrolledBox = await nav.boundingBox();
+    expect(scrolledBox).not.toBeNull();
+    expect(scrolledBox!.x).toBeCloseTo(initialBox!.x, 0);
+    expect(scrolledBox!.y).toBeCloseTo(initialBox!.y, 0);
+    expect(await nav.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        background: style.backgroundColor,
+        boxShadow: style.boxShadow,
+        position: style.position,
+      };
+    })).toEqual({
+      background: "rgba(0, 0, 0, 0)",
+      boxShadow: "none",
+      position: "fixed",
+    });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+
+    if (route === "/companies") {
+      await page.screenshot({
+        path: "output/playwright/lp-portal/companies-nav-scrolled.png",
+      });
+    }
+  }
+});
+
+test("animates only the character mark orb and respects reduced motion", async ({ page }) => {
+  await page.setViewportSize({ width: 1195, height: 788 });
+  await page.goto("/companies");
+
+  const mark = page.locator(".cog-character-mark-wrap:visible").first();
+  await expect(mark).toBeVisible();
+  const glowStyle = await mark.evaluate((element) => {
+    const radiance = getComputedStyle(element, "::before");
+    const core = getComputedStyle(element, "::after");
+    return {
+      radianceAnimation: radiance.animationName,
+      coreAnimation: core.animationName,
+      radianceLeft: Number.parseFloat(radiance.left),
+      radianceTop: Number.parseFloat(radiance.top),
+    };
+  });
+  expect(glowStyle.radianceAnimation).toBe("cog-orb-radiance");
+  expect(glowStyle.coreAnimation).toBe("cog-orb-core");
+  expect(glowStyle.radianceLeft).toBeCloseTo(34 * 0.23, 0);
+  expect(glowStyle.radianceTop).toBeCloseTo(34 * 0.2, 0);
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  expect(await mark.evaluate((element) => ({
+    radianceAnimation: getComputedStyle(element, "::before").animationName,
+    coreAnimation: getComputedStyle(element, "::after").animationName,
+  }))).toEqual({ radianceAnimation: "none", coreAnimation: "none" });
+});
+
 test("protects, authenticates, filters, and opens an investment", async ({ page }) => {
   await page.goto("/lp");
   await expect(page).toHaveURL(/\/lp-login$/);
