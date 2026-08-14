@@ -102,7 +102,7 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
   );
   const totalMatches = groups.reduce((total, group) => total + group.total, 0);
   const activeResult = visibleResults[activeIndex];
-  const isPortalRoute = pathname.startsWith("/lp");
+  const isPortalRoute = pathname === "/lp" || pathname.startsWith("/lp/");
 
   const closeSearch = useCallback(() => {
     setOpen(false);
@@ -196,17 +196,17 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
 
   return (
     <>
-      {!isPortalRoute && <button
+      <button
         ref={triggerRef}
         type="button"
-        className="cog-search-trigger"
+        className={`cog-search-trigger${isPortalRoute ? " cog-search-trigger--portal" : ""}`}
         aria-label="Open search"
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={openSearch}
       >
         <SearchGlyph />
-      </button>}
+      </button>
 
       {open && (
         <div

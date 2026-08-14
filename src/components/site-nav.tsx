@@ -82,11 +82,17 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
 
     const navRect = nav.getBoundingClientRect();
     const linkRect = link.getBoundingClientRect();
+    const linkStyles = window.getComputedStyle(link);
+    const lineHeight = Number.parseFloat(linkStyles.lineHeight);
+    const plateHeight = Number.isFinite(lineHeight)
+      ? Math.min(linkRect.height, lineHeight + 4)
+      : linkRect.height;
+    const plateTop = linkRect.top - navRect.top + (linkRect.height - plateHeight) / 2;
 
     nav.style.setProperty("--nav-hover-left", `${linkRect.left - navRect.left}px`);
-    nav.style.setProperty("--nav-hover-top", `${linkRect.top - navRect.top}px`);
-    nav.style.setProperty("--nav-hover-width", `${linkRect.width}px`);
-    nav.style.setProperty("--nav-hover-height", `${linkRect.height}px`);
+    nav.style.setProperty("--nav-hover-top", `${plateTop}px`);
+    nav.style.setProperty("--nav-hover-width", `${linkRect.width + 7}px`);
+    nav.style.setProperty("--nav-hover-height", `${plateHeight}px`);
     nav.dataset.hoverReady = "true";
   }, []);
 
@@ -242,7 +248,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
             <NavLink
               href={CONTACT_MAILTO}
               onClick={() => setOpen(false)}
-              className="cog-mobile-menu-link"
+              className="cog-mobile-menu-link cog-mobile-menu-contact"
             >
               Email
             </NavLink>
