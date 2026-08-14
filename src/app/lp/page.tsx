@@ -45,16 +45,17 @@ export default async function LpPortfolioPage({
       <h1 className="sr-only">Portfolio</h1>
 
       <dl className="lp-summary-grid" aria-label="Portfolio summary">
-        <div><dt>Invested cost</dt><dd>{currency(investedCost)}</dd></div>
+        <div><dt>Amount invested</dt><dd>{currency(investedCost)}</dd></div>
         <div><dt>Projected value</dt><dd>{currency(projectedValue)}</dd></div>
-        <div><dt>Projected gross multiple</dt><dd>{projectedGrossMultiple.toFixed(2)}×</dd></div>
+        <div><dt>Projected value multiple</dt><dd>{projectedGrossMultiple.toFixed(2)}×</dd></div>
       </dl>
 
       <div className="lp-disclosure">
         <p>
-          Projection as of {snapshot.projectionAsOf}: positions with a sourced comparable financing
-          are marked to that valuation; all others remain at cost. Gross, undiluted estimate before
-          fees, carry, taxes, and future dilution—not audited NAV.
+          Projection as of {snapshot.projectionAsOf}: investments with a newer, sourced company
+          valuation use that valuation; all others remain at the amount invested. This estimate is
+          before fund fees, profit share, taxes, and future ownership dilution. It is not the
+          fund&apos;s audited net asset value.
         </p>
       </div>
 

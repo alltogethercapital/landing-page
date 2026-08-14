@@ -20,12 +20,19 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByText("$676,014.25", { exact: true })).toBeVisible();
   await expect(page.getByText("$689,867.04", { exact: true })).toBeVisible();
   await expect(page.getByText("1.02×", { exact: true })).toBeVisible();
-  await expect(page.getByText(/not audited NAV/i)).toBeVisible();
+  await expect(page.getByText(/not the fund's audited net asset value/i)).toBeVisible();
   await expect(page.getByText("Stripe", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("AngelList", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Sydecar", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Capital Company", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Equity", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("SAFE", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("SPV", { exact: true })).toHaveCount(0);
   await expect(page.locator(".lp-portfolio-table").getByText("Positron", { exact: true })).toBeVisible();
-  await expect(page.locator(".lp-portfolio-table").getByText("No co. val; $50M fund / $1M SPV", { exact: true })).toBeVisible();
-  await expect(page.locator(".lp-portfolio-table").getByText("No val; $50M model financing", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M fund / $1M investment entity", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M model financing", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-portfolio-table .lp-company-logo img")).toHaveCount(44);
+  await page.locator(".lp-portfolio-table .lp-company-logo img").last().scrollIntoViewIfNeeded();
   await expect.poll(() => page.locator(".lp-portfolio-table .lp-company-logo img").evaluateAll((logos) =>
     logos.filter((logo) => (logo as HTMLImageElement).complete && (logo as HTMLImageElement).naturalWidth > 0).length,
   )).toBe(44);
@@ -42,10 +49,11 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByRole("link", { name: "Visit Blue Origin website" })).toHaveAttribute("href", "https://www.blueorigin.com/");
   await expect(page.getByRole("heading", { name: "Position" })).toBeVisible();
   await expect(page.getByText("$15,000", { exact: true })).toHaveCount(2);
-  await expect(page.getByText("$130B pre-money", { exact: true })).toHaveCount(2);
+  await expect(page.getByText("$130B before the round", { exact: true })).toHaveCount(2);
+  await expect(page.getByText("Invested with a group · Investment held through a dedicated company", { exact: true })).toBeVisible();
   await expect(page.getByText("$0", { exact: true })).toBeVisible();
   await expect(page.getByText("1.00×", { exact: true })).toBeVisible();
-  await expect(page.getByText(/not audited NAV/i)).toBeVisible();
+  await expect(page.getByText(/not the fund's official net asset value/i)).toBeVisible();
   await page.screenshot({ path: "output/playwright/lp-portal/detail-desktop.png", fullPage: true });
 
   await page.locator(".lp-back-link").click();
@@ -54,7 +62,13 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await page.getByRole("link", { name: "View Positron" }).click();
   await expect(page).toHaveURL(/44-positron$/);
   await expect(page.getByRole("link", { name: "Visit Positron website" })).toHaveAttribute("href", "https://www.positron.ai/");
-  await expect(page.getByText("$4.5B pre-money", { exact: true })).toHaveCount(2);
+  await expect(page.getByText("$4.5B before the round", { exact: true })).toHaveCount(2);
+
+  await page.goto("/lp/investments/35-decart-ai");
+  await expect(page.getByRole("heading", { name: "Decart.ai" })).toBeVisible();
+  await expect(page.getByText("Invested with a group · Shares in the company", { exact: true })).toBeVisible();
+  await expect(page.getByText("AngelList", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Equity", { exact: true })).toHaveCount(0);
 });
 
 test("renders the login, portfolio, and detail views at every supported layout", async ({ browser }) => {

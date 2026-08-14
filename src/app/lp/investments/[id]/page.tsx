@@ -47,7 +47,9 @@ export default async function LpInvestmentDetailPage({
         <div className="lp-detail-heading">
           <h1>{investment.company}</h1>
           <p>{investment.description || context?.description || "Portfolio investment."}</p>
-          <p className="lp-detail-meta">{investment.platform} · {investment.instrument}</p>
+          <p className="lp-detail-meta">
+            {investment.investmentAccess} · {investment.ownershipType}
+          </p>
         </div>
         <div className="lp-detail-actions">
           {context?.website && (
@@ -65,10 +67,10 @@ export default async function LpInvestmentDetailPage({
       </header>
 
       <dl className="lp-detail-facts" aria-label="Investment facts">
-        <div><dt>Invested cost</dt><dd>{currency(investment.investedCost)}</dd></div>
+        <div><dt>Amount invested</dt><dd>{currency(investment.investedCost)}</dd></div>
         <div><dt>Investment date</dt><dd>{date(investment.investmentDate)}</dd></div>
         <div><dt>Round</dt><dd>{investment.round}</dd></div>
-        <div><dt>Entry valuation</dt><dd>{investment.entryValuation}</dd></div>
+        <div><dt>Company valuation when invested</dt><dd>{investment.valuationWhenInvested}</dd></div>
       </dl>
 
       <section className="lp-performance" aria-labelledby="lp-performance-heading">
@@ -93,17 +95,17 @@ export default async function LpInvestmentDetailPage({
             <small>Assumed in this projection</small>
           </div>
           <div>
-            <dt>Projected gross multiple</dt>
+            <dt>Projected value multiple</dt>
             <dd>{projection.grossMultiple.toFixed(2)}×</dd>
-            <small>Before fees, carry, taxes, and dilution</small>
+            <small>Before fund fees, profit share, taxes, and ownership dilution</small>
           </div>
         </dl>
         <p className="lp-projection-source">
-          Basis: {projection.source}
+          Estimate based on: {projection.source}
           {projection.sourceUrl && (
             <> · <a href={projection.sourceUrl} target="_blank" rel="noreferrer">View source ↗</a></>
           )}
-          . This gross estimate is not audited NAV.
+          . This is an unaudited estimate, not the fund&apos;s official net asset value.
         </p>
       </section>
 

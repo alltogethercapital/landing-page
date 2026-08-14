@@ -51,7 +51,13 @@ export function LpPortfolioTable({
     .filter((investment) => {
       const matchesQuery =
         !normalizedQuery ||
-        [investment.company, investment.round, investment.instrument, investment.platform]
+        [
+          investment.company,
+          investment.round,
+          investment.investmentAccess,
+          investment.ownershipType,
+          investment.valuationWhenInvested,
+        ]
           .join(" ")
           .toLocaleLowerCase()
           .includes(normalizedQuery);
@@ -95,11 +101,11 @@ export function LpPortfolioTable({
           <thead>
             <tr>
               <th scope="col"><Link href={sortHref(view, "company")}>{sortLabel("company", "Company")}</Link></th>
-              <th scope="col"><Link href={sortHref(view, "investmentDate")}>{sortLabel("investmentDate", "Invested")}</Link></th>
+              <th scope="col"><Link href={sortHref(view, "investmentDate")}>{sortLabel("investmentDate", "Date invested")}</Link></th>
               <th scope="col">Round</th>
-              <th scope="col">Instrument</th>
-              <th scope="col">Entry valuation</th>
-              <th scope="col" className="is-number"><Link href={sortHref(view, "investedCost")}>{sortLabel("investedCost", "Cost")}</Link></th>
+              <th scope="col">Ownership</th>
+              <th scope="col">Valuation when invested</th>
+              <th scope="col" className="is-number"><Link href={sortHref(view, "investedCost")}>{sortLabel("investedCost", "Amount invested")}</Link></th>
             </tr>
           </thead>
           <tbody>
@@ -113,15 +119,15 @@ export function LpPortfolioTable({
                     <span className="lp-company-name">
                       <strong>{investment.company}</strong>
                       <small>
-                        {investment.platform}
+                        {investment.investmentAccess}
                       </small>
                     </span>
                   </Link>
                 </td>
                 <td className="lp-date-cell">{formatDate(investment.investmentDate)}</td>
                 <td>{investment.round}</td>
-                <td>{investment.instrument}</td>
-                <td>{investment.entryValuation}</td>
+                <td>{investment.ownershipType}</td>
+                <td>{investment.valuationWhenInvested}</td>
                 <td className="is-number">{formatCurrency(investment.investedCost)}</td>
               </tr>
             ))}
@@ -150,16 +156,16 @@ export function LpPortfolioTable({
                 <span className="lp-mobile-investment-title">
                   <strong>{investment.company}</strong>
                   <small>
-                    {investment.platform}
+                    {investment.investmentAccess} · {investment.ownershipType}
                   </small>
                 </span>
                 <span className="lp-mobile-investment-arrow" aria-hidden="true">→</span>
               </span>
               <dl className="lp-mobile-investment-facts">
-                <div><dt>Invested</dt><dd>{formatDate(investment.investmentDate)}</dd></div>
-                <div><dt>Cost</dt><dd>{formatCurrency(investment.investedCost)}</dd></div>
+                <div><dt>Date invested</dt><dd>{formatDate(investment.investmentDate)}</dd></div>
+                <div><dt>Amount invested</dt><dd>{formatCurrency(investment.investedCost)}</dd></div>
                 <div><dt>Round</dt><dd>{investment.round}</dd></div>
-                <div><dt>Entry valuation</dt><dd>{investment.entryValuation}</dd></div>
+                <div><dt>Valuation when invested</dt><dd>{investment.valuationWhenInvested}</dd></div>
               </dl>
             </Link>
           </article>

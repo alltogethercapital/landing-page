@@ -7,6 +7,11 @@ import {
   LP_PROJECTION_AS_OF,
   LP_SNAPSHOT,
 } from "@/data/lp-investments";
+import {
+  formatLpRound,
+  formatLpValuation,
+  getLpInvestmentLanguage,
+} from "@/lib/lp-investment-language";
 import { PORTFOLIO } from "@/lib/portfolio";
 
 export type LpInvestmentProjectionDto = {
@@ -20,8 +25,15 @@ export type LpInvestmentProjectionDto = {
   basis: "approved" | "comparable" | "cost";
 };
 
-export type LpInvestmentDto = Omit<(typeof LP_INVESTMENTS)[number], "driveFolderId"> & {
+export type LpInvestmentDto = Omit<
+  (typeof LP_INVESTMENTS)[number],
+  "driveFolderId" | "entryValuation" | "instrument" | "platform" | "round"
+> & {
+  investmentAccess: string;
+  ownershipType: string;
   projection: LpInvestmentProjectionDto;
+  round: string;
+  valuationWhenInvested: string;
 };
 
 const publicPortfolio = new Map(
@@ -103,7 +115,15 @@ function assertLpData() {
 assertLpData();
 
 function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
-  const { driveFolderId: _privateDriveFolderId, ...safeInvestment } = investment;
+  const {
+    driveFolderId: _privateDriveFolderId,
+    entryValuation,
+    instrument,
+    platform,
+    round,
+    ...safeInvestment
+  } = investment;
+  const language = getLpInvestmentLanguage(platform, instrument);
   const mark = LP_PROJECTED_VALUATION_MARKS[investment.id];
   const approvedPerformance = investment.performance;
   const projectedValue = approvedPerformance
@@ -115,14 +135,20 @@ function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
     projectedValue,
     grossMultiple: projectedValue / investment.investedCost,
     distributions: approvedPerformance?.distributions ?? 0,
-    latestCompanyValuation: mark?.latestValuation ?? investment.entryValuation,
+    latestCompanyValuation: formatLpValuation(mark?.latestValuation ?? entryValuation),
     valuationAsOf: approvedPerformance?.asOf ?? mark?.asOf ?? investment.investmentDate,
-    source: approvedPerformance?.source ?? mark?.source ?? "Schedule of Investments entry terms",
+    source: approvedPerformance?.source ?? mark?.source ?? "Recorded investment terms",
     sourceUrl: mark?.sourceUrl,
     basis: approvedPerformance ? "approved" : mark ? "comparable" : "cost",
   };
   void _privateDriveFolderId;
-  return { ...safeInvestment, projection };
+  return {
+    ...safeInvestment,
+    ...language,
+    projection,
+    round: formatLpRound(round),
+    valuationWhenInvested: formatLpValuation(entryValuation),
+  };
 }
 export const getLpPortfolio = cache(async () => {
   return LP_INVESTMENTS.map(toDto);
