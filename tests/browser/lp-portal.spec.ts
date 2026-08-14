@@ -39,7 +39,16 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-desktop.png", fullPage: true });
 
   const search = page.getByPlaceholder("Search investments…");
+  await search.fill("Blue");
+  await expect(page.getByText(/1 of 44 records/)).toBeVisible();
+  await search.fill("");
+  await expect(page.getByText(/44 of 44 records/)).toBeVisible();
+  await search.fill("not an investment");
+  await expect(page.getByText(/0 of 44 records/)).toBeVisible();
+  await page.locator(".lp-table-wrap").getByRole("link", { name: "Clear search" }).click();
+  await expect(page.getByText(/44 of 44 records/)).toBeVisible();
   await search.fill("Blue Origin");
+  await expect(page.getByText(/1 of 44 records/)).toBeVisible();
   await search.press("Enter");
   await expect(page.getByText(/1 of 44 records/)).toBeVisible();
   await page.getByRole("link", { name: "View Blue Origin" }).click();

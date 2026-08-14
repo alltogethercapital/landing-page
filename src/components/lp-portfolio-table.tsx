@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { LpInvestmentDto } from "@/lib/lp-data";
@@ -43,10 +46,10 @@ export function LpPortfolioTable({
   investments: LpInvestmentDto[];
   view: LpTableView;
 }) {
-  const query = view.query?.trim() || "";
+  const [query, setQuery] = useState(view.query?.trim() || "");
   const sort = view.sort || "chronology";
   const ascending = view.direction === "asc";
-  const normalizedQuery = query.toLocaleLowerCase();
+  const normalizedQuery = query.trim().toLocaleLowerCase();
   const filtered = investments
     .filter((investment) => {
       const matchesQuery =
@@ -79,7 +82,7 @@ export function LpPortfolioTable({
     <section className="lp-portfolio-section" aria-labelledby="lp-portfolio-heading">
       <div className="lp-table-heading">
         <h2 id="lp-portfolio-heading">Investments</h2>
-        <p>{filtered.length} of {investments.length} records</p>
+        <p aria-live="polite" aria-atomic="true">{filtered.length} of {investments.length} records</p>
       </div>
 
       <form className="lp-table-controls" action="/lp" method="get">
@@ -90,7 +93,8 @@ export function LpPortfolioTable({
             name="query"
             type="search"
             placeholder="Search investments…"
-            defaultValue={query}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
           />
         </label>
         <button type="submit" className="lp-filter-submit">Search</button>
@@ -100,12 +104,12 @@ export function LpPortfolioTable({
         <table className="lp-portfolio-table">
           <thead>
             <tr>
-              <th scope="col"><Link href={sortHref(view, "company")}>{sortLabel("company", "Company")}</Link></th>
-              <th scope="col"><Link href={sortHref(view, "investmentDate")}>{sortLabel("investmentDate", "Date invested")}</Link></th>
+              <th scope="col"><Link href={sortHref({ ...view, query }, "company")}>{sortLabel("company", "Company")}</Link></th>
+              <th scope="col"><Link href={sortHref({ ...view, query }, "investmentDate")}>{sortLabel("investmentDate", "Date invested")}</Link></th>
               <th scope="col">Round</th>
               <th scope="col">Ownership</th>
               <th scope="col">Valuation when invested</th>
-              <th scope="col" className="is-number"><Link href={sortHref(view, "investedCost")}>{sortLabel("investedCost", "Amount invested")}</Link></th>
+              <th scope="col" className="is-number"><Link href={sortHref({ ...view, query }, "investedCost")}>{sortLabel("investedCost", "Amount invested")}</Link></th>
             </tr>
           </thead>
           <tbody>
@@ -136,7 +140,7 @@ export function LpPortfolioTable({
         {filtered.length === 0 && (
           <div className="lp-table-empty">
             <p>No investments match this view.</p>
-            <Link href="/lp">Clear search</Link>
+            <Link href="/lp" onClick={() => setQuery("")}>Clear search</Link>
           </div>
         )}
       </div>
@@ -173,7 +177,7 @@ export function LpPortfolioTable({
         {filtered.length === 0 && (
           <div className="lp-table-empty">
             <p>No investments match this view.</p>
-            <Link href="/lp">Clear search</Link>
+            <Link href="/lp" onClick={() => setQuery("")}>Clear search</Link>
           </div>
         )}
       </div>
