@@ -44,7 +44,7 @@ export type ProjectedValuationMark = {
 };
 
 // Approved cost-basis snapshot of the All Together Drive Schedule of Investments.
-// Reconciled 2026-08-13. Values are preserved exactly from the source sheet;
+// Reconciled 2026-08-14. Values are preserved exactly from the source sheet;
 // Performance fields remain absent until a sourced, dated mark is approved.
 export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "01-budbreak-innovations", chronology: 1, company: "Budbreak Innovations", investedCost: 10000, investmentDate: "2026-04-19", round: "Seed", entryValuation: "$25M post-money cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "1iS2O7ATyv0UgTfRDReE5Uv8MD7Lo8n-N", logo: "/logos/cards/budbreak.png", description: "The robotics platform for agriculture.", reviewStatus: "verified" },
@@ -88,7 +88,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "39-valstad", chronology: 39, company: "Valstad", investedCost: 10000, investmentDate: "2026-07-28", round: "Seed", entryValuation: "$30M post-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1QcRI0AnOr2l8N29ZZ7o88B4TiRppeQzt", logo: "/logos/cards/valstad.png", description: "Robotic fabrication systems for ship production and repair.", reviewStatus: "verified" },
   { id: "40-sunflower-labs", chronology: 40, company: "Sunflower Labs", investedCost: 10000, investmentDate: "2026-08-01", round: "Series C", entryValuation: "$50M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "17kBI7OoZQMt37UaBeJEZZRR7K8UYcHWa", logo: "/logos/cards/sunflower-labs.png", description: "Autonomous drone security systems.", reviewStatus: "verified" },
   { id: "41-atoms", chronology: 41, company: "Atoms", investedCost: 9350, investmentDate: "2026-08-01", round: "Class A Preferred Units", entryValuation: "$15.9B pre-money", instrument: "Equity", platform: "Capital Company", driveFolderId: "1Cvnw6w8gMEnf8zwfceKq9WhKaeBuVO2l", logo: "/logos/cards/atoms.png", description: "Physical automation for food, mining, and transport.", reviewStatus: "verified" },
-  { id: "42-weave-robotics", chronology: 42, company: "Weave Robotics", investedCost: 20000, investmentDate: "2026-08-11", round: "Seed+", entryValuation: "$180M post-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1f2LWuGRnoxsws4tCC5-JY-mmJdopMC1-", logo: "/logos/cards/weave-robotics.png", description: "Practical home robots for everyday household work.", reviewStatus: "verified" },
+  { id: "42-weave-robotics", chronology: 42, company: "Weave Robotics", investedCost: 5000, investmentDate: "2026-08-11", round: "Seed+", entryValuation: "$180M post-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1f2LWuGRnoxsws4tCC5-JY-mmJdopMC1-", logo: "/logos/cards/weave-robotics.png", description: "Practical home robots for everyday household work.", reviewStatus: "verified", reviewNote: "Final amount reflects the owner's August 14 correction; the original outbound wire remains recorded separately." },
   { id: "43-blue-origin", chronology: 43, company: "Blue Origin", investedCost: 15000, investmentDate: "2026-08-12", round: "N/A", entryValuation: "$130B pre-money", instrument: "SPV", platform: "Capital Company", driveFolderId: "13wS3KegZWqt9lzc6Vomib40bjMQJ1Ya9", logo: "/logos/cards/blue-origin.png", description: "Reusable rockets, engines, lunar systems, and space infrastructure.", reviewStatus: "pending", reviewNote: "Wire confirmed; final fund acceptance and countersignature remain pending." },
   { id: "44-positron", chronology: 44, company: "Positron", investedCost: 5000, investmentDate: "2026-08-13", round: "Series C", entryValuation: "$4.5B pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "17qCf0zOiYhtSZxFOCChlHLK1qViEJsId", logo: "/logos/cards/positron.svg", logoTreatment: "inverse", description: "Purpose-built AI inference hardware and systems.", reviewStatus: "verified" },
 ];
@@ -104,15 +104,15 @@ export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark
   "35-decart-ai": { entryValuationAmount: 3_800_000_000, latestValuationAmount: 4_000_000_000, latestValuation: "$4B", asOf: "2026-05-31", source: "Decart latest completed financing", sourceUrl: "https://www.axios.com/2026/08/13/anthropic-decart-nvidia-ipo" },
 };
 
-export const LP_PROJECTION_AS_OF = "2026-08-13";
+export const LP_PROJECTION_AS_OF = "2026-08-14";
 
 export const LP_SNAPSHOT = {
   source: "All Together Drive · Schedule of Investments",
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
   sourceRange: "Sheet1!A2:J45",
-  sourceModifiedAt: "2026-08-13T20:43:44.997Z",
-  publishedAt: "2026-08-13T20:45:00.000Z",
+  sourceModifiedAt: "2026-08-14T22:20:54.020Z",
+  publishedAt: "2026-08-14T22:22:27.000Z",
   recordCount: 44,
-  investedCostTotal: 676014.25,
+  investedCostTotal: 661014.25,
   status: "Reconciled with projected gross return model",
 } as const;

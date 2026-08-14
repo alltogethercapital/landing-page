@@ -78,16 +78,16 @@ export default function LpInvestorUpdatePage() {
         </p>
 
         <p>
-          The portfolio reflects that thesis. At invested cost, 29.6% is in a diversified frontier
-          vehicle, 22.6% in robotics and industrial systems, 18.4% in AI and compute, 17.3% in aerospace,
-          defense, and autonomy, 8.1% in energy and hard infrastructure, and 4.0% in applications and
+          The portfolio reflects that thesis. At invested cost, 30.3% is in a diversified frontier
+          vehicle, 20.8% in robotics and industrial systems, 18.8% in AI and compute, 17.7% in aerospace,
+          defense, and autonomy, 8.3% in energy and hard infrastructure, and 4.1% in applications and
           resilience. Together, these positions span the intelligence, machines, and infrastructure of a
           post-labor economy.
         </p>
 
         <p>
           We built broadly to learn while the market was forming. Forty-four positions gave us enough
-          breadth. Our largest pooled vehicle represents 29.6% of invested cost, and our five largest
+          breadth. Our largest pooled vehicle represents 30.3% of invested cost, and our five largest
           positions represent about half; that is not the construction we want to repeat. The next phase
           will favor fewer direct positions, clearer economics, better information rights, and room to
           support the companies that earn conviction.

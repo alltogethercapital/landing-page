@@ -6,6 +6,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await page.goto("/lp/updates");
   await expect(page).toHaveURL(/\/lp-login$/);
   await expect(page.getByRole("heading", { name: "Investor portal." })).toBeVisible();
+  const publicLogoBox = await page.locator(".cog-nav-logo").boundingBox();
+  expect(publicLogoBox).not.toBeNull();
 
   await page.getByLabel("Access password").fill("incorrect-password");
   await page.getByRole("button", { name: /Sign in/ }).click();
@@ -17,9 +19,13 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page).toHaveURL(/\/lp$/);
   await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
   await expect(page.getByText("44 of 44 records")).toBeVisible();
-  await expect(page.getByText("$676,014.25", { exact: true })).toBeVisible();
-  await expect(page.getByText("$689,867.04", { exact: true })).toBeVisible();
+  await expect(page.getByText("$661,014.25", { exact: true })).toBeVisible();
+  await expect(page.getByText("$674,867.04", { exact: true })).toBeVisible();
   await expect(page.getByText("1.02×", { exact: true })).toBeVisible();
+  const portalLogoBox = await page.locator(".lp-portal-nav-logo").boundingBox();
+  expect(portalLogoBox).not.toBeNull();
+  expect(Math.abs(portalLogoBox!.x - publicLogoBox!.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(portalLogoBox!.y - publicLogoBox!.y)).toBeLessThanOrEqual(1);
   await expect(page.getByText(/not the fund's audited net asset value/i)).toBeVisible();
   await expect(page.getByText("Stripe", { exact: true })).toHaveCount(0);
   await expect(page.getByText("AngelList", { exact: true })).toHaveCount(0);
@@ -43,8 +49,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   expect(letterResponse?.headers()["x-robots-tag"]).toBe("noindex, nofollow, noarchive");
   await expect(page.getByRole("heading", { name: "Investor Letter" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Letter" })).toHaveAttribute("aria-current", "page");
-  await expect(page.locator(".lp-letter-simple-copy")).toContainText("$676,014.25");
-  await expect(page.locator(".lp-letter-simple-copy")).toContainText("$689,867.04");
+  await expect(page.locator(".lp-letter-simple-copy")).toContainText("$661,014.25");
+  await expect(page.locator(".lp-letter-simple-copy")).toContainText("$674,867.04");
   await expect(page.locator(".lp-letter-simple-copy")).toContainText("1.02×");
   await expect(page.locator(".lp-letter-simple-copy")).toContainText("post-labor economy");
   await expect(page.locator(".lp-letter-simple-copy")).toContainText("ownership layer");
@@ -52,7 +58,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(letterParagraphs.nth(2)).toContainText("This is what we mean by a post-labor economy");
   await expect(letterParagraphs.nth(3)).toContainText("That shift changes who captures the value");
   await expect(letterParagraphs.nth(3)).toContainText("ownership layer");
-  await expect(page.locator(".lp-letter-simple-copy")).toContainText("29.6%");
+  await expect(page.locator(".lp-letter-simple-copy")).toContainText("30.3%");
   const letterWordCount = await page.locator(".lp-letter-simple-copy").evaluate((element) =>
     (element.textContent ?? "").trim().split(/\s+/).length,
   );
@@ -114,6 +120,10 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByText("Invested with a group · Shares in the company", { exact: true })).toBeVisible();
   await expect(page.getByText("AngelList", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Equity", { exact: true })).toHaveCount(0);
+
+  await page.goto("/lp/investments/42-weave-robotics");
+  await expect(page.getByRole("heading", { name: "Weave Robotics" })).toBeVisible();
+  await expect(page.getByText("$5,000", { exact: true })).toHaveCount(2);
 });
 
 test("renders the login, portfolio, and detail views at every supported layout", async ({ browser }) => {
@@ -189,7 +199,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page.getByRole("link", { name: "Letter" })).toHaveAttribute("aria-current", "page");
     await expect(page.locator(".lp-letter-simple figure")).toHaveCount(0);
     await expect(page.locator(".lp-letter-simple aside")).toHaveCount(0);
-    await expect(page.locator(".lp-letter-simple-copy")).toContainText("$676,014.25");
+    await expect(page.locator(".lp-letter-simple-copy")).toContainText("$661,014.25");
     await expect(page.getByRole("link", { name: "Home", exact: true })).toBeVisible();
     const letterCopyBox = await page.locator(".lp-letter-simple-copy").boundingBox();
     expect(letterCopyBox).not.toBeNull();

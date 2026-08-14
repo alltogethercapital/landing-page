@@ -10,16 +10,16 @@ export function LpPortalNav() {
 
   return (
     <aside className="lp-portal-nav" aria-label="Investor portal navigation">
-      <Link href="/" aria-label="Home" className="lp-portal-home">
-        <span aria-hidden="true">←</span>
-        <span className="lp-portal-home-label">Home</span>
-      </Link>
       <Link
         href="/lp"
         aria-label="All Together investor portal home"
         className="lp-portal-nav-logo"
       >
         <LogoMark />
+      </Link>
+      <Link href="/" aria-label="Home" className="lp-portal-home">
+        <span aria-hidden="true">←</span>
+        <span className="lp-portal-home-label">Home</span>
       </Link>
       <nav aria-label="Investor portal">
         <Link href="/lp" aria-current={!isUpdate ? "page" : undefined} className={!isUpdate ? "is-active" : undefined}>Portfolio</Link>
