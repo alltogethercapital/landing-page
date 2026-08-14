@@ -46,33 +46,47 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   )).toBe(44);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-desktop.png", fullPage: true });
 
-  const letterResponse = await page.goto("/lp/updates");
-  expect(letterResponse?.status()).toBe(200);
-  expect(letterResponse?.headers()["x-robots-tag"]).toBe("noindex, nofollow, noarchive");
-  await expect(page.getByRole("heading", { name: "Investor Letter" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Letter" })).toHaveAttribute("aria-current", "page");
-  await expect(page.locator(".lp-letter-simple-copy")).toContainText("$661,014.25");
-  await expect(page.locator(".lp-letter-simple-copy")).toContainText("$674,867.04");
-  await expect(page.locator(".lp-letter-simple-copy")).toContainText("1.02×");
-  await expect(page.locator(".lp-letter-simple-copy")).toContainText("post-labor economy");
-  await expect(page.locator(".lp-letter-simple-copy")).toContainText("ownership layer");
-  const letterParagraphs = page.locator(".lp-letter-simple-copy > p");
-  await expect(letterParagraphs.nth(2)).toContainText("This is what we mean by a post-labor economy");
-  await expect(letterParagraphs.nth(3)).toContainText("That shift changes who captures the value");
-  await expect(letterParagraphs.nth(4)).toContainText("Another reason is personal");
-  await expect(letterParagraphs.nth(4)).toContainText("beyond the Anthropocene");
-  await expect(letterParagraphs.nth(4)).toContainText("ownership layer");
-  await expect(page.locator(".lp-letter-simple-copy")).toContainText("30.3%");
-  const letterWordCount = await page.locator(".lp-letter-simple-copy").evaluate((element) =>
+  const updatesResponse = await page.goto("/lp/updates");
+  expect(updatesResponse?.status()).toBe(200);
+  expect(updatesResponse?.headers()["x-robots-tag"]).toBe("noindex, nofollow, noarchive");
+  await expect(page.getByRole("heading", { name: "Investor Updates" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Investor Updates" })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByText(/at least twice per year/i)).toBeVisible();
+  const augustUpdateLink = page.getByRole("link", { name: /Why we built All Together/ });
+  await expect(augustUpdateLink).toHaveAttribute("href", "/lp/updates/august-2026");
+  await expect(page.getByText("1 published update", { exact: true })).toBeVisible();
+  await page.screenshot({ path: "output/playwright/lp-portal/updates-index-desktop.png", fullPage: true });
+
+  await augustUpdateLink.click();
+  await expect(page).toHaveURL(/\/lp\/updates\/august-2026$/);
+  await expect(page.getByRole("heading", { name: "Why we built All Together" })).toBeVisible();
+  await expect(page.getByText("Investor Update", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-update-article-copy")).toContainText("$661,014.25");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("$674,867.04");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("1.02×");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("post-labor economy");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("ownership layer");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
+  const updateParagraphs = page.locator(".lp-update-article-copy > p");
+  await expect(updateParagraphs.nth(2)).toContainText("This is what we mean by a post-labor economy");
+  await expect(updateParagraphs.nth(3)).toContainText("That shift changes who captures the value");
+  await expect(updateParagraphs.nth(4)).toContainText("Another reason is personal");
+  await expect(updateParagraphs.nth(4)).toContainText("beyond the Anthropocene");
+  await expect(updateParagraphs.nth(4)).toContainText("ownership layer");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("30.3%");
+  const updateWordCount = await page.locator(".lp-update-article-copy").evaluate((element) =>
     (element.textContent ?? "").trim().split(/\s+/).length,
   );
-  expect(letterWordCount).toBeLessThan(600);
+  expect(updateWordCount).toBeLessThan(600);
   await expect(page.getByText(/not audited net asset value/i)).toHaveCount(2);
-  await expect(page.locator(".lp-letter-simple-copy a")).toHaveCount(2);
-  await expect(page.locator(".lp-letter-simple figure")).toHaveCount(0);
-  await expect(page.locator(".lp-letter-simple aside")).toHaveCount(0);
-  await expect(page.locator(".lp-letter-simple ol, .lp-letter-simple ul, .lp-letter-simple dl")).toHaveCount(0);
-  await page.screenshot({ path: "output/playwright/lp-portal/letter-desktop.png", fullPage: true });
+  await expect(page.locator(".lp-update-article-copy a")).toHaveCount(6);
+  await expect(page.locator(".lp-update-article figure")).toHaveCount(0);
+  await expect(page.locator(".lp-update-article aside")).toHaveCount(0);
+  await expect(page.locator(".lp-update-article ol, .lp-update-article ul, .lp-update-article dl")).toHaveCount(0);
+  expect(await page.locator(".lp-update-article-copy a").evaluateAll((links) =>
+    links.every((link) => link.getAttribute("target") === "_blank" && link.getAttribute("rel") === "noreferrer"),
+  )).toBe(true);
+  await page.screenshot({ path: "output/playwright/lp-portal/update-august-2026-desktop.png", fullPage: true });
 
   await expect(page.getByRole("link", { name: "Home", exact: true })).toHaveAttribute("href", "/");
   await page.getByRole("link", { name: "Home", exact: true }).click();
@@ -199,23 +213,34 @@ test("renders the login, portfolio, and detail views at every supported layout",
       fullPage: true,
     });
 
-    await page.getByRole("link", { name: "Letter" }).click();
+    await page.getByRole("link", { name: "Investor Updates" }).click();
     await expect(page).toHaveURL(/\/lp\/updates$/);
-    await expect(page.getByRole("heading", { name: "Investor Letter" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Letter" })).toHaveAttribute("aria-current", "page");
-    await expect(page.locator(".lp-letter-simple figure")).toHaveCount(0);
-    await expect(page.locator(".lp-letter-simple aside")).toHaveCount(0);
-    await expect(page.locator(".lp-letter-simple-copy")).toContainText("$661,014.25");
+    await expect(page.getByRole("heading", { name: "Investor Updates" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Investor Updates" })).toHaveAttribute("aria-current", "page");
+    await expect(page.getByRole("link", { name: /Why we built All Together/ })).toBeVisible();
     await expect(page.getByRole("link", { name: "Home", exact: true })).toBeVisible();
-    const letterCopyBox = await page.locator(".lp-letter-simple-copy").boundingBox();
-    expect(letterCopyBox).not.toBeNull();
-    expect(letterCopyBox!.width).toBeLessThanOrEqual(761);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     await page.screenshot({
-      path: `output/playwright/lp-portal/letter-${viewport.name}.png`,
+      path: `output/playwright/lp-portal/updates-index-${viewport.name}.png`,
       fullPage: true,
     });
 
+    await page.getByRole("link", { name: /Why we built All Together/ }).click();
+    await expect(page).toHaveURL(/\/lp\/updates\/august-2026$/);
+    await expect(page.getByRole("heading", { name: "Why we built All Together" })).toBeVisible();
+    await expect(page.locator(".lp-update-article-copy")).toContainText("$661,014.25");
+    await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
+    const updateCopyBox = await page.locator(".lp-update-article-copy").boundingBox();
+    expect(updateCopyBox).not.toBeNull();
+    expect(updateCopyBox!.width).toBeLessThanOrEqual(761);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+    await page.screenshot({
+      path: `output/playwright/lp-portal/update-august-2026-${viewport.name}.png`,
+      fullPage: true,
+    });
+
+    await page.getByRole("link", { name: "All investor updates", exact: true }).first().click();
+    await expect(page).toHaveURL(/\/lp\/updates$/);
     await page.getByRole("link", { name: "Portfolio", exact: true }).click();
     await expect(page).toHaveURL(/\/lp$/);
 
