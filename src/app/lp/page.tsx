@@ -35,7 +35,7 @@ export default async function LpPortfolioPage({
   const snapshot = getLpSnapshot();
   const investedCost = investments.reduce((total, item) => total + item.investedCost, 0);
   const projectedValue = investments.reduce((total, item) => total + item.projection.projectedValue, 0);
-  const projectedGrossMultiple = projectedValue / investedCost;
+  const currentValueMultiple = projectedValue / investedCost;
   const sourceDate = new Intl.DateTimeFormat("en-US", {
     month: "short", day: "numeric", year: "numeric", timeZone: "America/Los_Angeles",
   }).format(new Date(snapshot.sourceModifiedAt));
@@ -47,7 +47,7 @@ export default async function LpPortfolioPage({
       <dl className="lp-summary-grid" aria-label="Portfolio summary">
         <div><dt>Amount invested</dt><dd>{currency(investedCost)}</dd></div>
         <div><dt>Projected value</dt><dd>{currency(projectedValue)}</dd></div>
-        <div><dt>Projected value multiple</dt><dd>{projectedGrossMultiple.toFixed(2)}×</dd></div>
+        <div><dt>Current value multiple</dt><dd>{currentValueMultiple.toFixed(2)}×</dd></div>
       </dl>
 
       <div className="lp-disclosure">

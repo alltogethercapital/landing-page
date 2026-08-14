@@ -95,7 +95,7 @@ export default async function LpInvestmentDetailPage({
             <small>Assumed in this projection</small>
           </div>
           <div>
-            <dt>Projected value multiple</dt>
+            <dt>Current value multiple</dt>
             <dd>{projection.grossMultiple.toFixed(2)}×</dd>
             <small>Before fund fees, profit share, taxes, and ownership dilution</small>
           </div>

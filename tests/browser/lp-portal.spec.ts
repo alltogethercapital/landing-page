@@ -21,6 +21,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByText("44 of 44 records")).toBeVisible();
   await expect(page.getByText("$661,014.25", { exact: true })).toBeVisible();
   await expect(page.getByText("$674,867.04", { exact: true })).toBeVisible();
+  await expect(page.getByText("Current value multiple", { exact: true })).toBeVisible();
+  await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.02×", { exact: true })).toBeVisible();
   const portalLogoBox = await page.locator(".lp-portal-nav-logo").boundingBox();
   expect(portalLogoBox).not.toBeNull();
@@ -105,6 +107,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByText("$130B before the round", { exact: true })).toHaveCount(2);
   await expect(page.getByText("Invested with a group · Investment held through a dedicated company", { exact: true })).toBeVisible();
   await expect(page.getByText("$0", { exact: true })).toBeVisible();
+  await expect(page.getByText("Current value multiple", { exact: true })).toBeVisible();
+  await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.00×", { exact: true })).toBeVisible();
   await expect(page.getByText(/not the fund's official net asset value/i)).toBeVisible();
   await page.screenshot({ path: "output/playwright/lp-portal/detail-desktop.png", fullPage: true });
