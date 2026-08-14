@@ -41,16 +41,18 @@ export default function LpInvestorUpdatePage() {
         </p>
 
         <p>
-          The ownership question is critical. If intelligence and labor become increasingly produced by
-          capital, the people who own that productive capital will participate most directly in the value
-          it creates. Our ambition is not only to identify the technologies that make a post-labor economy
-          possible. It is to bring our investors into the ownership layer of that future.
+          We started All Together because we believe AI will change the basic economics of production.
+          Models can already perform cognitive tasks that once required people. As those models improve
+          and move into robots, more physical work will become machine-produced as well. Human judgment
+          and ambition will remain essential, but each unit of output will require fewer human hours. This
+          is what we mean by a post-labor economy.
         </p>
 
         <p>
-          Our thesis starts with AI making cognitive work cheaper and robotics doing the same for physical
-          work. We do not expect work or human ambition to disappear. We expect more economic output to
-          come from models, compute, machines, and energy instead of additional hours of labor.
+          That shift changes who captures the value. If intelligence and labor are increasingly produced
+          by capital—compute, models, robots, factories, and energy systems—the owners of that capital will
+          participate most directly in what it creates. All Together exists to identify the companies
+          building that productive layer and bring our investors into the ownership layer of that future.
         </p>
 
         <p>
