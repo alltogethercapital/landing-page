@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 const password = process.env.LP_TEST_PASSWORD || "StagingPortalPassphrase-2026";
 
 test("protects, authenticates, searches, and opens an investment", async ({ page }) => {
-  await page.goto("/lp");
+  await page.goto("/lp/updates");
   await expect(page).toHaveURL(/\/lp-login$/);
   await expect(page.getByRole("heading", { name: "Investor portal." })).toBeVisible();
 
@@ -37,6 +37,22 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
     logos.filter((logo) => (logo as HTMLImageElement).complete && (logo as HTMLImageElement).naturalWidth > 0).length,
   )).toBe(44);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-desktop.png", fullPage: true });
+
+  const letterResponse = await page.goto("/lp/updates");
+  expect(letterResponse?.status()).toBe(200);
+  expect(letterResponse?.headers()["x-robots-tag"]).toBe("noindex, nofollow, noarchive");
+  await expect(page.getByRole("heading", { name: "The bottleneck moved." })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Letter" })).toHaveAttribute("aria-current", "page");
+  await expect(page.locator(".lp-letter-figure")).toHaveCount(4);
+  await expect(page.getByText("$676,014.25", { exact: true })).toHaveCount(1);
+  await expect(page.locator(".lp-letter-section--fund")).toContainText("$689,867.04");
+  await expect(page.getByText(/not audited NAV/i)).toHaveCount(2);
+  await expect(page.getByRole("heading", { name: "The numbers behind the letter" })).toBeVisible();
+  await expect(page.locator(".lp-letter-sources a")).toHaveCount(9);
+  await page.screenshot({ path: "output/playwright/lp-portal/letter-desktop.png", fullPage: true });
+
+  await page.getByRole("link", { name: "Portfolio", exact: true }).click();
+  await expect(page).toHaveURL(/\/lp$/);
 
   const search = page.getByPlaceholder("Search investments…");
   await search.fill("Blue");
@@ -146,6 +162,22 @@ test("renders the login, portfolio, and detail views at every supported layout",
       path: `output/playwright/lp-portal/portfolio-${viewport.name}.png`,
       fullPage: true,
     });
+
+    await page.getByRole("link", { name: "Letter" }).click();
+    await expect(page).toHaveURL(/\/lp\/updates$/);
+    await expect(page.getByRole("heading", { name: "The bottleneck moved." })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Letter" })).toHaveAttribute("aria-current", "page");
+    await expect(page.locator(".lp-letter-figure")).toHaveCount(4);
+    await expect(page.getByText("$676,014.25", { exact: true })).toHaveCount(1);
+    await expect(page.getByRole("heading", { name: "The numbers behind the letter" })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+    await page.screenshot({
+      path: `output/playwright/lp-portal/letter-${viewport.name}.png`,
+      fullPage: true,
+    });
+
+    await page.getByRole("link", { name: "Portfolio", exact: true }).click();
+    await expect(page).toHaveURL(/\/lp$/);
 
     await page.getByRole("link", { name: "View Blue Origin" }).click();
     await expect(page).toHaveURL(/43-blue-origin$/);
