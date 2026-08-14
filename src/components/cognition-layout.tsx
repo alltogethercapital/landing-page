@@ -33,8 +33,9 @@ export function LogoMark({ className }: { className?: string }) {
         <Image
           src="/brand/all-together-character-mark.png"
           alt=""
-          width="34"
-          height="34"
+          width="176"
+          height="176"
+          loading="eager"
           className="cog-character-mark"
           unoptimized
         />
