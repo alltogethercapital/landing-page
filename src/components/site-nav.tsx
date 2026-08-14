@@ -196,7 +196,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
         </nav>
 
         <NavLink className="cog-nav-button" href={CONTACT_MAILTO}>
-          Email
+          Email us
         </NavLink>
       </aside>
 
@@ -250,7 +250,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
               onClick={() => setOpen(false)}
               className="cog-mobile-menu-link cog-mobile-menu-contact"
             >
-              Email
+              Email us
             </NavLink>
           </nav>
         </div>

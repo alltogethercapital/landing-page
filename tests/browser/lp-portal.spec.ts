@@ -67,6 +67,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByRole("link", { name: "Home", exact: true })).toHaveAttribute("href", "/");
   await page.getByRole("link", { name: "Home", exact: true }).click();
   await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator(".cog-nav-button")).toHaveText("Email us");
   const lpPortalLink = page.getByLabel("Primary").getByRole("link", { name: "LP Portal" });
   await expect(lpPortalLink).toHaveAttribute("href", "/lp");
   await lpPortalLink.click();
