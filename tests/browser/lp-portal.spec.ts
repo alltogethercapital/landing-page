@@ -159,6 +159,8 @@ test("renders the login, portfolio, and detail views at every supported layout",
 
   const viewports = [
     { name: "phone", width: 390, height: 844 },
+    { name: "phone-landscape", width: 667, height: 375 },
+    { name: "compact-tablet", width: 661, height: 501 },
     { name: "tablet", width: 768, height: 1024 },
     { name: "compact-desktop", width: 1285, height: 1320 },
     { name: "review-desktop", width: 1297, height: 1297 },
@@ -211,7 +213,9 @@ test("renders the login, portfolio, and detail views at every supported layout",
     const navBox = await page.locator(".lp-portal-nav").boundingBox();
     expect(navBox).not.toBeNull();
     if (viewport.width <= 719) {
-      expect(navBox!.height).toBeLessThanOrEqual(60);
+      const isCompactLandscape = viewport.height <= 520 && viewport.width > viewport.height;
+      const expectedMobileNavHeight = isCompactLandscape ? 72 : viewport.width <= 599 ? 88 : 96;
+      expect(Math.abs(navBox!.height - expectedMobileNavHeight)).toBeLessThanOrEqual(1);
     } else {
       expect(navBox!.height).toBeGreaterThan(120);
     }
