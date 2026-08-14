@@ -35,41 +35,9 @@ export default function LpInvestorUpdatePage() {
         <p>To our investors,</p>
 
         <p>
-          We should have written sooner. This is our first formal letter since we began investing,
-          and the delay is ours. A portfolio page can show where the money went, but it cannot explain
-          what we are learning or how those lessons are changing our decisions. We intend to write
-          quarterly from here, with shorter notes when something material happens between letters.
-        </p>
-
-        <p>
-          We started All Together with a straightforward belief: artificial intelligence would become
-          more capable, less expensive, and more widely used, and that shift would create important
-          companies far beyond the model layer. That is happening. The useful question now is not
-          whether AI will matter. It is which businesses will still have durable value when intelligence
-          itself is abundant.
-        </p>
-
-        <p>
-          Our answer is increasingly physical. Compute, power, chips, cooling, robots, manufacturing,
-          security, and access to difficult environments are becoming more important, not less. The
-          <a href="https://hai.stanford.edu/ai-index/2026-ai-index-report/economy" target="_blank" rel="noreferrer">
-            Stanford AI Index
-          </a>
-          reports that 88% of organizations now use AI. The
-          <a href="https://www.iea.org/reports/energy-and-ai/energy-supply-for-ai" target="_blank" rel="noreferrer">
-            International Energy Agency
-          </a>
-          expects electricity generation supplying data centers to rise from roughly 460 terawatt-hours
-          in 2024 to more than 1,000 by 2030. Adoption is moving quickly, but the infrastructure required
-          to support it cannot be created at software speed.
-        </p>
-
-        <p>
-          We are deliberately investing toward a post-labor economy. We do not mean that work disappears
-          on a schedule or that human ambition becomes irrelevant. We mean that AI will steadily reduce
-          the cost of cognitive work, while robotics does the same for more forms of physical work. Over
-          time, a larger share of economic output will come from models, compute, machines, and energy
-          rather than from additional hours of human labor.
+          We owe you an update. This is our first formal letter since we began investing, and it should
+          have come sooner. We will write quarterly from here, with shorter notes when something material
+          changes between letters.
         </p>
 
         <p>
@@ -77,6 +45,26 @@ export default function LpInvestorUpdatePage() {
           capital, the people who own that productive capital will participate most directly in the value
           it creates. Our ambition is not only to identify the technologies that make a post-labor economy
           possible. It is to bring our investors into the ownership layer of that future.
+        </p>
+
+        <p>
+          Our thesis starts with AI making cognitive work cheaper and robotics doing the same for physical
+          work. We do not expect work or human ambition to disappear. We expect more economic output to
+          come from models, compute, machines, and energy instead of additional hours of labor.
+        </p>
+
+        <p>
+          AI adoption is no longer the question. The
+          <a href="https://hai.stanford.edu/ai-index/2026-ai-index-report/economy" target="_blank" rel="noreferrer">
+            Stanford AI Index
+          </a>
+          reports that 88% of organizations now use it. The constraint is increasingly physical. The
+          <a href="https://www.iea.org/reports/energy-and-ai/energy-supply-for-ai" target="_blank" rel="noreferrer">
+            International Energy Agency
+          </a>
+          expects electricity supplying data centers to rise from roughly 460 terawatt-hours in 2024 to
+          more than 1,000 by 2030. Software spreads instantly; power, chips, cooling, robots, and factories
+          do not.
         </p>
 
         <p>
@@ -88,41 +76,33 @@ export default function LpInvestorUpdatePage() {
         </p>
 
         <p>
-          At invested cost, 29.6% of the portfolio is in a diversified frontier vehicle, 22.6% is in
-          robotics and industrial systems, 18.4% is in AI and compute, 17.3% is in aerospace, defense,
-          and autonomy, 8.1% is in energy and hard infrastructure, and 4.0% is in applications and
-          resilience. The categories are imperfect, but the direction is intentional: intelligence,
-          the machines that turn it into work, and the infrastructure that makes both possible.
+          The portfolio reflects that thesis. At invested cost, 29.6% is in a diversified frontier
+          vehicle, 22.6% in robotics and industrial systems, 18.4% in AI and compute, 17.3% in aerospace,
+          defense, and autonomy, 8.1% in energy and hard infrastructure, and 4.0% in applications and
+          resilience. Together, these positions span the intelligence, machines, and infrastructure of a
+          post-labor economy.
         </p>
 
         <p>
-          We built a broad first portfolio because we wanted direct exposure to the market as it formed.
-          That breadth helped us learn quickly across compute, robotics, energy, aerospace, defense, and
-          applications. It also showed us where our construction can improve. Our largest pooled vehicle
-          position represents 29.6% of invested cost, and our five largest positions represent about half.
-          We will not use that concentration as a model for the next phase.
+          We built broadly to learn while the market was forming. Forty-four positions gave us enough
+          breadth. Our largest pooled vehicle represents 29.6% of invested cost, and our five largest
+          positions represent about half; that is not the construction we want to repeat. The next phase
+          will favor fewer direct positions, clearer economics, better information rights, and room to
+          support the companies that earn conviction.
         </p>
 
         <p>
-          Forty-four positions are enough breadth for now. We expect the next phase to be more selective.
-          We will favor direct positions, clearer company economics, better information rights, and room
-          to support the businesses that earn greater conviction. Access alone is not an advantage when
-          capital is crowded. Price, structure, technical judgment, and the willingness to pass matter.
+          Our priorities are efficient compute and inference, robotics and physical automation, power and
+          industrial infrastructure, and defense and aerospace. Compute makes intelligence cheaper. Robots
+          turn it into physical work. Energy and industry let both scale. Defense and aerospace test these
+          systems where reliability matters most.
         </p>
 
         <p>
-          Our strongest interest remains in efficient compute and inference, robotics and physical
-          automation, power and industrial infrastructure, and defense and aerospace. These are not
-          separate themes. Compute makes intelligence cheaper. Robots turn that intelligence into useful
-          physical work. Energy and industrial capacity allow both to scale. Defense and aerospace push
-          these systems into environments where reliability matters most.
-        </p>
-
-        <p>
-          We are grateful that you trusted us before there was a long history to point to. The portfolio
-          is young, the marks are limited, and the outcomes that matter most are years away. Our job now
-          is to stay disciplined, show our work, communicate plainly, and make each new decision better
-          than the last.
+          Access alone is not an advantage when capital is crowded. Price, structure, technical judgment,
+          and the willingness to pass matter. You trusted us before there was a record; we owe you
+          disciplined decisions and plain reporting. The portfolio is young, and the outcomes that matter
+          will take years. We will keep showing you what we learn.
         </p>
 
         <p>Thank you for building this with us.</p>

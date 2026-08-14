@@ -48,7 +48,12 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.locator(".lp-letter-simple-copy")).toContainText("1.02×");
   await expect(page.locator(".lp-letter-simple-copy")).toContainText("post-labor economy");
   await expect(page.locator(".lp-letter-simple-copy")).toContainText("ownership layer");
+  await expect(page.locator(".lp-letter-simple-copy > p").nth(2)).toContainText("ownership layer");
   await expect(page.locator(".lp-letter-simple-copy")).toContainText("29.6%");
+  const letterWordCount = await page.locator(".lp-letter-simple-copy").evaluate((element) =>
+    (element.textContent ?? "").trim().split(/\s+/).length,
+  );
+  expect(letterWordCount).toBeLessThan(600);
   await expect(page.getByText(/not audited net asset value/i)).toHaveCount(2);
   await expect(page.locator(".lp-letter-simple-copy a")).toHaveCount(2);
   await expect(page.locator(".lp-letter-simple figure")).toHaveCount(0);
