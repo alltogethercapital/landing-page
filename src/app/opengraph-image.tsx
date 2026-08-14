@@ -146,7 +146,7 @@ export default async function OpenGraphImage() {
         >
           <div
             style={{
-              color: "#00E100",
+              color: "#1E37D9",
               fontFamily: "Atlas Typewriter",
               fontSize: 15,
               fontWeight: 500,

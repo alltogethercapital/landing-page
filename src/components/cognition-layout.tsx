@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "@/components/icons";
@@ -27,8 +28,18 @@ export function BrandDot({ className }: { className?: string }) {
 // Framed all-caps wordmark, tuned to echo the supplied Benchmark reference.
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <span className={cn("cog-wordmark", className)}>
-      <span className="cog-wordmark-text">ALLTOGETHER</span>
+    <span className={cn("cog-brand-lockup", className)}>
+      <Image
+        src="/brand/all-together-character-mark.png"
+        alt=""
+        width="34"
+        height="34"
+        className="cog-character-mark"
+        unoptimized
+      />
+      <span className="cog-wordmark">
+        <span className="cog-wordmark-text">ALLTOGETHER</span>
+      </span>
     </span>
   );
 }

@@ -59,7 +59,7 @@ const float GAMMA = 1.6;
 const float TILE_OPACITY = 0.58;
 const float CHAR_ASPECT = 0.85;
 const float VIVID = 1.28;
-const vec3 ACCENT = vec3(0.0, 0.882, 0.0); // #00E100
+const vec3 ACCENT = vec3(0.118, 0.216, 0.851); // #1E37D9
 const float GLYPH_COUNT = ${GLYPH_RAMP.length}.0;
 const vec2 ATLAS_GRID = vec2(${ATLAS_COLS}.0, ${ATLAS_ROWS}.0);
 const float ATLAS_PAD = ${(2 / ATLAS_TILE).toFixed(5)};
@@ -122,7 +122,7 @@ void main() {
   if (g > 0.0) {
     vec3 boosted = clamp(col * 1.45, 0.0, 1.0);
     vec3 screened = 1.0 - (1.0 - col) * (1.0 - boosted);
-    // Lift the glow toward the Paradigm green so the trail reads as tinted,
+    // Lift the glow toward the identity blue so the trail reads as tinted,
     // not just brighter.
     vec3 tinted = 1.0 - (1.0 - screened) * (1.0 - ACCENT * 0.35);
     col = mix(col, tinted, g * 0.9);
