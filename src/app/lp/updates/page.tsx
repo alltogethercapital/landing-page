@@ -41,7 +41,7 @@ export default function LpInvestorUpdatePage() {
         </p>
 
         <p>
-          We started All Together because we believe AI will change the basic economics of production.
+          One reason we started All Together is that we believe AI will change the basic economics of production.
           Models can already perform cognitive tasks that once required people. As those models improve
           and move into robots, more physical work will become machine-produced as well. Human judgment
           and ambition will remain essential, but each unit of output will require fewer human hours. This
@@ -51,8 +51,15 @@ export default function LpInvestorUpdatePage() {
         <p>
           That shift changes who captures the value. If intelligence and labor are increasingly produced
           by capital—compute, models, robots, factories, and energy systems—the owners of that capital will
-          participate most directly in what it creates. All Together exists to identify the companies
-          building that productive layer and bring our investors into the ownership layer of that future.
+          participate most directly in what it creates.
+        </p>
+
+        <p>
+          Another reason is personal. We wanted our friends, families, and the people close to us to
+          participate in the technologies that could carry civilization beyond the Anthropocene and into
+          whatever comes next—not merely watch that transition from the sidelines. We do not know what kind
+          of civilization will emerge on the other side. We do want to support its builders and bring our
+          investors into the ownership layer of the productive, consequential companies they create.
         </p>
 
         <p>

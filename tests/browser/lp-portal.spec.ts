@@ -57,7 +57,9 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   const letterParagraphs = page.locator(".lp-letter-simple-copy > p");
   await expect(letterParagraphs.nth(2)).toContainText("This is what we mean by a post-labor economy");
   await expect(letterParagraphs.nth(3)).toContainText("That shift changes who captures the value");
-  await expect(letterParagraphs.nth(3)).toContainText("ownership layer");
+  await expect(letterParagraphs.nth(4)).toContainText("Another reason is personal");
+  await expect(letterParagraphs.nth(4)).toContainText("beyond the Anthropocene");
+  await expect(letterParagraphs.nth(4)).toContainText("ownership layer");
   await expect(page.locator(".lp-letter-simple-copy")).toContainText("30.3%");
   const letterWordCount = await page.locator(".lp-letter-simple-copy").evaluate((element) =>
     (element.textContent ?? "").trim().split(/\s+/).length,
