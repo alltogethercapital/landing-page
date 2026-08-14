@@ -20,6 +20,7 @@ export function LpPortalNav() {
       <nav aria-label="Investor portal">
         <Link href="/lp" aria-current={!isUpdate ? "page" : undefined} className={!isUpdate ? "is-active" : undefined}>Portfolio</Link>
         <Link href="/lp/updates" aria-current={isUpdate ? "page" : undefined} className={isUpdate ? "is-active" : undefined}>Letter</Link>
+        <Link href="/">Home</Link>
       </nav>
       <form action="/api/lp/logout" method="post">
         <button type="submit">Sign out</button>

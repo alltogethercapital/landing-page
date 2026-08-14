@@ -41,18 +41,29 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   const letterResponse = await page.goto("/lp/updates");
   expect(letterResponse?.status()).toBe(200);
   expect(letterResponse?.headers()["x-robots-tag"]).toBe("noindex, nofollow, noarchive");
-  await expect(page.getByRole("heading", { name: "The bottleneck moved." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Investor Letter" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Letter" })).toHaveAttribute("aria-current", "page");
-  await expect(page.locator(".lp-letter-figure")).toHaveCount(4);
-  await expect(page.getByText("$676,014.25", { exact: true })).toHaveCount(1);
-  await expect(page.locator(".lp-letter-section--fund")).toContainText("$689,867.04");
-  await expect(page.getByText(/not audited NAV/i)).toHaveCount(2);
-  await expect(page.getByRole("heading", { name: "The numbers behind the letter" })).toBeVisible();
-  await expect(page.locator(".lp-letter-sources a")).toHaveCount(9);
+  await expect(page.locator(".lp-letter-simple-copy")).toContainText("$676,014.25");
+  await expect(page.locator(".lp-letter-simple-copy")).toContainText("$689,867.04");
+  await expect(page.locator(".lp-letter-simple-copy")).toContainText("1.02×");
+  await expect(page.locator(".lp-letter-simple-copy")).toContainText("post-labor economy");
+  await expect(page.locator(".lp-letter-simple-copy")).toContainText("ownership layer");
+  await expect(page.locator(".lp-letter-simple-copy")).toContainText("29.6%");
+  await expect(page.getByText(/not audited net asset value/i)).toHaveCount(2);
+  await expect(page.locator(".lp-letter-simple-copy a")).toHaveCount(2);
+  await expect(page.locator(".lp-letter-simple figure")).toHaveCount(0);
+  await expect(page.locator(".lp-letter-simple aside")).toHaveCount(0);
+  await expect(page.locator(".lp-letter-simple ol, .lp-letter-simple ul, .lp-letter-simple dl")).toHaveCount(0);
   await page.screenshot({ path: "output/playwright/lp-portal/letter-desktop.png", fullPage: true });
 
-  await page.getByRole("link", { name: "Portfolio", exact: true }).click();
+  await expect(page.getByRole("link", { name: "Home", exact: true })).toHaveAttribute("href", "/");
+  await page.getByRole("link", { name: "Home", exact: true }).click();
+  await expect(page).toHaveURL(/\/$/);
+  const lpPortalLink = page.getByLabel("Primary").getByRole("link", { name: "LP Portal" });
+  await expect(lpPortalLink).toHaveAttribute("href", "/lp");
+  await lpPortalLink.click();
   await expect(page).toHaveURL(/\/lp$/);
+  await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
 
   const search = page.getByPlaceholder("Search investments…");
   await search.fill("Blue");
@@ -165,11 +176,15 @@ test("renders the login, portfolio, and detail views at every supported layout",
 
     await page.getByRole("link", { name: "Letter" }).click();
     await expect(page).toHaveURL(/\/lp\/updates$/);
-    await expect(page.getByRole("heading", { name: "The bottleneck moved." })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Investor Letter" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Letter" })).toHaveAttribute("aria-current", "page");
-    await expect(page.locator(".lp-letter-figure")).toHaveCount(4);
-    await expect(page.getByText("$676,014.25", { exact: true })).toHaveCount(1);
-    await expect(page.getByRole("heading", { name: "The numbers behind the letter" })).toBeVisible();
+    await expect(page.locator(".lp-letter-simple figure")).toHaveCount(0);
+    await expect(page.locator(".lp-letter-simple aside")).toHaveCount(0);
+    await expect(page.locator(".lp-letter-simple-copy")).toContainText("$676,014.25");
+    await expect(page.getByRole("link", { name: "Home", exact: true })).toBeVisible();
+    const letterCopyBox = await page.locator(".lp-letter-simple-copy").boundingBox();
+    expect(letterCopyBox).not.toBeNull();
+    expect(letterCopyBox!.width).toBeLessThanOrEqual(761);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     await page.screenshot({
       path: `output/playwright/lp-portal/letter-${viewport.name}.png`,

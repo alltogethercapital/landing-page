@@ -29,7 +29,7 @@ export const NAV = [
   { label: "Our entrepreneurs", href: "/founders" },
   { label: "Our team", href: "/team" },
   { label: "Updates", href: "/updates" },
-  { label: "LP Login", href: "/lp-login" },
+  { label: "LP Portal", href: "/lp" },
 ];
 
 export const LEGAL = [

@@ -18,7 +18,7 @@ const INTERNAL_ROUTES = Array.from(
   new Set([
     "/",
     ...NAV.map((item) => item.href).filter(
-      (href) => href.startsWith("/") && href !== "/lp-login",
+      (href) => href.startsWith("/") && !href.startsWith("/lp"),
     ),
     ...LEGAL.map((item) => item.href),
   ]),

@@ -43,7 +43,13 @@ function NavLink({
 }) {
   if (href.startsWith("/")) {
     return (
-      <Link href={href} className={className} onClick={onClick} aria-current={ariaCurrent}>
+      <Link
+        href={href}
+        prefetch={!href.startsWith("/lp")}
+        className={className}
+        onClick={onClick}
+        aria-current={ariaCurrent}
+      >
         {children}
       </Link>
     );
