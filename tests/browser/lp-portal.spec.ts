@@ -54,7 +54,12 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByText(/at least twice per year/i)).toBeVisible();
   const augustUpdateLink = page.getByRole("link", { name: /Why we built All Together/ });
   await expect(augustUpdateLink).toHaveAttribute("href", "/lp/updates/august-2026");
-  await expect(page.getByText("1 published update", { exact: true })).toBeVisible();
+  await expect(page.getByText("August 2026", { exact: true })).toBeVisible();
+  await expect(page.getByText("01", { exact: true })).toHaveCount(0);
+  await expect(page.getByText(/Our founding thesis/i)).toHaveCount(0);
+  await expect(page.getByText(/Read update/i)).toHaveCount(0);
+  await expect(page.getByText(/published update/i)).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /Return to portfolio/i })).toHaveCount(0);
   await page.screenshot({ path: "output/playwright/lp-portal/updates-index-desktop.png", fullPage: true });
 
   await augustUpdateLink.click();

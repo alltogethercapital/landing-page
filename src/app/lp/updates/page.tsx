@@ -25,29 +25,19 @@ export default function LpInvestorUpdatesPage() {
       </header>
 
       <ol className="lp-updates-list" aria-label="Investor updates, newest first">
-        {updates.map((update, index) => (
+        {updates.map((update) => (
           <li key={update.slug}>
-            <Link href={`/lp/updates/${update.slug}`}>
-              <span className="lp-update-number" aria-hidden="true">
-                {String(updates.length - index).padStart(2, "0")}
-              </span>
+            <Link
+              href={`/lp/updates/${update.slug}`}
+              aria-label={`${update.title} — ${update.published}`}
+            >
               <time dateTime={update.publishedAt}>{update.published}</time>
-              <span className="lp-update-list-copy">
-                <strong>{update.title}</strong>
-                <span>{update.excerpt}</span>
-              </span>
-              <span className="lp-update-list-action">
-                Read update <span aria-hidden="true">↗</span>
-              </span>
+              <strong>{update.title}</strong>
+              <span className="lp-update-list-arrow" aria-hidden="true">↗</span>
             </Link>
           </li>
         ))}
       </ol>
-
-      <footer className="lp-updates-index-footer">
-        <span>{updates.length} published update{updates.length === 1 ? "" : "s"}</span>
-        <Link href="/lp">Return to portfolio</Link>
-      </footer>
     </section>
   );
 }
