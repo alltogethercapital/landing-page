@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const update = LP_INVESTOR_UPDATES.find((entry) => entry.slug === slug);
   if (!update) return {};
   return {
-    title: `${update.published} Investor Update — All Together Investor Portal`,
+    title: `${update.title} — Investor Update #${update.issue}`,
     description: update.excerpt,
     robots: { index: false, follow: false, nocache: true },
   };
@@ -48,9 +48,12 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
       </Link>
 
       <header className="lp-update-article-header">
-        <span>Investor Update</span>
+        <div className="lp-update-article-meta">
+          <span>Investor Update #{update.issue}</span>
+          <span aria-hidden="true">·</span>
+          <time dateTime={update.publishedAt}>{update.published}</time>
+        </div>
         <h1>{update.title}</h1>
-        <time dateTime={update.publishedAt}>{update.published}</time>
       </header>
 
       <div className="lp-update-article-copy">

@@ -2747,8 +2747,8 @@ body {
 }
 
 .lp-updates-index-header > span,
-.lp-update-article-header > span,
-.lp-update-article-header time {
+.lp-update-article-meta,
+.lp-update-list-meta {
   display: block;
   color: var(--lp-muted);
   font-family: var(--cog-support);
@@ -2790,7 +2790,7 @@ body {
 
 .lp-updates-list a {
   display: grid;
-  grid-template-columns: 140px minmax(0, 1fr) auto;
+  grid-template-columns: 180px minmax(0, 1fr) auto;
   align-items: baseline;
   gap: 32px;
   padding: 30px 0;
@@ -2798,7 +2798,7 @@ body {
   text-decoration: none;
 }
 
-.lp-updates-list time,
+.lp-update-list-meta,
 .lp-update-list-arrow {
   color: var(--lp-muted);
   font-family: var(--cog-support);
@@ -2806,6 +2806,18 @@ body {
   line-height: 1.5;
   text-transform: uppercase;
   letter-spacing: 0.045em;
+}
+
+.lp-update-list-meta {
+  display: grid;
+  gap: 2px;
+}
+
+.lp-update-article-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0 7px;
 }
 
 .lp-updates-list strong {
@@ -2853,12 +2865,8 @@ body {
   padding: 22px 0 28px;
 }
 
-.lp-update-article-header time {
-  margin-top: 16px;
-}
-
 .lp-update-article-header h1 {
-  margin: 18px 0 16px;
+  margin: 18px 0 0;
   font-size: clamp(46px, 5.6vw, 68px);
   font-weight: 400;
   line-height: 0.95;
@@ -2946,7 +2954,7 @@ body {
     padding: 24px 0;
   }
 
-  .lp-updates-list time {
+  .lp-update-list-meta {
     grid-column: 1 / -1;
   }
 

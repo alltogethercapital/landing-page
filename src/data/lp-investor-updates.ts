@@ -1,5 +1,6 @@
 export type LpInvestorUpdateSummary = {
   slug: string;
+  issue: number;
   title: string;
   published: string;
   publishedAt: string;
@@ -9,8 +10,9 @@ export type LpInvestorUpdateSummary = {
 export const LP_INVESTOR_UPDATES: LpInvestorUpdateSummary[] = [
   {
     slug: "august-2026",
-    title: "Why we built All Together",
-    published: "August 2026",
+    issue: 1,
+    title: "Why we started All Together Capital",
+    published: "August 14, 2026",
     publishedAt: "2026-08-14",
     excerpt:
       "Our founding thesis, the portfolio today, and how we plan to invest and report from here.",

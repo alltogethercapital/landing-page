@@ -52,9 +52,10 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByRole("heading", { name: "Investor Updates" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Investor Updates" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByText(/at least twice per year/i)).toBeVisible();
-  const augustUpdateLink = page.getByRole("link", { name: /Why we built All Together/ });
+  const augustUpdateLink = page.getByRole("link", { name: /Why we started All Together Capital/ });
   await expect(augustUpdateLink).toHaveAttribute("href", "/lp/updates/august-2026");
-  await expect(page.getByText("August 2026", { exact: true })).toBeVisible();
+  await expect(page.getByText("Investor Update #1", { exact: true })).toBeVisible();
+  await expect(page.getByText("August 14, 2026", { exact: true })).toBeVisible();
   await expect(page.getByText("01", { exact: true })).toHaveCount(0);
   await expect(page.getByText(/Our founding thesis/i)).toHaveCount(0);
   await expect(page.getByText(/Read update/i)).toHaveCount(0);
@@ -64,8 +65,9 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
 
   await augustUpdateLink.click();
   await expect(page).toHaveURL(/\/lp\/updates\/august-2026$/);
-  await expect(page.getByRole("heading", { name: "Why we built All Together" })).toBeVisible();
-  await expect(page.getByText("Investor Update", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Why we started All Together Capital" })).toBeVisible();
+  await expect(page.getByText("Investor Update #1", { exact: true })).toBeVisible();
+  await expect(page.getByText("August 14, 2026", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-update-article-copy")).toContainText("$661,014.25");
   await expect(page.locator(".lp-update-article-copy")).toContainText("$674,867.04");
   await expect(page.locator(".lp-update-article-copy")).toContainText("1.02×");
@@ -222,7 +224,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page).toHaveURL(/\/lp\/updates$/);
     await expect(page.getByRole("heading", { name: "Investor Updates" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Investor Updates" })).toHaveAttribute("aria-current", "page");
-    await expect(page.getByRole("link", { name: /Why we built All Together/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Why we started All Together Capital/ })).toBeVisible();
     await expect(page.getByRole("link", { name: "Home", exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     await page.screenshot({
@@ -230,9 +232,9 @@ test("renders the login, portfolio, and detail views at every supported layout",
       fullPage: true,
     });
 
-    await page.getByRole("link", { name: /Why we built All Together/ }).click();
+    await page.getByRole("link", { name: /Why we started All Together Capital/ }).click();
     await expect(page).toHaveURL(/\/lp\/updates\/august-2026$/);
-    await expect(page.getByRole("heading", { name: "Why we built All Together" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Why we started All Together Capital" })).toBeVisible();
     await expect(page.locator(".lp-update-article-copy")).toContainText("$661,014.25");
     await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
     const updateCopyBox = await page.locator(".lp-update-article-copy").boundingBox();

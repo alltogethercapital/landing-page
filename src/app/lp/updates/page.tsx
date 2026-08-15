@@ -29,9 +29,12 @@ export default function LpInvestorUpdatesPage() {
           <li key={update.slug}>
             <Link
               href={`/lp/updates/${update.slug}`}
-              aria-label={`${update.title} — ${update.published}`}
+              aria-label={`${update.title} — Investor Update #${update.issue} — ${update.published}`}
             >
-              <time dateTime={update.publishedAt}>{update.published}</time>
+              <span className="lp-update-list-meta">
+                <span>Investor Update #{update.issue}</span>
+                <time dateTime={update.publishedAt}>{update.published}</time>
+              </span>
               <strong>{update.title}</strong>
               <span className="lp-update-list-arrow" aria-hidden="true">↗</span>
             </Link>
