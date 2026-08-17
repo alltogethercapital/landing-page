@@ -6,9 +6,8 @@ import { ASCII_HERO_CLIPS } from "@/lib/ascii-hero-assets";
 // Video rendered as colored ASCII glyphs, in the spirit of generalintuition.com.
 // One WebGL draw per frame: the current video frame (TEXTURE0) is sampled once
 // per cell, luminance picks a glyph from a prerendered atlas (TEXTURE1), and the
-// glyph is tinted with the underlying video color. Pointer movement injects glow
-// points that lift cell luminance into a bright trail (matching the reference
-// effect, the boost shifts cells toward the sparse end of the ramp).
+// glyph is tinted with the underlying video color. Pointer movement overlays a
+// compact, fading version of the brand's sun-and-Earth mark at the cursor.
 
 // Dense → sparse. 69 glyphs; luminance 0 picks "$", luminance 1 picks the space —
 // the same convention the reference effect ships with.
@@ -17,8 +16,7 @@ const GLYPH_RAMP =
 const ATLAS_COLS = 9;
 const ATLAS_ROWS = 8;
 const ATLAS_TILE = 64; // px per glyph tile in the atlas canvas
-const MAX_GLOW = 8;
-const GLOW_LIFE_S = 1.0;
+const CURSOR_MARK_LIFE_S = 0.55;
 const CLIP_FADE_LEAD_S = 0.5; // start fading out this long before a clip ends
 const PIXEL_BUDGET = 8_000_000; // cap on canvas device pixels (5K displays)
 
@@ -50,35 +48,46 @@ uniform vec2 uCanvasPx;   // device px canvas size
 uniform vec2 uCropMin;    // cover-fit crop window into the video texture
 uniform vec2 uCropMax;
 uniform float uFade;      // clip transition fade, 0..1
-uniform int uGlowCount;
-uniform vec2 uGlowPts[${MAX_GLOW}];
-uniform float uGlowFade[${MAX_GLOW}]; // per-point strength 0..1, computed on CPU
-uniform float uGlowRadiusPx;
+uniform int uCursorMarkActive;
+uniform vec2 uCursorMarkPt;
+uniform float uCursorMarkFade;
+uniform float uCursorMarkRadiusPx;
 
 const float GAMMA = 1.6;
 const float TILE_OPACITY = 0.58;
 const float CHAR_ASPECT = 0.85;
 const float VIVID = 1.28;
-const vec3 ACCENT = vec3(0.035, 0.494, 0.973); // #097EF8
+const vec3 EARTH_BLUE = vec3(0.035, 0.494, 0.973); // #097EF8
+const vec3 SUN_YELLOW = vec3(1.0, 0.776, 0.173);   // #FFC62C
 const float GLYPH_COUNT = ${GLYPH_RAMP.length}.0;
 const vec2 ATLAS_GRID = vec2(${ATLAS_COLS}.0, ${ATLAS_ROWS}.0);
 const float ATLAS_PAD = ${(2 / ATLAS_TILE).toFixed(5)};
 
 float lumOf(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
 
-float glowAt(vec2 uv) {
-  float g = 0.0;
-  for (int i = 0; i < ${MAX_GLOW}; i++) {
-    if (i < uGlowCount) {
-      // Chebyshev distance: the glow stamp is a square, not a circle.
-      vec2 dp = abs((uv - uGlowPts[i]) * uCanvasPx);
-      float d = max(dp.x, dp.y);
-      float s = clamp(1.0 - d / uGlowRadiusPx, 0.0, 1.0);
-      s = s * s * (3.0 - 2.0 * s); // soft shoulder, no hard plateau edge
-      g = min(1.0, g + s * uGlowFade[i]);
-    }
-  }
-  return g;
+vec2 cursorMarkAt(vec2 uv) {
+  if (uCursorMarkActive == 0) return vec2(0.0);
+
+  // The yellow sun sits behind and down-left; the blue Earth sits in front and
+  // up-right. Distances are measured in device pixels so both remain circular
+  // at every canvas aspect ratio.
+  vec2 dp = (uv - uCursorMarkPt) * uCanvasPx;
+  float radius = uCursorMarkRadiusPx;
+  float edge = max(1.5, min(uCellPx.x, uCellPx.y) * 0.38);
+  vec2 sunCenter = vec2(-0.10, -0.07) * radius;
+  vec2 earthCenter = vec2(0.11, 0.08) * radius;
+  float sun = 1.0 - smoothstep(
+    radius - edge,
+    radius + edge,
+    length(dp - sunCenter)
+  );
+  float earthRadius = radius * 0.88;
+  float earth = 1.0 - smoothstep(
+    earthRadius - edge,
+    earthRadius + edge,
+    length(dp - earthCenter)
+  );
+  return vec2(sun, earth) * uCursorMarkFade;
 }
 
 void main() {
@@ -88,12 +97,6 @@ void main() {
 
   vec3 rgb = texture2D(uVideo, mix(uCropMin, uCropMax, center)).rgb;
   float lum = pow(clamp(lumOf(rgb), 0.0, 1.0), GAMMA);
-
-  float g = 0.0;
-  if (uGlowCount > 0) {
-    g = glowAt(center);
-    lum = clamp(lum + pow(g, 1.5) * 0.5, 0.0, 1.0);
-  }
 
   float idx = floor(lum * (GLYPH_COUNT - 1.0) + 0.5);
 
@@ -119,13 +122,19 @@ void main() {
   lit = clamp(base * (litL / baseL), 0.0, 1.0);
   vec3 col = mix(base, lit, alpha);
 
-  if (g > 0.0) {
-    vec3 boosted = clamp(col * 1.45, 0.0, 1.0);
-    vec3 screened = 1.0 - (1.0 - col) * (1.0 - boosted);
-    // Lift the glow toward the brand's Earth blue so the trail reads as tinted,
-    // not just brighter.
-    vec3 tinted = 1.0 - (1.0 - screened) * (1.0 - ACCENT * 0.35);
-    col = mix(col, tinted, g * 0.9);
+  vec2 mark = cursorMarkAt(vUV);
+  float sun = mark.x;
+  float earth = mark.y;
+  float markAlpha = earth + sun * (1.0 - earth);
+  if (markAlpha > 0.0) {
+    // Composite the blue circle over the yellow circle, then modulate its
+    // brightness with the current glyph so the logo still belongs to the ASCII
+    // field instead of reading as a flat image pasted on top.
+    vec3 markPremultiplied =
+      SUN_YELLOW * sun * (1.0 - earth) + EARTH_BLUE * earth;
+    vec3 markColor = markPremultiplied / max(markAlpha, 0.001);
+    vec3 texturedMark = markColor * mix(0.58, 1.0, alpha);
+    col = mix(col, texturedMark, markAlpha * 0.94);
   }
 
   // Vividness: pull the final color away from its own gray.
@@ -246,10 +255,10 @@ export function AsciiHero() {
     const uCropMin = u("uCropMin");
     const uCropMax = u("uCropMax");
     const uFade = u("uFade");
-    const uGlowCount = u("uGlowCount");
-    const uGlowPts = u("uGlowPts");
-    const uGlowFade = u("uGlowFade");
-    const uGlowRadiusPx = u("uGlowRadiusPx");
+    const uCursorMarkActive = u("uCursorMarkActive");
+    const uCursorMarkPt = u("uCursorMarkPt");
+    const uCursorMarkFade = u("uCursorMarkFade");
+    const uCursorMarkRadiusPx = u("uCursorMarkRadiusPx");
 
     const makeTexture = (unit: number) => {
       const tex = gl.createTexture();
@@ -288,11 +297,9 @@ export function AsciiHero() {
       inView: true,
       destroyed: false,
       contextLost: false,
-      glowPts: new Float32Array(MAX_GLOW * 2),
-      glowStart: new Float32Array(MAX_GLOW),
-      glowFade: new Float32Array(MAX_GLOW),
-      glowCount: 0,
-      glowCursor: 0,
+      cursorMarkPt: new Float32Array(2),
+      cursorMarkStart: 0,
+      cursorMarkActive: false,
       lastStamp: 0,
       cellDeviceW: 16,
       clip: 0,
@@ -383,24 +390,21 @@ export function AsciiHero() {
 
     const drawFrame = () => {
       if (state.contextLost) return;
-      // Glow strengths are computed CPU-side so the shader only ever sees
-      // values in [0,1] — absolute timestamps break fp16 mediump GPUs.
+      // Keep absolute timestamps on the CPU: fp16 mediump fragment shaders do
+      // not have enough range for them.
       const now = nowS();
-      let alive = 0;
-      for (let i = 0; i < state.glowCount; i++) {
-        const fade = 1 - (now - state.glowStart[i]) / GLOW_LIFE_S;
-        state.glowFade[i] = fade > 0 ? (fade < 1 ? fade : 1) : 0;
-        if (state.glowFade[i] > 0) alive++;
-      }
-      if (state.glowCount > 0 && alive === 0) {
-        state.glowCount = 0;
-        state.glowCursor = 0;
+      let cursorMarkFade = 0;
+      if (state.cursorMarkActive) {
+        cursorMarkFade = 1 -
+          (now - state.cursorMarkStart) / CURSOR_MARK_LIFE_S;
+        cursorMarkFade = Math.min(1, Math.max(0, cursorMarkFade));
+        if (cursorMarkFade === 0) state.cursorMarkActive = false;
       }
       gl.uniform1f(uFade, state.fade);
-      gl.uniform1i(uGlowCount, state.glowCount);
-      gl.uniform2fv(uGlowPts, state.glowPts);
-      gl.uniform1fv(uGlowFade, state.glowFade);
-      gl.uniform1f(uGlowRadiusPx, state.cellDeviceW * 10);
+      gl.uniform1i(uCursorMarkActive, state.cursorMarkActive ? 1 : 0);
+      gl.uniform2fv(uCursorMarkPt, state.cursorMarkPt);
+      gl.uniform1f(uCursorMarkFade, cursorMarkFade);
+      gl.uniform1f(uCursorMarkRadiusPx, state.cellDeviceW * 5);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
@@ -543,22 +547,20 @@ export function AsciiHero() {
     video.addEventListener("error", onError);
     video.addEventListener("pause", onPause);
 
-    // --- Pointer glow -------------------------------------------------------
+    // --- Pointer brand mark -------------------------------------------------
     const onPointerMove = (event: PointerEvent) => {
       if (event.pointerType !== "mouse" || reducedMotion) return;
       const now = performance.now();
-      if (now - state.lastStamp < 25) return;
+      if (now - state.lastStamp < 16) return;
       const rect = canvas.getBoundingClientRect();
       const x = (event.clientX - rect.left) / rect.width;
       const y = (event.clientY - rect.top) / rect.height;
       if (x < 0 || x > 1 || y < 0 || y > 1) return;
       state.lastStamp = now;
-      const slot = state.glowCursor % MAX_GLOW;
-      state.glowPts[slot * 2] = x;
-      state.glowPts[slot * 2 + 1] = 1 - y; // shader UV origin is bottom-left
-      state.glowStart[slot] = nowS();
-      state.glowCursor++;
-      state.glowCount = Math.min(state.glowCount + 1, MAX_GLOW);
+      state.cursorMarkPt[0] = x;
+      state.cursorMarkPt[1] = 1 - y; // shader UV origin is bottom-left
+      state.cursorMarkStart = nowS();
+      state.cursorMarkActive = true;
     };
     section.addEventListener("pointermove", onPointerMove, { passive: true });
 
