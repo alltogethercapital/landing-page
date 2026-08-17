@@ -63,6 +63,12 @@ export const FOUNDERS: Founder[] = [
     headshot: "/founders/cutouts/jeff-bezos.png",
   },
   {
+    name: "Mike Grace",
+    companyName: "Longshot Space",
+    headshot: "/founders/cutouts/mike-grace.png",
+    linkedin: "https://www.linkedin.com/in/mike-grace-03452614",
+  },
+  {
     name: "Kaan Dogrusoz",
     companyName: "Weave Robotics",
     headshot: "/founders/cutouts/kaan-dogrusoz.png",

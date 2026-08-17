@@ -58,6 +58,16 @@ export const PORTFOLIO: Company[] = [
     cardImage: "/work/cards/blue-origin.jpg",
   },
   {
+    name: "Longshot Space",
+    href: "https://www.longshotspace.com/",
+    sectors: ["Space", "Aerospace", "Defense"],
+    blurb:
+      "Reusable ground accelerators for hypersonic testing and future cargo launch.",
+    cardLogo: "/logos/cards/longshot-space.png",
+    image: "/work/cards/longshot-space.jpg",
+    cardImage: "/work/cards/longshot-space.jpg",
+  },
+  {
     name: "Weave Robotics",
     href: "https://www.weaverobotics.com/",
     sectors: ["Robotics", "AI"],

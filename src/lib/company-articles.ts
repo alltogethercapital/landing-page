@@ -134,6 +134,39 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "longshot-space",
+    title: "Longshot Space.",
+    date: "August 17, 2026",
+    dateISO: "2026-08-17",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt:
+      "Longshot Space builds reusable ground accelerators for hypersonic testing and future cargo launch.",
+    image: "/updates/covers/longshot-space.jpg",
+    sections: [
+    {
+      body: [
+        "Longshot Space is building reusable ground infrastructure that accelerates payloads instead of asking a rocket to carry all of its fuel and propulsion into flight. Its first market is high-cadence hypersonic testing; the longer-term goal is a lower-cost path to orbit for cargo.",
+        "The company has already fired a six-inch, 60-foot accelerator more than 100 times and reached Mach 4.2. It is now advancing side-injection testing on a 30-inch, 120-foot system at Alameda Point. The cover image is courtesy of Longshot Space.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "Longshot's accelerator uses many compressed-light-gas injection points along a long tube. Each one adds momentum as the payload passes, spreading acceleration across the length of the system instead of delivering one violent push at the start. Moving the machinery onto the ground makes the expensive infrastructure reusable and gives engineers a faster test-and-iterate loop.",
+        "The near-term product is repeatable test capacity for defense and aerospace teams developing hypersonic systems. From there, Longshot plans to scale toward a five-kilometer accelerator and future launch services for non-human cargo. The same architecture connects a present infrastructure bottleneck to a much larger space-access ambition.",
+      ],
+    },
+    {
+      heading: "Why we backed the founder and team",
+      body: [
+        "Mike Grace built Longshot's first multi-injection accelerator in a San Jose garage in 2020. The team then moved through larger systems, repeated shots, measured failures, and another round of hardware. That progression matters more to us than a pristine rendering: the company has built the machine, fired it, learned from it, and kept scaling.",
+        "Hard infrastructure companies earn credibility one test cycle at a time. Longshot pairs that practical engineering loop with a near-term customer problem and a long-term view of what dramatically cheaper cargo access could unlock in orbit. We backed Mike and the team because they are turning a radical idea into increasingly real, reusable infrastructure.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "weave-robotics",
     title: "Weave Robotics.",
     date: "August 11, 2026",
