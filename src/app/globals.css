@@ -346,6 +346,15 @@ body {
   text-transform: uppercase;
 }
 
+.cog-wordmark-logo {
+  display: block;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .cog-brand-dot {
   display: inline-block;
   width: var(--brand-dot-size, 0.86em);

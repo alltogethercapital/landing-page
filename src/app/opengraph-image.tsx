@@ -22,7 +22,7 @@ export default async function OpenGraphImage() {
     arrayLabsCover,
     mavenCover,
     volantisCover,
-    brandCircle,
+    brandMark,
   ] = await Promise.all([
     readFile(join(process.cwd(), "public/fonts/AtlasTypewriter-Medium-Web.ttf")),
     readFile(join(process.cwd(), "public/fonts/Newsreader-Regular.ttf")),
@@ -31,12 +31,14 @@ export default async function OpenGraphImage() {
     readFile(join(process.cwd(), "public/work/cards/array-labs.jpg")),
     readFile(join(process.cwd(), "public/work/cards/maven.jpg")),
     readFile(join(process.cwd(), "public/work/cards/volantis.jpg")),
-    readFile(join(process.cwd(), "public/brand/all-together-soft-circle-logo.png")),
+    readFile(
+      join(process.cwd(), "public/brand/all-together-rising-circles-logo.png"),
+    ),
   ]);
   const productCovers = [aformicCover, arrayLabsCover, mavenCover, volantisCover].map(
     (image) => `data:image/jpeg;base64,${image.toString("base64")}`,
   );
-  const brandCircleSrc = `data:image/png;base64,${brandCircle.toString("base64")}`;
+  const brandMarkSrc = `data:image/png;base64,${brandMark.toString("base64")}`;
   const verticalRules = [64, 291, 367, 894, 1046];
 
   return new ImageResponse(
@@ -97,14 +99,14 @@ export default async function OpenGraphImage() {
               color: "#000000",
             }}
           >
-            <span style={{ marginRight: -4.2 }}>ALLTOGETHER</span>
             <img
               alt=""
-              src={brandCircleSrc}
+              src={brandMarkSrc}
               width={18}
               height={18}
-              style={{ width: 18, height: 18 }}
+              style={{ width: 18, height: 18, borderRadius: 999 }}
             />
+            <span style={{ marginRight: -4.2 }}>ALLTOGETHER</span>
             <div
               style={{
                 position: "absolute",

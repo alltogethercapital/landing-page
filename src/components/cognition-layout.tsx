@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "@/components/icons";
@@ -28,6 +29,13 @@ export function BrandDot({ className }: { className?: string }) {
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-wordmark", className)}>
+      <Image
+        src="/brand/all-together-rising-circles-logo.png"
+        alt=""
+        width={18}
+        height={18}
+        className="cog-wordmark-logo"
+      />
       <span className="cog-wordmark-text">ALLTOGETHER</span>
     </span>
   );
