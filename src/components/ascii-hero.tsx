@@ -6,8 +6,9 @@ import { ASCII_HERO_CLIPS } from "@/lib/ascii-hero-assets";
 // Video rendered as colored ASCII glyphs, in the spirit of generalintuition.com.
 // One WebGL draw per frame: the current video frame (TEXTURE0) is sampled once
 // per cell, luminance picks a glyph from a prerendered atlas (TEXTURE1), and the
-// glyph is tinted with the underlying video color. Pointer movement briefly
-// nudges nearby glyph density and brightness without drawing a separate mark.
+// glyph is tinted with the underlying video color. Pointer movement leaves a
+// short trail that animates nearby glyph density and brightness without drawing
+// a separate mark over the video.
 
 // Dense → sparse. 69 glyphs; luminance 0 picks "$", luminance 1 picks the space —
 // the same convention the reference effect ships with.
@@ -16,7 +17,8 @@ const GLYPH_RAMP =
 const ATLAS_COLS = 9;
 const ATLAS_ROWS = 8;
 const ATLAS_TILE = 64; // px per glyph tile in the atlas canvas
-const POINTER_ECHO_LIFE_S = 0.22;
+const MAX_POINTER_ECHOES = 6;
+const POINTER_ECHO_LIFE_S = 0.48;
 const CLIP_FADE_LEAD_S = 0.5; // start fading out this long before a clip ends
 const PIXEL_BUDGET = 8_000_000; // cap on canvas device pixels (5K displays)
 
@@ -48,9 +50,9 @@ uniform vec2 uCanvasPx;   // device px canvas size
 uniform vec2 uCropMin;    // cover-fit crop window into the video texture
 uniform vec2 uCropMax;
 uniform float uFade;      // clip transition fade, 0..1
-uniform int uPointerActive;
-uniform vec2 uPointerPt;
-uniform float uPointerFade;
+uniform int uPointerCount;
+uniform vec2 uPointerPts[${MAX_POINTER_ECHOES}];
+uniform float uPointerFade[${MAX_POINTER_ECHOES}];
 uniform float uPointerRadiusPx;
 
 const float GAMMA = 1.6;
@@ -64,17 +66,22 @@ const float ATLAS_PAD = ${(2 / ATLAS_TILE).toFixed(5)};
 float lumOf(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
 
 float pointerInfluenceAt(vec2 uv) {
-  if (uPointerActive == 0) return 0.0;
-
-  // Work in device pixels so the response stays compact and circular at every
-  // aspect ratio. Squaring the falloff keeps the outer edge nearly invisible.
-  vec2 dp = (uv - uPointerPt) * uCanvasPx;
-  float falloff = 1.0 - smoothstep(
-    uPointerRadiusPx * 0.22,
-    uPointerRadiusPx,
-    length(dp)
-  );
-  return falloff * falloff * uPointerFade;
+  float influence = 0.0;
+  for (int i = 0; i < ${MAX_POINTER_ECHOES}; i++) {
+    if (i < uPointerCount) {
+      // Work in device pixels so every echo stays compact and circular at each
+      // aspect ratio. The eased shoulder reads as moving glyphs, not a disc.
+      vec2 dp = (uv - uPointerPts[i]) * uCanvasPx;
+      float falloff = 1.0 - smoothstep(
+        uPointerRadiusPx * 0.18,
+        uPointerRadiusPx,
+        length(dp)
+      );
+      falloff = falloff * falloff * (3.0 - 2.0 * falloff);
+      influence = min(1.0, influence + falloff * uPointerFade[i]);
+    }
+  }
+  return influence;
 }
 
 void main() {
@@ -87,13 +94,14 @@ void main() {
   float pointerInfluence = pointerInfluenceAt(center);
 
   float idx = floor(lum * (GLYPH_COUNT - 1.0) + 0.5);
-  // A one- or two-step density shift makes the characters respond without
-  // introducing a colored disc or a visible radial overlay.
+  // Shift individual cells toward the sparse end of the ramp. The small
+  // noise-weighted variation makes the characters flicker organically instead
+  // of revealing a uniformly processed circle.
   float cellNoise = fract(sin(dot(cell, vec2(12.9898, 78.233))) * 43758.5453);
   float glyphShift = floor(
-    pointerInfluence * (1.0 + step(0.68, cellNoise)) + 0.24
+    pointerInfluence * (3.0 + step(0.58, cellNoise) * 2.0) + 0.5
   );
-  idx = clamp(idx - glyphShift, 0.0, GLYPH_COUNT - 1.0);
+  idx = clamp(idx + glyphShift, 0.0, GLYPH_COUNT - 1.0);
 
   // Atlas tiles are square; the display cell is narrow (w/h ≈ 0.6). Draw the
   // glyph in a centered box that preserves the character's true aspect.
@@ -108,7 +116,7 @@ void main() {
   vec2 tile = vec2(mod(idx, ATLAS_GRID.x), floor(idx / ATLAS_GRID.x));
   float alpha = texture2D(uAtlas, (tile + gUV) / ATLAS_GRID).r;
   alpha = smoothstep(0.05, 0.9, alpha) * mask;
-  alpha = min(1.0, alpha * (1.0 + pointerInfluence * 0.10));
+  alpha = min(1.0, alpha * (1.0 + pointerInfluence * 0.18));
 
   // Dimmed video tile under a brighter hue-locked glyph.
   vec3 base = rgb * TILE_OPACITY;
@@ -117,7 +125,7 @@ void main() {
   float litL = max(0.0001, lumOf(lit));
   lit = clamp(base * (litL / baseL), 0.0, 1.0);
   vec3 col = mix(base, lit, alpha);
-  col = clamp(col * (1.0 + pointerInfluence * 0.045), 0.0, 1.0);
+  col = clamp(col * (1.0 + pointerInfluence * 0.12), 0.0, 1.0);
 
   // Vividness: pull the final color away from its own gray.
   col = clamp(mix(vec3(lumOf(col)), col, VIVID), 0.0, 1.0);
@@ -237,8 +245,8 @@ export function AsciiHero() {
     const uCropMin = u("uCropMin");
     const uCropMax = u("uCropMax");
     const uFade = u("uFade");
-    const uPointerActive = u("uPointerActive");
-    const uPointerPt = u("uPointerPt");
+    const uPointerCount = u("uPointerCount");
+    const uPointerPts = u("uPointerPts");
     const uPointerFade = u("uPointerFade");
     const uPointerRadiusPx = u("uPointerRadiusPx");
 
@@ -279,9 +287,11 @@ export function AsciiHero() {
       inView: true,
       destroyed: false,
       contextLost: false,
-      pointerPt: new Float32Array(2),
-      pointerStart: 0,
-      pointerActive: false,
+      pointerPts: new Float32Array(MAX_POINTER_ECHOES * 2),
+      pointerStart: new Float32Array(MAX_POINTER_ECHOES),
+      pointerFade: new Float32Array(MAX_POINTER_ECHOES),
+      pointerCount: 0,
+      pointerCursor: 0,
       lastPointerSample: 0,
       cellDeviceW: 16,
       clip: 0,
@@ -375,18 +385,22 @@ export function AsciiHero() {
       // Keep absolute timestamps on the CPU: fp16 mediump fragment shaders do
       // not have enough range for them.
       const now = nowS();
-      let pointerFade = 0;
-      if (state.pointerActive) {
-        pointerFade = 1 -
-          (now - state.pointerStart) / POINTER_ECHO_LIFE_S;
-        pointerFade = Math.min(1, Math.max(0, pointerFade));
-        if (pointerFade === 0) state.pointerActive = false;
+      let pointerEchoesAlive = 0;
+      for (let i = 0; i < state.pointerCount; i++) {
+        const fade = 1 -
+          (now - state.pointerStart[i]) / POINTER_ECHO_LIFE_S;
+        state.pointerFade[i] = Math.min(1, Math.max(0, fade));
+        if (state.pointerFade[i] > 0) pointerEchoesAlive++;
+      }
+      if (state.pointerCount > 0 && pointerEchoesAlive === 0) {
+        state.pointerCount = 0;
+        state.pointerCursor = 0;
       }
       gl.uniform1f(uFade, state.fade);
-      gl.uniform1i(uPointerActive, state.pointerActive ? 1 : 0);
-      gl.uniform2fv(uPointerPt, state.pointerPt);
-      gl.uniform1f(uPointerFade, pointerFade);
-      gl.uniform1f(uPointerRadiusPx, state.cellDeviceW * 4);
+      gl.uniform1i(uPointerCount, state.pointerCount);
+      gl.uniform2fv(uPointerPts, state.pointerPts);
+      gl.uniform1fv(uPointerFade, state.pointerFade);
+      gl.uniform1f(uPointerRadiusPx, state.cellDeviceW * 7);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
@@ -529,20 +543,25 @@ export function AsciiHero() {
     video.addEventListener("error", onError);
     video.addEventListener("pause", onPause);
 
-    // --- Subtle pointer response --------------------------------------------
+    // --- Pointer character trail --------------------------------------------
     const onPointerMove = (event: PointerEvent) => {
       if (event.pointerType !== "mouse" || reducedMotion) return;
       const now = performance.now();
-      if (now - state.lastPointerSample < 16) return;
+      if (now - state.lastPointerSample < 24) return;
       const rect = canvas.getBoundingClientRect();
       const x = (event.clientX - rect.left) / rect.width;
       const y = (event.clientY - rect.top) / rect.height;
       if (x < 0 || x > 1 || y < 0 || y > 1) return;
       state.lastPointerSample = now;
-      state.pointerPt[0] = x;
-      state.pointerPt[1] = 1 - y; // shader UV origin is bottom-left
-      state.pointerStart = nowS();
-      state.pointerActive = true;
+      const slot = state.pointerCursor % MAX_POINTER_ECHOES;
+      state.pointerPts[slot * 2] = x;
+      state.pointerPts[slot * 2 + 1] = 1 - y; // shader UV origin is bottom-left
+      state.pointerStart[slot] = nowS();
+      state.pointerCursor++;
+      state.pointerCount = Math.min(
+        state.pointerCount + 1,
+        MAX_POINTER_ECHOES,
+      );
     };
     section.addEventListener("pointermove", onPointerMove, { passive: true });
 

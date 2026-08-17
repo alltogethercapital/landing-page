@@ -74,6 +74,9 @@ export function SiteFooter() {
 
       <div className="cog-footer-bottom">
         <p>© {new Date().getFullYear()} All Together.</p>
+        <p className="cog-footer-official">
+          <span aria-hidden="true">🇺🇸</span> The official website of All Together Capital
+        </p>
         <p>All rights reserved.</p>
       </div>
     </footer>
