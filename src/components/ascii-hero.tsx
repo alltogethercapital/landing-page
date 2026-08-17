@@ -181,11 +181,14 @@ function compileProgram(gl: WebGLRenderingContext): WebGLProgram | null {
   return program;
 }
 
+// Cell size drives how much detail survives: the grid is a uniform on a single
+// full-canvas draw, so a finer grid resolves more of the frame at no extra
+// fragment cost. Kept just coarse enough that glyphs still read as characters.
 function cellSizeCss(viewportW: number): number {
-  if (viewportW <= 480) return 4.5;
-  if (viewportW <= 768) return 5;
-  if (viewportW <= 1024) return 5.5;
-  return 6;
+  if (viewportW <= 480) return 3.5;
+  if (viewportW <= 768) return 4;
+  if (viewportW <= 1024) return 4.25;
+  return 4.5;
 }
 
 export function AsciiHero() {
