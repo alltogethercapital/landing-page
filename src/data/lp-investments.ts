@@ -7,6 +7,14 @@ import type {
 
 export type InvestmentReviewStatus = "verified" | "pending" | "review";
 
+export type VehicleAllocation = {
+  asOf: string;
+  deployedCompany: string;
+  deployedShare: number;
+  awaitingShare: number;
+  candidateCompanies: string[];
+};
+
 export type InvestmentRecord = {
   id: string;
   chronology: number;
@@ -23,6 +31,7 @@ export type InvestmentRecord = {
   description?: string;
   reviewStatus: InvestmentReviewStatus;
   reviewNote?: string;
+  vehicleAllocation?: VehicleAllocation;
   performance?: {
     currentValue: number;
     distributions: number;
@@ -32,6 +41,14 @@ export type InvestmentRecord = {
     approvedBy: string;
     approvedAt: string;
   };
+};
+
+export const H256_VEHICLE_ALLOCATION: VehicleAllocation = {
+  asOf: "2026-08-17",
+  deployedCompany: "Anduril",
+  deployedShare: 0.44,
+  awaitingShare: 0.56,
+  candidateCompanies: ["Applied Intuition", "Atoms"],
 };
 
 export type ProjectedValuationMark = {
@@ -55,7 +72,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "06-quaise-energy", chronology: 6, company: "Quaise Energy", investedCost: 10000, investmentDate: "2026-05-03", round: "Series B", entryValuation: "$312.5M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "10EI2AksDVmz6SLnGaAdgJ50KuuPk9Fmx", logo: "/logos/cards/quaise.png", description: "Ultra-deep geothermal to unlock clean baseload energy.", reviewStatus: "verified" },
   { id: "07-shield-ai", chronology: 7, company: "Shield AI", investedCost: 20000, investmentDate: "2026-05-04", round: "Series G", entryValuation: "$10.5B valuation", instrument: "Equity", platform: "Sydecar", driveFolderId: "1azcwyu3tpDuI3Q9J2_obryec9G67fT-K", logo: "/logos/cards/shield-ai.png", description: "AI pilots for aircraft and autonomous defense systems.", reviewStatus: "verified" },
   { id: "08-samply", chronology: 8, company: "Samply", investedCost: 2000, investmentDate: "2026-05-04", round: "Seed", entryValuation: "$10M post-money cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "19mk9zCueHMx8jVBE6KSEtU9Hk4yKjwE1", logo: "/logos/cards/samply.png", description: "Sample management for modern music producers.", reviewStatus: "verified" },
-  { id: "09-h256-series-3", chronology: 9, company: "H256 LLC Series 3", investedCost: 200000, investmentDate: "2026-05-06", round: "N/A", entryValuation: "No co. val; $50M fund / $1M SPV", instrument: "SPV", platform: "Direct", driveFolderId: "1c4ssc43ICTMjZO-BS_yYBBMLMHj4PUim", logo: "/logos/cards/h256-series-3.svg", description: "Dedicated investment company with exposure to frontier technology companies.", reviewStatus: "verified" },
+  { id: "09-h256-series-3", chronology: 9, company: "H256 LLC Series 3", investedCost: 200000, investmentDate: "2026-05-06", round: "N/A", entryValuation: "No co. val; $50M fund / $1M SPV", instrument: "SPV", platform: "Direct", driveFolderId: "1c4ssc43ICTMjZO-BS_yYBBMLMHj4PUim", logo: "/logos/cards/h256-series-3.svg", description: "Dedicated investment company with exposure to frontier technology companies.", reviewStatus: "verified", vehicleAllocation: H256_VEHICLE_ALLOCATION },
   { id: "10-starcloud", chronology: 10, company: "Starcloud", investedCost: 37097.38, investmentDate: "2026-05-08", round: "Series A+", entryValuation: "$2B pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1W17VCUKpqxFQrlKhbLRwf0Iy5SyIXzw4", logo: "/logos/cards/starcloud.png", description: "Data centers in orbit, powered by the sun.", reviewStatus: "verified" },
   { id: "11-openai", chronology: 11, company: "OpenAI", investedCost: 50000, investmentDate: "2026-05-12", round: "Series G", entryValuation: "$852B post-money", instrument: "Equity", platform: "Sydecar", driveFolderId: "1yuyYyZjOiTDP5FWD1lY0VHI6qb_c6ipG", logo: "/logos/cards/openai.png", description: "Frontier AI research and products.", reviewStatus: "verified" },
   { id: "12-apptronik", chronology: 12, company: "Apptronik", investedCost: 30000, investmentDate: "2026-05-13", round: "Series A", entryValuation: "~$4.9B post-money", instrument: "Secondary", platform: "AngelList", driveFolderId: "1xr2MFkdyzodS6PgKsiaWG3e3lrdu4Wy-", logo: "/logos/cards/apptronik.png", description: "General-purpose humanoid robots for industry.", reviewStatus: "verified" },

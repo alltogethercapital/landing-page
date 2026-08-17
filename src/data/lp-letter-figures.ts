@@ -71,18 +71,19 @@ const ENTRY_VALUATION_BY_CHRONOLOGY: Record<number, number> = {
   41: 15.9e9, 42: 180e6, 43: 130e9, 44: 4.5e9,
 };
 
-export type LetterStage =
-  | "Pooled vehicle"
+export type LetterEntryRound =
+  | "No company round"
   | "Series C+"
   | "Series A"
   | "Series B"
   | "Pre-seed / Seed"
   | "Other";
 
-// Round labels collapse into the stages used in the letter. A+ and B+ extensions
-// sit with their base round; the two positions with no round are pooled vehicles.
-function stageOf(round: string): LetterStage {
-  if (round === "N/A") return "Pooled vehicle";
+// Round labels collapse into the entry-round view used in the letter. A+ and
+// B+ extensions sit with their base round; pooled positions without a stated
+// underlying company round are reported plainly as having no company round.
+function entryRoundOf(round: string): LetterEntryRound {
+  if (round === "N/A") return "No company round";
   if (/^Pre-seed|^Seed/.test(round)) return "Pre-seed / Seed";
   if (/^Series A/.test(round)) return "Series A";
   if (/^Series B/.test(round)) return "Series B";
@@ -91,19 +92,30 @@ function stageOf(round: string): LetterStage {
 }
 
 // The letter prints shorter labels than the schedule's internal vocabulary.
-const INSTRUMENT_LABELS: Record<string, string> = {
-  "Convertible Notes": "Conv. note",
-};
-
 const PLATFORM_LABELS: Record<string, string> = {
   "Capital Company": "Capital Co.",
 };
 
+type LetterPositionType =
+  | "Primary equity"
+  | "Secondary equity"
+  | "Fund / SPV interests"
+  | "SAFEs"
+  | "Convertible notes";
+
+function positionTypeOf(instrument: InvestmentRecord["instrument"]): LetterPositionType {
+  if (instrument === "Equity") return "Primary equity";
+  if (instrument === "Secondary") return "Secondary equity";
+  if (instrument === "SPV") return "Fund / SPV interests";
+  if (instrument === "SAFE") return "SAFEs";
+  return "Convertible notes";
+}
+
 export type LetterPosition = InvestmentRecord & {
   sector: LetterSector;
   sectorLabel: string;
-  stage: LetterStage;
-  instrumentLabel: string;
+  entryRound: LetterEntryRound;
+  positionType: LetterPositionType;
   platformLabel: string;
   entryValuationAmount?: number;
 };
@@ -112,8 +124,8 @@ export const LETTER_POSITIONS: LetterPosition[] = LP_INVESTMENTS.map((record) =>
   ...record,
   sector: SECTOR_BY_CHRONOLOGY[record.chronology],
   sectorLabel: LETTER_SECTOR_LABELS[SECTOR_BY_CHRONOLOGY[record.chronology]],
-  stage: stageOf(record.round),
-  instrumentLabel: INSTRUMENT_LABELS[record.instrument] ?? record.instrument,
+  entryRound: entryRoundOf(record.round),
+  positionType: positionTypeOf(record.instrument),
   platformLabel: PLATFORM_LABELS[record.platform] ?? record.platform,
   entryValuationAmount: ENTRY_VALUATION_BY_CHRONOLOGY[record.chronology],
 }));
@@ -203,9 +215,9 @@ export const LETTER_REMAINDER_AVERAGE =
   (LETTER_INVESTED_TOTAL - cumulativeShare(10) * LETTER_INVESTED_TOTAL) /
   (LETTER_POSITIONS.length - 10);
 
-export const LETTER_INSTRUMENT_SPLIT = groupShares((position) => position.instrumentLabel);
-export const LETTER_STAGE_SPLIT = groupShares((position) => position.stage);
-export const LETTER_PLATFORM_SPLIT = groupShares((position) => position.platformLabel);
+export const LETTER_POSITION_TYPE_SPLIT = groupShares((position) => position.positionType);
+export const LETTER_ENTRY_ROUND_SPLIT = groupShares((position) => position.entryRound);
+export const LETTER_ACCESS_CHANNEL_SPLIT = groupShares((position) => position.platformLabel);
 
 export const LETTER_POOLED_SHARE = shareOf(
   LETTER_POSITIONS.filter((position) => position.instrument === "SPV").reduce(
@@ -214,8 +226,15 @@ export const LETTER_POOLED_SHARE = shareOf(
   ),
 );
 
-export const LETTER_DIRECT_EQUITY_SHARE = shareOf(
+export const LETTER_PRIMARY_EQUITY_SHARE = shareOf(
   LETTER_POSITIONS.filter((position) => position.instrument === "Equity").reduce(
+    (sum, position) => sum + position.investedCost,
+    0,
+  ),
+);
+
+export const LETTER_SECONDARY_EQUITY_SHARE = shareOf(
+  LETTER_POSITIONS.filter((position) => position.instrument === "Secondary").reduce(
     (sum, position) => sum + position.investedCost,
     0,
   ),

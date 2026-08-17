@@ -24,6 +24,10 @@ function date(value: string) {
   }).format(new Date(`${value}T00:00:00Z`));
 }
 
+function wholePercent(value: number) {
+  return `${Math.round(value * 100)}%`;
+}
+
 export default async function LpInvestmentDetailPage({
   params,
 }: {
@@ -72,6 +76,31 @@ export default async function LpInvestmentDetailPage({
         <div><dt>Round</dt><dd>{investment.round}</dd></div>
         <div><dt>Company valuation when invested</dt><dd>{investment.valuationWhenInvested}</dd></div>
       </dl>
+
+      {investment.vehicleAllocation ? (
+        <section className="lp-vehicle-allocation" aria-labelledby="lp-vehicle-allocation-heading">
+          <header>
+            <h2 id="lp-vehicle-allocation-heading">Vehicle allocation</h2>
+            <span>As of {date(investment.vehicleAllocation.asOf)}</span>
+          </header>
+          <div className="lp-vehicle-allocation-grid">
+            <div>
+              <strong>{wholePercent(investment.vehicleAllocation.deployedShare)}</strong>
+              <span>Deployed into {investment.vehicleAllocation.deployedCompany}</span>
+            </div>
+            <div>
+              <strong>{wholePercent(investment.vehicleAllocation.awaitingShare)}</strong>
+              <span>Invested in the vehicle, awaiting its next underlying company</span>
+            </div>
+          </div>
+          <p>
+            This {currency(investment.investedCost)} vehicle investment remains one portfolio position.
+            The vehicle is evaluating {investment.vehicleAllocation.candidateCompanies.join(" or ")}{" "}for
+            its next investment. All Together&apos;s separate direct Atoms investment is reported as its own
+            portfolio position.
+          </p>
+        </section>
+      ) : null}
 
       <section className="lp-performance" aria-labelledby="lp-performance-heading">
         <header>

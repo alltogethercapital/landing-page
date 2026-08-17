@@ -82,6 +82,19 @@ function assertLpData() {
         throw new Error(`Incomplete performance approval: ${investment.id}`);
       }
     }
+    if (investment.vehicleAllocation) {
+      const allocation = investment.vehicleAllocation;
+      if (
+        allocation.deployedShare <= 0 ||
+        allocation.awaitingShare <= 0 ||
+        Math.abs(allocation.deployedShare + allocation.awaitingShare - 1) > Number.EPSILON ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(allocation.asOf) ||
+        !allocation.deployedCompany ||
+        allocation.candidateCompanies.length === 0
+      ) {
+        throw new Error(`Invalid vehicle allocation: ${investment.id}`);
+      }
+    }
     ids.add(investment.id);
     chronologies.add(investment.chronology);
     investedCostTotal += investment.investedCost;

@@ -13,7 +13,10 @@ import {
   LETTER_TOP_FIVE_SHARE,
   type LetterSector,
 } from "@/data/lp-letter-figures";
-import { LP_PROJECTED_VALUATION_MARKS } from "@/data/lp-investments";
+import {
+  H256_VEHICLE_ALLOCATION,
+  LP_PROJECTED_VALUATION_MARKS,
+} from "@/data/lp-investments";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -41,6 +44,10 @@ function currency(value: number) {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value);
+}
+
+function wholePercent(value: number) {
+  return `${Math.round(value * 100)}%`;
 }
 
 const NUMBER_WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
@@ -161,13 +168,17 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         </p>
 
         <p>
-          We built broadly to learn while the market was forming. Forty-four positions gave us enough
-          breadth. Our largest pooled vehicle represents{" "}
-          {(LETTER_ALLOCATION[0].share * 100).toFixed(1)}% of invested cost, and our five largest
-          positions represent {(LETTER_TOP_FIVE_SHARE * 100).toFixed(1)}%; that is not the
-          construction we want to repeat. The next phase will favor fewer direct positions, clearer
-          economics, better information rights, and room to support the companies that earn
-          conviction.
+          We built broadly while the market was forming. Our 44 positions gave us breadth. The largest is
+          the $200,000 H256 LLC Series 3 vehicle, representing{" "}
+          {(LETTER_ALLOCATION[0].share * 100).toFixed(1)}% of invested cost. It remains one position: as of
+          August 17, 2026, {wholePercent(H256_VEHICLE_ALLOCATION.deployedShare)} had been deployed into{" "}
+          {H256_VEHICLE_ALLOCATION.deployedCompany}; the remaining{" "}
+          {wholePercent(H256_VEHICLE_ALLOCATION.awaitingShare)} remained invested in the vehicle awaiting
+          an underlying company. The vehicle is evaluating Applied Intuition or Atoms. Our separate direct
+          Atoms position is reported independently. Our five largest positions represent{" "}
+          {(LETTER_TOP_FIVE_SHARE * 100).toFixed(1)}%. We do not plan to repeat that construction. Next we
+          will favor fewer direct positions, clearer economics, better information rights, and room to
+          support the companies that earn conviction.
         </p>
 
         <p>
@@ -192,7 +203,6 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
       </div>
 
       <LpLetterFigures
-        asOf={LP_AUGUST_2026_PORTFOLIO_AS_OF}
         grossValue={snapshot.projectedGrossValue}
         positionCount={snapshot.positions}
       />

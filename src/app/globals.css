@@ -2668,6 +2668,13 @@ body {
   font-size: 12px;
 }
 
+.lp-company-name .lp-company-allocation,
+.lp-mobile-investment-title .lp-company-allocation {
+  color: var(--lp-accent);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
 .lp-portfolio-mobile {
   display: none;
 }
@@ -2811,6 +2818,7 @@ body {
    hairline lands 40-50px above it and reads as a stray double line. Drop the
    closing rule only where a ruled block actually follows. */
 .lp-detail-facts:has(+ .lp-performance),
+.lp-detail-facts:has(+ .lp-vehicle-allocation),
 .lp-detail-facts:has(+ .lp-portal-footer),
 .lp-performance:has(+ .lp-portal-footer) {
   border-bottom: 0;
@@ -2850,6 +2858,74 @@ body {
   border-top: 1px solid var(--lp-ink);
   border-bottom: 1px solid var(--lp-line);
   padding: 20px 0 22px;
+}
+
+.lp-vehicle-allocation {
+  margin-top: 42px;
+  border-top: 1px solid var(--lp-ink);
+  padding: 20px 0 22px;
+}
+
+.lp-vehicle-allocation > header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.lp-vehicle-allocation h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.lp-vehicle-allocation > header span,
+.lp-vehicle-allocation > p {
+  color: var(--lp-muted);
+  font-family: var(--cog-support);
+  font-size: 12px;
+}
+
+.lp-vehicle-allocation-grid {
+  display: grid;
+  grid-template-columns: 44fr 56fr;
+  margin-top: 18px;
+  border: 1px solid var(--lp-line);
+}
+
+.lp-vehicle-allocation-grid > div {
+  min-width: 0;
+  padding: 18px 20px 20px;
+}
+
+.lp-vehicle-allocation-grid > div:first-child {
+  border-right: 1px solid var(--lp-line);
+  background: color-mix(in srgb, var(--lp-accent) 8%, transparent);
+}
+
+.lp-vehicle-allocation-grid strong,
+.lp-vehicle-allocation-grid span {
+  display: block;
+}
+
+.lp-vehicle-allocation-grid strong {
+  color: var(--lp-accent);
+  font-family: var(--cog-mono);
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.lp-vehicle-allocation-grid span {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.lp-vehicle-allocation > p {
+  max-width: 760px;
+  margin: 14px 0 0;
+  line-height: 1.55;
 }
 
 .lp-performance > header {
@@ -3119,19 +3195,8 @@ body {
 .lp-figure-section-head {
   display: flex;
   align-items: baseline;
-  gap: 16px;
   border-bottom: 1px solid var(--lp-ink);
   padding-bottom: 12px;
-}
-
-.lp-figure-index {
-  flex: none;
-  border-left: 2px solid var(--lp-accent);
-  padding: 2px 0 2px 7px;
-  color: var(--lp-muted);
-  font-family: var(--cog-mono);
-  font-size: var(--lp-micro);
-  letter-spacing: 0.08em;
 }
 
 .lp-figure-section-head h2 {
@@ -3266,6 +3331,15 @@ body {
   line-height: 1.35;
 }
 
+.lp-figure-bar-label small {
+  display: block;
+  margin-top: 3px;
+  color: var(--lp-muted);
+  font-family: var(--cog-support);
+  font-size: var(--lp-micro);
+  line-height: 1.35;
+}
+
 .lp-figure-bar-row.is-lead .lp-figure-bar-label {
   color: var(--lp-accent);
 }
@@ -3316,8 +3390,7 @@ body {
   margin-top: 50px;
 }
 
-.lp-figure-compact h4,
-.lp-figure-triptych--notes h4 {
+.lp-figure-compact h4 {
   margin: 0 0 12px;
   border-bottom: 1px solid var(--lp-ink);
   padding-bottom: 8px;
@@ -3367,12 +3440,6 @@ body {
   font-size: var(--lp-micro);
   font-variant-numeric: tabular-nums;
   text-align: right;
-}
-
-.lp-figure-triptych--notes p {
-  margin: 0;
-  font-size: 13.5px;
-  line-height: 1.6;
 }
 
 /* Charts — svg and its label rails share one grid cell so percentage
@@ -3634,30 +3701,6 @@ body {
 
 .lp-figure-table--schedule tbody tr:hover {
   background: color-mix(in srgb, var(--lp-ink) 3%, transparent);
-}
-
-/* Basis of preparation */
-.lp-figure-notes {
-  margin: 26px 0 0;
-  max-width: 860px;
-}
-
-.lp-figure-notes > div + div {
-  margin-top: 13px;
-}
-
-.lp-figure-notes dt {
-  display: inline;
-  margin-right: 0.32em;
-  font-weight: 600;
-  font-size: 13.5px;
-}
-
-.lp-figure-notes dd {
-  display: inline;
-  margin: 0;
-  font-size: 13.5px;
-  line-height: 1.62;
 }
 
 @media (max-width: 1023px) {
@@ -3932,6 +3975,7 @@ body {
   .lp-detail-facts > div + div { padding-left: 12px; }
   .lp-detail-facts > div:nth-child(odd) { padding-left: 0; }
   .lp-performance { margin-top: 40px; }
+  .lp-vehicle-allocation { margin-top: 40px; }
 }
 
 @media (min-width: 720px) and (max-width: 899px) {
@@ -4114,6 +4158,10 @@ body {
   }
   .lp-performance dd { margin: 0; font-size: 22px; }
   .lp-performance dl small { width: 100%; }
+  .lp-vehicle-allocation > header { display: block; }
+  .lp-vehicle-allocation > header span { display: block; margin-top: 5px; }
+  .lp-vehicle-allocation-grid { grid-template-columns: minmax(0, 1fr); }
+  .lp-vehicle-allocation-grid > div:first-child { border-right: 0; border-bottom: 1px solid var(--lp-line); }
 }
 
 @media (max-width: 560px) {

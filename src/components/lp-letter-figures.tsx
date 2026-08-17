@@ -1,29 +1,34 @@
 import {
+  LETTER_ACCESS_CHANNEL_SPLIT,
   LETTER_ALLOCATION,
   LETTER_COMPANY_COUNT,
   LETTER_CONCENTRATION_CURVE,
   LETTER_DEPLOYMENT,
-  LETTER_DIRECT_EQUITY_SHARE,
   LETTER_ENTRY_BUCKETS,
   LETTER_ENTRY_HIGH,
   LETTER_ENTRY_LOW,
   LETTER_ENTRY_MEDIAN,
+  LETTER_ENTRY_ROUND_SPLIT,
   LETTER_ENTRY_SPREAD,
-  LETTER_INSTRUMENT_SPLIT,
   LETTER_INVESTED_TOTAL,
-  LETTER_PLATFORM_SPLIT,
   LETTER_POOLED_SHARE,
+  LETTER_POSITION_TYPE_SPLIT,
   LETTER_POSITIONS,
   LETTER_PRICED_COST,
   LETTER_PRICED_POSITIONS,
+  LETTER_PRIMARY_EQUITY_SHARE,
   LETTER_REMAINDER_AVERAGE,
-  LETTER_STAGE_SPLIT,
+  LETTER_SECONDARY_EQUITY_SHARE,
   LETTER_TOP_FIVE_SHARE,
   LETTER_TOP_POSITIONS,
   LETTER_TOP_TEN_SHARE,
   type LetterShare,
 } from "@/data/lp-letter-figures";
-import { LP_PROJECTED_VALUATION_MARKS, LP_INVESTMENTS } from "@/data/lp-investments";
+import {
+  H256_VEHICLE_ALLOCATION,
+  LP_PROJECTED_VALUATION_MARKS,
+  LP_INVESTMENTS,
+} from "@/data/lp-investments";
 
 /* Formatting ---------------------------------------------------------------- */
 
@@ -80,19 +85,18 @@ function monthLabel(date: string) {
 /* Shared pieces ------------------------------------------------------------- */
 
 function FigureSection({
-  index,
+  id,
   title,
   children,
 }: {
-  index: string;
+  id: string;
   title: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="lp-figure-section" aria-labelledby={`lp-figure-${index}`}>
+    <section className="lp-figure-section" aria-labelledby={`lp-figure-${id}`}>
       <div className="lp-figure-section-head">
-        <span className="lp-figure-index" aria-hidden="true">{index}</span>
-        <h2 id={`lp-figure-${index}`}>{title}</h2>
+        <h2 id={`lp-figure-${id}`}>{title}</h2>
       </div>
       {children}
     </section>
@@ -116,19 +120,24 @@ function BarRow({
   scale,
   amount,
   lead,
+  detail,
 }: {
   label: string;
   share: number;
   scale: number;
   amount?: number;
   lead?: boolean;
+  detail?: string;
 }) {
   // When a row carries a dollar label the bar gives up its last fifth, so the
   // longest bar cannot run into the label that trails it.
   const reserve = amount === undefined ? 1 : 0.8;
   return (
     <div className={`lp-figure-bar-row${lead ? " is-lead" : ""}`}>
-      <span className="lp-figure-bar-label">{label}</span>
+      <span className="lp-figure-bar-label">
+        {label}
+        {detail ? <small>{detail}</small> : null}
+      </span>
       <span className="lp-figure-bar-track">
         <span
           className="lp-figure-bar-fill"
@@ -204,7 +213,7 @@ function PortfolioAtAGlance({
   ];
 
   return (
-    <FigureSection index="01" title="Portfolio at a glance">
+    <FigureSection id="portfolio-at-a-glance" title="Portfolio at a glance">
       <div className="lp-figure-stats">
         {stats.map((stat) => (
           <div key={stat.label}>
@@ -228,13 +237,21 @@ function PortfolioAtAGlance({
             scale={allocationScale}
             amount={row.amount}
             lead={index === 0}
+            detail={
+              index === 0
+                ? `${percent(H256_VEHICLE_ALLOCATION.deployedShare, 0)} ${H256_VEHICLE_ALLOCATION.deployedCompany} · ${percent(H256_VEHICLE_ALLOCATION.awaitingShare, 0)} in vehicle pending next company`
+                : undefined
+            }
           />
         ))}
       </div>
       <p className="lp-figure-note">
-        One pooled vehicle carries {percent(LETTER_ALLOCATION[0].share)} of invested cost. Sector
-        labels follow the taxonomy used in this letter; every position is listed at cost in the{" "}
-        <a href="/lp">portfolio</a>.
+        The $200,000 H256 LLC Series 3 vehicle remains one portfolio position. As of August 17, 2026,
+        {` ${percent(H256_VEHICLE_ALLOCATION.deployedShare, 0)}`} had been deployed into{" "}
+        {H256_VEHICLE_ALLOCATION.deployedCompany}; the remaining{" "}
+        {percent(H256_VEHICLE_ALLOCATION.awaitingShare, 0)} remained in the vehicle awaiting its next
+        underlying company, for which it is evaluating Applied Intuition or Atoms. All Together&apos;s
+        separate direct Atoms investment is listed independently in the <a href="/lp">portfolio</a>.
       </p>
 
       <FigureHeading title="Capital deployed" note="Cumulative, at cost" />
@@ -289,7 +306,7 @@ function PortfolioAtAGlance({
 function ConcentrationAndStructure({ positionCount }: { positionCount: number }) {
   const scale = Math.max(...LETTER_TOP_POSITIONS.map((row) => row.share));
   return (
-    <FigureSection index="02" title="Concentration and structure">
+    <FigureSection id="concentration-and-structure" title="Concentration and structure">
       <FigureHeading title="Ten largest positions" note="Share of invested cost" />
       <div className="lp-figure-bars">
         {LETTER_TOP_POSITIONS.map((row, index) => (
@@ -300,6 +317,11 @@ function ConcentrationAndStructure({ positionCount }: { positionCount: number })
             scale={scale}
             amount={row.amount}
             lead={index === 0}
+            detail={
+              row.id === "09-h256-series-3"
+                ? `${percent(H256_VEHICLE_ALLOCATION.deployedShare, 0)} ${H256_VEHICLE_ALLOCATION.deployedCompany} · ${percent(H256_VEHICLE_ALLOCATION.awaitingShare, 0)} in vehicle pending next company`
+                : undefined
+            }
           />
         ))}
       </div>
@@ -310,14 +332,16 @@ function ConcentrationAndStructure({ positionCount }: { positionCount: number })
       </p>
 
       <div className="lp-figure-triptych">
-        <CompactBars title="Instrument" rows={LETTER_INSTRUMENT_SPLIT} />
-        <CompactBars title="Stage" rows={LETTER_STAGE_SPLIT} />
-        <CompactBars title="Platform" rows={LETTER_PLATFORM_SPLIT} />
+        <CompactBars title="Position type" rows={LETTER_POSITION_TYPE_SPLIT} />
+        <CompactBars title="Entry round" rows={LETTER_ENTRY_ROUND_SPLIT} />
+        <CompactBars title="Access channel" rows={LETTER_ACCESS_CHANNEL_SPLIT} />
       </div>
       <p className="lp-figure-note">
-        Pooled vehicles — the H256 series, Hark and Blue Origin — account for{" "}
-        {percent(LETTER_POOLED_SHARE)} of invested cost. Direct priced equity accounts for{" "}
-        {percent(LETTER_DIRECT_EQUITY_SHARE)}.
+        Primary and secondary company equity together account for{" "}
+        {percent(LETTER_PRIMARY_EQUITY_SHARE + LETTER_SECONDARY_EQUITY_SHARE)} of invested cost. Fund
+        / SPV interests — the H256 series, Hark and Blue Origin — account for{" "}
+        {percent(LETTER_POOLED_SHARE)} and are presented as the legal positions All Together owns, not
+        as direct ownership of the vehicles&apos; underlying company shares.
       </p>
     </FigureSection>
   );
@@ -345,7 +369,7 @@ function WhereWeBought() {
   const fiveX = (5 / LETTER_POSITIONS.length) * 100;
 
   return (
-    <FigureSection index="03" title="Where we bought">
+    <FigureSection id="where-we-bought" title="Where we bought">
       <p className="lp-figure-lede">
         The portfolio is a barbell. We hold seed companies priced in the tens of millions alongside a
         small number of the largest private companies in the world, and very little in between.
@@ -487,7 +511,7 @@ function ValuationEvidence({ grossValue }: { grossValue: number }) {
   const heldCount = LETTER_POSITIONS.length - marks.length;
 
   return (
-    <FigureSection index="04" title="Valuation evidence">
+    <FigureSection id="valuation-evidence" title="Valuation evidence">
       <p className="lp-figure-lede">
         We mark a position only where a sourced comparable financing gives us something to mark
         against. {spellOut(marks.length)} do. The other {heldCount} are held at cost.
@@ -555,70 +579,6 @@ function ValuationEvidence({ grossValue }: { grossValue: number }) {
         the round, we have not taken credit for it.
       </p>
 
-      <FigureHeading title="Checked and held flat" />
-      <div className="lp-figure-triptych lp-figure-triptych--notes">
-        <div>
-          <h4>OpenAI</h4>
-          <p>In at $852B post in May. The August 11 employee tender re-struck at the same $852B. Held at cost.</p>
-        </div>
-        <div>
-          <h4>Exowatt</h4>
-          <p>In at $695M in April. No subsequent round. Held at cost.</p>
-        </div>
-        <div>
-          <h4>Starcloud</h4>
-          <p>In at $2B pre. The last round we can confirm priced lower, in March. Held at cost.</p>
-        </div>
-      </div>
-      <p className="lp-figure-note">
-        Sources for the rounds above are public reporting and company announcements, not audited
-        statements. A priced round is evidence of price on the day it closed and nothing more;
-        private marks do not become realizable until there is a buyer.
-      </p>
-    </FigureSection>
-  );
-}
-
-/* 05 — Basis of preparation -------------------------------------------------- */
-
-function BasisOfPreparation({ asOf, grossValue }: { asOf: string; grossValue: number }) {
-  const notes = [
-    {
-      term: "Source",
-      body: `Figures are drawn from the fund's Schedule of Investments as maintained in Drive, reconciled ${asOf}. Invested capital is stated at cost in U.S. dollars.`,
-    },
-    {
-      term: "Weave Robotics",
-      body: "The position is carried at $5,000 following the correction recorded on August 14, 2026. An earlier draft of this letter stated total invested capital of $676,014.25, which reflected the pre-correction amount.",
-    },
-    {
-      term: "Blue Origin",
-      body: "The investor signature and wire were confirmed on August 12, 2026. Final fund acceptance and countersignature were outstanding at the date of this letter.",
-    },
-    {
-      term: "Valuation",
-      body: `The directional gross view of ${currency(grossValue)} marks positions to sourced comparable financings and holds the remainder at cost. It is not audited net asset value, is not a valuation of the fund, and should not be read as performance. Entry valuations are the round terms reported at the time of investment and are not marks.`,
-    },
-    {
-      term: "Sector taxonomy",
-      body: "Sector is an internal classification and is not a field on the Schedule of Investments. Companies are assigned to a single sector at full cost; positions spanning more than one category are placed where the primary business sits.",
-    },
-    {
-      term: "Concentration",
-      body: "The H256 LLC Series 3 vehicle currently holds a single interest, in Anduril. It is shown as one position at cost and is not looked through to its underlying holding.",
-    },
-  ];
-
-  return (
-    <FigureSection index="05" title="Basis of preparation">
-      <dl className="lp-figure-notes">
-        {notes.map((note) => (
-          <div key={note.term}>
-            <dt>{note.term}.</dt>
-            <dd>{note.body}</dd>
-          </div>
-        ))}
-      </dl>
     </FigureSection>
   );
 }
@@ -626,11 +586,9 @@ function BasisOfPreparation({ asOf, grossValue }: { asOf: string; grossValue: nu
 /* ---------------------------------------------------------------------------- */
 
 export function LpLetterFigures({
-  asOf,
   grossValue,
   positionCount,
 }: {
-  asOf: string;
   grossValue: number;
   positionCount: number;
 }) {
@@ -640,7 +598,6 @@ export function LpLetterFigures({
       <ConcentrationAndStructure positionCount={positionCount} />
       <WhereWeBought />
       <ValuationEvidence grossValue={grossValue} />
-      <BasisOfPreparation asOf={asOf} grossValue={grossValue} />
     </div>
   );
 }

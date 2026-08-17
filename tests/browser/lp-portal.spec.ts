@@ -37,6 +37,9 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByText("SAFE", { exact: true })).toHaveCount(0);
   await expect(page.getByText("SPV", { exact: true })).toHaveCount(0);
   await expect(page.locator(".lp-portfolio-table").getByText("Positron", { exact: true })).toBeVisible();
+  const h256Row = page.locator(".lp-portfolio-table tbody tr").filter({ hasText: "H256 LLC Series 3" });
+  await expect(h256Row).toContainText("$200,000");
+  await expect(h256Row).toContainText("44% Anduril · 56% in vehicle pending next company");
   await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M fund / $1M investment entity", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M model financing", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-portfolio-table .lp-company-logo img")).toHaveCount(44);
@@ -81,13 +84,32 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(updateParagraphs.nth(4)).toContainText("beyond the Anthropocene");
   await expect(updateParagraphs.nth(4)).toContainText("ownership layer");
   await expect(page.locator(".lp-update-article-copy")).toContainText("30.3%");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("$200,000 H256 LLC Series 3");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("44% had been deployed into Anduril");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("remaining 56% remained invested in the vehicle");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("Applied Intuition or Atoms");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("separate direct Atoms position");
+  await expect(page.locator(".lp-figure-section").first()).toContainText("44% Anduril · 56% in vehicle pending next company");
+  const concentrationSection = page.locator(".lp-figure-section").filter({ hasText: "Concentration and structure" });
+  await expect(concentrationSection.getByRole("heading", { name: "Position type" })).toBeVisible();
+  await expect(concentrationSection).toContainText("Primary equity");
+  await expect(concentrationSection).toContainText("Secondary equity");
+  await expect(concentrationSection).toContainText("Fund / SPV interests");
+  await expect(concentrationSection.getByRole("heading", { name: "Entry round" })).toBeVisible();
+  await expect(concentrationSection).toContainText("No company round");
+  await expect(concentrationSection.getByRole("heading", { name: "Access channel" })).toBeVisible();
+  await expect(concentrationSection.getByRole("heading", { name: "Instrument" })).toHaveCount(0);
+  await expect(concentrationSection.getByRole("heading", { name: "Stage" })).toHaveCount(0);
+  await expect(concentrationSection.getByRole("heading", { name: "Platform" })).toHaveCount(0);
   const updateWordCount = await page.locator(".lp-update-article-copy").evaluate((element) =>
     (element.textContent ?? "").trim().split(/\s+/).length,
   );
   expect(updateWordCount).toBeLessThan(600);
-  // Stated in the letter body, again in Basis of preparation, and in the
-  // confidentiality footer — the same three places the mailed PDF states it.
-  await expect(page.getByText(/not audited net asset value/i)).toHaveCount(3);
+  // Stated in the letter body and confidentiality footer.
+  await expect(page.getByText(/not audited net asset value/i)).toHaveCount(2);
+  await expect(page.getByRole("heading", { name: "Checked and held flat" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Basis of preparation" })).toHaveCount(0);
+  await expect(page.locator(".lp-figure-index")).toHaveCount(0);
   await expect(page.locator(".lp-update-article-copy a")).toHaveCount(6);
   // The letter body stays unadorned prose. The figure suite below it is
   // allowed its own semantics, so these guards scope to the copy, not the page.
@@ -143,7 +165,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await page.locator(".lp-back-link").click();
   await page.getByPlaceholder("Search investments…").fill("Positron");
   await page.getByPlaceholder("Search investments…").press("Enter");
-  await page.getByRole("link", { name: "View Positron" }).click();
+  await page.locator(".lp-table-wrap").getByRole("link", { name: "View Positron" }).click();
   await expect(page).toHaveURL(/44-positron$/);
   await expect(page.getByRole("link", { name: "Visit Positron website" })).toHaveAttribute("href", "https://www.positron.ai/");
   await expect(page.getByText("$4.5B before the round", { exact: true })).toHaveCount(2);
@@ -157,6 +179,22 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await page.goto("/lp/investments/42-weave-robotics");
   await expect(page.getByRole("heading", { name: "Weave Robotics" })).toBeVisible();
   await expect(page.getByText("$5,000", { exact: true })).toHaveCount(2);
+
+  await page.goto("/lp/investments/09-h256-series-3");
+  await expect(page.getByRole("heading", { name: "H256 LLC Series 3" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Vehicle allocation" })).toBeVisible();
+  await expect(page.locator(".lp-vehicle-allocation")).toContainText("44%");
+  await expect(page.locator(".lp-vehicle-allocation")).toContainText("Deployed into Anduril");
+  await expect(page.locator(".lp-vehicle-allocation")).toContainText("56%");
+  await expect(page.locator(".lp-vehicle-allocation")).toContainText("Applied Intuition or Atoms");
+  await expect(page.locator(".lp-vehicle-allocation")).toContainText("Atoms for its next investment");
+  await expect(page.locator(".lp-vehicle-allocation")).toContainText("separate direct Atoms investment");
+  await expect(page.locator(".lp-vehicle-allocation")).toContainText("$200,000 vehicle investment remains one portfolio position");
+  await expect(page.getByText("$200,000", { exact: true })).toHaveCount(2);
+
+  await page.goto("/lp/investments/41-atoms");
+  await expect(page.getByRole("heading", { name: "Atoms" })).toBeVisible();
+  await expect(page.getByText("$9,350", { exact: true })).toHaveCount(2);
 });
 
 test("renders the login, portfolio, and detail views at every supported layout", async ({ browser }) => {
@@ -265,6 +303,17 @@ test("renders the login, portfolio, and detail views at every supported layout",
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     await page.screenshot({
       path: `output/playwright/lp-portal/detail-${viewport.name}.png`,
+      fullPage: true,
+    });
+
+    await page.goto("/lp/investments/09-h256-series-3");
+    await expect(page.getByRole("heading", { name: "Vehicle allocation" })).toBeVisible();
+    await expect(page.locator(".lp-vehicle-allocation")).toContainText("44%");
+    await expect(page.locator(".lp-vehicle-allocation")).toContainText("56%");
+    await expect(page.locator(".lp-vehicle-allocation")).toContainText("Applied Intuition or Atoms");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+    await page.screenshot({
+      path: `output/playwright/lp-portal/detail-h256-${viewport.name}.png`,
       fullPage: true,
     });
 

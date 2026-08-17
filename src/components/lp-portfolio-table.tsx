@@ -31,6 +31,10 @@ function formatDate(value: string) {
   }).format(new Date(`${value}T00:00:00Z`));
 }
 
+function formatWholePercent(value: number) {
+  return `${Math.round(value * 100)}%`;
+}
+
 function sortHref(view: LpTableView, key: LpTableSort) {
   const params = new URLSearchParams();
   if (view.query) params.set("query", view.query);
@@ -60,6 +64,8 @@ export function LpPortfolioTable({
           investment.investmentAccess,
           investment.ownershipType,
           investment.valuationWhenInvested,
+          investment.vehicleAllocation?.deployedCompany,
+          ...(investment.vehicleAllocation?.candidateCompanies || []),
         ]
           .join(" ")
           .toLocaleLowerCase()
@@ -125,6 +131,12 @@ export function LpPortfolioTable({
                       <small>
                         {investment.investmentAccess}
                       </small>
+                      {investment.vehicleAllocation ? (
+                        <small className="lp-company-allocation">
+                          {formatWholePercent(investment.vehicleAllocation.deployedShare)} {investment.vehicleAllocation.deployedCompany}
+                          {" · "}{formatWholePercent(investment.vehicleAllocation.awaitingShare)} in vehicle pending next company
+                        </small>
+                      ) : null}
                     </span>
                   </Link>
                 </td>
@@ -162,6 +174,12 @@ export function LpPortfolioTable({
                   <small>
                     {investment.investmentAccess} · {investment.ownershipType}
                   </small>
+                  {investment.vehicleAllocation ? (
+                    <small className="lp-company-allocation">
+                      {formatWholePercent(investment.vehicleAllocation.deployedShare)} {investment.vehicleAllocation.deployedCompany}
+                      {" · "}{formatWholePercent(investment.vehicleAllocation.awaitingShare)} in vehicle pending next company
+                    </small>
+                  ) : null}
                 </span>
                 <span className="lp-mobile-investment-arrow" aria-hidden="true">→</span>
               </span>
