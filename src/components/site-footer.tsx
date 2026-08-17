@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { LogoMark } from "@/components/cognition-layout";
 import { ArrowUpRight } from "@/components/icons";
 import { LEGAL, NAV, SOCIALS } from "@/lib/site";
 
@@ -36,12 +35,6 @@ function FooterLink({
 export function SiteFooter() {
   return (
     <footer className="cog-footer">
-      <div className="cog-footer-mark">
-        <Link href="/" aria-label="All Together home">
-          <LogoMark className="cog-footer-wordmark" />
-        </Link>
-      </div>
-
       <div className="cog-footer-body">
         <div>
           <p className="cog-footer-copy">

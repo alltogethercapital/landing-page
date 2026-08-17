@@ -174,7 +174,7 @@ body::-webkit-scrollbar {
   --cog-muted: rgba(0, 0, 0, 0.56);
   --cog-line: rgba(0, 0, 0, 0.08);
   --cog-accent: #006fce;
-  --cog-sun: #ffd52c;
+  --cog-sun: #ffc62c;
   --cog-dark: #191919;
   --font-unica: var(--font-newsreader);
   --font-rosart: var(--font-newsreader);
@@ -313,32 +313,21 @@ body {
   scroll-snap-align: start;
 }
 
-/* Framed all-caps identity, echoing the supplied Benchmark reference. */
+/* Unframed all-caps identity paired with the sun-and-Earth mark. */
 .cog-wordmark {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  border: 1px solid currentColor;
-  padding: 6px 8px 5px 10px;
+  gap: 14px;
+  padding: 0;
   color: var(--cog-ink);
   font-family: var(--font-brand-display), "Helvetica Neue", Arial, sans-serif;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.34em;
   line-height: 1;
   white-space: nowrap;
-}
-
-.cog-wordmark::after {
-  position: absolute;
-  right: -1px;
-  bottom: -4px;
-  left: -1px;
-  height: 1px;
-  background: currentColor;
-  content: "";
 }
 
 .cog-wordmark-text {
@@ -349,8 +338,8 @@ body {
 
 .cog-wordmark-logo {
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 26px;
+  height: 26px;
   flex: none;
   border-radius: 50%;
   object-fit: cover;
@@ -486,7 +475,7 @@ body {
   width: var(--nav-hover-width);
   height: var(--nav-hover-height);
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(0, 111, 206, 0.56) 0 2px, rgba(255, 213, 44, 0.18) 2px);
+  background: linear-gradient(90deg, rgba(0, 111, 206, 0.56) 0 2px, rgba(255, 198, 44, 0.18) 2px);
   clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 50%, calc(100% - 7px) 100%, 0 100%);
   opacity: 0;
   transform: translate3d(var(--nav-hover-left), var(--nav-hover-top), 0);
@@ -1304,7 +1293,7 @@ body {
   content: "";
   opacity: 0;
   background:
-    linear-gradient(135deg, rgba(255, 213, 44, 0.12), transparent 42%),
+    linear-gradient(135deg, rgba(255, 198, 44, 0.12), transparent 42%),
     linear-gradient(315deg, rgba(0, 0, 0, 0.055), transparent 34%);
   transition: opacity 200ms ease-in-out;
 }
@@ -1433,14 +1422,6 @@ body {
   margin-top: 120px;
   border-top: 1px solid var(--cog-line);
   padding: 42px 64px 28px 64px;
-}
-
-.cog-footer-mark {
-  margin-bottom: 44px;
-}
-
-.cog-footer-wordmark {
-  font-size: 12px;
 }
 
 .cog-footer-body {

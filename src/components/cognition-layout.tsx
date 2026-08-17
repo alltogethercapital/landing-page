@@ -25,18 +25,18 @@ export function BrandDot({ className }: { className?: string }) {
   );
 }
 
-// Framed all-caps wordmark, tuned to echo the supplied Benchmark reference.
+// Unframed all-caps wordmark paired with the shared sun-and-Earth mark.
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-wordmark", className)}>
+      <span className="cog-wordmark-text">ALLTOGETHER</span>
       <Image
         src="/brand/all-together-rising-circles-logo.png"
         alt=""
-        width={18}
-        height={18}
+        width={26}
+        height={26}
         className="cog-wordmark-logo"
       />
-      <span className="cog-wordmark-text">ALLTOGETHER</span>
     </span>
   );
 }
