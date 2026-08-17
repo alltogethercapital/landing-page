@@ -12,7 +12,11 @@ import { UpdatesCarousel } from "@/components/updates-carousel";
 import { ARTICLES } from "@/lib/articles";
 import { PORTFOLIO } from "@/lib/portfolio";
 
-const logoCompanies = PORTFOLIO.filter((company) => company.cardLogo ?? company.logo).slice(0, 24);
+// 25 fills the desktop mosaic exactly (5 columns x 5 rows). The 3-column
+// mobile grid hides the last one, so 24 divides evenly there too — neither
+// breakpoint is left with an orphan cell. Order is the portfolio's own
+// most-known-first ordering; the mosaic is a selection, not the full list.
+const logoCompanies = PORTFOLIO.filter((company) => company.cardLogo ?? company.logo).slice(0, 25);
 const homepageUpdates = ARTICLES.map(
   ({ slug, title, date, dateISO, category, image }) => ({
     slug,

@@ -20,7 +20,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
   await expect(page.getByText("44 of 44 records")).toBeVisible();
   await expect(page.getByText("$661,014.25", { exact: true })).toBeVisible();
-  await expect(page.getByText("$674,867.04", { exact: true })).toBeVisible();
+  await expect(page.getByText("$671,574.11", { exact: true })).toBeVisible();
   await expect(page.getByText("Current value multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.02×", { exact: true })).toBeVisible();
@@ -69,7 +69,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByText("Investor Update #1", { exact: true })).toBeVisible();
   await expect(page.getByText("August 14, 2026", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-update-article-copy")).toContainText("$661,014.25");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("$674,867.04");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("$671,574.11");
   await expect(page.locator(".lp-update-article-copy")).toContainText("1.02×");
   await expect(page.locator(".lp-update-article-copy")).toContainText("post-labor economy");
   await expect(page.locator(".lp-update-article-copy")).toContainText("ownership layer");
@@ -85,11 +85,17 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
     (element.textContent ?? "").trim().split(/\s+/).length,
   );
   expect(updateWordCount).toBeLessThan(600);
-  await expect(page.getByText(/not audited net asset value/i)).toHaveCount(2);
+  // Stated in the letter body, again in Basis of preparation, and in the
+  // confidentiality footer — the same three places the mailed PDF states it.
+  await expect(page.getByText(/not audited net asset value/i)).toHaveCount(3);
   await expect(page.locator(".lp-update-article-copy a")).toHaveCount(6);
-  await expect(page.locator(".lp-update-article figure")).toHaveCount(0);
-  await expect(page.locator(".lp-update-article aside")).toHaveCount(0);
-  await expect(page.locator(".lp-update-article ol, .lp-update-article ul, .lp-update-article dl")).toHaveCount(0);
+  // The letter body stays unadorned prose. The figure suite below it is
+  // allowed its own semantics, so these guards scope to the copy, not the page.
+  await expect(page.locator(".lp-update-article-copy figure")).toHaveCount(0);
+  await expect(page.locator(".lp-update-article-copy aside")).toHaveCount(0);
+  await expect(
+    page.locator(".lp-update-article-copy ol, .lp-update-article-copy ul, .lp-update-article-copy dl"),
+  ).toHaveCount(0);
   expect(await page.locator(".lp-update-article-copy a").evaluateAll((links) =>
     links.every((link) => link.getAttribute("target") === "_blank" && link.getAttribute("rel") === "noreferrer"),
   )).toBe(true);

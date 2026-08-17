@@ -6,6 +6,14 @@ import {
   LP_AUGUST_2026_PORTFOLIO_AS_OF,
   LP_INVESTOR_UPDATES,
 } from "@/data/lp-investor-updates";
+import { LpLetterFigures } from "@/components/lp-letter-figures";
+import {
+  LETTER_ALLOCATION,
+  LETTER_SECTOR_PROSE,
+  LETTER_TOP_FIVE_SHARE,
+  type LetterSector,
+} from "@/data/lp-letter-figures";
+import { LP_PROJECTED_VALUATION_MARKS } from "@/data/lp-investments";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -33,6 +41,21 @@ function currency(value: number) {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value);
+}
+
+const NUMBER_WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
+
+// "30.3% is in a diversified frontier vehicle, 21.7% in AI and compute, …" —
+// built from the same allocation the figure below the letter draws, so the
+// sentence cannot drift from the chart.
+function allocationSentence() {
+  return LETTER_ALLOCATION.map((row, index) => {
+    const share = `${(row.share * 100).toFixed(1)}%`;
+    const label = LETTER_SECTOR_PROSE[row.key as LetterSector];
+    const lead = index === 0 ? `${share} is in ${label}` : `${share} in ${label}`;
+    if (index === 0) return lead;
+    return index === LETTER_ALLOCATION.length - 1 ? `and ${lead}` : lead;
+  }).join(", ");
 }
 
 export default async function LpInvestorUpdatePage({ params }: PageProps) {
@@ -118,8 +141,9 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         <p>
           As of {LP_AUGUST_2026_PORTFOLIO_AS_OF}, we had invested {currency(snapshot.investedCost)} across
           {` ${snapshot.positions} positions in ${snapshot.companies} companies`}. Our directional gross
-          view was {currency(snapshot.projectedGrossValue)}, or {snapshot.projectedGrossMultiple.toFixed(2)}×
-          invested cost. Six positions use{" "}
+          view was {currency(snapshot.projectedGrossValue)}, or{" "}
+          {(snapshot.projectedGrossValue / snapshot.investedCost).toFixed(2)}× invested cost.{" "}
+          {NUMBER_WORDS[Object.keys(LP_PROJECTED_VALUATION_MARKS).length]} positions use{" "}
           <a
             href="https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/IPEV%20Valuation%20Guidelines%20-%20December%202022.pdf"
             target="_blank"
@@ -131,19 +155,19 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         </p>
 
         <p>
-          The portfolio reflects that thesis. At invested cost, 30.3% is in a diversified frontier
-          vehicle, 20.8% in robotics and industrial systems, 18.8% in AI and compute, 17.7% in aerospace,
-          defense, and autonomy, 8.3% in energy and hard infrastructure, and 4.1% in applications and
-          resilience. Together, these positions span the intelligence, machines, and infrastructure of a
-          post-labor economy.
+          The portfolio reflects that thesis. At invested cost, {allocationSentence()}. Together,
+          these positions span the intelligence, machines, and infrastructure of a post-labor
+          economy.
         </p>
 
         <p>
           We built broadly to learn while the market was forming. Forty-four positions gave us enough
-          breadth. Our largest pooled vehicle represents 30.3% of invested cost, and our five largest
-          positions represent about half; that is not the construction we want to repeat. The next phase
-          will favor fewer direct positions, clearer economics, better information rights, and room to
-          support the companies that earn conviction.
+          breadth. Our largest pooled vehicle represents{" "}
+          {(LETTER_ALLOCATION[0].share * 100).toFixed(1)}% of invested cost, and our five largest
+          positions represent {(LETTER_TOP_FIVE_SHARE * 100).toFixed(1)}%; that is not the
+          construction we want to repeat. The next phase will favor fewer direct positions, clearer
+          economics, better information rights, and room to support the companies that earn
+          conviction.
         </p>
 
         <p>
@@ -166,6 +190,12 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
 
         <p className="lp-update-article-signature">Robert and Hisham</p>
       </div>
+
+      <LpLetterFigures
+        asOf={LP_AUGUST_2026_PORTFOLIO_AS_OF}
+        grossValue={snapshot.projectedGrossValue}
+        positionCount={snapshot.positions}
+      />
 
       <footer className="lp-update-article-footer">
         <p>

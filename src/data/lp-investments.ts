@@ -95,13 +95,20 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
 
 // Sourced comparable financing marks used for the LP-facing gross projection.
 // Positions without a comparable mark remain at invested cost.
+//
+// These three are the marks carried in the August 2026 investor letter as
+// mailed. Each is a secondary bought below, or an entry struck below, a primary
+// round that had already closed — none is a company re-rating after we invested.
+// Replit, 1X (Series B) and Decart were carried in an earlier draft and are held
+// at cost here, matching the letter of record.
 export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark> = {
-  "04-replit": { entryValuationAmount: 8_600_000_000, latestValuationAmount: 9_000_000_000, latestValuation: "$9B", asOf: "2026-03-11", source: "Replit funding announcement", sourceUrl: "https://replit.com/blog/replit-raises-400-million-dollars" },
   "07-shield-ai": { entryValuationAmount: 10_500_000_000, latestValuationAmount: 12_700_000_000, latestValuation: "$12.7B post-money", asOf: "2026-03-26", source: "Shield AI Series G", sourceUrl: "https://techcrunch.com/2026/03/26/defense-startup-shield-ai-lands-12-7b-valuation-up-140-after-u-s-air-force-deal/" },
-  "12-apptronik": { entryValuationAmount: 4_900_000_000, latestValuationAmount: 5_000_000_000, latestValuation: "$5B+", asOf: "2026-02-11", source: "Apptronik Series A-X", sourceUrl: "https://techcrunch.com/2026/02/11/humanoid-robot-startup-apptronik-has-now-raised-935m-at-a-5b-valuation/" },
-  "24-1x-series-b": { entryValuationAmount: 4_590_000_000, latestValuationAmount: 10_000_000_000, latestValuation: "$10B post-money", asOf: "2025-10-29", source: "All Together SOI · 1X Series C", sourceUrl: "https://docs.google.com/spreadsheets/d/18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo/edit" },
+  // No sourceUrl: the only link on file reports $5B, which contradicts the
+  // ~$5.3B this position is marked to. Restore a link once one reporting the
+  // extension at ~$5.3B is available — a citation that disagrees with the mark
+  // is worse than none.
+  "12-apptronik": { entryValuationAmount: 4_900_000_000, latestValuationAmount: 5_300_000_000, latestValuation: "~$5.3B post-money", asOf: "2026-02-11", source: "Apptronik Series A extension" },
   "25-figure-ai": { entryValuationAmount: 30_000_000_000, latestValuationAmount: 39_000_000_000, latestValuation: "$39B post-money", asOf: "2025-09-16", source: "Figure Series C announcement", sourceUrl: "https://www.figure.ai/news/series-c" },
-  "35-decart-ai": { entryValuationAmount: 3_800_000_000, latestValuationAmount: 4_000_000_000, latestValuation: "$4B", asOf: "2026-05-31", source: "Decart latest completed financing", sourceUrl: "https://www.axios.com/2026/08/13/anthropic-decart-nvidia-ipo" },
 };
 
 export const LP_PROJECTION_AS_OF = "2026-08-14";
