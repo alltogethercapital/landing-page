@@ -173,7 +173,8 @@ body::-webkit-scrollbar {
   --cog-ink: #000000;
   --cog-muted: rgba(0, 0, 0, 0.56);
   --cog-line: rgba(0, 0, 0, 0.08);
-  --cog-accent: #00E100;
+  --cog-accent: #006fce;
+  --cog-sun: #ffd52c;
   --cog-dark: #191919;
   --font-unica: var(--font-newsreader);
   --font-rosart: var(--font-newsreader);
@@ -190,7 +191,7 @@ body {
 
 /* The accent is reserved for "live" states — selection included. */
 ::selection {
-  background: var(--cog-accent);
+  background: var(--cog-sun);
   color: #000;
 }
 
@@ -485,7 +486,7 @@ body {
   width: var(--nav-hover-width);
   height: var(--nav-hover-height);
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(0, 225, 0, 0.46) 0 2px, rgba(0, 225, 0, 0.11) 2px);
+  background: linear-gradient(90deg, rgba(0, 111, 206, 0.56) 0 2px, rgba(255, 213, 44, 0.18) 2px);
   clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 50%, calc(100% - 7px) 100%, 0 100%);
   opacity: 0;
   transform: translate3d(var(--nav-hover-left), var(--nav-hover-top), 0);
@@ -597,11 +598,11 @@ body {
   color: var(--cog-bg);
 }
 
-/* Primary actions keep the live-green treatment. */
+/* Primary actions use the Earth-blue brand accent. */
 .cog-button:hover {
   border-color: var(--cog-accent);
   background: var(--cog-accent);
-  color: var(--cog-ink);
+  color: #fff;
 }
 
 .cog-nav-button:hover {
@@ -824,8 +825,8 @@ body {
   position: absolute;
   inset: 5px -12px;
   z-index: -1;
-  background: rgba(0, 225, 0, 0.1);
-  border: 1px solid rgba(0, 225, 0, 0.24);
+  background: rgba(0, 111, 206, 0.08);
+  border: 1px solid rgba(0, 111, 206, 0.22);
   content: "";
   opacity: 0;
   transition: opacity 160ms ease;
@@ -834,7 +835,7 @@ body {
 .cog-search-result:hover,
 .cog-search-result:focus-visible,
 .cog-search-result.is-active {
-  color: #009e00;
+  color: var(--cog-accent);
   padding-left: 8px;
 }
 
@@ -1303,7 +1304,7 @@ body {
   content: "";
   opacity: 0;
   background:
-    linear-gradient(135deg, rgba(0, 225, 0, 0.1), transparent 42%),
+    linear-gradient(135deg, rgba(255, 213, 44, 0.12), transparent 42%),
     linear-gradient(315deg, rgba(0, 0, 0, 0.055), transparent 34%);
   transition: opacity 200ms ease-in-out;
 }
@@ -1964,7 +1965,7 @@ body {
 /* Investor portal — the site's editorial system, tightened around private data. */
 .lp-login-page,
 .lp-portal-page {
-  --lp-green: var(--cog-accent);
+  --lp-accent: var(--cog-accent);
   --lp-paper: #f7f6f2;
   --lp-white: #fff;
   --lp-ink: #111;
@@ -2072,12 +2073,12 @@ body {
 }
 
 .lp-login-input-row button:hover:not(:disabled) {
-  background: var(--lp-green);
-  color: var(--lp-ink);
+  background: var(--lp-accent);
+  color: var(--lp-white);
 }
 
 .lp-login-input-row button:focus-visible {
-  outline: 2px solid var(--lp-green);
+  outline: 2px solid var(--lp-accent);
   outline-offset: -4px;
 }
 
@@ -2186,7 +2187,7 @@ body {
 }
 
 .lp-portal-nav nav a.is-active {
-  color: var(--lp-green);
+  color: var(--lp-accent);
 }
 
 .lp-portal-nav nav a.is-active::before {
@@ -2195,7 +2196,7 @@ body {
   left: -4px;
   width: 2px;
   height: 0.92em;
-  background: var(--lp-green);
+  background: var(--lp-accent);
   content: "";
 }
 
@@ -2377,8 +2378,8 @@ body {
 }
 
 .lp-filter-submit:hover {
-  background: var(--lp-green);
-  color: var(--lp-ink);
+  background: var(--lp-accent);
+  color: var(--lp-white);
 }
 
 .lp-table-wrap {
@@ -2439,7 +2440,7 @@ body {
 }
 
 .lp-portfolio-table tbody tr:hover {
-  background: rgba(0, 225, 0, 0.055);
+  background: rgba(0, 111, 206, 0.055);
 }
 
 .lp-portfolio-table tbody tr[data-status="review"] {
@@ -2632,8 +2633,9 @@ body {
 }
 
 .lp-company-website:hover {
-  border-color: var(--lp-green);
-  background: var(--lp-green);
+  border-color: var(--lp-accent);
+  background: var(--lp-accent);
+  color: var(--lp-white);
 }
 
 .lp-detail-facts {
@@ -2847,7 +2849,7 @@ body {
 .lp-updates-list a:focus-visible strong,
 .lp-updates-list a:hover .lp-update-list-arrow,
 .lp-updates-list a:focus-visible .lp-update-list-arrow {
-  color: var(--lp-green);
+  color: var(--lp-accent);
 }
 
 .lp-update-back-link {
@@ -2898,7 +2900,7 @@ body {
 
 .lp-update-article-copy a {
   color: inherit;
-  text-decoration-color: var(--lp-green);
+  text-decoration-color: var(--lp-accent);
   text-underline-offset: 3px;
 }
 
@@ -3200,7 +3202,8 @@ body {
     transition: background-color 150ms ease;
   }
   .lp-mobile-investment-link:hover .lp-mobile-investment-arrow {
-    background: var(--lp-green);
+    background: var(--lp-accent);
+    color: var(--lp-white);
   }
   .lp-mobile-investment-facts {
     display: grid;

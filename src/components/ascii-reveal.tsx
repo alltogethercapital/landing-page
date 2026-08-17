@@ -5,14 +5,14 @@ import { GLYPH_RAMP } from "@/lib/glyphs";
 
 // Portrait develop: when a card scrolls into view the photo arrives as live
 // type — every cell starts as scrambled characters, then resolves in an
-// organic top-down sweep. A cell flashes accent green at the moment it
+// organic top-down sweep. A cell flashes accent blue at the moment it
 // settles, like a developing edge moving down the print, and once the whole
 // frame has settled the characters dissolve into the photograph.
 
 const SCRAMBLE = "$@B%8&WM#*ZOQXkbdpqwmcvunxrj?+~<>!;:";
 const SWEEP_MS = 1400; // top row → bottom row resolve spread
 const JITTER_MS = 460; // per-cell randomness inside the sweep
-const FLASH_MS = 160; // green flash when a cell settles
+const FLASH_MS = 160; // blue flash when a cell settles
 const HOLD_MS = 420; // settled frame, before the dissolve
 const SCRAMBLE_TICK_MS = 64; // how often unresolved cells re-randomize
 
@@ -146,8 +146,8 @@ export function AsciiReveal({ src }: { src: string }) {
               (cell.y + 0.5) * cellH,
             );
           } else if (since < FLASH_MS) {
-            // The developing edge: settles in green, then fades to ink.
-            ctx.fillStyle = "#00E100";
+            // The developing edge: settles in blue, then fades to ink.
+            ctx.fillStyle = "#006FCE";
             ctx.fillText(
               cell.glyph,
               (cell.x + 0.5) * cellW,
