@@ -8,10 +8,17 @@ import {
 } from "@/components/lp-portfolio-table";
 import { getLpPortfolio, getLpSnapshot } from "@/lib/lp-data";
 
-export const metadata: Metadata = {
-  title: "Portfolio",
-  robots: { index: false, follow: false, nocache: true },
+type LpPortfolioPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
+
+export async function generateMetadata({ searchParams }: LpPortfolioPageProps): Promise<Metadata> {
+  const params = await searchParams;
+  return {
+    title: params.section === "analysis" ? "Insights" : "Portfolio",
+    robots: { index: false, follow: false, nocache: true },
+  };
+}
 
 function currency(value: number) {
   return new Intl.NumberFormat("en-US", {
@@ -22,11 +29,7 @@ function currency(value: number) {
   }).format(value);
 }
 
-export default async function LpPortfolioPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
+export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageProps) {
   const [investments, params] = await Promise.all([getLpPortfolio(), searchParams]);
   const value = (key: string) => typeof params[key] === "string" ? params[key] : undefined;
   const requestedSort = value("sort");
@@ -62,6 +65,13 @@ export default async function LpPortfolioPage({
     <div className="lp-portal-shell">
       <h1 className="sr-only">Portfolio</h1>
 
+      <dl className="lp-summary-grid lp-summary-grid--four" aria-label="Portfolio summary">
+        <div><dt>Amount invested</dt><dd>{currency(allocatedCost)}</dd></div>
+        <div><dt>Not yet allocated</dt><dd>{currency(notYetAllocated)}</dd></div>
+        <div><dt>Projected value</dt><dd>{currency(projectedValue)}</dd></div>
+        <div><dt>Current value multiple</dt><dd>{currentValueMultiple.toFixed(2)}×</dd></div>
+      </dl>
+
       <nav className="lp-portfolio-tabs" aria-label="Portfolio sections">
         <Link
           href="/lp"
@@ -73,35 +83,16 @@ export default async function LpPortfolioPage({
           href="/lp?section=analysis"
           aria-current={section === "analysis" ? "page" : undefined}
         >
-          Portfolio analysis
+          Insights
         </Link>
       </nav>
 
       {section === "investments" ? (
-        <>
-          <dl className="lp-summary-grid lp-summary-grid--four" aria-label="Portfolio summary">
-            <div><dt>Amount invested</dt><dd>{currency(allocatedCost)}</dd></div>
-            <div><dt>Not yet allocated</dt><dd>{currency(notYetAllocated)}</dd></div>
-            <div><dt>Projected value</dt><dd>{currency(projectedValue)}</dd></div>
-            <div><dt>Current value multiple</dt><dd>{currentValueMultiple.toFixed(2)}×</dd></div>
-          </dl>
-
-          <div className="lp-disclosure">
-            <p>
-              Projection as of {snapshot.projectionAsOf}: investments with a newer, sourced company
-              valuation use that valuation; all others remain at the amount invested. This estimate
-              is before fund fees, profit share, taxes, and future ownership dilution. It is not the
-              fund&apos;s audited net asset value.
-            </p>
-          </div>
-
-          <LpPortfolioTable investments={investments} view={view} />
-        </>
+        <LpPortfolioTable investments={investments} view={view} />
       ) : (
         <div className="lp-portfolio-analysis">
           <LpLetterFigures
             grossValue={projectedValue}
-            positionCount={investments.length}
           />
         </div>
       )}

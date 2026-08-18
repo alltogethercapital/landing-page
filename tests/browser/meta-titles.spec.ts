@@ -42,14 +42,15 @@ test("uses the page name and All Together Capital suffix on every page", async (
     "aria-pressed",
     "true",
   );
-  await expect(page.getByText("44 of 44 records")).toBeVisible();
+  await expect(page.locator(".lp-portfolio-table tbody tr")).toHaveCount(44);
   const investmentPaths = await page
     .locator('a[href^="/lp/investments/"]')
     .evaluateAll((links) => [...new Set(links.map((link) => link.getAttribute("href")))].filter(Boolean));
 
   const privatePages = [
     { path: "/lp", name: "Portfolio" },
-    { path: "/lp/updates", name: "Insights" },
+    { path: "/lp?section=analysis", name: "Insights" },
+    { path: "/lp/updates", name: "Investor Updates" },
     ...LP_INVESTOR_UPDATES.map((update) => ({
       path: `/lp/updates/${update.slug}`,
       name: update.title,
