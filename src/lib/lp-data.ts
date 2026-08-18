@@ -105,6 +105,23 @@ function assertLpData() {
         throw new Error(`Invalid vehicle allocation: ${investment.id}`);
       }
     }
+    if (investment.instrument === "SPV" && !investment.securityAllocation) {
+      throw new Error(`Missing underlying security allocation: ${investment.id}`);
+    }
+    if (investment.securityAllocation) {
+      const allocatedShare = investment.securityAllocation.reduce((sum, item) => {
+        if (item.share <= 0 || item.share > 1) {
+          throw new Error(`Invalid security allocation: ${investment.id}`);
+        }
+        return sum + item.share;
+      }, 0);
+      const expectedShare = investment.vehicleAllocation
+        ? investment.vehicleAllocation.deployedShare
+        : 1;
+      if (Math.abs(allocatedShare - expectedShare) > Number.EPSILON) {
+        throw new Error(`Security allocation share mismatch: ${investment.id}`);
+      }
+    }
     ids.add(investment.id);
     chronologies.add(investment.chronology);
     investedCostTotal += investment.investedCost;
@@ -114,6 +131,12 @@ function assertLpData() {
     if (!ids.has(id)) throw new Error(`Projection mark has no LP investment: ${id}`);
     if (mark.entryValuationAmount <= 0 || mark.latestValuationAmount <= 0) {
       throw new Error(`Invalid projected valuation mark: ${id}`);
+    }
+    const investment = LP_INVESTMENTS.find((record) => record.id === id)!;
+    if (mark.costBasisAmount !== undefined && (
+      mark.costBasisAmount <= 0 || mark.costBasisAmount > investment.investedCost
+    )) {
+      throw new Error(`Invalid projected valuation cost basis: ${id}`);
     }
     if (!/^\d{4}-\d{2}-\d{2}$/.test(mark.asOf) || !mark.latestValuation || !mark.source) {
       throw new Error(`Incomplete projected valuation mark: ${id}`);
@@ -149,10 +172,12 @@ function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
   const language = getLpInvestmentLanguage(platform, instrument);
   const mark = LP_PROJECTED_VALUATION_MARKS[investment.id];
   const approvedPerformance = investment.performance;
+  const markedCostBasis = mark?.costBasisAmount ?? investment.investedCost;
   const projectedValue = approvedPerformance
     ? approvedPerformance.currentValue + approvedPerformance.distributions
     : mark
-      ? investment.investedCost * (mark.latestValuationAmount / mark.entryValuationAmount)
+      ? investment.investedCost - markedCostBasis
+        + markedCostBasis * (mark.latestValuationAmount / mark.entryValuationAmount)
       : investment.investedCost;
   const projection: LpInvestmentProjectionDto = {
     projectedValue,
@@ -160,7 +185,9 @@ function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
     distributions: approvedPerformance?.distributions ?? 0,
     latestCompanyValuation: formatLpValuation(mark?.latestValuation ?? entryValuation),
     valuationAsOf: approvedPerformance?.asOf ?? mark?.asOf ?? investment.investmentDate,
-    source: approvedPerformance?.source ?? mark?.source ?? "Recorded investment terms",
+    source: approvedPerformance?.source
+      ?? (mark?.scope ? `${mark.source}; ${mark.scope}` : mark?.source)
+      ?? "Recorded investment terms",
     sourceUrl: mark?.sourceUrl,
     basis: approvedPerformance ? "approved" : mark ? "comparable" : "cost",
   };

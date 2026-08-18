@@ -13,7 +13,8 @@ import {
   LETTER_H256_DEPLOYED_AMOUNT,
   LETTER_H256_PENDING_AMOUNT,
   LETTER_INVESTED_TOTAL,
-  LETTER_INSTRUMENT_SPLIT,
+  LETTER_SECURITY_TYPE_SPLIT,
+  LETTER_SECURITY_TYPE_TOTAL,
   LETTER_POSITIONS,
   LETTER_PRICED_COST,
   LETTER_PRICED_POSITIONS,
@@ -305,13 +306,16 @@ function ConcentrationAndStructure() {
   return (
     <FigureSection id="concentration-and-structure" title="Concentration and structure">
       <div className="lp-figure-triptych">
-        <CompactBars title="Instrument" rows={LETTER_INSTRUMENT_SPLIT} />
+        <CompactBars title="Security type" rows={LETTER_SECURITY_TYPE_SPLIT} />
         <CompactBars title="Entry round" rows={LETTER_ENTRY_ROUND_SPLIT} />
         <CompactBars title="Access channel" rows={LETTER_ACCESS_CHANNEL_SPLIT} />
       </div>
       <p className="lp-figure-note">
-        H256 remains one legal position. For entry-round analysis, its deployed 44% is assigned to
-        Anduril&apos;s $60B round; the remaining 56% is shown as not yet allocated.
+        Security type looks through holding vehicles and uses the {currency(LETTER_SECURITY_TYPE_TOTAL, 0)}
+        allocated balance: Hark preferred stock and H256&apos;s {dollars(LETTER_H256_DEPLOYED_AMOUNT)}
+        Anduril Series H allocation are equity; H256&apos;s {dollars(LETTER_H256_PENDING_AMOUNT)}
+        not-yet-allocated balance is excluded. Blue Origin remains not specified because the supplied
+        documents identify only Class Securities. Entry-round analysis includes Anduril in Series C+.
       </p>
     </FigureSection>
   );
@@ -466,26 +470,26 @@ function ValuationEvidence({ grossValue }: { grossValue: number }) {
   const marks = Object.entries(LP_PROJECTED_VALUATION_MARKS).map(([id, mark]) => {
     const position = LP_INVESTMENTS.find((entry) => entry.id === id)!;
     const multiple = mark.latestValuationAmount / mark.entryValuationAmount;
+    const cost = mark.costBasisAmount ?? position.investedCost;
     return {
       id,
-      company: position.company,
+      company: mark.positionLabel ?? position.company,
       round: position.round,
-      cost: position.investedCost,
-      entry: position.entryValuation,
+      cost,
+      entry: mark.entryValuation ?? position.entryValuation,
       mark,
       multiple,
-      carried: position.investedCost * multiple,
+      carried: cost * multiple,
     };
   });
   const markedCost = marks.reduce((sum, mark) => sum + mark.cost, 0);
   const heldAtCost = LETTER_INVESTED_TOTAL - markedCost;
-  const heldCount = LETTER_POSITIONS.length - marks.length;
 
   return (
     <FigureSection id="valuation-evidence" title="Performance">
       <p className="lp-figure-lede">
-        We mark a position only where a sourced comparable financing gives us something to mark
-        against. {spellOut(marks.length)} do. The other {heldCount} are held at cost.
+        We mark an exposure only where a sourced comparable financing gives us something to mark
+        against. {spellOut(marks.length)} do. The remaining cost basis is held at cost.
       </p>
 
       <div className="lp-figure-table-wrap">
@@ -524,7 +528,7 @@ function ValuationEvidence({ grossValue }: { grossValue: number }) {
               </tr>
             ))}
             <tr>
-              <th scope="row">{heldCount} positions held at cost</th>
+              <th scope="row">Remaining cost held at cost</th>
               <td>—</td>
               <td>—</td>
               <td className="is-number">{currency(heldAtCost)}</td>

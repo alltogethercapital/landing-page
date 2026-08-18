@@ -15,10 +15,7 @@ import {
   LETTER_TOP_FIVE_SHARE,
   type LetterAllocationCategory,
 } from "@/data/lp-letter-figures";
-import {
-  H256_VEHICLE_ALLOCATION,
-  LP_PROJECTED_VALUATION_MARKS,
-} from "@/data/lp-investments";
+import { H256_VEHICLE_ALLOCATION } from "@/data/lp-investments";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -152,7 +149,7 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
           {` ${snapshot.positions} positions in ${snapshot.companies} companies`}. Our directional gross
           view was {currency(snapshot.projectedGrossValue)}, or{" "}
           {(snapshot.projectedGrossValue / snapshot.investedCost).toFixed(2)}× invested cost.{" "}
-          {NUMBER_WORDS[Object.keys(LP_PROJECTED_VALUATION_MARKS).length]} positions use{" "}
+          {NUMBER_WORDS[snapshot.markedPositions]} positions use{" "}
           <a
             href="https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/IPEV%20Valuation%20Guidelines%20-%20December%202022.pdf"
             target="_blank"

@@ -1,6 +1,10 @@
 import "server-only";
 
-import { LP_INVESTMENTS, type InvestmentRecord } from "@/data/lp-investments";
+import {
+  LP_INVESTMENTS,
+  type InvestmentRecord,
+  type SecurityAllocation,
+} from "@/data/lp-investments";
 
 // Figure data for the August 2026 investor letter.
 //
@@ -73,7 +77,6 @@ const ENTRY_VALUATION_BY_CHRONOLOGY: Record<number, number> = {
 };
 
 export type LetterEntryRound =
-  | "Anduril · $60B round"
   | "Not yet allocated"
   | "Series C+"
   | "Series A"
@@ -232,7 +235,48 @@ export const LETTER_REMAINDER_AVERAGE =
   (LETTER_INVESTED_TOTAL - cumulativeShare(10) * LETTER_INVESTED_TOTAL) /
   (LETTER_POSITIONS.length - 10);
 
-export const LETTER_INSTRUMENT_SPLIT = groupShares((position) => position.instrument);
+const SECURITY_TYPE_LABELS: Record<SecurityAllocation["securityType"], string> = {
+  "Convertible Notes": "Convertible note",
+  Equity: "Equity",
+  SAFE: "SAFE",
+  Secondary: "Secondary",
+  "Not specified": "Not specified",
+};
+
+function securityAllocationsOf(position: LetterPosition): SecurityAllocation[] {
+  if (position.securityAllocation) return position.securityAllocation;
+  if (position.instrument === "SPV") {
+    throw new Error(`Missing underlying security allocation: ${position.id}`);
+  }
+  return [{ securityType: position.instrument, share: 1 }];
+}
+
+export const LETTER_SECURITY_TYPE_TOTAL = LETTER_POSITIONS.reduce(
+  (total, position) => total + securityAllocationsOf(position).reduce(
+    (positionTotal, allocation) => positionTotal + position.investedCost * allocation.share,
+    0,
+  ),
+  0,
+);
+
+export const LETTER_SECURITY_TYPE_SPLIT = (() => {
+  const totals = new Map<SecurityAllocation["securityType"], number>();
+  for (const position of LETTER_POSITIONS) {
+    for (const allocation of securityAllocationsOf(position)) {
+      const amount = position.investedCost * allocation.share;
+      totals.set(allocation.securityType, (totals.get(allocation.securityType) ?? 0) + amount);
+    }
+  }
+  return [...totals.entries()]
+    .map(([key, amount]) => ({
+      key,
+      label: SECURITY_TYPE_LABELS[key],
+      amount,
+      share: amount / LETTER_SECURITY_TYPE_TOTAL,
+    }))
+    .sort((left, right) => right.amount - left.amount);
+})();
+
 export const LETTER_ENTRY_ROUND_SPLIT = (() => {
   const totals = new Map<LetterEntryRound, number>();
   const add = (round: LetterEntryRound, amount: number) =>
@@ -240,7 +284,7 @@ export const LETTER_ENTRY_ROUND_SPLIT = (() => {
 
   for (const position of LETTER_POSITIONS) {
     if (position.id === H256_POSITION.id) {
-      add("Anduril · $60B round", LETTER_H256_DEPLOYED_AMOUNT);
+      add("Series C+", LETTER_H256_DEPLOYED_AMOUNT);
       add("Not yet allocated", LETTER_H256_PENDING_AMOUNT);
     } else {
       add(position.entryRound, position.investedCost);
@@ -252,27 +296,6 @@ export const LETTER_ENTRY_ROUND_SPLIT = (() => {
     .sort((left, right) => right.amount - left.amount);
 })();
 export const LETTER_ACCESS_CHANNEL_SPLIT = groupShares((position) => position.platformLabel);
-
-export const LETTER_POOLED_SHARE = shareOf(
-  LETTER_POSITIONS.filter((position) => position.instrument === "SPV").reduce(
-    (sum, position) => sum + position.investedCost,
-    0,
-  ),
-);
-
-export const LETTER_PRIMARY_EQUITY_SHARE = shareOf(
-  LETTER_POSITIONS.filter((position) => position.instrument === "Equity").reduce(
-    (sum, position) => sum + position.investedCost,
-    0,
-  ),
-);
-
-export const LETTER_SECONDARY_EQUITY_SHARE = shareOf(
-  LETTER_POSITIONS.filter((position) => position.instrument === "Secondary").reduce(
-    (sum, position) => sum + position.investedCost,
-    0,
-  ),
-);
 
 /* 03 — Where we bought ----------------------------------------------------- */
 
