@@ -13,7 +13,7 @@ import {
   LETTER_H256_DEPLOYED_AMOUNT,
   LETTER_H256_PENDING_AMOUNT,
   LETTER_INVESTED_TOTAL,
-  LETTER_POSITION_TYPE_SPLIT,
+  LETTER_INSTRUMENT_SPLIT,
   LETTER_POSITIONS,
   LETTER_PRICED_COST,
   LETTER_PRICED_POSITIONS,
@@ -304,7 +304,7 @@ function ConcentrationAndStructure() {
   return (
     <FigureSection id="concentration-and-structure" title="Concentration and structure">
       <div className="lp-figure-triptych">
-        <CompactBars title="Position type" rows={LETTER_POSITION_TYPE_SPLIT} />
+        <CompactBars title="Instrument" rows={LETTER_INSTRUMENT_SPLIT} />
         <CompactBars title="Entry round" rows={LETTER_ENTRY_ROUND_SPLIT} />
         <CompactBars title="Access channel" rows={LETTER_ACCESS_CHANNEL_SPLIT} />
       </div>

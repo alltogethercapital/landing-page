@@ -91,31 +91,14 @@ function entryRoundOf(round: string): LetterEntryRound {
   return "Other";
 }
 
-// The letter prints shorter labels than the schedule's internal vocabulary.
 const PLATFORM_LABELS: Record<string, string> = {
   "Capital Company": "Capital Co.",
 };
-
-type LetterPositionType =
-  | "Primary equity"
-  | "Secondary equity"
-  | "Fund / SPV interests"
-  | "SAFEs"
-  | "Convertible notes";
-
-function positionTypeOf(instrument: InvestmentRecord["instrument"]): LetterPositionType {
-  if (instrument === "Equity") return "Primary equity";
-  if (instrument === "Secondary") return "Secondary equity";
-  if (instrument === "SPV") return "Fund / SPV interests";
-  if (instrument === "SAFE") return "SAFEs";
-  return "Convertible notes";
-}
 
 export type LetterPosition = InvestmentRecord & {
   allocationCategory: LetterAllocationCategory;
   allocationCategoryLabel: string;
   entryRound: LetterEntryRound;
-  positionType: LetterPositionType;
   platformLabel: string;
   entryValuationAmount?: number;
 };
@@ -125,7 +108,6 @@ export const LETTER_POSITIONS: LetterPosition[] = LP_INVESTMENTS.map((record) =>
   allocationCategory: CATEGORY_BY_CHRONOLOGY[record.chronology],
   allocationCategoryLabel: LETTER_ALLOCATION_LABELS[CATEGORY_BY_CHRONOLOGY[record.chronology]],
   entryRound: entryRoundOf(record.round),
-  positionType: positionTypeOf(record.instrument),
   platformLabel: PLATFORM_LABELS[record.platform] ?? record.platform,
   entryValuationAmount: ENTRY_VALUATION_BY_CHRONOLOGY[record.chronology],
 }));
@@ -248,7 +230,7 @@ export const LETTER_REMAINDER_AVERAGE =
   (LETTER_INVESTED_TOTAL - cumulativeShare(10) * LETTER_INVESTED_TOTAL) /
   (LETTER_POSITIONS.length - 10);
 
-export const LETTER_POSITION_TYPE_SPLIT = groupShares((position) => position.positionType);
+export const LETTER_INSTRUMENT_SPLIT = groupShares((position) => position.instrument);
 export const LETTER_ENTRY_ROUND_SPLIT = groupShares((position) => position.entryRound);
 export const LETTER_ACCESS_CHANNEL_SPLIT = groupShares((position) => position.platformLabel);
 
