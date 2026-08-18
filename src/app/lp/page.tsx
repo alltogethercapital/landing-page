@@ -47,8 +47,13 @@ export default async function LpPortfolioPage({
     (total, item) => total + (item.vehicleAllocation?.pendingAmount ?? 0),
     0,
   );
-  const projectedValue = investments.reduce((total, item) => total + item.projection.projectedValue, 0);
-  const currentValueMultiple = projectedValue / investedCost;
+  const allocatedCost = investedCost - notYetAllocated;
+  const totalProjectedValue = investments.reduce(
+    (total, item) => total + item.projection.projectedValue,
+    0,
+  );
+  const projectedValue = totalProjectedValue - notYetAllocated;
+  const currentValueMultiple = projectedValue / allocatedCost;
   const sourceDate = new Intl.DateTimeFormat("en-US", {
     month: "short", day: "numeric", year: "numeric", timeZone: "America/Los_Angeles",
   }).format(new Date(snapshot.sourceModifiedAt));
@@ -75,7 +80,7 @@ export default async function LpPortfolioPage({
       {section === "investments" ? (
         <>
           <dl className="lp-summary-grid lp-summary-grid--four" aria-label="Portfolio summary">
-            <div><dt>Amount invested</dt><dd>{currency(investedCost)}</dd></div>
+            <div><dt>Amount invested</dt><dd>{currency(allocatedCost)}</dd></div>
             <div><dt>Not yet allocated</dt><dd>{currency(notYetAllocated)}</dd></div>
             <div><dt>Projected value</dt><dd>{currency(projectedValue)}</dd></div>
             <div><dt>Current value multiple</dt><dd>{currentValueMultiple.toFixed(2)}×</dd></div>
