@@ -6,11 +6,22 @@ import Link from "next/link";
 import type { LpInvestmentDto } from "@/lib/lp-data";
 
 export type LpTableSort = "chronology" | "company" | "investedCost" | "investmentDate";
+export type LpPortfolioDisplay = "positions" | "companies";
 
 export type LpTableView = {
   query?: string;
   sort?: LpTableSort;
   direction?: "asc" | "desc";
+  display?: LpPortfolioDisplay;
+};
+
+type CompanyAllocationRow = {
+  id: string;
+  label: string;
+  amount: number;
+  detail?: string;
+  href: string;
+  searchText: string;
 };
 
 function formatCurrency(value: number) {
@@ -35,9 +46,82 @@ function formatWholePercent(value: number) {
   return `${Math.round(value * 100)}%`;
 }
 
+function formatPercent(value: number) {
+  return `${(value * 100).toFixed(1)}%`;
+}
+
+function formatWholeCurrency(value: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllocationRow[] {
+  const rows = new Map<string, CompanyAllocationRow & { positionCount: number }>();
+
+  for (const investment of investments) {
+    if (investment.vehicleAllocation) {
+      const allocation = investment.vehicleAllocation;
+      rows.set(`${investment.id}-deployed`, {
+        id: `${investment.id}-deployed`,
+        label: allocation.deployedCompany,
+        amount: allocation.deployedAmount,
+        detail: `Through H256 · ${formatWholePercent(allocation.deployedShare)} of vehicle`,
+        href: `/lp/investments/${investment.id}`,
+        searchText: `${allocation.deployedCompany} H256 deployed`.toLocaleLowerCase(),
+        positionCount: 1,
+      });
+      rows.set(`${investment.id}-pending`, {
+        id: `${investment.id}-pending`,
+        label: "Pending allocation",
+        amount: allocation.pendingAmount,
+        detail: `H256 · ${formatWholePercent(allocation.awaitingShare)} of vehicle · not yet deployed`,
+        href: `/lp/investments/${investment.id}`,
+        searchText: "pending allocation H256 not yet deployed",
+        positionCount: 1,
+      });
+      continue;
+    }
+
+    const key = investment.company.toLocaleLowerCase();
+    const existing = rows.get(key);
+    if (existing) {
+      existing.amount += investment.investedCost;
+      existing.positionCount += 1;
+      existing.detail = `${existing.positionCount} positions`;
+      existing.href = `/lp?query=${encodeURIComponent(investment.company)}`;
+      existing.searchText += ` ${investment.round} ${investment.investmentDate}`.toLocaleLowerCase();
+      continue;
+    }
+
+    rows.set(key, {
+      id: investment.id,
+      label: investment.company,
+      amount: investment.investedCost,
+      href: `/lp/investments/${investment.id}`,
+      searchText: `${investment.company} ${investment.round} ${investment.investmentDate}`.toLocaleLowerCase(),
+      positionCount: 1,
+    });
+  }
+
+  return [...rows.values()]
+    .map((row) => ({
+      id: row.id,
+      label: row.label,
+      amount: row.amount,
+      detail: row.detail,
+      href: row.href,
+      searchText: row.searchText,
+    }))
+    .sort((left, right) => right.amount - left.amount || left.label.localeCompare(right.label));
+}
+
 function sortHref(view: LpTableView, key: LpTableSort) {
   const params = new URLSearchParams();
   if (view.query) params.set("query", view.query);
+  if (view.display) params.set("display", view.display);
   params.set("sort", key);
   params.set("direction", view.sort === key && view.direction !== "asc" ? "asc" : "desc");
   return `/lp?${params}`;
@@ -51,6 +135,7 @@ export function LpPortfolioTable({
   view: LpTableView;
 }) {
   const [query, setQuery] = useState(view.query?.trim() || "");
+  const [display, setDisplay] = useState<LpPortfolioDisplay>(view.display || "positions");
   const sort = view.sort || "chronology";
   const ascending = view.direction === "asc";
   const normalizedQuery = query.trim().toLocaleLowerCase();
@@ -65,7 +150,6 @@ export function LpPortfolioTable({
           investment.ownershipType,
           investment.valuationWhenInvested,
           investment.vehicleAllocation?.deployedCompany,
-          ...(investment.vehicleAllocation?.candidateCompanies || []),
         ]
           .join(" ")
           .toLocaleLowerCase()
@@ -79,6 +163,16 @@ export function LpPortfolioTable({
       }
       return left[sort].localeCompare(right[sort]) * direction;
     });
+  const companyAllocationRows = buildCompanyAllocationRows(investments);
+  const pendingCount = companyAllocationRows.filter((row) => row.id.endsWith("-pending")).length;
+  const companyCount = companyAllocationRows.length - pendingCount;
+  const filteredCompanyAllocationRows = normalizedQuery
+    ? companyAllocationRows.filter((row) => row.searchText.includes(normalizedQuery))
+    : companyAllocationRows;
+  const investedTotal = investments.reduce((sum, investment) => sum + investment.investedCost, 0);
+  const allocationScale = companyAllocationRows[0]?.amount || 1;
+  const vehicleAllocation = investments.find((investment) => investment.vehicleAllocation)
+    ?.vehicleAllocation;
 
   function sortLabel(key: LpTableSort, label: string) {
     return `${label}${sort === key ? (ascending ? " ↑" : " ↓") : ""}`;
@@ -88,10 +182,35 @@ export function LpPortfolioTable({
     <section className="lp-portfolio-section" aria-labelledby="lp-portfolio-heading">
       <div className="lp-table-heading">
         <h2 id="lp-portfolio-heading">Investments</h2>
-        <p aria-live="polite" aria-atomic="true">{filtered.length} of {investments.length} records</p>
+        <div className="lp-portfolio-heading-actions">
+          <p aria-live="polite" aria-atomic="true">
+            {display === "positions"
+              ? `${filtered.length} of ${investments.length} records`
+              : normalizedQuery
+                ? `${filteredCompanyAllocationRows.length} of ${companyAllocationRows.length} allocations`
+                : `${companyCount} companies · ${pendingCount} pending allocation`}
+          </p>
+          <div className="lp-portfolio-view-switch" role="group" aria-label="Portfolio view">
+            <button
+              type="button"
+              aria-pressed={display === "positions"}
+              onClick={() => setDisplay("positions")}
+            >
+              Position details
+            </button>
+            <button
+              type="button"
+              aria-pressed={display === "companies"}
+              onClick={() => setDisplay("companies")}
+            >
+              Company allocation
+            </button>
+          </div>
+        </div>
       </div>
 
       <form className="lp-table-controls" action="/lp" method="get">
+        <input type="hidden" name="display" value={display} />
         <label>
           <span className="sr-only">Search investments</span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.4 15.4 4.1 4.1" /></svg>
@@ -106,99 +225,154 @@ export function LpPortfolioTable({
         <button type="submit" className="lp-filter-submit">Search</button>
       </form>
 
-      <div className="lp-table-wrap">
-        <table className="lp-portfolio-table">
-          <thead>
-            <tr>
-              <th scope="col"><Link href={sortHref({ ...view, query }, "company")}>{sortLabel("company", "Company")}</Link></th>
-              <th scope="col"><Link href={sortHref({ ...view, query }, "investmentDate")}>{sortLabel("investmentDate", "Date invested")}</Link></th>
-              <th scope="col">Round</th>
-              <th scope="col">Ownership</th>
-              <th scope="col">Valuation when invested</th>
-              <th scope="col" className="is-number"><Link href={sortHref({ ...view, query }, "investedCost")}>{sortLabel("investedCost", "Amount invested")}</Link></th>
-            </tr>
-          </thead>
-          <tbody>
+      {display === "positions" ? (
+        <>
+          <div className="lp-table-wrap">
+            <table className="lp-portfolio-table">
+              <thead>
+                <tr>
+                  <th scope="col"><Link href={sortHref({ ...view, query, display }, "company")}>{sortLabel("company", "Company")}</Link></th>
+                  <th scope="col"><Link href={sortHref({ ...view, query, display }, "investmentDate")}>{sortLabel("investmentDate", "Date invested")}</Link></th>
+                  <th scope="col">Round</th>
+                  <th scope="col">Ownership</th>
+                  <th scope="col">Valuation when invested</th>
+                  <th scope="col" className="is-number"><Link href={sortHref({ ...view, query, display }, "investedCost")}>{sortLabel("investedCost", "Amount invested")}</Link></th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((investment) => (
+                  <tr key={investment.id}>
+                    <td>
+                      <Link href={`/lp/investments/${investment.id}`} className="lp-company-cell" aria-label={`View ${investment.company}`}>
+                        <span className={`lp-company-logo${investment.logoTreatment === "inverse" ? " lp-logo--inverse" : ""}`}>
+                          <Image src={investment.logo} alt="" width={92} height={36} unoptimized />
+                        </span>
+                        <span className="lp-company-name">
+                          <strong>{investment.company}</strong>
+                          <small>
+                            {investment.investmentAccess}
+                          </small>
+                          {investment.vehicleAllocation ? (
+                            <small className="lp-company-allocation">
+                              {formatCurrency(investment.vehicleAllocation.deployedAmount)} to {investment.vehicleAllocation.deployedCompany}
+                              {" ("}{formatWholePercent(investment.vehicleAllocation.deployedShare)})
+                              {" · "}{formatCurrency(investment.vehicleAllocation.pendingAmount)} pending allocation
+                              {" ("}{formatWholePercent(investment.vehicleAllocation.awaitingShare)})
+                            </small>
+                          ) : null}
+                        </span>
+                      </Link>
+                    </td>
+                    <td className="lp-date-cell">{formatDate(investment.investmentDate)}</td>
+                    <td>{investment.round}</td>
+                    <td>{investment.ownershipType}</td>
+                    <td>{investment.valuationWhenInvested}</td>
+                    <td className="is-number">{formatCurrency(investment.investedCost)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {filtered.length === 0 ? (
+              <div className="lp-table-empty">
+                <p>No investments match this view.</p>
+                <Link href="/lp" onClick={() => setQuery("")}>Clear search</Link>
+              </div>
+            ) : null}
+          </div>
+
+          <div className="lp-portfolio-mobile" aria-label="Investment records">
             {filtered.map((investment) => (
-              <tr key={investment.id}>
-                <td>
-                  <Link href={`/lp/investments/${investment.id}`} className="lp-company-cell" aria-label={`View ${investment.company}`}>
+              <article key={investment.id}>
+                <Link
+                  href={`/lp/investments/${investment.id}`}
+                  className="lp-mobile-investment-link"
+                  aria-label={`View ${investment.company}`}
+                >
+                  <span className="lp-mobile-investment-head">
                     <span className={`lp-company-logo${investment.logoTreatment === "inverse" ? " lp-logo--inverse" : ""}`}>
                       <Image src={investment.logo} alt="" width={92} height={36} unoptimized />
                     </span>
-                    <span className="lp-company-name">
+                    <span className="lp-mobile-investment-title">
                       <strong>{investment.company}</strong>
                       <small>
-                        {investment.investmentAccess}
+                        {investment.investmentAccess} · {investment.ownershipType}
                       </small>
                       {investment.vehicleAllocation ? (
                         <small className="lp-company-allocation">
-                          {formatWholePercent(investment.vehicleAllocation.deployedShare)} {investment.vehicleAllocation.deployedCompany}
-                          {" · "}{formatWholePercent(investment.vehicleAllocation.awaitingShare)} in vehicle pending next company
+                          {formatCurrency(investment.vehicleAllocation.deployedAmount)} to {investment.vehicleAllocation.deployedCompany}
+                          {" ("}{formatWholePercent(investment.vehicleAllocation.deployedShare)})
+                          {" · "}{formatCurrency(investment.vehicleAllocation.pendingAmount)} pending allocation
+                          {" ("}{formatWholePercent(investment.vehicleAllocation.awaitingShare)})
                         </small>
                       ) : null}
                     </span>
-                  </Link>
-                </td>
-                <td className="lp-date-cell">{formatDate(investment.investmentDate)}</td>
-                <td>{investment.round}</td>
-                <td>{investment.ownershipType}</td>
-                <td>{investment.valuationWhenInvested}</td>
-                <td className="is-number">{formatCurrency(investment.investedCost)}</td>
-              </tr>
+                    <span className="lp-mobile-investment-arrow" aria-hidden="true">→</span>
+                  </span>
+                  <dl className="lp-mobile-investment-facts">
+                    <div><dt>Date invested</dt><dd>{formatDate(investment.investmentDate)}</dd></div>
+                    <div><dt>Amount invested</dt><dd>{formatCurrency(investment.investedCost)}</dd></div>
+                    <div><dt>Round</dt><dd>{investment.round}</dd></div>
+                    <div><dt>Valuation when invested</dt><dd>{investment.valuationWhenInvested}</dd></div>
+                  </dl>
+                </Link>
+              </article>
             ))}
-          </tbody>
-        </table>
-        {filtered.length === 0 && (
-          <div className="lp-table-empty">
-            <p>No investments match this view.</p>
-            <Link href="/lp" onClick={() => setQuery("")}>Clear search</Link>
+            {filtered.length === 0 ? (
+              <div className="lp-table-empty">
+                <p>No investments match this view.</p>
+                <Link href="/lp" onClick={() => setQuery("")}>Clear search</Link>
+              </div>
+            ) : null}
           </div>
-        )}
-      </div>
-
-      <div className="lp-portfolio-mobile" aria-label="Investment records">
-        {filtered.map((investment) => (
-          <article key={investment.id}>
-            <Link
-              href={`/lp/investments/${investment.id}`}
-              className="lp-mobile-investment-link"
-              aria-label={`View ${investment.company}`}
-            >
-              <span className="lp-mobile-investment-head">
-                <span className={`lp-company-logo${investment.logoTreatment === "inverse" ? " lp-logo--inverse" : ""}`}>
-                  <Image src={investment.logo} alt="" width={92} height={36} unoptimized />
-                </span>
-                <span className="lp-mobile-investment-title">
-                  <strong>{investment.company}</strong>
-                  <small>
-                    {investment.investmentAccess} · {investment.ownershipType}
-                  </small>
-                  {investment.vehicleAllocation ? (
-                    <small className="lp-company-allocation">
-                      {formatWholePercent(investment.vehicleAllocation.deployedShare)} {investment.vehicleAllocation.deployedCompany}
-                      {" · "}{formatWholePercent(investment.vehicleAllocation.awaitingShare)} in vehicle pending next company
-                    </small>
-                  ) : null}
-                </span>
-                <span className="lp-mobile-investment-arrow" aria-hidden="true">→</span>
-              </span>
-              <dl className="lp-mobile-investment-facts">
-                <div><dt>Date invested</dt><dd>{formatDate(investment.investmentDate)}</dd></div>
-                <div><dt>Amount invested</dt><dd>{formatCurrency(investment.investedCost)}</dd></div>
-                <div><dt>Round</dt><dd>{investment.round}</dd></div>
-                <div><dt>Valuation when invested</dt><dd>{investment.valuationWhenInvested}</dd></div>
-              </dl>
-            </Link>
-          </article>
-        ))}
-        {filtered.length === 0 && (
-          <div className="lp-table-empty">
-            <p>No investments match this view.</p>
-            <Link href="/lp" onClick={() => setQuery("")}>Clear search</Link>
-          </div>
-        )}
-      </div>
+        </>
+      ) : (
+        <section className="lp-company-allocation-view" aria-labelledby="lp-company-allocation-heading">
+          <header>
+            <h3 id="lp-company-allocation-heading">All companies</h3>
+            <span>Share of invested cost</span>
+          </header>
+          {filteredCompanyAllocationRows.length > 0 ? (
+            <div className="lp-figure-bars" role="list" aria-label="Company allocation at invested cost">
+              {filteredCompanyAllocationRows.map((row, index) => (
+                <div
+                  key={row.id}
+                  className={`lp-figure-bar-row${index === 0 && !normalizedQuery ? " is-lead" : ""}`}
+                  role="listitem"
+                  aria-label={`${row.label}: ${formatWholeCurrency(row.amount)}, ${formatPercent(row.amount / investedTotal)} of invested cost`}
+                >
+                  <span className="lp-figure-bar-label">
+                    <Link href={row.href}>{row.label}</Link>
+                    {row.detail ? <small>{row.detail}</small> : null}
+                  </span>
+                  <span className="lp-figure-bar-track" aria-hidden="true">
+                    <span
+                      className="lp-figure-bar-fill"
+                      style={{ inlineSize: `${(row.amount / allocationScale) * 80}%` }}
+                    />
+                    <span className="lp-figure-bar-amount">{formatWholeCurrency(row.amount)}</span>
+                  </span>
+                  <span className="lp-figure-bar-value">{formatPercent(row.amount / investedTotal)}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="lp-table-empty">
+              <p>No company allocations match this view.</p>
+              <Link href="/lp?display=companies" onClick={() => setQuery("")}>Clear search</Link>
+            </div>
+          )}
+          <p className="lp-company-allocation-note">
+            This view combines multiple investments in the same company. {vehicleAllocation ? (
+              <>
+                It shows H256 as {formatWholeCurrency(vehicleAllocation.deployedAmount)} deployed
+                to Anduril and {formatWholeCurrency(vehicleAllocation.pendingAmount)} pending
+                allocation.{" "}
+              </>
+            ) : null}
+            Use Position details for the legal investment records.
+          </p>
+        </section>
+      )}
     </section>
   );
 }

@@ -27,13 +27,22 @@ export type LpInvestmentProjectionDto = {
 
 export type LpInvestmentDto = Omit<
   (typeof LP_INVESTMENTS)[number],
-  "driveFolderId" | "entryValuation" | "instrument" | "platform" | "round"
+  | "driveFolderId"
+  | "entryValuation"
+  | "instrument"
+  | "platform"
+  | "round"
+  | "vehicleAllocation"
 > & {
   investmentAccess: string;
   ownershipType: string;
   projection: LpInvestmentProjectionDto;
   round: string;
   valuationWhenInvested: string;
+  vehicleAllocation?: NonNullable<(typeof LP_INVESTMENTS)[number]["vehicleAllocation"]> & {
+    deployedAmount: number;
+    pendingAmount: number;
+  };
 };
 
 const publicPortfolio = new Map(
@@ -89,8 +98,7 @@ function assertLpData() {
         allocation.awaitingShare <= 0 ||
         Math.abs(allocation.deployedShare + allocation.awaitingShare - 1) > Number.EPSILON ||
         !/^\d{4}-\d{2}-\d{2}$/.test(allocation.asOf) ||
-        !allocation.deployedCompany ||
-        allocation.candidateCompanies.length === 0
+        !allocation.deployedCompany
       ) {
         throw new Error(`Invalid vehicle allocation: ${investment.id}`);
       }
@@ -154,9 +162,20 @@ function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
     sourceUrl: mark?.sourceUrl,
     basis: approvedPerformance ? "approved" : mark ? "comparable" : "cost",
   };
+  const deployedAmount = investment.vehicleAllocation
+    ? investment.investedCost * investment.vehicleAllocation.deployedShare
+    : undefined;
+  const vehicleAllocation = investment.vehicleAllocation && deployedAmount !== undefined
+    ? {
+        ...investment.vehicleAllocation,
+        deployedAmount,
+        pendingAmount: investment.investedCost - deployedAmount,
+      }
+    : undefined;
   void _privateDriveFolderId;
   return {
     ...safeInvestment,
+    vehicleAllocation,
     ...language,
     projection,
     round: formatLpRound(round),

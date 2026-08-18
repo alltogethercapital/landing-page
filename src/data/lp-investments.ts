@@ -12,7 +12,6 @@ export type VehicleAllocation = {
   deployedCompany: string;
   deployedShare: number;
   awaitingShare: number;
-  candidateCompanies: string[];
 };
 
 export type InvestmentRecord = {
@@ -48,7 +47,6 @@ export const H256_VEHICLE_ALLOCATION: VehicleAllocation = {
   deployedCompany: "Anduril",
   deployedShare: 0.44,
   awaitingShare: 0.56,
-  candidateCompanies: ["Applied Intuition", "Atoms"],
 };
 
 export type ProjectedValuationMark = {

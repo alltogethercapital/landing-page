@@ -9,9 +9,12 @@ import {
 import { LpLetterFigures } from "@/components/lp-letter-figures";
 import {
   LETTER_ALLOCATION,
-  LETTER_SECTOR_PROSE,
+  LETTER_H256_DEPLOYED_AMOUNT,
+  LETTER_H256_PENDING_AMOUNT,
+  LETTER_H256_POSITION_SHARE,
+  LETTER_ALLOCATION_PROSE,
   LETTER_TOP_FIVE_SHARE,
-  type LetterSector,
+  type LetterAllocationCategory,
 } from "@/data/lp-letter-figures";
 import {
   H256_VEHICLE_ALLOCATION,
@@ -52,13 +55,13 @@ function wholePercent(value: number) {
 
 const NUMBER_WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
 
-// "30.3% is in a diversified frontier vehicle, 21.7% in AI and compute, …" —
+// "24.1% is in defense and aerospace, 21.7% in AI and compute, …" —
 // built from the same allocation the figure below the letter draws, so the
 // sentence cannot drift from the chart.
 function allocationSentence() {
   return LETTER_ALLOCATION.map((row, index) => {
     const share = `${(row.share * 100).toFixed(1)}%`;
-    const label = LETTER_SECTOR_PROSE[row.key as LetterSector];
+    const label = LETTER_ALLOCATION_PROSE[row.key as LetterAllocationCategory];
     const lead = index === 0 ? `${share} is in ${label}` : `${share} in ${label}`;
     if (index === 0) return lead;
     return index === LETTER_ALLOCATION.length - 1 ? `and ${lead}` : lead;
@@ -170,12 +173,10 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         <p>
           We built broadly while the market was forming. Our 44 positions gave us breadth. The largest is
           the $200,000 H256 LLC Series 3 vehicle, representing{" "}
-          {(LETTER_ALLOCATION[0].share * 100).toFixed(1)}% of invested cost. It remains one position: as of
-          August 17, 2026, {wholePercent(H256_VEHICLE_ALLOCATION.deployedShare)} had been deployed into{" "}
-          {H256_VEHICLE_ALLOCATION.deployedCompany}; the remaining{" "}
-          {wholePercent(H256_VEHICLE_ALLOCATION.awaitingShare)} remained invested in the vehicle awaiting
-          an underlying company. The vehicle is evaluating Applied Intuition or Atoms. Our separate direct
-          Atoms position is reported independently. Our five largest positions represent{" "}
+          {(LETTER_H256_POSITION_SHARE * 100).toFixed(1)}% of invested cost. It remains one legal position,
+          but the allocation view splits it into {currency(LETTER_H256_DEPLOYED_AMOUNT)} ({wholePercent(H256_VEHICLE_ALLOCATION.deployedShare)})
+          deployed to {H256_VEHICLE_ALLOCATION.deployedCompany} and {currency(LETTER_H256_PENDING_AMOUNT)} ({wholePercent(H256_VEHICLE_ALLOCATION.awaitingShare)})
+          of pending allocation that is not yet deployed. Our five largest positions represent{" "}
           {(LETTER_TOP_FIVE_SHARE * 100).toFixed(1)}%. We do not plan to repeat that construction. Next we
           will favor fewer direct positions, clearer economics, better information rights, and room to
           support the companies that earn conviction.

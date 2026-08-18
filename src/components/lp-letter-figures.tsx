@@ -10,6 +10,8 @@ import {
   LETTER_ENTRY_MEDIAN,
   LETTER_ENTRY_ROUND_SPLIT,
   LETTER_ENTRY_SPREAD,
+  LETTER_H256_DEPLOYED_AMOUNT,
+  LETTER_H256_PENDING_AMOUNT,
   LETTER_INVESTED_TOTAL,
   LETTER_POOLED_SHARE,
   LETTER_POSITION_TYPE_SPLIT,
@@ -225,7 +227,7 @@ function PortfolioAtAGlance({
       </div>
 
       <FigureHeading
-        title="Allocation by sector"
+        title="Allocation by category"
         note={`Share of invested cost · ${currency(LETTER_INVESTED_TOTAL)}`}
       />
       <div className="lp-figure-bars">
@@ -238,20 +240,21 @@ function PortfolioAtAGlance({
             amount={row.amount}
             lead={index === 0}
             detail={
-              index === 0
-                ? `${percent(H256_VEHICLE_ALLOCATION.deployedShare, 0)} ${H256_VEHICLE_ALLOCATION.deployedCompany} · ${percent(H256_VEHICLE_ALLOCATION.awaitingShare, 0)} in vehicle pending next company`
+              row.key === "aerospace"
+                ? `Includes ${dollars(LETTER_H256_DEPLOYED_AMOUNT)} deployed to ${H256_VEHICLE_ALLOCATION.deployedCompany} through H256`
+                : row.key === "pending"
+                  ? `${dollars(LETTER_H256_PENDING_AMOUNT)} in H256 not yet deployed`
                 : undefined
             }
           />
         ))}
       </div>
       <p className="lp-figure-note">
-        The $200,000 H256 LLC Series 3 vehicle remains one portfolio position. As of August 17, 2026,
-        {` ${percent(H256_VEHICLE_ALLOCATION.deployedShare, 0)}`} had been deployed into{" "}
-        {H256_VEHICLE_ALLOCATION.deployedCompany}; the remaining{" "}
-        {percent(H256_VEHICLE_ALLOCATION.awaitingShare, 0)} remained in the vehicle awaiting its next
-        underlying company, for which it is evaluating Applied Intuition or Atoms. All Together&apos;s
-        separate direct Atoms investment is listed independently in the <a href="/lp">portfolio</a>.
+        For this allocation view, the $200,000 H256 LLC Series 3 position is split into{" "}
+        {dollars(LETTER_H256_DEPLOYED_AMOUNT)} ({percent(H256_VEHICLE_ALLOCATION.deployedShare, 0)})
+        deployed to {H256_VEHICLE_ALLOCATION.deployedCompany} under Defense and aerospace, and{" "}
+        {dollars(LETTER_H256_PENDING_AMOUNT)} ({percent(H256_VEHICLE_ALLOCATION.awaitingShare, 0)})
+        of pending allocation that is not yet deployed. H256 remains one legal portfolio position.
       </p>
 
       <FigureHeading title="Capital deployed" note="Cumulative, at cost" />
@@ -319,7 +322,7 @@ function ConcentrationAndStructure({ positionCount }: { positionCount: number })
             lead={index === 0}
             detail={
               row.id === "09-h256-series-3"
-                ? `${percent(H256_VEHICLE_ALLOCATION.deployedShare, 0)} ${H256_VEHICLE_ALLOCATION.deployedCompany} · ${percent(H256_VEHICLE_ALLOCATION.awaitingShare, 0)} in vehicle pending next company`
+                ? `${dollars(LETTER_H256_DEPLOYED_AMOUNT)} ${H256_VEHICLE_ALLOCATION.deployedCompany} · ${dollars(LETTER_H256_PENDING_AMOUNT)} pending allocation`
                 : undefined
             }
           />

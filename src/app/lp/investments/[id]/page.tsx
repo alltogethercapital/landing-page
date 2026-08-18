@@ -85,19 +85,24 @@ export default async function LpInvestmentDetailPage({
           </header>
           <div className="lp-vehicle-allocation-grid">
             <div>
-              <strong>{wholePercent(investment.vehicleAllocation.deployedShare)}</strong>
-              <span>Deployed into {investment.vehicleAllocation.deployedCompany}</span>
+              <strong>{currency(investment.vehicleAllocation.deployedAmount)}</strong>
+              <span>
+                {wholePercent(investment.vehicleAllocation.deployedShare)} deployed to{" "}
+                {investment.vehicleAllocation.deployedCompany}
+              </span>
             </div>
             <div>
-              <strong>{wholePercent(investment.vehicleAllocation.awaitingShare)}</strong>
-              <span>Invested in the vehicle, awaiting its next underlying company</span>
+              <strong>{currency(investment.vehicleAllocation.pendingAmount)}</strong>
+              <span>
+                {wholePercent(investment.vehicleAllocation.awaitingShare)} pending allocation — not
+                yet deployed
+              </span>
             </div>
           </div>
           <p>
-            This {currency(investment.investedCost)} vehicle investment remains one portfolio position.
-            The vehicle is evaluating {investment.vehicleAllocation.candidateCompanies.join(" or ")}{" "}for
-            its next investment. All Together&apos;s separate direct Atoms investment is reported as its own
-            portfolio position.
+            This {currency(investment.investedCost)} vehicle investment remains one legal portfolio
+            position. The remaining {currency(investment.vehicleAllocation.pendingAmount)} is pending
+            allocation and has not yet been deployed to an underlying company.
           </p>
         </section>
       ) : null}

@@ -8,46 +8,46 @@ import { LP_INVESTMENTS, type InvestmentRecord } from "@/data/lp-investments";
 // Schedule of Investments rather than drifting from it. Two fields the schedule
 // does not carry are declared here:
 //
-//   sector              — internal taxonomy, one sector per position at full cost
+//   allocation category — internal taxonomy for deployed company exposure
 //   entryValuationAmount — the entry price as a number, for the log-scale chart
 //
 // Three positions carry no company price at entry and are excluded from every
 // price-based figure: the H256 vehicle is sized on its fund, Lance AI was an
 // uncapped SAFE, and Maven Robotics priced against a financing model.
 
-export type LetterSector =
-  | "frontier"
+export type LetterAllocationCategory =
   | "ai"
   | "robotics"
   | "aerospace"
   | "energy"
-  | "applications";
+  | "applications"
+  | "pending";
 
-export const LETTER_SECTOR_LABELS: Record<LetterSector, string> = {
-  frontier: "Diversified frontier vehicle",
+export const LETTER_ALLOCATION_LABELS: Record<LetterAllocationCategory, string> = {
   ai: "AI and compute",
   robotics: "Robotics and industrial systems",
-  aerospace: "Aerospace, defense, and autonomy",
+  aerospace: "Defense and aerospace",
   energy: "Energy and hard infrastructure",
   applications: "Applications and resilience",
+  pending: "Pending allocation",
 };
 
-// Same sectors, cased to sit inside a sentence in the letter body.
-export const LETTER_SECTOR_PROSE: Record<LetterSector, string> = {
-  frontier: "a diversified frontier vehicle",
+// Same categories, cased to sit inside a sentence in the letter body.
+export const LETTER_ALLOCATION_PROSE: Record<LetterAllocationCategory, string> = {
   ai: "AI and compute",
   robotics: "robotics and industrial systems",
-  aerospace: "aerospace, defense, and autonomy",
+  aerospace: "defense and aerospace",
   energy: "energy and hard infrastructure",
   applications: "applications and resilience",
+  pending: "pending allocation",
 };
 
-// Sector is an internal classification and is not a field on the Schedule of
-// Investments. Positions spanning more than one category sit with the primary
-// business. Keyed by the schedule's chronology number.
-const SECTOR_BY_CHRONOLOGY: Record<number, LetterSector> = {
+// Allocation category is an internal classification and is not a field on the
+// Schedule of Investments. Direct positions spanning more than one category sit
+// with the primary business. Keyed by the schedule's chronology number.
+const CATEGORY_BY_CHRONOLOGY: Record<number, LetterAllocationCategory> = {
   1: "robotics", 2: "energy", 3: "robotics", 4: "ai", 5: "ai",
-  6: "energy", 7: "aerospace", 8: "applications", 9: "frontier", 10: "ai",
+  6: "energy", 7: "aerospace", 8: "applications", 9: "aerospace", 10: "ai",
   11: "ai", 12: "robotics", 13: "ai", 14: "aerospace", 15: "energy",
   16: "aerospace", 17: "robotics", 18: "robotics", 19: "robotics", 20: "aerospace",
   21: "applications", 22: "robotics", 23: "robotics", 24: "robotics", 25: "robotics",
@@ -112,8 +112,8 @@ function positionTypeOf(instrument: InvestmentRecord["instrument"]): LetterPosit
 }
 
 export type LetterPosition = InvestmentRecord & {
-  sector: LetterSector;
-  sectorLabel: string;
+  allocationCategory: LetterAllocationCategory;
+  allocationCategoryLabel: string;
   entryRound: LetterEntryRound;
   positionType: LetterPositionType;
   platformLabel: string;
@@ -122,8 +122,8 @@ export type LetterPosition = InvestmentRecord & {
 
 export const LETTER_POSITIONS: LetterPosition[] = LP_INVESTMENTS.map((record) => ({
   ...record,
-  sector: SECTOR_BY_CHRONOLOGY[record.chronology],
-  sectorLabel: LETTER_SECTOR_LABELS[SECTOR_BY_CHRONOLOGY[record.chronology]],
+  allocationCategory: CATEGORY_BY_CHRONOLOGY[record.chronology],
+  allocationCategoryLabel: LETTER_ALLOCATION_LABELS[CATEGORY_BY_CHRONOLOGY[record.chronology]],
   entryRound: entryRoundOf(record.round),
   positionType: positionTypeOf(record.instrument),
   platformLabel: PLATFORM_LABELS[record.platform] ?? record.platform,
@@ -166,10 +166,43 @@ function groupShares<T extends string>(
 
 /* 01 — Portfolio at a glance ---------------------------------------------- */
 
-export const LETTER_ALLOCATION = groupShares<LetterSector>(
-  (position) => position.sector,
-  (sector) => LETTER_SECTOR_LABELS[sector],
-);
+const H256_POSITION = LETTER_POSITIONS.find((position) => position.id === "09-h256-series-3");
+if (!H256_POSITION?.vehicleAllocation) {
+  throw new Error("Missing H256 vehicle allocation");
+}
+
+export const LETTER_H256_DEPLOYED_AMOUNT =
+  H256_POSITION.investedCost * H256_POSITION.vehicleAllocation.deployedShare;
+export const LETTER_H256_PENDING_AMOUNT =
+  H256_POSITION.investedCost - LETTER_H256_DEPLOYED_AMOUNT;
+export const LETTER_H256_POSITION_SHARE = shareOf(H256_POSITION.investedCost);
+
+// The Schedule of Investments continues to carry H256 as one legal position.
+// For allocation reporting, look through that position only far enough to show the
+// amount already deployed to Anduril and the capital that is not yet deployed.
+export const LETTER_ALLOCATION = (() => {
+  const totals = new Map<LetterAllocationCategory, number>();
+  const add = (category: LetterAllocationCategory, amount: number) =>
+    totals.set(category, (totals.get(category) ?? 0) + amount);
+
+  for (const position of LETTER_POSITIONS) {
+    if (position.id === H256_POSITION.id) {
+      add("aerospace", LETTER_H256_DEPLOYED_AMOUNT);
+      add("pending", LETTER_H256_PENDING_AMOUNT);
+    } else {
+      add(position.allocationCategory, position.investedCost);
+    }
+  }
+
+  return [...totals.entries()]
+    .map(([key, amount]) => ({
+      key,
+      label: LETTER_ALLOCATION_LABELS[key],
+      amount,
+      share: shareOf(amount),
+    }))
+    .sort((left, right) => right.amount - left.amount);
+})();
 
 // Cumulative invested cost by month. Two positions predate the fund's active
 // period, so the series opens at the earliest investment date on the schedule.

@@ -11,7 +11,7 @@ export const LP_INVESTOR_UPDATES: LpInvestorUpdateSummary[] = [
   {
     slug: "august-2026",
     issue: 1,
-    title: "Owning the Post-Labor Future",
+    title: "Building Civilization’s Next Age",
     published: "August 14, 2026",
     publishedAt: "2026-08-14",
     excerpt:

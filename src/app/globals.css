@@ -2484,6 +2484,54 @@ body {
   font-size: 13px;
 }
 
+.lp-portfolio-heading-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+}
+
+.lp-portfolio-heading-actions > p {
+  margin: 0;
+  color: var(--lp-muted);
+  font-family: var(--cog-support);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.lp-portfolio-view-switch {
+  display: flex;
+  border: 1px solid var(--lp-ink);
+}
+
+.lp-portfolio-view-switch button {
+  min-height: 34px;
+  border: 0;
+  background: transparent;
+  color: var(--lp-ink);
+  padding: 0 11px;
+  font-family: var(--cog-support);
+  font-size: 11px;
+  letter-spacing: 0.035em;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.lp-portfolio-view-switch button + button {
+  border-left: 1px solid var(--lp-ink);
+}
+
+.lp-portfolio-view-switch button[aria-pressed="true"] {
+  background: var(--lp-ink);
+  color: var(--lp-paper);
+}
+
+.lp-portfolio-view-switch button:hover,
+.lp-portfolio-view-switch button:focus-visible {
+  background: var(--lp-accent);
+  color: var(--lp-white);
+  outline: 0;
+}
+
 .lp-table-controls {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 86px;
@@ -2544,6 +2592,54 @@ body {
 .lp-table-wrap {
   width: 100%;
   overflow-x: auto;
+}
+
+.lp-company-allocation-view {
+  margin-top: 34px;
+}
+
+.lp-company-allocation-view > header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--lp-ink);
+  padding-bottom: 10px;
+}
+
+.lp-company-allocation-view > header h3 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.lp-company-allocation-view > header span {
+  color: var(--lp-muted);
+  font-family: var(--cog-mono);
+  font-size: var(--lp-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.lp-company-allocation-view .lp-figure-bar-label a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.lp-company-allocation-view .lp-figure-bar-label a:hover,
+.lp-company-allocation-view .lp-figure-bar-label a:focus-visible {
+  color: var(--lp-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lp-company-allocation-note {
+  max-width: 780px;
+  margin: 18px 0 0;
+  color: var(--lp-muted);
+  font-family: var(--cog-support);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .lp-portfolio-table {
@@ -2670,6 +2766,7 @@ body {
 
 .lp-company-name .lp-company-allocation,
 .lp-mobile-investment-title .lp-company-allocation {
+  display: block;
   color: var(--lp-accent);
   font-size: 11px;
   line-height: 1.25;
@@ -3922,6 +4019,8 @@ body {
   }
   .lp-portal-nav { top: 116px; width: 154px; }
   .lp-portal-shell { padding-top: 104px; padding-bottom: 32px; }
+  .lp-table-heading { align-items: flex-start; }
+  .lp-portfolio-heading-actions { flex-direction: column; align-items: flex-end; gap: 8px; }
   .lp-summary-grid { grid-template-columns: 1fr; }
   /* Stacked, the values must share a left edge — flex let each one start
      wherever its label happened to end. */
@@ -4058,6 +4157,23 @@ body {
     padding: calc(var(--mobile-header-height) + 38px) var(--mobile-gutter) 28px;
   }
 
+  .lp-table-heading {
+    display: block;
+  }
+  .lp-portfolio-heading-actions {
+    align-items: stretch;
+    margin-top: 15px;
+  }
+  .lp-portfolio-heading-actions > p {
+    white-space: normal;
+  }
+  .lp-portfolio-view-switch {
+    width: 100%;
+  }
+  .lp-portfolio-view-switch button {
+    flex: 1;
+  }
+
   .lp-table-wrap { display: none; }
   .lp-portfolio-mobile {
     display: grid;
@@ -4187,6 +4303,16 @@ body {
   .cog-company-card {
     min-height: 220px;
     aspect-ratio: 2 / 1;
+  }
+}
+
+@media (max-width: 639px) {
+  .lp-company-allocation-view > header {
+    display: block;
+  }
+  .lp-company-allocation-view > header span {
+    display: block;
+    margin-top: 5px;
   }
 }
 

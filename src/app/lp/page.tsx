@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { LpPortfolioTable, type LpTableSort } from "@/components/lp-portfolio-table";
+import {
+  LpPortfolioTable,
+  type LpPortfolioDisplay,
+  type LpTableSort,
+} from "@/components/lp-portfolio-table";
 import { getLpPortfolio, getLpSnapshot } from "@/lib/lp-data";
 
 export const metadata: Metadata = {
@@ -24,6 +28,7 @@ export default async function LpPortfolioPage({
   const [investments, params] = await Promise.all([getLpPortfolio(), searchParams]);
   const value = (key: string) => typeof params[key] === "string" ? params[key] : undefined;
   const requestedSort = value("sort");
+  const display: LpPortfolioDisplay = value("display") === "companies" ? "companies" : "positions";
   const sort: LpTableSort = ["chronology", "company", "investedCost", "investmentDate"].includes(requestedSort || "")
     ? requestedSort as LpTableSort
     : "chronology";
@@ -31,6 +36,7 @@ export default async function LpPortfolioPage({
     query: value("query"),
     sort,
     direction: value("direction") === "asc" ? "asc" as const : "desc" as const,
+    display,
   };
   const snapshot = getLpSnapshot();
   const investedCost = investments.reduce((total, item) => total + item.investedCost, 0);
