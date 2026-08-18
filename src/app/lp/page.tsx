@@ -9,7 +9,7 @@ import {
 import { getLpPortfolio, getLpSnapshot } from "@/lib/lp-data";
 
 export const metadata: Metadata = {
-  title: "Portfolio — All Together Investor Portal",
+  title: "Portfolio",
   robots: { index: false, follow: false, nocache: true },
 };
 

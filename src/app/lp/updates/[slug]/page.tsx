@@ -28,9 +28,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const update = LP_INVESTOR_UPDATES.find((entry) => entry.slug === slug);
-  if (!update) return {};
+  if (!update) {
+    return {
+      title: "Page Not Found",
+      robots: { index: false, follow: false, nocache: true },
+    };
+  }
   return {
-    title: `${update.title} — Investor Update #${update.issue}`,
+    title: update.title,
     description: update.excerpt,
     robots: { index: false, follow: false, nocache: true },
   };

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { LP_INVESTOR_UPDATES } from "@/data/lp-investor-updates";
 
 export const metadata: Metadata = {
-  title: "Investor Updates — All Together Investor Portal",
+  title: "Insights",
   description: "Private updates for All Together investors.",
   robots: { index: false, follow: false, nocache: true },
 };
@@ -17,7 +17,7 @@ export default function LpInvestorUpdatesPage() {
     <section className="lp-portal-shell lp-updates-index">
       <header className="lp-updates-index-header">
         <span>Private investor communications</span>
-        <h1>Investor Updates</h1>
+        <h1>Insights</h1>
         <p>
           Notes on the portfolio, our investment thinking, and what we are learning. We publish at least
           twice per year, with shorter updates when something material changes.

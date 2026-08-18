@@ -141,7 +141,7 @@ const brandDisplay = localFont({
 // metadataBase is required so Next.js can resolve the opengraph-image
 // route to an absolute URL in the rendered og:image meta tag.
 const SITE_URL = "https://alltogethercapital.com";
-const SITE_TITLE = "The Future Is Built Together — All Together";
+const SITE_TITLE = "Home | All Together Capital";
 const SITE_DESCRIPTION =
   "All Together backs the founders rebuilding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.";
 
@@ -152,7 +152,10 @@ const hiddenScrollbarStyle: CSSProperties = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: SITE_TITLE,
+  title: {
+    default: SITE_TITLE,
+    template: "%s | All Together Capital",
+  },
   description: SITE_DESCRIPTION,
   openGraph: {
     title: SITE_TITLE,

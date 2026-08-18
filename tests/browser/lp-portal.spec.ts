@@ -158,8 +158,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   const updatesResponse = await page.goto("/lp/updates");
   expect(updatesResponse?.status()).toBe(200);
   expect(updatesResponse?.headers()["x-robots-tag"]).toBe("noindex, nofollow, noarchive");
-  await expect(page.getByRole("heading", { name: "Investor Updates" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Investor Updates" })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("heading", { name: "Insights" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Insights" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByText(/at least twice per year/i)).toBeVisible();
   const augustUpdateLink = page.getByRole("link", { name: /Beyond the Anthropocene: Betting on the Post-Labor AI Economy/ });
   await expect(augustUpdateLink).toHaveAttribute("href", "/lp/updates/august-2026");
@@ -401,10 +401,10 @@ test("renders the login, portfolio, and detail views at every supported layout",
       fullPage: true,
     });
 
-    await page.getByRole("link", { name: "Investor Updates" }).click();
+    await page.getByRole("link", { name: "Insights" }).click();
     await expect(page).toHaveURL(/\/lp\/updates$/);
-    await expect(page.getByRole("heading", { name: "Investor Updates" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Investor Updates" })).toHaveAttribute("aria-current", "page");
+    await expect(page.getByRole("heading", { name: "Insights" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Insights" })).toHaveAttribute("aria-current", "page");
     await expect(page.getByRole("link", { name: /Beyond the Anthropocene: Betting on the Post-Labor AI Economy/ })).toBeVisible();
     await expect(page.getByRole("link", { name: "Home", exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);

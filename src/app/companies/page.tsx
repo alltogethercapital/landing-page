@@ -11,7 +11,7 @@ import { ArrowUpRight } from "@/components/icons";
 import { PORTFOLIO, slugify, type Company } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
-  title: "Our companies — All Together",
+  title: "Our companies",
   description:
     "Our companies, across AI, defense, energy, robotics, semiconductors, and space.",
 };
