@@ -2410,10 +2410,16 @@ body {
 
 .lp-summary-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   margin: 0;
   border-top: 1px solid var(--lp-ink);
   border-bottom: 1px solid var(--lp-line);
+}
+
+.lp-summary-grid--four > div {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .lp-portfolio-tabs {

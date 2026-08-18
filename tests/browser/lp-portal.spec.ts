@@ -31,7 +31,10 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(individualInvestmentsButton).toHaveAttribute("aria-pressed", "false");
   await expect(page.getByText("43 companies · 1 not-yet-allocated balance", { exact: true })).toBeVisible();
   await expect(page.getByText("$661,014.25", { exact: true })).toBeVisible();
-  await expect(page.getByText("$671,574.11", { exact: true })).toBeVisible();
+  const summaryGrid = page.locator(".lp-summary-grid");
+  await expect(summaryGrid.getByText("Not yet allocated", { exact: true })).toBeVisible();
+  await expect(summaryGrid.getByText("$112,000.00", { exact: true })).toBeVisible();
+  await expect(page.getByText("$673,040.77", { exact: true })).toBeVisible();
   await expect(page.getByText("Current value multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.02×", { exact: true })).toBeVisible();
@@ -79,7 +82,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   const h256Row = page.locator(".lp-portfolio-table tbody tr").filter({ hasText: "H256 LLC Series 3" });
   await expect(h256Row).toBeVisible();
   await expect(h256Row).toContainText("$200,000");
-  await expect(h256Row).toContainText("$88,000 to Anduril in its $60B round (44%) · $112,000 not yet allocated (56%)");
+  await expect(h256Row).toContainText("$88,000 to Anduril in its Series H at a $60B entry valuation (44%) · $112,000 not yet allocated (56%)");
   await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M fund / $1M investment entity", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M model financing", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-portfolio-table .lp-company-logo img")).toHaveCount(44);
@@ -103,7 +106,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(allocationFigure).toContainText("Defense and aerospace");
   await expect(allocationFigure).toContainText("$159,586");
   await expect(allocationFigure).toContainText("24.1%");
-  await expect(allocationFigure).toContainText("Includes $88,000 deployed to Anduril in its $60B round through H256");
+  await expect(allocationFigure).toContainText("Includes $88,000 deployed to Anduril in its Series H at a $60B entry valuation through H256");
   await expect(allocationFigure).toContainText("Pending allocation");
   await expect(allocationFigure).toContainText("$112,000");
   await expect(allocationFigure).toContainText("16.9%");
@@ -128,19 +131,24 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   const concentrationSection = page.locator(".lp-figure-section").filter({ hasText: "Concentration and structure" });
   await expect(concentrationSection.getByRole("heading", { name: "Ten largest positions" })).toHaveCount(0);
   await expect(concentrationSection).not.toContainText("Primary and secondary company equity together account for");
-  await expect(concentrationSection.getByRole("heading", { name: "Instrument" })).toBeVisible();
-  for (const instrument of ["Equity", "SPV", "SAFE", "Secondary", "Convertible Notes"]) {
-    await expect(concentrationSection.getByText(instrument, { exact: true })).toBeVisible();
+  await expect(concentrationSection.getByRole("heading", { name: "Security type" })).toBeVisible();
+  for (const securityType of ["Equity", "SAFE", "Secondary", "Convertible note", "Not specified"]) {
+    await expect(concentrationSection.getByText(securityType, { exact: true })).toBeVisible();
   }
+  await expect(concentrationSection.getByText("SPV", { exact: true })).toHaveCount(0);
   await expect(concentrationSection).not.toContainText("Primary equity");
   await expect(concentrationSection).not.toContainText("Fund / SPV interests");
   await expect(concentrationSection.getByRole("heading", { name: "Entry round" })).toBeVisible();
-  await expect(concentrationSection).toContainText("Anduril · $60B round");
+  await expect(concentrationSection).toContainText("Anduril in Series C+");
   await expect(concentrationSection).toContainText("Not yet allocated");
   await expect(concentrationSection.getByRole("heading", { name: "Access channel" })).toBeVisible();
   await expect(concentrationSection.getByRole("heading", { name: "Stage" })).toHaveCount(0);
   await expect(concentrationSection.getByRole("heading", { name: "Platform" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Performance" })).toBeVisible();
+  const h256AndurilMark = page.locator(".lp-figure-table--marks tbody tr").filter({ hasText: "H256 → Anduril" });
+  await expect(h256AndurilMark).toContainText("$60B entry valuation");
+  await expect(h256AndurilMark).toContainText("$61B valuation");
+  await expect(h256AndurilMark).toContainText("$89,466.67");
   await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-analysis-desktop.png", fullPage: true });
 
@@ -180,7 +188,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(updateParagraphs.nth(4)).toContainText("ownership layer");
   await expect(page.locator(".lp-update-article-copy")).toContainText("30.3%");
   await expect(page.locator(".lp-update-article-copy")).toContainText("$200,000 H256 LLC Series 3");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("$88,000.00 (44%) deployed to Anduril in its $60B round");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("$88,000.00 (44%) deployed to Anduril in its Series H at a $60B entry valuation");
   await expect(page.locator(".lp-update-article-copy")).toContainText("$112,000.00 (56%) that is not yet allocated or deployed");
   await expect(page.locator(".lp-figure-section")).toHaveCount(0);
   const updateWordCount = await page.locator(".lp-update-article-copy").evaluate((element) =>
@@ -278,12 +286,14 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByRole("heading", { name: "H256 LLC Series 3" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Vehicle allocation" })).toBeVisible();
   await expect(page.locator(".lp-vehicle-allocation")).toContainText("$88,000");
-  await expect(page.locator(".lp-vehicle-allocation")).toContainText("44% deployed to Anduril in its $60B round");
+  await expect(page.locator(".lp-vehicle-allocation")).toContainText("44% deployed to Anduril in its Series H at a $60B entry valuation");
   await expect(page.locator(".lp-vehicle-allocation")).toContainText("$112,000");
   await expect(page.locator(".lp-vehicle-allocation")).toContainText("56% not yet allocated to an underlying company");
   await expect(page.locator(".lp-vehicle-allocation")).toContainText("$200,000 vehicle investment remains one legal portfolio position");
   await expect(page.locator(".lp-vehicle-allocation")).toContainText("has not yet been allocated or deployed to an underlying company");
-  await expect(page.getByText("$200,000", { exact: true })).toHaveCount(2);
+  await expect(page.getByText("$200,000", { exact: true })).toHaveCount(1);
+  await expect(page.getByText("$201,466.67", { exact: true })).toBeVisible();
+  await expect(page.getByText("$61B valuation", { exact: true })).toBeVisible();
 
   await page.goto("/lp/investments/41-atoms");
   await expect(page.getByRole("heading", { name: "Atoms" })).toBeVisible();

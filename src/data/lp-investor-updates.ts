@@ -29,4 +29,5 @@ export const LP_AUGUST_2026_FUND_SNAPSHOT = {
   projectedGrossMultiple: 1.02,
   positions: 44,
   companies: 43,
+  markedPositions: 3,
 } as const;

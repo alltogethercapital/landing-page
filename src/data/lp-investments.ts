@@ -3,6 +3,7 @@ import "server-only";
 import type {
   InvestmentInstrument,
   InvestmentPlatform,
+  InvestmentSecurityType,
 } from "@/lib/lp-investment-language";
 
 export type InvestmentReviewStatus = "verified" | "pending" | "review";
@@ -14,6 +15,11 @@ export type VehicleAllocation = {
   deployedEntryValuationAmount: number;
   deployedShare: number;
   awaitingShare: number;
+};
+
+export type SecurityAllocation = {
+  securityType: InvestmentSecurityType;
+  share: number;
 };
 
 export type InvestmentRecord = {
@@ -32,6 +38,7 @@ export type InvestmentRecord = {
   description?: string;
   reviewStatus: InvestmentReviewStatus;
   reviewNote?: string;
+  securityAllocation?: SecurityAllocation[];
   vehicleAllocation?: VehicleAllocation;
   performance?: {
     currentValue: number;
@@ -47,7 +54,7 @@ export type InvestmentRecord = {
 export const H256_VEHICLE_ALLOCATION: VehicleAllocation = {
   asOf: "2026-08-17",
   deployedCompany: "Anduril",
-  deployedRound: "$60B round",
+  deployedRound: "Series H at a $60B entry valuation",
   deployedEntryValuationAmount: 60_000_000_000,
   deployedShare: 0.44,
   awaitingShare: 0.56,
@@ -60,6 +67,10 @@ export type ProjectedValuationMark = {
   asOf: string;
   source: string;
   sourceUrl?: string;
+  costBasisAmount?: number;
+  entryValuation?: string;
+  positionLabel?: string;
+  scope?: string;
 };
 
 // Approved cost-basis snapshot of the All Together Drive Schedule of Investments.
@@ -74,7 +85,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "06-quaise-energy", chronology: 6, company: "Quaise Energy", investedCost: 10000, investmentDate: "2026-05-03", round: "Series B", entryValuation: "$312.5M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "10EI2AksDVmz6SLnGaAdgJ50KuuPk9Fmx", logo: "/logos/cards/quaise.png", description: "Ultra-deep geothermal to unlock clean baseload energy.", reviewStatus: "verified" },
   { id: "07-shield-ai", chronology: 7, company: "Shield AI", investedCost: 20000, investmentDate: "2026-05-04", round: "Series G", entryValuation: "$10.5B valuation", instrument: "Equity", platform: "Sydecar", driveFolderId: "1azcwyu3tpDuI3Q9J2_obryec9G67fT-K", logo: "/logos/cards/shield-ai.png", description: "AI pilots for aircraft and autonomous defense systems.", reviewStatus: "verified" },
   { id: "08-samply", chronology: 8, company: "Samply", investedCost: 2000, investmentDate: "2026-05-04", round: "Seed", entryValuation: "$10M post-money cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "19mk9zCueHMx8jVBE6KSEtU9Hk4yKjwE1", logo: "/logos/cards/samply.png", description: "Sample management for modern music producers.", reviewStatus: "verified" },
-  { id: "09-h256-series-3", chronology: 9, company: "H256 LLC Series 3", investedCost: 200000, investmentDate: "2026-05-06", round: "N/A", entryValuation: "No co. val; $50M fund / $1M SPV", instrument: "SPV", platform: "Direct", driveFolderId: "1c4ssc43ICTMjZO-BS_yYBBMLMHj4PUim", logo: "/logos/cards/h256-series-3.svg", description: "Dedicated investment company with exposure to frontier technology companies.", reviewStatus: "verified", vehicleAllocation: H256_VEHICLE_ALLOCATION },
+  { id: "09-h256-series-3", chronology: 9, company: "H256 LLC Series 3", investedCost: 200000, investmentDate: "2026-05-06", round: "N/A", entryValuation: "No co. val; $50M fund / $1M SPV", instrument: "SPV", platform: "Direct", driveFolderId: "1c4ssc43ICTMjZO-BS_yYBBMLMHj4PUim", logo: "/logos/cards/h256-series-3.svg", description: "Dedicated investment company with exposure to frontier technology companies.", reviewStatus: "verified", securityAllocation: [{ securityType: "Equity", share: H256_VEHICLE_ALLOCATION.deployedShare }], vehicleAllocation: H256_VEHICLE_ALLOCATION },
   { id: "10-starcloud", chronology: 10, company: "Starcloud", investedCost: 37097.38, investmentDate: "2026-05-08", round: "Series A+", entryValuation: "$2B pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1W17VCUKpqxFQrlKhbLRwf0Iy5SyIXzw4", logo: "/logos/cards/starcloud.png", description: "Data centers in orbit, powered by the sun.", reviewStatus: "verified" },
   { id: "11-openai", chronology: 11, company: "OpenAI", investedCost: 50000, investmentDate: "2026-05-12", round: "Series G", entryValuation: "$852B post-money", instrument: "Equity", platform: "Sydecar", driveFolderId: "1yuyYyZjOiTDP5FWD1lY0VHI6qb_c6ipG", logo: "/logos/cards/openai.png", description: "Frontier AI research and products.", reviewStatus: "verified" },
   { id: "12-apptronik", chronology: 12, company: "Apptronik", investedCost: 30000, investmentDate: "2026-05-13", round: "Series A", entryValuation: "~$4.9B post-money", instrument: "Secondary", platform: "AngelList", driveFolderId: "1xr2MFkdyzodS6PgKsiaWG3e3lrdu4Wy-", logo: "/logos/cards/apptronik.png", description: "General-purpose humanoid robots for industry.", reviewStatus: "verified" },
@@ -82,7 +93,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "14-aurelius-systems", chronology: 14, company: "Aurelius Systems", investedCost: 5000, investmentDate: "2026-05-14", round: "Series A", entryValuation: "$160M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "19c3chRV1oo9BOuDa2Wj-SH33xgFzp3jU", logo: "/logos/cards/aurelius.png", description: "Autonomous directed-energy defense systems.", reviewStatus: "verified" },
   { id: "15-aalo-atomics", chronology: 15, company: "Aalo Atomics", investedCost: 20000, investmentDate: "2026-05-15", round: "Series B+", entryValuation: "$3B pre-money", instrument: "SAFE", platform: "AngelList", driveFolderId: "1Dbw-4qey8TSjWrB0pmfVKjj-VDwJQTaT", logo: "/logos/cards/aalo.png", description: "Factory-built modular nuclear reactors for clean power.", reviewStatus: "verified" },
   { id: "16-salient-motion", chronology: 16, company: "Salient Motion", investedCost: 4585.65, investmentDate: "2026-05-15", round: "Series A", entryValuation: "$70M post-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1yR3pzxCRLviyb2EJVpqVn1T1V0PezA2h", logo: "/logos/cards/salient.png", description: "Critical actuation systems for aviation and defense.", reviewStatus: "verified" },
-  { id: "17-hark", chronology: 17, company: "Hark", investedCost: 10000, investmentDate: "2026-05-15", round: "Series A", entryValuation: "$5.775B pre-money", instrument: "SPV", platform: "Sydecar", driveFolderId: "1QlPSw6g8aDSgc3i6ynyMkBRwFi8O6x9N", logo: "/logos/cards/hark.png", description: "AI-powered tools for the way people work.", reviewStatus: "verified" },
+  { id: "17-hark", chronology: 17, company: "Hark", investedCost: 10000, investmentDate: "2026-05-15", round: "Series A", entryValuation: "$5.775B pre-money", instrument: "SPV", platform: "Sydecar", driveFolderId: "1QlPSw6g8aDSgc3i6ynyMkBRwFi8O6x9N", logo: "/logos/cards/hark.png", description: "AI-powered tools for the way people work.", reviewStatus: "verified", securityAllocation: [{ securityType: "Equity", share: 1 }] },
   { id: "18-eccentric-machines", chronology: 18, company: "Eccentric Machines", investedCost: 9763, investmentDate: "2026-05-20", round: "Seed", entryValuation: "$15M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1sWjrKX4F0TGp-cfDEPdnOBTVMWU23P72", logo: "/logos/cards/eccentric.png", description: "Intelligent robotic motion systems.", reviewStatus: "verified" },
   { id: "19-maven-robotics", chronology: 19, company: "Maven Robotics", investedCost: 9733.38, investmentDate: "2026-05-20", round: "Series A", entryValuation: "No val; $50M model financing", instrument: "Equity", platform: "AngelList", driveFolderId: "17xTbyu31b01wbAHIeg6bUMMOkuHTP4ha", logo: "/logos/cards/maven.png", description: "General-purpose AI robots for industry.", reviewStatus: "verified" },
   { id: "20-array-labs", chronology: 20, company: "Array Labs", investedCost: 10000, investmentDate: "2026-05-23", round: "Series A+", entryValuation: "$90M public valuation", instrument: "Equity", platform: "AngelList", driveFolderId: "1rctopc9sizaPH0jZYsW0kBW96cZqHOlG", logo: "/logos/cards/array-labs.png", description: "Satellite swarms mapping Earth in real time.", reviewStatus: "verified" },
@@ -108,19 +119,31 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "40-sunflower-labs", chronology: 40, company: "Sunflower Labs", investedCost: 10000, investmentDate: "2026-08-01", round: "Series C", entryValuation: "$50M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "17kBI7OoZQMt37UaBeJEZZRR7K8UYcHWa", logo: "/logos/cards/sunflower-labs.png", description: "Autonomous drone security systems.", reviewStatus: "verified" },
   { id: "41-atoms", chronology: 41, company: "Atoms", investedCost: 9350, investmentDate: "2026-08-01", round: "Class A Preferred Units", entryValuation: "$15.9B pre-money", instrument: "Equity", platform: "Capital Company", driveFolderId: "1Cvnw6w8gMEnf8zwfceKq9WhKaeBuVO2l", logo: "/logos/cards/atoms.png", description: "Physical automation for food, mining, and transport.", reviewStatus: "verified" },
   { id: "42-weave-robotics", chronology: 42, company: "Weave Robotics", investedCost: 5000, investmentDate: "2026-08-11", round: "Seed+", entryValuation: "$180M post-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1f2LWuGRnoxsws4tCC5-JY-mmJdopMC1-", logo: "/logos/cards/weave-robotics.png", description: "Practical home robots for everyday household work.", reviewStatus: "verified", reviewNote: "Final amount reflects the owner's August 14 correction; the original outbound wire remains recorded separately." },
-  { id: "43-blue-origin", chronology: 43, company: "Blue Origin", investedCost: 15000, investmentDate: "2026-08-12", round: "N/A", entryValuation: "$130B pre-money", instrument: "SPV", platform: "Capital Company", driveFolderId: "13wS3KegZWqt9lzc6Vomib40bjMQJ1Ya9", logo: "/logos/cards/blue-origin.png", description: "Reusable rockets, engines, lunar systems, and space infrastructure.", reviewStatus: "pending", reviewNote: "Wire confirmed; final fund acceptance and countersignature remain pending." },
+  { id: "43-blue-origin", chronology: 43, company: "Blue Origin", investedCost: 15000, investmentDate: "2026-08-12", round: "N/A", entryValuation: "$130B pre-money", instrument: "SPV", platform: "Capital Company", driveFolderId: "13wS3KegZWqt9lzc6Vomib40bjMQJ1Ya9", logo: "/logos/cards/blue-origin.png", description: "Reusable rockets, engines, lunar systems, and space infrastructure.", reviewStatus: "pending", reviewNote: "Wire confirmed; final fund acceptance and countersignature remain pending.", securityAllocation: [{ securityType: "Not specified", share: 1 }] },
   { id: "44-positron", chronology: 44, company: "Positron", investedCost: 5000, investmentDate: "2026-08-13", round: "Series C", entryValuation: "$4.5B pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "17qCf0zOiYhtSZxFOCChlHLK1qViEJsId", logo: "/logos/cards/positron.svg", logoTreatment: "inverse", description: "Purpose-built AI inference hardware and systems.", reviewStatus: "verified" },
 ];
 
 // Sourced comparable financing marks used for the LP-facing gross projection.
 // Positions without a comparable mark remain at invested cost.
 //
-// These three are the marks carried in the August 2026 investor letter as
-// mailed. Each is a secondary bought below, or an entry struck below, a primary
-// round that had already closed — none is a company re-rating after we invested.
-// Replit, 1X (Series B) and Decart were carried in an earlier draft and are held
-// at cost here, matching the letter of record.
+// The August 2026 investor update preserves its mailed three-mark snapshot
+// separately. This live portfolio set also includes the later Anduril Series H
+// reference, applied only to H256's deployed Anduril cost basis. Replit, 1X
+// (Series B) and Decart remain at cost because their earlier draft marks are not
+// part of the approved live comparison set.
 export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark> = {
+  "09-h256-series-3": {
+    entryValuationAmount: 60_000_000_000,
+    latestValuationAmount: 61_000_000_000,
+    latestValuation: "$61B valuation",
+    asOf: "2026-05-13",
+    source: "Anduril Series H announcement",
+    sourceUrl: "https://www.anduril.com/news/anduril-announces-usd5b-series-h-raise",
+    costBasisAmount: 88_000,
+    entryValuation: "$60B entry valuation",
+    positionLabel: "H256 → Anduril",
+    scope: "applies only to H256's $88,000 Anduril allocation; $112,000 remains at cost",
+  },
   "07-shield-ai": { entryValuationAmount: 10_500_000_000, latestValuationAmount: 12_700_000_000, latestValuation: "$12.7B post-money", asOf: "2026-03-26", source: "Shield AI Series G", sourceUrl: "https://techcrunch.com/2026/03/26/defense-startup-shield-ai-lands-12-7b-valuation-up-140-after-u-s-air-force-deal/" },
   // No sourceUrl: the only link on file reports $5B, which contradicts the
   // ~$5.3B this position is marked to. Restore a link once one reporting the
@@ -130,7 +153,7 @@ export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark
   "25-figure-ai": { entryValuationAmount: 30_000_000_000, latestValuationAmount: 39_000_000_000, latestValuation: "$39B post-money", asOf: "2025-09-16", source: "Figure Series C announcement", sourceUrl: "https://www.figure.ai/news/series-c" },
 };
 
-export const LP_PROJECTION_AS_OF = "2026-08-14";
+export const LP_PROJECTION_AS_OF = "2026-08-18";
 
 export const LP_SNAPSHOT = {
   source: "All Together Drive · Schedule of Investments",
