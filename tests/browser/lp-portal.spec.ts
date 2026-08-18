@@ -30,11 +30,11 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(allocationByCompanyButton).toHaveAttribute("aria-pressed", "true");
   await expect(individualInvestmentsButton).toHaveAttribute("aria-pressed", "false");
   await expect(page.getByText("43 companies · 1 not-yet-allocated balance", { exact: true })).toBeVisible();
-  await expect(page.getByText("$661,014.25", { exact: true })).toBeVisible();
+  await expect(page.getByText("$549,014.25", { exact: true })).toBeVisible();
   const summaryGrid = page.locator(".lp-summary-grid");
   await expect(summaryGrid.getByText("Not yet allocated", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("$112,000.00", { exact: true })).toBeVisible();
-  await expect(page.getByText("$673,040.77", { exact: true })).toBeVisible();
+  await expect(page.getByText("$561,040.77", { exact: true })).toBeVisible();
   await expect(page.getByText("Current value multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.02×", { exact: true })).toBeVisible();
@@ -97,6 +97,9 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(portfolioAnalysisLink).toHaveAttribute("aria-current", "page");
   await expect(investmentsSectionLink).not.toHaveAttribute("aria-current");
   await expect(page.getByRole("heading", { name: "Portfolio at a glance" })).toBeVisible();
+  const portfolioOverview = page.locator(".lp-figure-section").first();
+  await expect(portfolioOverview.getByText("$549,014.25", { exact: true })).toBeVisible();
+  await expect(portfolioOverview.getByText("$561,040.77", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-summary-grid")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Individual investments" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Allocation by company" })).toHaveCount(0);

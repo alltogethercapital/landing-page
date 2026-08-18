@@ -169,7 +169,7 @@ export function LpPortfolioTable({
   const filteredCompanyAllocationRows = normalizedQuery
     ? companyAllocationRows.filter((row) => row.searchText.includes(normalizedQuery))
     : companyAllocationRows;
-  const investedTotal = investments.reduce((sum, investment) => sum + investment.investedCost, 0);
+  const totalCapital = investments.reduce((sum, investment) => sum + investment.investedCost, 0);
   const allocationScale = companyAllocationRows[0]?.amount || 1;
   const vehicleAllocation = investments.find((investment) => investment.vehicleAllocation)
     ?.vehicleAllocation;
@@ -331,16 +331,16 @@ export function LpPortfolioTable({
         <section className="lp-company-allocation-view" aria-labelledby="lp-company-allocation-heading">
           <header>
             <h3 id="lp-company-allocation-heading">All companies</h3>
-            <span>Share of invested cost</span>
+            <span>Share of total capital</span>
           </header>
           {filteredCompanyAllocationRows.length > 0 ? (
-            <div className="lp-figure-bars" role="list" aria-label="Allocation by company at invested cost">
+            <div className="lp-figure-bars" role="list" aria-label="Allocation by company across total capital">
               {filteredCompanyAllocationRows.map((row, index) => (
                 <div
                   key={row.id}
                   className={`lp-figure-bar-row${index === 0 && !normalizedQuery ? " is-lead" : ""}`}
                   role="listitem"
-                  aria-label={`${row.label}: ${formatWholeCurrency(row.amount)}, ${formatPercent(row.amount / investedTotal)} of invested cost`}
+                  aria-label={`${row.label}: ${formatWholeCurrency(row.amount)}, ${formatPercent(row.amount / totalCapital)} of total capital`}
                 >
                   <span className="lp-figure-bar-label">
                     <Link href={row.href}>{row.label}</Link>
@@ -353,7 +353,7 @@ export function LpPortfolioTable({
                     />
                     <span className="lp-figure-bar-amount">{formatWholeCurrency(row.amount)}</span>
                   </span>
-                  <span className="lp-figure-bar-value">{formatPercent(row.amount / investedTotal)}</span>
+                  <span className="lp-figure-bar-value">{formatPercent(row.amount / totalCapital)}</span>
                 </div>
               ))}
             </div>

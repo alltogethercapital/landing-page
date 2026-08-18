@@ -163,6 +163,7 @@ export const LETTER_H256_DEPLOYED_AMOUNT =
 export const LETTER_H256_PENDING_AMOUNT =
   H256_POSITION.investedCost - LETTER_H256_DEPLOYED_AMOUNT;
 export const LETTER_H256_POSITION_SHARE = shareOf(H256_POSITION.investedCost);
+export const LETTER_ALLOCATED_TOTAL = LETTER_INVESTED_TOTAL - LETTER_H256_PENDING_AMOUNT;
 
 // The Schedule of Investments continues to carry H256 as one legal position.
 // For allocation reporting, look through that position only far enough to show the
@@ -199,7 +200,9 @@ export const LETTER_DEPLOYMENT = (() => {
   );
   let cumulative = 0;
   return byDate.map((position) => {
-    cumulative += position.investedCost;
+    cumulative += position.vehicleAllocation
+      ? position.investedCost * position.vehicleAllocation.deployedShare
+      : position.investedCost;
     return { date: position.investmentDate, cumulative, company: position.company };
   });
 })();

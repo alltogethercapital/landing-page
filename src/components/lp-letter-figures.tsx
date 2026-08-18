@@ -1,5 +1,6 @@
 import {
   LETTER_ACCESS_CHANNEL_SPLIT,
+  LETTER_ALLOCATED_TOTAL,
   LETTER_ALLOCATION,
   LETTER_COMPANY_COUNT,
   LETTER_CONCENTRATION_CURVE,
@@ -201,10 +202,10 @@ function PortfolioAtAGlance({
   const axisMonths = ["2025-10-01", "2025-12-01", "2026-02-01", "2026-04-01", "2026-06-01", "2026-08-01"];
 
   const stats = [
-    { label: "Invested capital", value: currency(LETTER_INVESTED_TOTAL), note: `across ${positionCount} positions` },
+    { label: "Invested capital", value: currency(LETTER_ALLOCATED_TOTAL), note: `${dollars(LETTER_H256_PENDING_AMOUNT)} remains not yet allocated` },
     { label: "Companies", value: String(LETTER_COMPANY_COUNT), note: "1X held in two rounds" },
-    { label: "Directional gross view", value: currency(grossValue), note: `${(grossValue / LETTER_INVESTED_TOTAL).toFixed(2)}× invested cost` },
-    { label: "Unrealized", value: `+${currency(grossValue - LETTER_INVESTED_TOTAL)}`, note: "sourced comparable marks" },
+    { label: "Directional gross view", value: currency(grossValue), note: `${(grossValue / LETTER_ALLOCATED_TOTAL).toFixed(2)}× invested cost` },
+    { label: "Unrealized", value: `+${currency(grossValue - LETTER_ALLOCATED_TOTAL)}`, note: "sourced comparable marks" },
     { label: "Median position", value: dollars(medianPosition), note: `${smallPositions} positions at $10k or less` },
     { label: "Deployment window", value: "10 months", note: "Oct 2025 – Aug 2026" },
   ];
@@ -223,7 +224,7 @@ function PortfolioAtAGlance({
 
       <FigureHeading
         title="Allocation by category"
-        note={`Share of invested cost · ${currency(LETTER_INVESTED_TOTAL)}`}
+        note={`Share of total capital · ${currency(LETTER_INVESTED_TOTAL)}`}
       />
       <div className="lp-figure-bars">
         {LETTER_ALLOCATION.map((row, index) => (
@@ -276,7 +277,7 @@ function PortfolioAtAGlance({
           />
         </svg>
         <span className="sr-only">
-          Cumulative invested cost rising from {currency(LETTER_DEPLOYMENT[0].cumulative)} in October
+          Cumulative invested capital rising from {currency(LETTER_DEPLOYMENT[0].cumulative)} in October
           2025 to {currency(deploymentMax)} in August 2026.
         </span>
         <div className="lp-figure-chart-y" aria-hidden="true">
@@ -483,7 +484,7 @@ function ValuationEvidence({ grossValue }: { grossValue: number }) {
     };
   });
   const markedCost = marks.reduce((sum, mark) => sum + mark.cost, 0);
-  const heldAtCost = LETTER_INVESTED_TOTAL - markedCost;
+  const heldAtCost = LETTER_ALLOCATED_TOTAL - markedCost;
 
   return (
     <FigureSection id="valuation-evidence" title="Performance">
@@ -541,8 +542,8 @@ function ValuationEvidence({ grossValue }: { grossValue: number }) {
               <th scope="row">Total</th>
               <td />
               <td />
-              <td className="is-number">{currency(LETTER_INVESTED_TOTAL)}</td>
-              <td className="is-number">{(grossValue / LETTER_INVESTED_TOTAL).toFixed(2)}×</td>
+              <td className="is-number">{currency(LETTER_ALLOCATED_TOTAL)}</td>
+              <td className="is-number">{(grossValue / LETTER_ALLOCATED_TOTAL).toFixed(2)}×</td>
               <td className="is-number">{currency(grossValue)}</td>
             </tr>
           </tfoot>
