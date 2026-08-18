@@ -11,9 +11,10 @@ import { LP_INVESTMENTS, type InvestmentRecord } from "@/data/lp-investments";
 //   allocation category — internal taxonomy for deployed company exposure
 //   entryValuationAmount — the entry price as a number, for the log-scale chart
 //
-// Three positions carry no company price at entry and are excluded from every
-// price-based figure: the H256 vehicle is sized on its fund, Lance AI was an
-// uncapped SAFE, and Maven Robotics priced against a financing model.
+// Two positions carry no company price at entry: Lance AI was an uncapped SAFE,
+// and Maven Robotics priced against a financing model. H256 remains one legal
+// position, but its round and valuation views look through to the 44% already
+// deployed into Anduril and keep the other 56% explicitly unallocated.
 
 export type LetterAllocationCategory =
   | "ai"
@@ -72,18 +73,19 @@ const ENTRY_VALUATION_BY_CHRONOLOGY: Record<number, number> = {
 };
 
 export type LetterEntryRound =
-  | "No company round"
+  | "Anduril · $60B round"
+  | "Not yet allocated"
   | "Series C+"
   | "Series A"
   | "Series B"
   | "Pre-seed / Seed"
   | "Other";
 
-// Round labels collapse into the entry-round view used in the letter. A+ and
-// B+ extensions sit with their base round; pooled positions without a stated
-// underlying company round are reported plainly as having no company round.
+// Round labels collapse into the entry-round view used in the portfolio
+// analysis. A+ and B+ extensions sit with their base round. A legal position
+// without a named company round falls into Other; H256 is split separately
+// below because part of that vehicle has a known underlying company round.
 function entryRoundOf(round: string): LetterEntryRound {
-  if (round === "N/A") return "No company round";
   if (/^Pre-seed|^Seed/.test(round)) return "Pre-seed / Seed";
   if (/^Series A/.test(round)) return "Series A";
   if (/^Series B/.test(round)) return "Series B";
@@ -231,7 +233,24 @@ export const LETTER_REMAINDER_AVERAGE =
   (LETTER_POSITIONS.length - 10);
 
 export const LETTER_INSTRUMENT_SPLIT = groupShares((position) => position.instrument);
-export const LETTER_ENTRY_ROUND_SPLIT = groupShares((position) => position.entryRound);
+export const LETTER_ENTRY_ROUND_SPLIT = (() => {
+  const totals = new Map<LetterEntryRound, number>();
+  const add = (round: LetterEntryRound, amount: number) =>
+    totals.set(round, (totals.get(round) ?? 0) + amount);
+
+  for (const position of LETTER_POSITIONS) {
+    if (position.id === H256_POSITION.id) {
+      add("Anduril · $60B round", LETTER_H256_DEPLOYED_AMOUNT);
+      add("Not yet allocated", LETTER_H256_PENDING_AMOUNT);
+    } else {
+      add(position.entryRound, position.investedCost);
+    }
+  }
+
+  return [...totals.entries()]
+    .map(([key, amount]) => ({ key, label: key, amount, share: shareOf(amount) }))
+    .sort((left, right) => right.amount - left.amount);
+})();
 export const LETTER_ACCESS_CHANNEL_SPLIT = groupShares((position) => position.platformLabel);
 
 export const LETTER_POOLED_SHARE = shareOf(
@@ -257,10 +276,25 @@ export const LETTER_SECONDARY_EQUITY_SHARE = shareOf(
 
 /* 03 — Where we bought ----------------------------------------------------- */
 
-export const LETTER_PRICED_POSITIONS = LETTER_POSITIONS.filter(
+const LETTER_DIRECT_PRICED_POSITIONS = LETTER_POSITIONS.filter(
   (position): position is LetterPosition & { entryValuationAmount: number } =>
     typeof position.entryValuationAmount === "number",
-).sort((left, right) => left.entryValuationAmount - right.entryValuationAmount);
+);
+
+// Entry-price analysis follows the economic exposure without pretending that
+// Anduril is a second legal position. The $88,000 deployed slice receives its
+// known $60B company price; H256's unallocated $112,000 stays out of price-based
+// charts until it is deployed.
+export const LETTER_PRICED_POSITIONS = [
+  ...LETTER_DIRECT_PRICED_POSITIONS,
+  {
+    ...H256_POSITION,
+    id: `${H256_POSITION.id}-anduril`,
+    company: H256_POSITION.vehicleAllocation.deployedCompany,
+    investedCost: LETTER_H256_DEPLOYED_AMOUNT,
+    entryValuationAmount: H256_POSITION.vehicleAllocation.deployedEntryValuationAmount,
+  },
+].sort((left, right) => left.entryValuationAmount - right.entryValuationAmount);
 
 export const LETTER_PRICED_COST = LETTER_PRICED_POSITIONS.reduce(
   (sum, position) => sum + position.investedCost,

@@ -19,12 +19,17 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await page.getByLabel("Access password").fill(password);
   await page.getByRole("button", { name: /Sign in/ }).click();
   await expect(page).toHaveURL(/\/lp$/);
+  const portfolioSections = page.getByRole("navigation", { name: "Portfolio sections" });
+  const investmentsSectionLink = portfolioSections.getByRole("link", { name: "Investments", exact: true });
+  const portfolioAnalysisLink = portfolioSections.getByRole("link", { name: "Portfolio analysis", exact: true });
+  await expect(investmentsSectionLink).toHaveAttribute("aria-current", "page");
+  await expect(portfolioAnalysisLink).not.toHaveAttribute("aria-current");
   await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
   const individualInvestmentsButton = page.getByRole("button", { name: "Individual investments" });
   const allocationByCompanyButton = page.getByRole("button", { name: "Allocation by company" });
   await expect(allocationByCompanyButton).toHaveAttribute("aria-pressed", "true");
   await expect(individualInvestmentsButton).toHaveAttribute("aria-pressed", "false");
-  await expect(page.getByText("43 companies · 1 pending allocation", { exact: true })).toBeVisible();
+  await expect(page.getByText("43 companies · 1 not-yet-allocated balance", { exact: true })).toBeVisible();
   await expect(page.getByText("$661,014.25", { exact: true })).toBeVisible();
   await expect(page.getByText("$671,574.11", { exact: true })).toBeVisible();
   await expect(page.getByText("Current value multiple", { exact: true })).toBeVisible();
@@ -45,7 +50,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByRole("heading", { name: "All companies" })).toBeVisible();
   const companyAllocationRows = page.locator(".lp-company-allocation-view .lp-figure-bar-row");
   await expect(companyAllocationRows).toHaveCount(44);
-  await expect(companyAllocationRows.nth(0)).toContainText("Pending allocation");
+  await expect(companyAllocationRows.nth(0)).toContainText("Not yet allocated");
   await expect(companyAllocationRows.nth(0)).toContainText("$112,000");
   await expect(companyAllocationRows.nth(0)).toContainText("16.9%");
   await expect(companyAllocationRows.nth(1)).toContainText("Anduril");
@@ -74,7 +79,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   const h256Row = page.locator(".lp-portfolio-table tbody tr").filter({ hasText: "H256 LLC Series 3" });
   await expect(h256Row).toBeVisible();
   await expect(h256Row).toContainText("$200,000");
-  await expect(h256Row).toContainText("$88,000 to Anduril (44%) · $112,000 pending allocation (56%)");
+  await expect(h256Row).toContainText("$88,000 to Anduril in its $60B round (44%) · $112,000 not yet allocated (56%)");
   await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M fund / $1M investment entity", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M model financing", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-portfolio-table .lp-company-logo img")).toHaveCount(44);
@@ -83,6 +88,61 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
     logos.filter((logo) => (logo as HTMLImageElement).complete && (logo as HTMLImageElement).naturalWidth > 0).length,
   )).toBe(44);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-desktop.png", fullPage: true });
+
+  await portfolioAnalysisLink.click();
+  await expect(page).toHaveURL(/\/lp\?section=analysis$/);
+  await expect(portfolioAnalysisLink).toHaveAttribute("aria-current", "page");
+  await expect(investmentsSectionLink).not.toHaveAttribute("aria-current");
+  await expect(page.getByRole("heading", { name: "Portfolio at a glance" })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Individual investments" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Allocation by company" })).toHaveCount(0);
+
+  const allocationFigure = page.locator(".lp-figure-section").first();
+  await expect(allocationFigure.getByRole("heading", { name: "Allocation by category" })).toBeVisible();
+  await expect(allocationFigure).toContainText("Defense and aerospace");
+  await expect(allocationFigure).toContainText("$159,586");
+  await expect(allocationFigure).toContainText("24.1%");
+  await expect(allocationFigure).toContainText("Includes $88,000 deployed to Anduril in its $60B round through H256");
+  await expect(allocationFigure).toContainText("Pending allocation");
+  await expect(allocationFigure).toContainText("$112,000");
+  await expect(allocationFigure).toContainText("16.9%");
+  await expect(allocationFigure).toContainText("$112,000 in H256 not yet deployed");
+  await expect(allocationFigure).not.toContainText("Diversified frontier vehicle");
+  const figureHeadingInsets = await allocationFigure.locator(".lp-figure-heading").first().evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return { left: Number.parseFloat(styles.paddingLeft), right: Number.parseFloat(styles.paddingRight) };
+  });
+  const figureRowInsets = await allocationFigure.locator(".lp-figure-bar-row").first().evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return { left: Number.parseFloat(styles.paddingLeft), right: Number.parseFloat(styles.paddingRight) };
+  });
+  const figureChartInsets = await allocationFigure.locator(".lp-figure-chart").first().evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return { left: Number.parseFloat(styles.paddingLeft), right: Number.parseFloat(styles.paddingRight) };
+  });
+  for (const insets of [figureHeadingInsets, figureRowInsets, figureChartInsets]) {
+    expect(insets.left).toBeGreaterThanOrEqual(16);
+    expect(insets.right).toBeGreaterThanOrEqual(16);
+  }
+  const concentrationSection = page.locator(".lp-figure-section").filter({ hasText: "Concentration and structure" });
+  await expect(concentrationSection.getByRole("heading", { name: "Ten largest positions" })).toHaveCount(0);
+  await expect(concentrationSection).not.toContainText("Primary and secondary company equity together account for");
+  await expect(concentrationSection.getByRole("heading", { name: "Instrument" })).toBeVisible();
+  for (const instrument of ["Equity", "SPV", "SAFE", "Secondary", "Convertible Notes"]) {
+    await expect(concentrationSection.getByText(instrument, { exact: true })).toBeVisible();
+  }
+  await expect(concentrationSection).not.toContainText("Primary equity");
+  await expect(concentrationSection).not.toContainText("Fund / SPV interests");
+  await expect(concentrationSection.getByRole("heading", { name: "Entry round" })).toBeVisible();
+  await expect(concentrationSection).toContainText("Anduril · $60B round");
+  await expect(concentrationSection).toContainText("Not yet allocated");
+  await expect(concentrationSection.getByRole("heading", { name: "Access channel" })).toBeVisible();
+  await expect(concentrationSection.getByRole("heading", { name: "Stage" })).toHaveCount(0);
+  await expect(concentrationSection.getByRole("heading", { name: "Platform" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Performance" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
+  await page.screenshot({ path: "output/playwright/lp-portal/portfolio-analysis-desktop.png", fullPage: true });
 
   const updatesResponse = await page.goto("/lp/updates");
   expect(updatesResponse?.status()).toBe(200);
@@ -120,51 +180,9 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(updateParagraphs.nth(4)).toContainText("ownership layer");
   await expect(page.locator(".lp-update-article-copy")).toContainText("30.3%");
   await expect(page.locator(".lp-update-article-copy")).toContainText("$200,000 H256 LLC Series 3");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("$88,000.00 (44%) deployed to Anduril");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("$112,000.00 (56%) of pending allocation that is not yet deployed");
-  const allocationFigure = page.locator(".lp-figure-section").first();
-  await expect(allocationFigure.getByRole("heading", { name: "Allocation by category" })).toBeVisible();
-  await expect(allocationFigure).toContainText("Defense and aerospace");
-  await expect(allocationFigure).toContainText("$159,586");
-  await expect(allocationFigure).toContainText("24.1%");
-  await expect(allocationFigure).toContainText("Includes $88,000 deployed to Anduril through H256");
-  await expect(allocationFigure).toContainText("Pending allocation");
-  await expect(allocationFigure).toContainText("$112,000");
-  await expect(allocationFigure).toContainText("16.9%");
-  await expect(allocationFigure).toContainText("$112,000 in H256 not yet deployed");
-  await expect(allocationFigure).not.toContainText("Diversified frontier vehicle");
-  const figureHeadingInsets = await allocationFigure.locator(".lp-figure-heading").first().evaluate((element) => {
-    const styles = getComputedStyle(element);
-    return { left: Number.parseFloat(styles.paddingLeft), right: Number.parseFloat(styles.paddingRight) };
-  });
-  const figureRowInsets = await allocationFigure.locator(".lp-figure-bar-row").first().evaluate((element) => {
-    const styles = getComputedStyle(element);
-    return { left: Number.parseFloat(styles.paddingLeft), right: Number.parseFloat(styles.paddingRight) };
-  });
-  const figureChartInsets = await allocationFigure.locator(".lp-figure-chart").first().evaluate((element) => {
-    const styles = getComputedStyle(element);
-    return { left: Number.parseFloat(styles.paddingLeft), right: Number.parseFloat(styles.paddingRight) };
-  });
-  for (const insets of [figureHeadingInsets, figureRowInsets, figureChartInsets]) {
-    expect(insets.left).toBeGreaterThanOrEqual(16);
-    expect(insets.right).toBeGreaterThanOrEqual(16);
-  }
-  const concentrationSection = page.locator(".lp-figure-section").filter({ hasText: "Concentration and structure" });
-  await expect(concentrationSection.getByRole("heading", { name: "Ten largest positions" })).toHaveCount(0);
-  await expect(concentrationSection).not.toContainText("Primary and secondary company equity together account for");
-  await expect(concentrationSection.getByRole("heading", { name: "Instrument" })).toBeVisible();
-  for (const instrument of ["Equity", "SPV", "SAFE", "Secondary", "Convertible Notes"]) {
-    await expect(concentrationSection.getByText(instrument, { exact: true })).toBeVisible();
-  }
-  await expect(concentrationSection).not.toContainText("Primary equity");
-  await expect(concentrationSection).not.toContainText("Fund / SPV interests");
-  await expect(concentrationSection.getByRole("heading", { name: "Entry round" })).toBeVisible();
-  await expect(concentrationSection).toContainText("No company round");
-  await expect(concentrationSection.getByRole("heading", { name: "Access channel" })).toBeVisible();
-  await expect(concentrationSection.getByRole("heading", { name: "Stage" })).toHaveCount(0);
-  await expect(concentrationSection.getByRole("heading", { name: "Platform" })).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Performance" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
+  await expect(page.locator(".lp-update-article-copy")).toContainText("$88,000.00 (44%) deployed to Anduril in its $60B round");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("$112,000.00 (56%) that is not yet allocated or deployed");
+  await expect(page.locator(".lp-figure-section")).toHaveCount(0);
   const updateWordCount = await page.locator(".lp-update-article-copy").evaluate((element) =>
     (element.textContent ?? "").trim().split(/\s+/).length,
   );
@@ -260,11 +278,11 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByRole("heading", { name: "H256 LLC Series 3" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Vehicle allocation" })).toBeVisible();
   await expect(page.locator(".lp-vehicle-allocation")).toContainText("$88,000");
-  await expect(page.locator(".lp-vehicle-allocation")).toContainText("44% deployed to Anduril");
+  await expect(page.locator(".lp-vehicle-allocation")).toContainText("44% deployed to Anduril in its $60B round");
   await expect(page.locator(".lp-vehicle-allocation")).toContainText("$112,000");
-  await expect(page.locator(".lp-vehicle-allocation")).toContainText("56% pending allocation — not yet deployed");
+  await expect(page.locator(".lp-vehicle-allocation")).toContainText("56% not yet allocated to an underlying company");
   await expect(page.locator(".lp-vehicle-allocation")).toContainText("$200,000 vehicle investment remains one legal portfolio position");
-  await expect(page.locator(".lp-vehicle-allocation")).toContainText("has not yet been deployed to an underlying company");
+  await expect(page.locator(".lp-vehicle-allocation")).toContainText("has not yet been allocated or deployed to an underlying company");
   await expect(page.getByText("$200,000", { exact: true })).toHaveCount(2);
 
   await page.goto("/lp/investments/41-atoms");
@@ -304,6 +322,9 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await page.getByRole("button", { name: /Sign in/ }).click();
     await expect(page).toHaveURL(/\/lp$/);
     await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
+    const portfolioSections = page.getByRole("navigation", { name: "Portfolio sections" });
+    await expect(portfolioSections.getByRole("link", { name: "Investments", exact: true })).toHaveAttribute("aria-current", "page");
+    await expect(portfolioSections.getByRole("link", { name: "Portfolio analysis", exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 
     const portalGuideCount = await page.locator(".lp-portal-page").evaluate((element) =>
@@ -345,6 +366,21 @@ test("renders the login, portfolio, and detail views at every supported layout",
         fullPage: true,
       });
     }
+
+    await portfolioSections.getByRole("link", { name: "Portfolio analysis", exact: true }).click();
+    await expect(page).toHaveURL(/\/lp\?section=analysis$/);
+    await expect(page.getByRole("heading", { name: "Portfolio at a glance" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Investments" })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Individual investments" })).toHaveCount(0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+    await page.screenshot({
+      path: `output/playwright/lp-portal/portfolio-analysis-${viewport.name}.png`,
+      fullPage: true,
+    });
+    await page.getByRole("navigation", { name: "Portfolio sections" })
+      .getByRole("link", { name: "Investments", exact: true })
+      .click();
+    await expect(page).toHaveURL(/\/lp$/);
     await page.getByRole("button", { name: "Individual investments" }).click();
 
     await page.screenshot({
@@ -369,6 +405,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page.getByRole("heading", { name: "Beyond the Anthropocene: Betting on the Post-Labor AI Economy" })).toBeVisible();
     await expect(page.locator(".lp-update-article-copy")).toContainText("$661,014.25");
     await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
+    await expect(page.locator(".lp-figure-section")).toHaveCount(0);
     const updateCopyBox = await page.locator(".lp-update-article-copy").boundingBox();
     expect(updateCopyBox).not.toBeNull();
     expect(updateCopyBox!.width).toBeLessThanOrEqual(761);
@@ -399,7 +436,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page.getByRole("heading", { name: "Vehicle allocation" })).toBeVisible();
     await expect(page.locator(".lp-vehicle-allocation")).toContainText("$88,000");
     await expect(page.locator(".lp-vehicle-allocation")).toContainText("$112,000");
-    await expect(page.locator(".lp-vehicle-allocation")).toContainText("not yet deployed");
+    await expect(page.locator(".lp-vehicle-allocation")).toContainText("not yet been allocated or deployed");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     await page.screenshot({
       path: `output/playwright/lp-portal/detail-h256-${viewport.name}.png`,
