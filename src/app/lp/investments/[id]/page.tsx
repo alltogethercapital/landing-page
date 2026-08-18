@@ -122,12 +122,22 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
           <div>
             <dt>Projected value</dt>
             <dd>{currency(projection.projectedValue)}</dd>
-            <small>{projection.basis === "cost" ? "Held at invested cost" : "Based on valuation reference"}</small>
+            <small>
+              {projection.basis === "cost"
+                ? "Held at invested cost"
+                : projection.basis === "assumption"
+                  ? "Based on a stated scenario assumption"
+                  : "Based on valuation reference"}
+            </small>
           </div>
           <div>
             <dt>Latest company valuation</dt>
             <dd>{projection.latestCompanyValuation}</dd>
-            <small>{projection.basis === "cost" ? "Entry terms; no newer comparable mark" : `As of ${date(projection.valuationAsOf)}`}</small>
+            <small>
+              {projection.basis === "cost"
+                ? "Entry terms; no newer comparable mark"
+                : `${projection.basis === "assumption" ? "Scenario" : "As of"} ${date(projection.valuationAsOf)}`}
+            </small>
           </div>
           <div>
             <dt>Distributions</dt>

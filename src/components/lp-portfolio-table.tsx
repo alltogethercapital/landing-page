@@ -164,16 +164,11 @@ export function LpPortfolioTable({
       return left[sort].localeCompare(right[sort]) * direction;
     });
   const companyAllocationRows = buildCompanyAllocationRows(investments);
-  const pendingCount = companyAllocationRows.filter((row) => row.id.endsWith("-pending")).length;
-  const companyCount = companyAllocationRows.length - pendingCount;
   const filteredCompanyAllocationRows = normalizedQuery
     ? companyAllocationRows.filter((row) => row.searchText.includes(normalizedQuery))
     : companyAllocationRows;
   const totalCapital = investments.reduce((sum, investment) => sum + investment.investedCost, 0);
   const allocationScale = companyAllocationRows[0]?.amount || 1;
-  const vehicleAllocation = investments.find((investment) => investment.vehicleAllocation)
-    ?.vehicleAllocation;
-
   function sortLabel(key: LpTableSort, label: string) {
     return `${label}${sort === key ? (ascending ? " ↑" : " ↓") : ""}`;
   }
@@ -182,31 +177,6 @@ export function LpPortfolioTable({
     <section className="lp-portfolio-section" aria-labelledby="lp-portfolio-heading">
       <div className="lp-table-heading">
         <h2 id="lp-portfolio-heading">Investments</h2>
-        <div className="lp-portfolio-heading-actions">
-          <p aria-live="polite" aria-atomic="true">
-            {display === "positions"
-              ? `${filtered.length} of ${investments.length} records`
-              : normalizedQuery
-                ? `${filteredCompanyAllocationRows.length} of ${companyAllocationRows.length} allocations`
-                : `${companyCount} companies · ${pendingCount} not-yet-allocated balance`}
-          </p>
-          <div className="lp-portfolio-view-switch" role="group" aria-label="Portfolio view">
-            <button
-              type="button"
-              aria-pressed={display === "positions"}
-              onClick={() => setDisplay("positions")}
-            >
-              Individual investments
-            </button>
-            <button
-              type="button"
-              aria-pressed={display === "companies"}
-              onClick={() => setDisplay("companies")}
-            >
-              Allocation by company
-            </button>
-          </div>
-        </div>
       </div>
 
       <form className="lp-table-controls" action="/lp" method="get">
@@ -224,6 +194,26 @@ export function LpPortfolioTable({
         </label>
         <button type="submit" className="lp-filter-submit">Search</button>
       </form>
+
+      <div className="lp-portfolio-view-row">
+        <h3>{display === "positions" ? "Individual investments" : "All companies"}</h3>
+        <div className="lp-portfolio-view-switch" role="group" aria-label="Portfolio view">
+          <button
+            type="button"
+            aria-pressed={display === "positions"}
+            onClick={() => setDisplay("positions")}
+          >
+            Individual investments
+          </button>
+          <button
+            type="button"
+            aria-pressed={display === "companies"}
+            onClick={() => setDisplay("companies")}
+          >
+            Allocation by company
+          </button>
+        </div>
+      </div>
 
       {display === "positions" ? (
         <>
@@ -328,11 +318,7 @@ export function LpPortfolioTable({
           </div>
         </>
       ) : (
-        <section className="lp-company-allocation-view" aria-labelledby="lp-company-allocation-heading">
-          <header>
-            <h3 id="lp-company-allocation-heading">All companies</h3>
-            <span>Share of total capital</span>
-          </header>
+        <section className="lp-company-allocation-view" aria-label="All companies">
           {filteredCompanyAllocationRows.length > 0 ? (
             <div className="lp-figure-bars" role="list" aria-label="Allocation by company across total capital">
               {filteredCompanyAllocationRows.map((row, index) => (
@@ -363,16 +349,6 @@ export function LpPortfolioTable({
               <Link href="/lp?display=companies" onClick={() => setQuery("")}>Clear search</Link>
             </div>
           )}
-          <p className="lp-company-allocation-note">
-            This view combines multiple investments in the same company. {vehicleAllocation ? (
-              <>
-                It shows H256 as {formatWholeCurrency(vehicleAllocation.deployedAmount)} deployed
-                to Anduril in its {vehicleAllocation.deployedRound} and{" "}
-                {formatWholeCurrency(vehicleAllocation.pendingAmount)} not yet allocated.{" "}
-              </>
-            ) : null}
-            Use Individual investments for the legal investment records.
-          </p>
         </section>
       )}
     </section>

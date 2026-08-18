@@ -22,7 +22,7 @@ export type LpInvestmentProjectionDto = {
   valuationAsOf: string;
   source: string;
   sourceUrl?: string;
-  basis: "approved" | "comparable" | "cost";
+  basis: "approved" | "comparable" | "assumption" | "cost";
 };
 
 export type LpInvestmentDto = Omit<
@@ -189,7 +189,7 @@ function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
       ?? (mark?.scope ? `${mark.source}; ${mark.scope}` : mark?.source)
       ?? "Recorded investment terms",
     sourceUrl: mark?.sourceUrl,
-    basis: approvedPerformance ? "approved" : mark ? "comparable" : "cost",
+    basis: approvedPerformance ? "approved" : mark ? (mark.basis ?? "comparable") : "cost",
   };
   const deployedAmount = investment.vehicleAllocation
     ? investment.investedCost * investment.vehicleAllocation.deployedShare

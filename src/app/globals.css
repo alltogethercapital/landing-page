@@ -2425,8 +2425,13 @@ body {
 .lp-portfolio-tabs {
   display: flex;
   gap: clamp(28px, 4vw, 56px);
+  margin-top: 48px;
   margin-bottom: 48px;
   border-bottom: 1px solid var(--lp-line);
+}
+
+.lp-portfolio-tabs + .lp-portfolio-section {
+  margin-top: 0;
 }
 
 .lp-portfolio-tabs a {
@@ -2498,28 +2503,11 @@ body {
   letter-spacing: -0.035em;
 }
 
-.lp-disclosure {
-  margin-top: 14px;
-}
-
-.lp-disclosure p {
-  max-width: 780px;
-  margin: 0;
-  color: var(--lp-muted);
-  font-family: var(--cog-support);
-  font-size: 13px;
-  line-height: 1.55;
-}
-
 .lp-portfolio-section {
   margin-top: 54px;
 }
 
 .lp-table-heading {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 30px;
   padding-bottom: 18px;
 }
 
@@ -2531,26 +2519,19 @@ body {
   letter-spacing: -0.035em;
 }
 
-.lp-table-heading > p {
-  margin: 0;
-  color: var(--lp-muted);
-  font-family: var(--cog-support);
-  font-size: 13px;
-}
-
-.lp-portfolio-heading-actions {
+.lp-portfolio-view-row {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 18px;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--lp-ink);
+  padding: 18px var(--lp-component-inset) 10px;
 }
 
-.lp-portfolio-heading-actions > p {
+.lp-portfolio-view-row h3 {
   margin: 0;
-  color: var(--lp-muted);
-  font-family: var(--cog-support);
-  font-size: 13px;
-  white-space: nowrap;
+  font-size: 19px;
+  font-weight: 500;
 }
 
 .lp-portfolio-view-switch {
@@ -2649,30 +2630,7 @@ body {
 }
 
 .lp-company-allocation-view {
-  margin-top: 34px;
-}
-
-.lp-company-allocation-view > header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 24px;
-  border-bottom: 1px solid var(--lp-ink);
-  padding: 0 var(--lp-component-inset) 10px;
-}
-
-.lp-company-allocation-view > header h3 {
-  margin: 0;
-  font-size: 19px;
-  font-weight: 500;
-}
-
-.lp-company-allocation-view > header span {
-  color: var(--lp-muted);
-  font-family: var(--cog-mono);
-  font-size: var(--lp-micro);
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
+  margin-top: 8px;
 }
 
 .lp-company-allocation-view .lp-figure-bar-label a {
@@ -2685,16 +2643,6 @@ body {
   color: var(--lp-accent);
   text-decoration: underline;
   text-underline-offset: 3px;
-}
-
-.lp-company-allocation-note {
-  max-width: 780px;
-  margin: 18px 0 0;
-  padding-inline: var(--lp-component-inset);
-  color: var(--lp-muted);
-  font-family: var(--cog-support);
-  font-size: 12px;
-  line-height: 1.5;
 }
 
 .lp-portfolio-table {
@@ -3359,29 +3307,6 @@ body {
   letter-spacing: -0.03em;
 }
 
-.lp-figure-lede {
-  max-width: 760px;
-  margin: 26px 0 0;
-  padding-inline: var(--lp-component-inset);
-  font-size: 17px;
-  line-height: 1.62;
-}
-
-.lp-figure-note {
-  max-width: 760px;
-  margin: 16px 0 0;
-  padding-inline: var(--lp-component-inset);
-  color: var(--lp-muted);
-  font-family: var(--cog-support);
-  font-size: var(--lp-caption);
-  line-height: 1.6;
-}
-
-.lp-figure-note strong {
-  color: var(--lp-ink);
-  font-weight: 400;
-}
-
 /* Section sub-heading with a right-aligned unit caption. */
 .lp-figure-heading {
   display: flex;
@@ -3406,53 +3331,6 @@ body {
   font-size: var(--lp-micro);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-}
-
-/* Stat tiles */
-.lp-figure-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 26px;
-  border: 1px solid var(--lp-line);
-}
-
-.lp-figure-stats > div {
-  min-width: 0;
-  border-right: 1px solid var(--lp-line);
-  border-bottom: 1px solid var(--lp-line);
-  padding: 16px 18px 18px;
-}
-
-.lp-figure-stats > div:nth-child(3n) {
-  border-right: 0;
-}
-
-.lp-figure-stats > div:nth-last-child(-n + 3) {
-  border-bottom: 0;
-}
-
-.lp-figure-stats dt {
-  color: var(--lp-muted);
-  font-family: var(--cog-mono);
-  font-size: var(--lp-micro);
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-}
-
-.lp-figure-stats dd {
-  margin: 10px 0 0;
-  font-size: clamp(22px, 2.3vw, 29px);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-  letter-spacing: -0.035em;
-}
-
-.lp-figure-stats p {
-  margin: 9px 0 0;
-  color: var(--lp-muted);
-  font-family: var(--cog-support);
-  font-size: 12px;
-  line-height: 1.4;
 }
 
 /* Labelled bars */
@@ -3895,26 +3773,6 @@ body {
     margin-top: 68px;
   }
 
-  .lp-figure-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .lp-figure-stats > div:nth-child(3n) {
-    border-right: 1px solid var(--lp-line);
-  }
-
-  .lp-figure-stats > div:nth-child(2n) {
-    border-right: 0;
-  }
-
-  .lp-figure-stats > div:nth-last-child(-n + 3) {
-    border-bottom: 1px solid var(--lp-line);
-  }
-
-  .lp-figure-stats > div:nth-last-child(-n + 2) {
-    border-bottom: 0;
-  }
-
   /* Wide tables keep their own scroll rather than pushing the page sideways. */
   .lp-figure-table-wrap {
     margin-right: calc(var(--mobile-gutter) * -1);
@@ -3970,23 +3828,6 @@ body {
 
   .lp-figure-bar-row.is-lead {
     padding-inline: var(--lp-component-inset);
-  }
-
-  .lp-figure-stats {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .lp-figure-stats > div,
-  .lp-figure-stats > div:nth-child(3n) {
-    border-right: 0;
-  }
-
-  .lp-figure-stats > div:nth-last-child(-n + 3) {
-    border-bottom: 1px solid var(--lp-line);
-  }
-
-  .lp-figure-stats > div:last-child {
-    border-bottom: 0;
   }
 
   .lp-figure-chart {
@@ -4092,8 +3933,6 @@ body {
   }
   .lp-portal-nav { top: 116px; width: 154px; }
   .lp-portal-shell { padding-top: 104px; padding-bottom: 32px; }
-  .lp-table-heading { align-items: flex-start; }
-  .lp-portfolio-heading-actions { flex-direction: column; align-items: flex-end; gap: 8px; }
   .lp-summary-grid { grid-template-columns: 1fr; }
   /* Stacked, the values must share a left edge — flex let each one start
      wherever its label happened to end. */
@@ -4128,7 +3967,6 @@ body {
   /* Too narrow for a label column — label sits above its value. */
   .lp-summary-grid > div { grid-template-columns: minmax(0, 1fr); padding-block: 14px; gap: 6px; }
   .lp-summary-grid dd { font-size: 24px; }
-  .lp-disclosure { margin-top: 18px; }
   .lp-portfolio-section { margin-top: 44px; }
   .lp-table-wrap { margin-right: calc(var(--mobile-gutter) * -1); width: calc(100% + var(--mobile-gutter)); }
   .lp-portfolio-table { min-width: 820px; }
@@ -4242,18 +4080,10 @@ body {
     font-size: 17px;
   }
 
-  .lp-table-heading {
-    display: block;
-  }
-  .lp-portfolio-heading-actions {
-    align-items: stretch;
-    margin-top: 15px;
-  }
-  .lp-portfolio-heading-actions > p {
-    white-space: normal;
-  }
+  .lp-portfolio-view-row { display: block; }
   .lp-portfolio-view-switch {
     width: 100%;
+    margin-top: 12px;
   }
   .lp-portfolio-view-switch button {
     flex: 1;
@@ -4388,16 +4218,6 @@ body {
   .cog-company-card {
     min-height: 220px;
     aspect-ratio: 2 / 1;
-  }
-}
-
-@media (max-width: 639px) {
-  .lp-company-allocation-view > header {
-    display: block;
-  }
-  .lp-company-allocation-view > header span {
-    display: block;
-    margin-top: 5px;
   }
 }
 

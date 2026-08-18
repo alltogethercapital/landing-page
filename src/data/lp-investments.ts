@@ -71,6 +71,7 @@ export type ProjectedValuationMark = {
   entryValuation?: string;
   positionLabel?: string;
   scope?: string;
+  basis?: "comparable" | "assumption";
 };
 
 // Approved cost-basis snapshot of the All Together Drive Schedule of Investments.
@@ -123,34 +124,70 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "44-positron", chronology: 44, company: "Positron", investedCost: 5000, investmentDate: "2026-08-13", round: "Series C", entryValuation: "$4.5B pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "17qCf0zOiYhtSZxFOCChlHLK1qViEJsId", logo: "/logos/cards/positron.svg", logoTreatment: "inverse", description: "Purpose-built AI inference hardware and systems.", reviewStatus: "verified" },
 ];
 
-// Sourced comparable financing marks used for the LP-facing gross projection.
-// Positions without a comparable mark remain at invested cost.
+// Valuation inputs used for the LP-facing gross projection. Most inputs are
+// sourced comparable financings; scenario assumptions are labeled explicitly.
+// Positions without a valuation input remain at invested cost.
 //
 // The August 2026 investor update preserves its mailed three-mark snapshot
-// separately. This live portfolio set also includes the later Anduril Series H
-// reference, applied only to H256's deployed Anduril cost basis. Replit, 1X
-// (Series B) and Decart remain at cost because their earlier draft marks are not
-// part of the approved live comparison set.
+// separately. This live portfolio set reflects the portfolio-wide valuation
+// review completed on August 18, 2026. Anduril is the sole scenario assumption;
+// all other inputs below are sourced company-level comparison valuations.
 export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark> = {
+  "04-replit": {
+    entryValuationAmount: 8_600_000_000,
+    latestValuationAmount: 9_000_000_000,
+    latestValuation: "$9B post-money",
+    asOf: "2026-03-11",
+    source: "Replit Series D announcement",
+    sourceUrl: "https://replit.com/blog/replit-raises-400-million-dollars",
+  },
   "09-h256-series-3": {
     entryValuationAmount: 60_000_000_000,
-    latestValuationAmount: 61_000_000_000,
-    latestValuation: "$61B valuation",
-    asOf: "2026-05-13",
-    source: "Anduril Series H announcement",
-    sourceUrl: "https://www.anduril.com/news/anduril-announces-usd5b-series-h-raise",
+    latestValuationAmount: 100_000_000_000,
+    latestValuation: "$100B assumed valuation",
+    asOf: "2026-08-18",
+    source: "Owner-directed $100B Anduril scenario informed by reported financing talks",
+    sourceUrl: "https://www.investing.com/news/economy-news/exclusivedefense-tech-company-anduril-in-talks-to-raise-funding-at-about-100-billion-valuation-4810948",
     costBasisAmount: 88_000,
     entryValuation: "$60B entry valuation",
     positionLabel: "H256 → Anduril",
-    scope: "applies only to H256's $88,000 Anduril allocation; $112,000 remains at cost",
+    scope: "scenario applies only to H256's $88,000 Anduril allocation; $112,000 remains at cost; not a completed financing or fund-administrator mark",
+    basis: "assumption",
   },
   "07-shield-ai": { entryValuationAmount: 10_500_000_000, latestValuationAmount: 12_700_000_000, latestValuation: "$12.7B post-money", asOf: "2026-03-26", source: "Shield AI Series G", sourceUrl: "https://techcrunch.com/2026/03/26/defense-startup-shield-ai-lands-12-7b-valuation-up-140-after-u-s-air-force-deal/" },
-  // No sourceUrl: the only link on file reports $5B, which contradicts the
-  // ~$5.3B this position is marked to. Restore a link once one reporting the
-  // extension at ~$5.3B is available — a citation that disagrees with the mark
-  // is worse than none.
-  "12-apptronik": { entryValuationAmount: 4_900_000_000, latestValuationAmount: 5_300_000_000, latestValuation: "~$5.3B post-money", asOf: "2026-02-11", source: "Apptronik Series A extension" },
+  "12-apptronik": { entryValuationAmount: 4_900_000_000, latestValuationAmount: 5_300_000_000, latestValuation: "~$5.3B post-money", asOf: "2026-02-11", source: "Apptronik Series A extension", sourceUrl: "https://techcrunch.com/2026/02/11/humanoid-robot-startup-apptronik-has-now-raised-935m-at-a-5b-valuation/" },
+  "17-hark": {
+    entryValuationAmount: 5_775_000_000,
+    latestValuationAmount: 6_000_000_000,
+    latestValuation: "$6B post-money",
+    asOf: "2026-05-21",
+    source: "Hark Series A",
+    sourceUrl: "https://techcrunch.com/2026/05/21/hark-raises-700m-series-a-for-its-secretive-universal-ai-interface/",
+  },
+  "21-corgi": {
+    entryValuationAmount: 2_500_000_000,
+    latestValuationAmount: 4_000_000_000,
+    latestValuation: "$4B valuation",
+    asOf: "2026-07-22",
+    source: "Corgi Series B extension",
+    sourceUrl: "https://sacra.com/c/corgi/",
+  },
+  "24-1x-series-b": {
+    entryValuationAmount: 4_590_000_000,
+    latestValuationAmount: 10_000_000_000,
+    latestValuation: "$10B post-money",
+    asOf: "2025-10-29",
+    source: "All Together SOI chronology 23 · 1X Series C",
+  },
   "25-figure-ai": { entryValuationAmount: 30_000_000_000, latestValuationAmount: 39_000_000_000, latestValuation: "$39B post-money", asOf: "2025-09-16", source: "Figure Series C announcement", sourceUrl: "https://www.figure.ai/news/series-c" },
+  "35-decart-ai": {
+    entryValuationAmount: 3_800_000_000,
+    latestValuationAmount: 4_000_000_000,
+    latestValuation: "~$4B valuation",
+    asOf: "2026-05-18",
+    source: "Decart Series B",
+    sourceUrl: "https://www.calcalistech.com/ctechnews/article/sjt9ncukgl",
+  },
 };
 
 export const LP_PROJECTION_AS_OF = "2026-08-18";

@@ -2,22 +2,16 @@ import {
   LETTER_ACCESS_CHANNEL_SPLIT,
   LETTER_ALLOCATED_TOTAL,
   LETTER_ALLOCATION,
-  LETTER_COMPANY_COUNT,
   LETTER_CONCENTRATION_CURVE,
   LETTER_DEPLOYMENT,
   LETTER_ENTRY_BUCKETS,
   LETTER_ENTRY_HIGH,
   LETTER_ENTRY_LOW,
-  LETTER_ENTRY_MEDIAN,
   LETTER_ENTRY_ROUND_SPLIT,
-  LETTER_ENTRY_SPREAD,
   LETTER_H256_DEPLOYED_AMOUNT,
   LETTER_H256_PENDING_AMOUNT,
-  LETTER_INVESTED_TOTAL,
   LETTER_SECURITY_TYPE_SPLIT,
-  LETTER_SECURITY_TYPE_TOTAL,
   LETTER_POSITIONS,
-  LETTER_PRICED_COST,
   LETTER_PRICED_POSITIONS,
   LETTER_TOP_FIVE_SHARE,
   type LetterShare,
@@ -64,14 +58,6 @@ function compactDollars(value: number) {
   if (value === 0) return "$0";
   if (value >= 1e6) return `$${(value / 1e6).toFixed(2)}M`;
   return `$${Math.round(value / 1e3)}k`;
-}
-
-const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
-
-// Sentences do not open on a numeral.
-function spellOut(value: number) {
-  const word = NUMBER_WORDS[value];
-  return word ? word[0].toUpperCase() + word.slice(1) : String(value);
 }
 
 function monthLabel(date: string) {
@@ -179,18 +165,8 @@ function CompactBars({ title, rows }: { title: string; rows: LetterShare[] }) {
 
 /* 01 — Portfolio at a glance ------------------------------------------------ */
 
-function PortfolioAtAGlance({
-  grossValue,
-  positionCount,
-}: {
-  grossValue: number;
-  positionCount: number;
-}) {
+function PortfolioAtAGlance() {
   const allocationScale = Math.max(...LETTER_ALLOCATION.map((row) => row.share));
-  const sortedCost = [...LETTER_POSITIONS].sort((a, b) => a.investedCost - b.investedCost);
-  const medianPosition =
-    (sortedCost[positionCount / 2 - 1].investedCost + sortedCost[positionCount / 2].investedCost) / 2;
-  const smallPositions = LETTER_POSITIONS.filter((p) => p.investedCost <= 10_000).length;
 
   const deploymentMax = LETTER_DEPLOYMENT[LETTER_DEPLOYMENT.length - 1].cumulative;
   const start = Date.UTC(2025, 9, 1);
@@ -201,31 +177,9 @@ function PortfolioAtAGlance({
   const gridValues = [0, 0.25, 0.5, 0.75, 1];
   const axisMonths = ["2025-10-01", "2025-12-01", "2026-02-01", "2026-04-01", "2026-06-01", "2026-08-01"];
 
-  const stats = [
-    { label: "Invested capital", value: currency(LETTER_ALLOCATED_TOTAL), note: `${dollars(LETTER_H256_PENDING_AMOUNT)} remains not yet allocated` },
-    { label: "Companies", value: String(LETTER_COMPANY_COUNT), note: "1X held in two rounds" },
-    { label: "Directional gross view", value: currency(grossValue), note: `${(grossValue / LETTER_ALLOCATED_TOTAL).toFixed(2)}× invested cost` },
-    { label: "Unrealized", value: `+${currency(grossValue - LETTER_ALLOCATED_TOTAL)}`, note: "sourced comparable marks" },
-    { label: "Median position", value: dollars(medianPosition), note: `${smallPositions} positions at $10k or less` },
-    { label: "Deployment window", value: "10 months", note: "Oct 2025 – Aug 2026" },
-  ];
-
   return (
     <FigureSection id="portfolio-at-a-glance" title="Portfolio at a glance">
-      <div className="lp-figure-stats">
-        {stats.map((stat) => (
-          <div key={stat.label}>
-            <dt>{stat.label}</dt>
-            <dd>{stat.value}</dd>
-            <p>{stat.note}</p>
-          </div>
-        ))}
-      </div>
-
-      <FigureHeading
-        title="Allocation by category"
-        note={`Share of total capital · ${currency(LETTER_INVESTED_TOTAL)}`}
-      />
+      <FigureHeading title="Allocation by category" />
       <div className="lp-figure-bars">
         {LETTER_ALLOCATION.map((row, index) => (
           <BarRow
@@ -245,15 +199,6 @@ function PortfolioAtAGlance({
           />
         ))}
       </div>
-      <p className="lp-figure-note">
-        For this allocation view, the $200,000 H256 LLC Series 3 position is split into{" "}
-        {dollars(LETTER_H256_DEPLOYED_AMOUNT)} ({percent(H256_VEHICLE_ALLOCATION.deployedShare, 0)})
-        deployed to {H256_VEHICLE_ALLOCATION.deployedCompany} in its{" "}
-        {H256_VEHICLE_ALLOCATION.deployedRound} under Defense and aerospace, and{" "}
-        {dollars(LETTER_H256_PENDING_AMOUNT)} ({percent(H256_VEHICLE_ALLOCATION.awaitingShare, 0)})
-        of pending allocation that is not yet deployed. H256 remains one legal portfolio position.
-      </p>
-
       <FigureHeading title="Capital deployed" note="Cumulative, at cost" />
       <figure className="lp-figure-chart">
         <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-hidden="true">
@@ -293,10 +238,6 @@ function PortfolioAtAGlance({
           ))}
         </div>
       </figure>
-      <p className="lp-figure-note">
-        Two positions predate the fund&apos;s active period (1X, October 2025; Figure AI, December
-        2025). The remaining {positionCount - 2} were made between April and August 2026.
-      </p>
     </FigureSection>
   );
 }
@@ -311,13 +252,6 @@ function ConcentrationAndStructure() {
         <CompactBars title="Entry round" rows={LETTER_ENTRY_ROUND_SPLIT} />
         <CompactBars title="Access channel" rows={LETTER_ACCESS_CHANNEL_SPLIT} />
       </div>
-      <p className="lp-figure-note">
-        Security type looks through holding vehicles and uses the {currency(LETTER_SECURITY_TYPE_TOTAL, 0)}
-        allocated balance: Hark preferred stock and H256&apos;s {dollars(LETTER_H256_DEPLOYED_AMOUNT)}
-        Anduril Series H allocation are equity; H256&apos;s {dollars(LETTER_H256_PENDING_AMOUNT)}
-        not-yet-allocated balance is excluded. Blue Origin remains not specified because the supplied
-        documents identify only Class Securities. Entry-round analysis includes Anduril in Series C+.
-      </p>
     </FigureSection>
   );
 }
@@ -345,11 +279,6 @@ function WhereWeBought() {
 
   return (
     <FigureSection id="where-we-bought" title="Where we bought">
-      <p className="lp-figure-lede">
-        The portfolio is a barbell. We hold seed companies priced in the tens of millions alongside a
-        small number of the largest private companies in the world, and very little in between.
-      </p>
-
       <FigureHeading
         title="Entry valuation of every priced position"
         note="Log scale · tick height = cost"
@@ -399,16 +328,6 @@ function WhereWeBought() {
           ))}
         </div>
       </figure>
-      <p className="lp-figure-note">
-        {LETTER_PRICED_POSITIONS.length - 1} recorded positions plus H256&apos;s{" "}
-        {dollars(LETTER_H256_DEPLOYED_AMOUNT)} Anduril allocation carry a company price at entry.
-        H256&apos;s remaining {dollars(LETTER_H256_PENDING_AMOUNT)} is not yet allocated; Lance AI was
-        an uncapped SAFE, and Maven Robotics priced against a financing model. The spread from lowest
-        to highest entry price is roughly{" "}
-        <strong>{new Intl.NumberFormat("en-US").format(Math.round(LETTER_ENTRY_SPREAD / 1000) * 1000)}×</strong>;
-        the median is <strong>{valuationLabel(LETTER_ENTRY_MEDIAN)}</strong>.
-      </p>
-
       <div className="lp-figure-pair">
         <div>
           <FigureHeading title="Cost by entry valuation" />
@@ -417,9 +336,6 @@ function WhereWeBought() {
               <BarRow key={row.key} label={row.label} share={row.share} scale={bucketScale} />
             ))}
           </div>
-          <p className="lp-figure-note">
-            Share of the {currency(LETTER_PRICED_COST, 0)} that carries a company price.
-          </p>
         </div>
 
         <div>
@@ -456,9 +372,6 @@ function WhereWeBought() {
               <span>Positions, largest first</span>
             </div>
           </figure>
-          <p className="lp-figure-note">
-            Cumulative share of invested cost. The diagonal is a perfectly even portfolio.
-          </p>
         </div>
       </div>
     </FigureSection>
@@ -488,11 +401,6 @@ function ValuationEvidence({ grossValue }: { grossValue: number }) {
 
   return (
     <FigureSection id="valuation-evidence" title="Performance">
-      <p className="lp-figure-lede">
-        We mark an exposure only where a sourced comparable financing gives us something to mark
-        against. {spellOut(marks.length)} do. The remaining cost basis is held at cost.
-      </p>
-
       <div className="lp-figure-table-wrap">
         <table className="lp-figure-table lp-figure-table--marks">
           <thead>
@@ -549,12 +457,6 @@ function ValuationEvidence({ grossValue }: { grossValue: number }) {
           </tfoot>
         </table>
       </div>
-      <p className="lp-figure-note">
-        Every mark above is drawn from a priced round at a company we already hold. None of it is a
-        mark we set ourselves. Where a company has re-rated since we bought and we could not source
-        the round, we have not taken credit for it.
-      </p>
-
     </FigureSection>
   );
 }
@@ -563,14 +465,12 @@ function ValuationEvidence({ grossValue }: { grossValue: number }) {
 
 export function LpLetterFigures({
   grossValue,
-  positionCount,
 }: {
   grossValue: number;
-  positionCount: number;
 }) {
   return (
     <div className="lp-figure-suite">
-      <PortfolioAtAGlance grossValue={grossValue} positionCount={positionCount} />
+      <PortfolioAtAGlance />
       <ConcentrationAndStructure />
       <WhereWeBought />
       <ValuationEvidence grossValue={grossValue} />
