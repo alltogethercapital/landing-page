@@ -152,14 +152,15 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   const concentrationSection = page.locator(".lp-figure-section").filter({ hasText: "Concentration and structure" });
   await expect(concentrationSection.getByRole("heading", { name: "Ten largest positions" })).toHaveCount(0);
   await expect(concentrationSection).not.toContainText("Primary and secondary company equity together account for");
-  await expect(concentrationSection.getByRole("heading", { name: "Position type" })).toBeVisible();
-  await expect(concentrationSection).toContainText("Primary equity");
-  await expect(concentrationSection).toContainText("Secondary equity");
-  await expect(concentrationSection).toContainText("Fund / SPV interests");
+  await expect(concentrationSection.getByRole("heading", { name: "Instrument" })).toBeVisible();
+  for (const instrument of ["Equity", "SPV", "SAFE", "Secondary", "Convertible Notes"]) {
+    await expect(concentrationSection.getByText(instrument, { exact: true })).toBeVisible();
+  }
+  await expect(concentrationSection).not.toContainText("Primary equity");
+  await expect(concentrationSection).not.toContainText("Fund / SPV interests");
   await expect(concentrationSection.getByRole("heading", { name: "Entry round" })).toBeVisible();
   await expect(concentrationSection).toContainText("No company round");
   await expect(concentrationSection.getByRole("heading", { name: "Access channel" })).toBeVisible();
-  await expect(concentrationSection.getByRole("heading", { name: "Instrument" })).toHaveCount(0);
   await expect(concentrationSection.getByRole("heading", { name: "Stage" })).toHaveCount(0);
   await expect(concentrationSection.getByRole("heading", { name: "Platform" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Performance" })).toBeVisible();
