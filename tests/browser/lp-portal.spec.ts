@@ -150,6 +150,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
     expect(insets.right).toBeGreaterThanOrEqual(16);
   }
   const concentrationSection = page.locator(".lp-figure-section").filter({ hasText: "Concentration and structure" });
+  await expect(concentrationSection.getByRole("heading", { name: "Ten largest positions" })).toHaveCount(0);
+  await expect(concentrationSection).not.toContainText("Primary and secondary company equity together account for");
   await expect(concentrationSection.getByRole("heading", { name: "Position type" })).toBeVisible();
   await expect(concentrationSection).toContainText("Primary equity");
   await expect(concentrationSection).toContainText("Secondary equity");
@@ -160,6 +162,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(concentrationSection.getByRole("heading", { name: "Instrument" })).toHaveCount(0);
   await expect(concentrationSection.getByRole("heading", { name: "Stage" })).toHaveCount(0);
   await expect(concentrationSection.getByRole("heading", { name: "Platform" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Performance" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
   const updateWordCount = await page.locator(".lp-update-article-copy").evaluate((element) =>
     (element.textContent ?? "").trim().split(/\s+/).length,
   );

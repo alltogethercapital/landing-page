@@ -13,17 +13,11 @@ import {
   LETTER_H256_DEPLOYED_AMOUNT,
   LETTER_H256_PENDING_AMOUNT,
   LETTER_INVESTED_TOTAL,
-  LETTER_POOLED_SHARE,
   LETTER_POSITION_TYPE_SPLIT,
   LETTER_POSITIONS,
   LETTER_PRICED_COST,
   LETTER_PRICED_POSITIONS,
-  LETTER_PRIMARY_EQUITY_SHARE,
-  LETTER_REMAINDER_AVERAGE,
-  LETTER_SECONDARY_EQUITY_SHARE,
   LETTER_TOP_FIVE_SHARE,
-  LETTER_TOP_POSITIONS,
-  LETTER_TOP_TEN_SHARE,
   type LetterShare,
 } from "@/data/lp-letter-figures";
 import {
@@ -306,46 +300,14 @@ function PortfolioAtAGlance({
 
 /* 02 — Concentration and structure ------------------------------------------ */
 
-function ConcentrationAndStructure({ positionCount }: { positionCount: number }) {
-  const scale = Math.max(...LETTER_TOP_POSITIONS.map((row) => row.share));
+function ConcentrationAndStructure() {
   return (
     <FigureSection id="concentration-and-structure" title="Concentration and structure">
-      <FigureHeading title="Ten largest positions" note="Share of invested cost" />
-      <div className="lp-figure-bars">
-        {LETTER_TOP_POSITIONS.map((row, index) => (
-          <BarRow
-            key={row.id}
-            label={row.label}
-            share={row.share}
-            scale={scale}
-            amount={row.amount}
-            lead={index === 0}
-            detail={
-              row.id === "09-h256-series-3"
-                ? `${dollars(LETTER_H256_DEPLOYED_AMOUNT)} ${H256_VEHICLE_ALLOCATION.deployedCompany} · ${dollars(LETTER_H256_PENDING_AMOUNT)} pending allocation`
-                : undefined
-            }
-          />
-        ))}
-      </div>
-      <p className="lp-figure-note">
-        The five largest positions are {percent(LETTER_TOP_FIVE_SHARE)} of invested cost; the ten
-        largest are {percent(LETTER_TOP_TEN_SHARE)}. The remaining {positionCount - 10} positions
-        average {dollars(LETTER_REMAINDER_AVERAGE)}.
-      </p>
-
       <div className="lp-figure-triptych">
         <CompactBars title="Position type" rows={LETTER_POSITION_TYPE_SPLIT} />
         <CompactBars title="Entry round" rows={LETTER_ENTRY_ROUND_SPLIT} />
         <CompactBars title="Access channel" rows={LETTER_ACCESS_CHANNEL_SPLIT} />
       </div>
-      <p className="lp-figure-note">
-        Primary and secondary company equity together account for{" "}
-        {percent(LETTER_PRIMARY_EQUITY_SHARE + LETTER_SECONDARY_EQUITY_SHARE)} of invested cost. Fund
-        / SPV interests — the H256 series, Hark and Blue Origin — account for{" "}
-        {percent(LETTER_POOLED_SHARE)} and are presented as the legal positions All Together owns, not
-        as direct ownership of the vehicles&apos; underlying company shares.
-      </p>
     </FigureSection>
   );
 }
@@ -492,7 +454,7 @@ function WhereWeBought() {
   );
 }
 
-/* 04 — Valuation evidence --------------------------------------------------- */
+/* 04 — Performance ---------------------------------------------------------- */
 
 function ValuationEvidence({ grossValue }: { grossValue: number }) {
   const marks = Object.entries(LP_PROJECTED_VALUATION_MARKS).map(([id, mark]) => {
@@ -514,7 +476,7 @@ function ValuationEvidence({ grossValue }: { grossValue: number }) {
   const heldCount = LETTER_POSITIONS.length - marks.length;
 
   return (
-    <FigureSection id="valuation-evidence" title="Valuation evidence">
+    <FigureSection id="valuation-evidence" title="Performance">
       <p className="lp-figure-lede">
         We mark a position only where a sourced comparable financing gives us something to mark
         against. {spellOut(marks.length)} do. The other {heldCount} are held at cost.
@@ -598,7 +560,7 @@ export function LpLetterFigures({
   return (
     <div className="lp-figure-suite">
       <PortfolioAtAGlance grossValue={grossValue} positionCount={positionCount} />
-      <ConcentrationAndStructure positionCount={positionCount} />
+      <ConcentrationAndStructure />
       <WhereWeBought />
       <ValuationEvidence grossValue={grossValue} />
     </div>
