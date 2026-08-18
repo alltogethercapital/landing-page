@@ -25,11 +25,11 @@ export function BrandDot({ className }: { className?: string }) {
   );
 }
 
-// Unframed all-caps wordmark paired with the shared sun-and-Earth mark.
+// Compact wordmark paired with the shared sun-and-Earth mark.
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-wordmark", className)}>
-      <span className="cog-wordmark-text">ALLTOGETHER</span>
+      <span className="cog-wordmark-text">A2R</span>
       <Image
         src="/brand/all-together-rising-circles-logo.png"
         alt=""

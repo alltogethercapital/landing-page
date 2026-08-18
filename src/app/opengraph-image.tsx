@@ -83,7 +83,7 @@ export default async function OpenGraphImage() {
             style={{
               position: "relative",
               display: "flex",
-              width: 180,
+              width: 90,
               height: 31,
               alignItems: "center",
               justifyContent: "center",
@@ -106,7 +106,7 @@ export default async function OpenGraphImage() {
               height={18}
               style={{ width: 18, height: 18, borderRadius: 999 }}
             />
-            <span style={{ marginRight: -4.2 }}>ALLTOGETHER</span>
+            <span style={{ marginRight: -4.2 }}>A2R</span>
             <div
               style={{
                 position: "absolute",

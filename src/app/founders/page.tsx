@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import {
-  ArrowLink,
   CognitionPage,
   CognitionSection,
   CognitionStrip,
@@ -114,9 +113,6 @@ export default function FoundersPage() {
           The entrepreneurs we back, building the hard frontier across AI,
           defense, energy, robotics, semiconductors, and space.
         </p>
-        <ArrowLink href="/companies" className="mt-8">
-          See companies
-        </ArrowLink>
       </CognitionSection>
 
       <CognitionStrip className="cog-strip--inset">

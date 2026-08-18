@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import {
-  ArrowLink,
   CognitionPage,
   CognitionSection,
   CognitionStrip,
@@ -66,9 +65,6 @@ export default function CompaniesPage() {
         <p className="cog-body-copy">
           Across AI, defense, energy, robotics, semiconductors, and space.
         </p>
-        <ArrowLink href="/founders" className="mt-8">
-          Meet the entrepreneurs
-        </ArrowLink>
       </CognitionSection>
 
       <CognitionStrip className="cog-strip--inset cog-strip--portfolio">

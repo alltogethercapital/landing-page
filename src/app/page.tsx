@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { AsciiHero } from "@/components/ascii-hero";
 import {
-  ArrowLink,
   CognitionPage,
   CognitionSection,
   CognitionStrip,
@@ -92,9 +91,6 @@ export default function Home() {
 
       <CognitionStrip className="cog-strip--inset">
         <UpdatesCarousel articles={homepageUpdates} />
-        <ArrowLink href="/updates" className="mt-10">
-          All updates
-        </ArrowLink>
       </CognitionStrip>
 
       <SiteFooter />
