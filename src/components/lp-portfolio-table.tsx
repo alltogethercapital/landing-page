@@ -75,11 +75,11 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
       });
       rows.set(`${investment.id}-pending`, {
         id: `${investment.id}-pending`,
-        label: "Pending allocation",
+        label: "Not yet allocated",
         amount: allocation.pendingAmount,
-        detail: `H256 · ${formatWholePercent(allocation.awaitingShare)} of vehicle · not yet deployed`,
+        detail: `H256 · ${formatWholePercent(allocation.awaitingShare)} of vehicle`,
         href: `/lp/investments/${investment.id}`,
-        searchText: "pending allocation H256 not yet deployed",
+        searchText: "H256 not yet allocated pending allocation not yet deployed",
         positionCount: 1,
       });
       continue;
@@ -188,7 +188,7 @@ export function LpPortfolioTable({
               ? `${filtered.length} of ${investments.length} records`
               : normalizedQuery
                 ? `${filteredCompanyAllocationRows.length} of ${companyAllocationRows.length} allocations`
-                : `${companyCount} companies · ${pendingCount} pending allocation`}
+                : `${companyCount} companies · ${pendingCount} not-yet-allocated balance`}
           </p>
           <div className="lp-portfolio-view-switch" role="group" aria-label="Portfolio view">
             <button
@@ -255,8 +255,9 @@ export function LpPortfolioTable({
                           {investment.vehicleAllocation ? (
                             <small className="lp-company-allocation">
                               {formatCurrency(investment.vehicleAllocation.deployedAmount)} to {investment.vehicleAllocation.deployedCompany}
+                              {" in its "}{investment.vehicleAllocation.deployedRound}
                               {" ("}{formatWholePercent(investment.vehicleAllocation.deployedShare)})
-                              {" · "}{formatCurrency(investment.vehicleAllocation.pendingAmount)} pending allocation
+                              {" · "}{formatCurrency(investment.vehicleAllocation.pendingAmount)} not yet allocated
                               {" ("}{formatWholePercent(investment.vehicleAllocation.awaitingShare)})
                             </small>
                           ) : null}
@@ -300,8 +301,9 @@ export function LpPortfolioTable({
                       {investment.vehicleAllocation ? (
                         <small className="lp-company-allocation">
                           {formatCurrency(investment.vehicleAllocation.deployedAmount)} to {investment.vehicleAllocation.deployedCompany}
+                          {" in its "}{investment.vehicleAllocation.deployedRound}
                           {" ("}{formatWholePercent(investment.vehicleAllocation.deployedShare)})
-                          {" · "}{formatCurrency(investment.vehicleAllocation.pendingAmount)} pending allocation
+                          {" · "}{formatCurrency(investment.vehicleAllocation.pendingAmount)} not yet allocated
                           {" ("}{formatWholePercent(investment.vehicleAllocation.awaitingShare)})
                         </small>
                       ) : null}
@@ -365,8 +367,8 @@ export function LpPortfolioTable({
             This view combines multiple investments in the same company. {vehicleAllocation ? (
               <>
                 It shows H256 as {formatWholeCurrency(vehicleAllocation.deployedAmount)} deployed
-                to Anduril and {formatWholeCurrency(vehicleAllocation.pendingAmount)} pending
-                allocation.{" "}
+                to Anduril in its {vehicleAllocation.deployedRound} and{" "}
+                {formatWholeCurrency(vehicleAllocation.pendingAmount)} not yet allocated.{" "}
               </>
             ) : null}
             Use Individual investments for the legal investment records.

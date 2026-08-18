@@ -88,21 +88,22 @@ export default async function LpInvestmentDetailPage({
               <strong>{currency(investment.vehicleAllocation.deployedAmount)}</strong>
               <span>
                 {wholePercent(investment.vehicleAllocation.deployedShare)} deployed to{" "}
-                {investment.vehicleAllocation.deployedCompany}
+                {investment.vehicleAllocation.deployedCompany} in its{" "}
+                {investment.vehicleAllocation.deployedRound}
               </span>
             </div>
             <div>
               <strong>{currency(investment.vehicleAllocation.pendingAmount)}</strong>
               <span>
-                {wholePercent(investment.vehicleAllocation.awaitingShare)} pending allocation — not
-                yet deployed
+                {wholePercent(investment.vehicleAllocation.awaitingShare)} not yet allocated to an
+                underlying company
               </span>
             </div>
           </div>
           <p>
             This {currency(investment.investedCost)} vehicle investment remains one legal portfolio
-            position. The remaining {currency(investment.vehicleAllocation.pendingAmount)} is pending
-            allocation and has not yet been deployed to an underlying company.
+            position. The remaining {currency(investment.vehicleAllocation.pendingAmount)} has not
+            yet been allocated or deployed to an underlying company.
           </p>
         </section>
       ) : null}

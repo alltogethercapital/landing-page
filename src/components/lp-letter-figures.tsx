@@ -235,7 +235,7 @@ function PortfolioAtAGlance({
             lead={index === 0}
             detail={
               row.key === "aerospace"
-                ? `Includes ${dollars(LETTER_H256_DEPLOYED_AMOUNT)} deployed to ${H256_VEHICLE_ALLOCATION.deployedCompany} through H256`
+                ? `Includes ${dollars(LETTER_H256_DEPLOYED_AMOUNT)} deployed to ${H256_VEHICLE_ALLOCATION.deployedCompany} in its ${H256_VEHICLE_ALLOCATION.deployedRound} through H256`
                 : row.key === "pending"
                   ? `${dollars(LETTER_H256_PENDING_AMOUNT)} in H256 not yet deployed`
                 : undefined
@@ -246,7 +246,8 @@ function PortfolioAtAGlance({
       <p className="lp-figure-note">
         For this allocation view, the $200,000 H256 LLC Series 3 position is split into{" "}
         {dollars(LETTER_H256_DEPLOYED_AMOUNT)} ({percent(H256_VEHICLE_ALLOCATION.deployedShare, 0)})
-        deployed to {H256_VEHICLE_ALLOCATION.deployedCompany} under Defense and aerospace, and{" "}
+        deployed to {H256_VEHICLE_ALLOCATION.deployedCompany} in its{" "}
+        {H256_VEHICLE_ALLOCATION.deployedRound} under Defense and aerospace, and{" "}
         {dollars(LETTER_H256_PENDING_AMOUNT)} ({percent(H256_VEHICLE_ALLOCATION.awaitingShare, 0)})
         of pending allocation that is not yet deployed. H256 remains one legal portfolio position.
       </p>
@@ -308,6 +309,10 @@ function ConcentrationAndStructure() {
         <CompactBars title="Entry round" rows={LETTER_ENTRY_ROUND_SPLIT} />
         <CompactBars title="Access channel" rows={LETTER_ACCESS_CHANNEL_SPLIT} />
       </div>
+      <p className="lp-figure-note">
+        H256 remains one legal position. For entry-round analysis, its deployed 44% is assigned to
+        Anduril&apos;s $60B round; the remaining 56% is shown as not yet allocated.
+      </p>
     </FigureSection>
   );
 }
@@ -366,7 +371,7 @@ function WhereWeBought() {
           <line x1="0" x2="100" y1="32" y2="32" className="lp-figure-axis" vectorEffect="non-scaling-stroke" />
         </svg>
         <span className="sr-only">
-          Entry prices for {LETTER_PRICED_POSITIONS.length} priced positions, from{" "}
+          Entry prices for {LETTER_PRICED_POSITIONS.length} priced exposures, from{" "}
           {valuationLabel(LETTER_ENTRY_LOW.entryValuationAmount)} to{" "}
           {valuationLabel(LETTER_ENTRY_HIGH.entryValuationAmount)}.
         </span>
@@ -390,10 +395,11 @@ function WhereWeBought() {
         </div>
       </figure>
       <p className="lp-figure-note">
-        {LETTER_PRICED_POSITIONS.length} of {LETTER_POSITIONS.length} positions carry a company price
-        at entry. Three do not: the H256 vehicle is sized on its fund, Lance AI was an uncapped SAFE,
-        and Maven Robotics priced against a financing model. The spread from lowest to highest entry
-        price is roughly{" "}
+        {LETTER_PRICED_POSITIONS.length - 1} recorded positions plus H256&apos;s{" "}
+        {dollars(LETTER_H256_DEPLOYED_AMOUNT)} Anduril allocation carry a company price at entry.
+        H256&apos;s remaining {dollars(LETTER_H256_PENDING_AMOUNT)} is not yet allocated; Lance AI was
+        an uncapped SAFE, and Maven Robotics priced against a financing model. The spread from lowest
+        to highest entry price is roughly{" "}
         <strong>{new Intl.NumberFormat("en-US").format(Math.round(LETTER_ENTRY_SPREAD / 1000) * 1000)}×</strong>;
         the median is <strong>{valuationLabel(LETTER_ENTRY_MEDIAN)}</strong>.
       </p>

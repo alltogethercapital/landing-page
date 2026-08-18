@@ -98,7 +98,9 @@ function assertLpData() {
         allocation.awaitingShare <= 0 ||
         Math.abs(allocation.deployedShare + allocation.awaitingShare - 1) > Number.EPSILON ||
         !/^\d{4}-\d{2}-\d{2}$/.test(allocation.asOf) ||
-        !allocation.deployedCompany
+        !allocation.deployedCompany ||
+        !allocation.deployedRound ||
+        allocation.deployedEntryValuationAmount <= 0
       ) {
         throw new Error(`Invalid vehicle allocation: ${investment.id}`);
       }

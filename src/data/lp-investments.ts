@@ -10,6 +10,8 @@ export type InvestmentReviewStatus = "verified" | "pending" | "review";
 export type VehicleAllocation = {
   asOf: string;
   deployedCompany: string;
+  deployedRound: string;
+  deployedEntryValuationAmount: number;
   deployedShare: number;
   awaitingShare: number;
 };
@@ -45,6 +47,8 @@ export type InvestmentRecord = {
 export const H256_VEHICLE_ALLOCATION: VehicleAllocation = {
   asOf: "2026-08-17",
   deployedCompany: "Anduril",
+  deployedRound: "$60B round",
+  deployedEntryValuationAmount: 60_000_000_000,
   deployedShare: 0.44,
   awaitingShare: 0.56,
 };
