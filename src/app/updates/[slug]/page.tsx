@@ -17,9 +17,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const article = articleBySlug(slug);
-  if (!article) return { title: "Not found — All Together" };
+  if (!article) return { title: "Page Not Found" };
   return {
-    title: `${article.title} — All Together`,
+    title: article.title,
     description: article.excerpt,
   };
 }

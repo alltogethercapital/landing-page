@@ -4,10 +4,19 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCompanyContext, getLpInvestment, getLpSnapshot } from "@/lib/lp-data";
 
-export const metadata: Metadata = {
-  title: "Investment detail — All Together Investor Portal",
-  robots: { index: false, follow: false, nocache: true },
+type PageProps = {
+  params: Promise<{ id: string }>;
 };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const investment = await getLpInvestment(id);
+
+  return {
+    title: investment?.company ?? "Investment Detail",
+    robots: { index: false, follow: false, nocache: true },
+  };
+}
 
 function currency(value: number) {
   return new Intl.NumberFormat("en-US", {
@@ -28,11 +37,7 @@ function wholePercent(value: number) {
   return `${Math.round(value * 100)}%`;
 }
 
-export default async function LpInvestmentDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function LpInvestmentDetailPage({ params }: PageProps) {
   const { id } = await params;
   const investment = await getLpInvestment(id);
   if (!investment) notFound();

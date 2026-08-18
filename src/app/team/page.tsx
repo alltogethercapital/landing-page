@@ -14,7 +14,7 @@ import { CONTACT_MAILTO } from "@/lib/site";
 import { slugify } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
-  title: "Our team — All Together",
+  title: "Our team",
   description:
     "All Together is led by founding partners Robert Neir and Hisham El-Husseini.",
 };

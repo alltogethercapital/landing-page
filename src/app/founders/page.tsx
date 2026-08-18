@@ -18,7 +18,7 @@ import {
 } from "@/lib/founders";
 
 export const metadata: Metadata = {
-  title: "Our entrepreneurs — All Together",
+  title: "Our entrepreneurs",
   description:
     "The entrepreneurs we back, building the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
 };

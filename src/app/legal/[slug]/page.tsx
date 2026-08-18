@@ -18,9 +18,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const doc = LEGAL_DOCS[slug];
-  if (!doc) return { title: "Not found — All Together" };
+  if (!doc) return { title: "Page Not Found" };
   return {
-    title: `${doc.title} — All Together`,
+    title: doc.title,
     description: doc.intro,
   };
 }

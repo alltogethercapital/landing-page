@@ -6,7 +6,7 @@ import { SiteNav } from "@/components/site-nav";
 import { hasValidLpSession } from "@/lib/lp-auth";
 
 export const metadata: Metadata = {
-  title: "LP Login — All Together",
+  title: "LP Login",
   description: "Secure limited partner access for All Together.",
   robots: { index: false, follow: false, nocache: true },
 };

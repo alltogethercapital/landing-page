@@ -11,7 +11,7 @@ import { SiteNav } from "@/components/site-nav";
 import { ARTICLES } from "@/lib/articles";
 
 export const metadata: Metadata = {
-  title: "Updates — All Together",
+  title: "Updates",
   description:
     "Writing from All Together: letters, theses, and updates on the hard frontier.",
 };
