@@ -28,7 +28,7 @@ export default async function LpPortfolioPage({
   const [investments, params] = await Promise.all([getLpPortfolio(), searchParams]);
   const value = (key: string) => typeof params[key] === "string" ? params[key] : undefined;
   const requestedSort = value("sort");
-  const display: LpPortfolioDisplay = value("display") === "companies" ? "companies" : "positions";
+  const display: LpPortfolioDisplay = value("display") === "positions" ? "positions" : "companies";
   const sort: LpTableSort = ["chronology", "company", "investedCost", "investmentDate"].includes(requestedSort || "")
     ? requestedSort as LpTableSort
     : "chronology";

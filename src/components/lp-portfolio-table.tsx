@@ -135,7 +135,7 @@ export function LpPortfolioTable({
   view: LpTableView;
 }) {
   const [query, setQuery] = useState(view.query?.trim() || "");
-  const [display, setDisplay] = useState<LpPortfolioDisplay>(view.display || "positions");
+  const [display, setDisplay] = useState<LpPortfolioDisplay>(view.display || "companies");
   const sort = view.sort || "chronology";
   const ascending = view.direction === "asc";
   const normalizedQuery = query.trim().toLocaleLowerCase();
@@ -196,14 +196,14 @@ export function LpPortfolioTable({
               aria-pressed={display === "positions"}
               onClick={() => setDisplay("positions")}
             >
-              Position details
+              Individual investments
             </button>
             <button
               type="button"
               aria-pressed={display === "companies"}
               onClick={() => setDisplay("companies")}
             >
-              Company allocation
+              Allocation by company
             </button>
           </div>
         </div>
@@ -275,7 +275,7 @@ export function LpPortfolioTable({
             {filtered.length === 0 ? (
               <div className="lp-table-empty">
                 <p>No investments match this view.</p>
-                <Link href="/lp" onClick={() => setQuery("")}>Clear search</Link>
+                <Link href="/lp?display=positions" onClick={() => setQuery("")}>Clear search</Link>
               </div>
             ) : null}
           </div>
@@ -332,7 +332,7 @@ export function LpPortfolioTable({
             <span>Share of invested cost</span>
           </header>
           {filteredCompanyAllocationRows.length > 0 ? (
-            <div className="lp-figure-bars" role="list" aria-label="Company allocation at invested cost">
+            <div className="lp-figure-bars" role="list" aria-label="Allocation by company at invested cost">
               {filteredCompanyAllocationRows.map((row, index) => (
                 <div
                   key={row.id}
@@ -369,7 +369,7 @@ export function LpPortfolioTable({
                 allocation.{" "}
               </>
             ) : null}
-            Use Position details for the legal investment records.
+            Use Individual investments for the legal investment records.
           </p>
         </section>
       )}

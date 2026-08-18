@@ -3,6 +3,8 @@ import { expect, test } from "@playwright/test";
 const password = process.env.LP_TEST_PASSWORD || "StagingPortalPassphrase-2026";
 
 test("protects, authenticates, searches, and opens an investment", async ({ page }) => {
+  test.setTimeout(60_000);
+
   await page.goto("/lp/updates");
   await expect(page).toHaveURL(/\/lp-login$/);
   await expect(page.getByRole("heading", { name: "Investor portal." })).toBeVisible();
@@ -18,7 +20,11 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await page.getByRole("button", { name: /Sign in/ }).click();
   await expect(page).toHaveURL(/\/lp$/);
   await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
-  await expect(page.getByText("44 of 44 records")).toBeVisible();
+  const individualInvestmentsButton = page.getByRole("button", { name: "Individual investments" });
+  const allocationByCompanyButton = page.getByRole("button", { name: "Allocation by company" });
+  await expect(allocationByCompanyButton).toHaveAttribute("aria-pressed", "true");
+  await expect(individualInvestmentsButton).toHaveAttribute("aria-pressed", "false");
+  await expect(page.getByText("43 companies · 1 pending allocation", { exact: true })).toBeVisible();
   await expect(page.getByText("$661,014.25", { exact: true })).toBeVisible();
   await expect(page.getByText("$671,574.11", { exact: true })).toBeVisible();
   await expect(page.getByText("Current value multiple", { exact: true })).toBeVisible();
@@ -36,16 +42,6 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByText("Equity", { exact: true })).toHaveCount(0);
   await expect(page.getByText("SAFE", { exact: true })).toHaveCount(0);
   await expect(page.getByText("SPV", { exact: true })).toHaveCount(0);
-  await expect(page.locator(".lp-portfolio-table").getByText("Positron", { exact: true })).toBeVisible();
-  const h256Row = page.locator(".lp-portfolio-table tbody tr").filter({ hasText: "H256 LLC Series 3" });
-  await expect(h256Row).toContainText("$200,000");
-  await expect(h256Row).toContainText("$88,000 to Anduril (44%) · $112,000 pending allocation (56%)");
-  const positionDetailsButton = page.getByRole("button", { name: "Position details" });
-  const companyAllocationButton = page.getByRole("button", { name: "Company allocation" });
-  await expect(positionDetailsButton).toHaveAttribute("aria-pressed", "true");
-  await companyAllocationButton.click();
-  await expect(companyAllocationButton).toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByText("43 companies · 1 pending allocation", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "All companies" })).toBeVisible();
   const companyAllocationRows = page.locator(".lp-company-allocation-view .lp-figure-bar-row");
   await expect(companyAllocationRows).toHaveCount(44);
@@ -60,13 +56,25 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(oneXAllocationRow).toContainText("$24,120");
   await expect(oneXAllocationRow).toContainText("3.6%");
   await expect(page.locator(".lp-company-allocation-view")).not.toContainText("H256 LLC Series 3");
+  const allocationViewBox = await page.locator(".lp-company-allocation-view").boundingBox();
+  const leadAllocationValueBox = await companyAllocationRows.nth(0).locator(".lp-figure-bar-value").boundingBox();
+  expect(allocationViewBox).not.toBeNull();
+  expect(leadAllocationValueBox).not.toBeNull();
+  expect(
+    allocationViewBox!.x + allocationViewBox!.width - leadAllocationValueBox!.x - leadAllocationValueBox!.width,
+  ).toBeGreaterThanOrEqual(12);
   await page.screenshot({
     path: "output/playwright/lp-portal/company-allocation-desktop.png",
     fullPage: true,
   });
-  await positionDetailsButton.click();
-  await expect(positionDetailsButton).toHaveAttribute("aria-pressed", "true");
+  await individualInvestmentsButton.click();
+  await expect(individualInvestmentsButton).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByText("44 of 44 records")).toBeVisible();
+  await expect(page.locator(".lp-portfolio-table").getByText("Positron", { exact: true })).toBeVisible();
+  const h256Row = page.locator(".lp-portfolio-table tbody tr").filter({ hasText: "H256 LLC Series 3" });
   await expect(h256Row).toBeVisible();
+  await expect(h256Row).toContainText("$200,000");
+  await expect(h256Row).toContainText("$88,000 to Anduril (44%) · $112,000 pending allocation (56%)");
   await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M fund / $1M investment entity", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M model financing", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-portfolio-table .lp-company-logo img")).toHaveCount(44);
@@ -82,7 +90,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByRole("heading", { name: "Investor Updates" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Investor Updates" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByText(/at least twice per year/i)).toBeVisible();
-  const augustUpdateLink = page.getByRole("link", { name: /Building Civilization’s Next Age/ });
+  const augustUpdateLink = page.getByRole("link", { name: /Beyond the Anthropocene: Betting on the Post-Labor AI Economy/ });
   await expect(augustUpdateLink).toHaveAttribute("href", "/lp/updates/august-2026");
   await expect(page.getByText("Investor Update #1", { exact: true })).toBeVisible();
   await expect(page.getByText("August 14, 2026", { exact: true })).toBeVisible();
@@ -95,7 +103,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
 
   await augustUpdateLink.click();
   await expect(page).toHaveURL(/\/lp\/updates\/august-2026$/);
-  await expect(page.getByRole("heading", { name: "Building Civilization’s Next Age" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Beyond the Anthropocene: Betting on the Post-Labor AI Economy" })).toBeVisible();
   await expect(page.getByText("Investor Update #1", { exact: true })).toBeVisible();
   await expect(page.getByText("August 14, 2026", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-update-article-copy")).toContainText("$661,014.25");
@@ -125,6 +133,22 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(allocationFigure).toContainText("16.9%");
   await expect(allocationFigure).toContainText("$112,000 in H256 not yet deployed");
   await expect(allocationFigure).not.toContainText("Diversified frontier vehicle");
+  const figureHeadingInsets = await allocationFigure.locator(".lp-figure-heading").first().evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return { left: Number.parseFloat(styles.paddingLeft), right: Number.parseFloat(styles.paddingRight) };
+  });
+  const figureRowInsets = await allocationFigure.locator(".lp-figure-bar-row").first().evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return { left: Number.parseFloat(styles.paddingLeft), right: Number.parseFloat(styles.paddingRight) };
+  });
+  const figureChartInsets = await allocationFigure.locator(".lp-figure-chart").first().evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return { left: Number.parseFloat(styles.paddingLeft), right: Number.parseFloat(styles.paddingRight) };
+  });
+  for (const insets of [figureHeadingInsets, figureRowInsets, figureChartInsets]) {
+    expect(insets.left).toBeGreaterThanOrEqual(16);
+    expect(insets.right).toBeGreaterThanOrEqual(16);
+  }
   const concentrationSection = page.locator(".lp-figure-section").filter({ hasText: "Concentration and structure" });
   await expect(concentrationSection.getByRole("heading", { name: "Position type" })).toBeVisible();
   await expect(concentrationSection).toContainText("Primary equity");
@@ -162,6 +186,12 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await page.getByRole("link", { name: "Home", exact: true }).click();
   await expect(page).toHaveURL(/\/$/);
   await expect(page.locator(".cog-nav-button")).toHaveText("Email us");
+  const publicNavSurface = await page.locator(".cog-desktop-nav").evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return { backgroundColor: styles.backgroundColor, boxShadow: styles.boxShadow };
+  });
+  expect(publicNavSurface.backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+  expect(publicNavSurface.boxShadow).not.toBe("none");
   const lpPortalLink = page.getByLabel("Primary").getByRole("link", { name: "LP Portal" });
   await expect(lpPortalLink).toHaveAttribute("href", "/lp");
   await lpPortalLink.click();
@@ -169,6 +199,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
 
   await page.waitForLoadState("networkidle");
+  await page.getByRole("button", { name: "Individual investments" }).click();
   const search = page.getByPlaceholder("Search investments…");
   await search.fill("Blue");
   await expect(page.getByText(/1 of 44 records/)).toBeVisible();
@@ -199,6 +230,10 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await page.screenshot({ path: "output/playwright/lp-portal/detail-desktop.png", fullPage: true });
 
   await page.locator(".lp-back-link").click();
+  await page.waitForLoadState("networkidle");
+  const returnedIndividualInvestmentsButton = page.getByRole("button", { name: "Individual investments" });
+  await returnedIndividualInvestmentsButton.click();
+  await expect(returnedIndividualInvestmentsButton).toHaveAttribute("aria-pressed", "true");
   await page.getByPlaceholder("Search investments…").fill("Positron");
   await page.getByPlaceholder("Search investments…").press("Enter");
   await page.locator(".lp-table-wrap").getByRole("link", { name: "View Positron" }).click();
@@ -295,7 +330,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     }
 
     await page.waitForLoadState("networkidle");
-    await page.getByRole("button", { name: "Company allocation" }).click();
+    await expect(page.getByRole("button", { name: "Allocation by company" })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("heading", { name: "All companies" })).toBeVisible();
     await expect(page.locator(".lp-company-allocation-view .lp-figure-bar-row")).toHaveCount(44);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
@@ -305,7 +340,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
         fullPage: true,
       });
     }
-    await page.getByRole("button", { name: "Position details" }).click();
+    await page.getByRole("button", { name: "Individual investments" }).click();
 
     await page.screenshot({
       path: `output/playwright/lp-portal/portfolio-${viewport.name}.png`,
@@ -316,7 +351,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page).toHaveURL(/\/lp\/updates$/);
     await expect(page.getByRole("heading", { name: "Investor Updates" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Investor Updates" })).toHaveAttribute("aria-current", "page");
-    await expect(page.getByRole("link", { name: /Building Civilization’s Next Age/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Beyond the Anthropocene: Betting on the Post-Labor AI Economy/ })).toBeVisible();
     await expect(page.getByRole("link", { name: "Home", exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     await page.screenshot({
@@ -324,9 +359,9 @@ test("renders the login, portfolio, and detail views at every supported layout",
       fullPage: true,
     });
 
-    await page.getByRole("link", { name: /Building Civilization’s Next Age/ }).click();
+    await page.getByRole("link", { name: /Beyond the Anthropocene: Betting on the Post-Labor AI Economy/ }).click();
     await expect(page).toHaveURL(/\/lp\/updates\/august-2026$/);
-    await expect(page.getByRole("heading", { name: "Building Civilization’s Next Age" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Beyond the Anthropocene: Betting on the Post-Labor AI Economy" })).toBeVisible();
     await expect(page.locator(".lp-update-article-copy")).toContainText("$661,014.25");
     await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
     const updateCopyBox = await page.locator(".lp-update-article-copy").boundingBox();
@@ -343,6 +378,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await page.getByRole("link", { name: "Portfolio", exact: true }).click();
     await expect(page).toHaveURL(/\/lp$/);
 
+    await page.getByRole("button", { name: "Individual investments" }).click();
     await page.getByRole("link", { name: "View Blue Origin" }).click();
     await expect(page).toHaveURL(/43-blue-origin$/);
     await expect(page.getByRole("heading", { name: "Blue Origin" })).toBeVisible();
