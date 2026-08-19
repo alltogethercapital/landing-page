@@ -66,46 +66,43 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         <p>To our investors,</p>
 
         <p>
-          This is our first formal update since we began investing, and it should have come sooner. We will
-          publish at least twice per year, with shorter notes when something material changes.
+          This is our first formal update, and it should have come sooner. From here, we will write at least
+          twice per year and whenever something material changes. Thank you for trusting us while we found our
+          footing.
         </p>
 
         <p>
-          One reason we started All Together is that we believe{" "}
+          We started All Together because we believe{" "}
           <a
             href="https://www.imf.org/en/publications/staff-discussion-notes/issues/2024/01/14/gen-ai-artificial-intelligence-and-the-future-of-work-542379"
             target="_blank"
             rel="noreferrer"
           >
             AI will change the basic economics of production
-          </a>. Models already perform cognitive tasks that once required people. As they improve and move into
-          machines, more physical work will become machine-produced. Human judgment and ambition will remain
-          essential, but each unit of output will require fewer human hours. This is what we mean by a
-          post-labor economy.
-        </p>
-
-        <p>
-          Intelligence is becoming abundant, but the physical world remains scarce. The marginal cost of
-          cognition is falling while power, chips, manufacturing capacity, reliable machines, and permission
-          to operate remain difficult to build. We believe value will move toward the bottlenecks that turn
-          cheap intelligence into dependable real-world capability.
-        </p>
-
-        <p>
-          That shift changes who captures the value. As intelligence and labor are produced by compute,
-          models, robots, factories, and energy systems, the owners of those systems participate most
-          directly in what they create. The ownership question is also personal. We wanted the people close
-          to us to
-          participate in the technologies that could carry civilization beyond the{" "}
+          </a>
+          {", "}and we wanted the people close to us to own what comes next, not just watch it happen. Our aim is
+          to invest alongside you in the builders who can carry civilization beyond the{" "}
           <a
             href="https://humanorigins.si.edu/research/age-humans-evolutionary-perspectives-anthropocene"
             target="_blank"
             rel="noreferrer"
           >
             Anthropocene
-          </a>{" "}
-          and into whatever comes next—not merely watch from the sidelines. We want to support its builders
-          and bring our investors into the ownership layer of the consequential companies they create.
+          </a>
+          {". "}That is the personal reason for the firm and the idea behind its name.
+        </p>
+
+        <p>
+          At the center of our thesis is the post-labor economy. We do not mean that people stop mattering.
+          Human judgment, ambition, and relationships remain essential. But as models take on cognitive tasks
+          and intelligence moves into machines, each unit of output can require fewer human hours.
+        </p>
+
+        <p>
+          Intelligence is becoming abundant, but the physical world remains scarce. Power, chips,
+          manufacturing capacity, reliable machines, and permission to operate are still difficult to build.
+          We believe durable value will move toward the bottlenecks that turn cheap intelligence into dependable
+          real-world capability. Their owners sit in the ownership layer of the new economy.
         </p>
 
         <p>
@@ -117,46 +114,48 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
           <a href="https://www.iea.org/reports/energy-and-ai/energy-supply-for-ai" target="_blank" rel="noreferrer">
             International Energy Agency
           </a>{" "}
-          documents the energy system behind it. Models and applications diffuse quickly; power, factories,
-          regulation, distribution, and trust do not. The investment question is no longer whether AI
-          matters. It is where scarcity, control, and pricing power persist as intelligence gets cheaper.
+          documents the energy system required to support it. Models and applications spread quickly; power,
+          factories, regulation, distribution, and trust do not. The investment question is no longer whether
+          AI matters. It is where scarcity, control, and pricing power persist as intelligence gets cheaper.
         </p>
 
         <p>
-          As of {LP_AUGUST_2026_PORTFOLIO_AS_OF}, AUM at recorded cost was {currency(snapshot.investedCost)}.
-          Projected NAV was {currency(snapshot.projectedGrossValue)}, a{" "}
-          {snapshot.projectedGrossMultiple.toFixed(2)}× gross value multiple. Most positions remain at cost; a
-          few reflect sourced financings or a labeled scenario. This is not administrator-reported or audited
-          net asset value, and it is too early to call it performance.
+          That leads us to efficient compute and inference, robotics and physical automation, power and
+          industrial infrastructure, and defense and aerospace. Compute makes intelligence cheaper. Robots
+          turn it into physical work. Energy and industry let both scale. Defense and aerospace demand real
+          reliability. All Together backs the companies building civilization in an age of abundant
+          intelligence.
         </p>
 
         <p>
-          The portfolio began broad by design. We used it as a listening system while the market was
-          forming: to learn which founders could turn technical possibility into institutions, which layers
-          were becoming commodities, and which constraints would endure. Breadth gave us a map. Now we are
-          turning that map into concentration of thought, not simply concentration of capital.
+          A compelling market is only the starting point. Within those areas, we look for a durable point of
+          control: a technical advantage that compounds, a product embedded in a critical workflow,
+          infrastructure others must build on, or an operating system for a newly possible market. Founder
+          ambition, technical truth, capital efficiency, price, and structure matter more than attention.
         </p>
 
         <p>
-          All Together backs the companies building civilization in an age of abundant intelligence. We
-          focus on efficient compute and inference, robotics and physical automation, power and industrial
-          infrastructure, and defense and aerospace. Compute makes intelligence cheaper. Robots turn it
-          into physical work. Energy and industry let both scale. Defense and aerospace test reliability.
+          The portfolio began broad by design. In a market forming this quickly, each investment helped us
+          see which founders could turn technical possibility into an institution and which constraints would
+          endure. Breadth gave us a map. Now we are using it to become more selective and to concentrate our
+          thinking before we concentrate capital.
         </p>
 
         <p>
-          Within those areas, we look for a durable point of control: a technical advantage that compounds,
-          a product embedded in a critical workflow, infrastructure others must build on, or an operating
-          system for a newly possible market. We care about founder ambition, technical truth, capital
-          efficiency, price, structure, and enduring leverage rather than temporary attention.
+          As of {LP_AUGUST_2026_PORTFOLIO_AS_OF}, AUM at recorded cost was {currency(snapshot.investedCost)},
+          and projected NAV was {currency(snapshot.projectedGrossValue)}, for a{" "}
+          {snapshot.projectedGrossMultiple.toFixed(2)}× gross value multiple. We will keep this financial
+          checkpoint concise and use these letters to share the thinking behind the portfolio, including what
+          is changing our minds.
         </p>
 
         <p>
           Access alone is not an advantage when capital is crowded. Price, structure, technical judgment,
           and the willingness to pass matter. We will favor fewer direct positions, clearer economics,
-          better information rights, and room to support the companies that earn conviction. You trusted
-          us before there was a record; we owe you disciplined decisions and plain reporting. The outcomes
-          that matter will take years. We will keep showing you what we learn.
+          better information rights, and room to support the companies that earn conviction. You trusted us
+          before there was a record, and we do not take that lightly. We owe you disciplined decisions, plain
+          reporting, and an honest account of what we learn. The outcomes that matter will take years. We are
+          grateful to be building toward them with you.
         </p>
 
         <p>Thank you for building this with us.</p>

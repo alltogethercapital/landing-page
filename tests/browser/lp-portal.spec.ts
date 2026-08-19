@@ -303,18 +303,19 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(page.locator(".lp-update-article-copy")).toContainText("post-labor economy");
   await expect(page.locator(".lp-update-article-copy")).toContainText("ownership layer");
   await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
-  const updateParagraphs = page.locator(".lp-update-article-copy > p");
-  await expect(updateParagraphs.nth(2)).toContainText("This is what we mean by a post-labor economy");
-  await expect(updateParagraphs.nth(3)).toContainText("Intelligence is becoming abundant, but the physical world remains scarce");
-  await expect(updateParagraphs.nth(3)).toContainText("value will move toward the bottlenecks");
-  await expect(updateParagraphs.nth(4)).toContainText("That shift changes who captures the value");
-  await expect(updateParagraphs.nth(4)).toContainText("beyond the Anthropocene");
-  await expect(updateParagraphs.nth(4)).toContainText("ownership layer");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("trusting us while we found our footing");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("That is the personal reason for the firm");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("At the center of our thesis is the post-labor economy");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("Intelligence is becoming abundant, but the physical world remains scarce");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("durable value will move toward the bottlenecks");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("beyond the Anthropocene");
   await expect(page.locator(".lp-update-article-copy")).toContainText("The investment question is no longer whether AI matters");
   await expect(page.locator(".lp-update-article-copy")).toContainText("The portfolio began broad by design");
   await expect(page.locator(".lp-update-article-copy")).toContainText("All Together backs the companies building civilization in an age of abundant intelligence");
   await expect(page.locator(".lp-update-article-copy")).toContainText("a durable point of control");
   await expect(page.locator(".lp-update-article-copy")).toContainText("fewer direct positions");
+  await expect(page.locator(".lp-update-article-copy")).not.toContainText("Most positions remain at cost");
+  await expect(page.locator(".lp-update-article-copy")).not.toContainText("too early to call it performance");
   await expect(page.locator(".lp-update-article-copy")).not.toContainText("$671,574.11");
   await expect(page.locator(".lp-update-article-copy")).not.toContainText("30.3%");
   await expect(page.locator(".lp-update-article-copy")).not.toContainText("$200,000 H256 LLC Series 3");
@@ -326,10 +327,10 @@ test("protects, authenticates, switches views, and opens an investment", async (
   expect(numericReferences).toHaveLength(5);
   const updateWordCount = updateCopyText.trim().split(/\s+/).length;
   expect(updateWordCount).toBeLessThan(600);
-  // Stated in the letter body and confidentiality footer.
+  // Stated only in the confidentiality footer, not in the GP-to-LP letter body.
   await expect(
     page.getByText(/not (?:administrator-reported or )?audited net asset value/i),
-  ).toHaveCount(2);
+  ).toHaveCount(1);
   await expect(page.getByRole("heading", { name: "Checked and held flat" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Basis of preparation" })).toHaveCount(0);
   await expect(page.locator(".lp-figure-index")).toHaveCount(0);

@@ -17,7 +17,7 @@ export const LP_INVESTOR_UPDATES: LpInvestorUpdateSummary[] = [
     published: "August 14, 2026",
     publishedAt: "2026-08-14",
     excerpt:
-      "Our founding thesis, the portfolio today, and how we plan to invest and report from here.",
+      "Why we started All Together, what we are learning, and how we will invest from here.",
   },
 ];
 
