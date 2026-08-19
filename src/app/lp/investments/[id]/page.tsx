@@ -160,7 +160,6 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
       </section>
 
       <footer className="lp-portal-footer">
-        <span>{snapshot.source}</span>
         <span>Private and confidential</span>
       </footer>
     </div>

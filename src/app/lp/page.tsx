@@ -9,7 +9,7 @@ import {
   type LpPortfolioDisplay,
   type LpTableSort,
 } from "@/components/lp-portfolio-table";
-import { getLpPortfolio, getLpSnapshot } from "@/lib/lp-data";
+import { getLpPortfolio } from "@/lib/lp-data";
 
 type LpPortfolioPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -83,7 +83,6 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
     direction: value("direction") === "asc" ? "asc" as const : "desc" as const,
     display,
   };
-  const snapshot = getLpSnapshot();
   const investedCost = investments.reduce((total, item) => total + item.investedCost, 0);
   const pendingAllocation = investments.reduce(
     (total, item) => total + (item.vehicleAllocation?.pendingAmount ?? 0),
@@ -94,10 +93,6 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
     0,
   );
   const currentValueMultiple = totalProjectedValue / investedCost;
-  const sourceDate = new Intl.DateTimeFormat("en-US", {
-    month: "short", day: "numeric", year: "numeric", timeZone: "America/Los_Angeles",
-  }).format(new Date(snapshot.sourceModifiedAt));
-
   return (
     <div className="lp-portal-shell">
       <h1 className="sr-only">Portfolio</h1>
@@ -181,7 +176,6 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
       )}
 
       <footer className="lp-portal-footer">
-        <span>{snapshot.source} · Updated {sourceDate}</span>
         <span>Private and confidential</span>
       </footer>
     </div>

@@ -88,6 +88,7 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
           <time dateTime={update.publishedAt}>{update.published}</time>
         </div>
         <h1>{update.title}</h1>
+        <p className="lp-update-article-subtitle">{update.subtitle}</p>
       </header>
 
       <div className="lp-update-article-copy">

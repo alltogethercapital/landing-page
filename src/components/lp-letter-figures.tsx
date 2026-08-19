@@ -69,9 +69,7 @@ function FigureSection({
 }) {
   return (
     <section className="lp-figure-section" aria-labelledby={`lp-figure-${id}`}>
-      <div className="lp-figure-section-head">
-        <h2 id={`lp-figure-${id}`}>{title}</h2>
-      </div>
+      <h2 id={`lp-figure-${id}`} className="sr-only">{title}</h2>
       {children}
     </section>
   );

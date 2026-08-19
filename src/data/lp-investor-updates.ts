@@ -2,6 +2,7 @@ export type LpInvestorUpdateSummary = {
   slug: string;
   issue: number;
   title: string;
+  subtitle: string;
   published: string;
   publishedAt: string;
   excerpt: string;
@@ -11,7 +12,8 @@ export const LP_INVESTOR_UPDATES: LpInvestorUpdateSummary[] = [
   {
     slug: "august-2026",
     issue: 1,
-    title: "Beyond the Anthropocene: Betting on the Post-Labor AI Economy",
+    title: "Beyond the Anthropocene",
+    subtitle: "Betting Together on the Post-Labor AI Economy",
     published: "August 14, 2026",
     publishedAt: "2026-08-14",
     excerpt:
