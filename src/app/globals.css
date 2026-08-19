@@ -2402,8 +2402,8 @@ body {
 .lp-portfolio-tabs {
   display: flex;
   gap: clamp(28px, 4vw, 56px);
-  margin-top: 48px;
-  margin-bottom: 48px;
+  margin-top: 36px;
+  margin-bottom: 24px;
   border-bottom: 1px solid var(--lp-line);
 }
 
@@ -2559,7 +2559,7 @@ body {
 }
 
 .lp-portfolio-section {
-  margin-top: 54px;
+  margin-top: 0;
 }
 
 .lp-table-heading {
@@ -2567,7 +2567,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding-bottom: 18px;
+  padding-bottom: 10px;
 }
 
 .lp-table-heading--controls-only {
@@ -2798,7 +2798,7 @@ body {
 
 .lp-portal-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 28px;
   margin-top: 54px;
   border-top: 1px solid var(--lp-ink);
@@ -3171,6 +3171,7 @@ body {
 }
 
 .lp-updates-list strong {
+  display: block;
   font-size: clamp(27px, 2.6vw, 38px);
   font-weight: 400;
   line-height: 1;
@@ -3178,9 +3179,26 @@ body {
   transition: color 180ms ease;
 }
 
+.lp-update-list-heading {
+  min-width: 0;
+}
+
+.lp-update-list-subtitle {
+  display: block;
+  margin-top: 7px;
+  color: var(--lp-muted);
+  font-family: var(--cog-support);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
 @media (min-width: 1200px) {
   .lp-updates-list strong {
     font-size: clamp(24px, 1.85vw, 30px);
+    white-space: nowrap;
+  }
+
+  .lp-update-list-subtitle {
     white-space: nowrap;
   }
 }
@@ -3228,6 +3246,14 @@ body {
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: -0.045em;
+}
+
+.lp-update-article-subtitle {
+  margin: 12px 0 0;
+  color: var(--lp-muted);
+  font-size: clamp(23px, 2.6vw, 32px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 .lp-update-article-copy {
@@ -3289,26 +3315,12 @@ body {
 }
 
 .lp-figure-section + .lp-figure-section {
-  margin-top: 92px;
+  margin-top: 64px;
 }
 
+.lp-figure-section > .lp-figure-heading:first-of-type,
 .lp-figure-section--standalone > .lp-figure-heading {
   margin-top: 0;
-}
-
-.lp-figure-section-head {
-  display: flex;
-  align-items: baseline;
-  border-bottom: 1px solid var(--lp-ink);
-  padding: 0 var(--lp-component-inset) 12px;
-}
-
-.lp-figure-section-head h2 {
-  margin: 0;
-  font-size: clamp(26px, 2.6vw, 34px);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.03em;
 }
 
 /* Section sub-heading with a right-aligned unit caption. */
@@ -3422,7 +3434,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 40px 48px;
-  margin-top: 50px;
+  margin-top: 0;
 }
 
 .lp-figure-compact {
@@ -3738,7 +3750,7 @@ body {
   }
 
   .lp-figure-section + .lp-figure-section {
-    margin-top: 68px;
+    margin-top: 48px;
   }
 
   /* Wide tables keep their own scroll rather than pushing the page sideways. */
@@ -3769,10 +3781,6 @@ body {
   .lp-figure-quad {
     grid-template-columns: minmax(0, 1fr);
     gap: 40px;
-  }
-
-  .lp-figure-section-head h2 {
-    font-size: 24px;
   }
 
   /* The unit caption drops below its heading rather than fighting it for width. */
@@ -3946,7 +3954,7 @@ body {
   /* Too narrow for a label column — label sits above its value. */
   .lp-summary-grid > div { grid-template-columns: minmax(0, 1fr); padding-block: 14px; gap: 6px; }
   .lp-summary-grid dd { font-size: 24px; }
-  .lp-portfolio-section { margin-top: 44px; }
+  .lp-portfolio-section { margin-top: 0; }
   .lp-table-wrap { margin-right: calc(var(--mobile-gutter) * -1); width: calc(100% + var(--mobile-gutter)); }
   .lp-portfolio-table { min-width: 820px; }
   .lp-portal-footer { flex-direction: column; }
@@ -4040,9 +4048,10 @@ body {
 
   .lp-portfolio-tabs {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-    margin-bottom: 34px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 32px;
+    margin-bottom: 20px;
   }
 
   .lp-portfolio-tabs a {
@@ -4188,6 +4197,8 @@ body {
 
 @media (max-width: 360px) {
   .lp-portal-back { margin-right: 12px; }
+  .lp-portfolio-tabs { gap: 10px; }
+  .lp-portfolio-tabs a { font-size: 16px; }
   .lp-table-heading { gap: 8px; }
   .lp-table-heading h2 { font-size: 27px; }
   .lp-portfolio-view-switch button { padding-inline: 6px; font-size: 9px; }
