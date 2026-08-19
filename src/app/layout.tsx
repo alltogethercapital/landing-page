@@ -6,68 +6,71 @@ import { SitePreloader } from "@/components/site-preloader";
 import { buildSearchIndex } from "@/lib/search";
 import "./globals.css";
 
-const newsreader = localFont({
-  variable: "--font-newsreader",
+const rosart = localFont({
+  variable: "--font-rosart",
   display: "swap",
-  fallback: ["Times New Roman", "Georgia", "serif"],
+  fallback: ["Georgia", "Times New Roman", "serif"],
   src: [
     {
-      path: "../../public/fonts/Newsreader-Regular.ttf",
+      path: "./fonts/sequoia/Rosart-Regular-HsHjFyXa.woff",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Newsreader-SemiBold.ttf",
+      path: "./fonts/sequoia/Rosart-Italic-H5xVVjl2.woff",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./fonts/sequoia/Rosart-SemiBold-7isf5RfA.woff",
+      weight: "600",
+      style: "normal",
+    },
+  ],
+});
+
+const unica77 = localFont({
+  variable: "--font-unica",
+  display: "swap",
+  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
+  src: [
+    {
+      path: "./fonts/sequoia/Unica77LLWeb-Regular-dxUtRmHM.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/sequoia/Unica77LLWeb-Italic-x0vfYgaH.woff2",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./fonts/sequoia/Unica77LLWeb-Bold-YVLHSOyT.woff2",
       weight: "700",
       style: "normal",
     },
   ],
 });
 
-const martinaPlantijn = localFont({
-  variable: "--font-martina-plantijn",
+const pitchSans = localFont({
+  variable: "--font-pitch-sans",
   display: "swap",
-  fallback: ["Georgia", "Times New Roman", "serif"],
+  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
   src: [
     {
-      path: "./fonts/paradigm/martina-plantijn-light.woff2",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "./fonts/paradigm/martina-plantijn-light-italic.woff2",
-      weight: "300",
-      style: "italic",
-    },
-    {
-      path: "./fonts/paradigm/martina-plantijn-regular.woff2",
+      path: "./fonts/sequoia/PitchSansApp-Regular.07f66690.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/paradigm/martina-plantijn-italic.woff2",
-      weight: "400",
-      style: "italic",
-    },
-    {
-      path: "./fonts/paradigm/martina-plantijn-medium.woff2",
-      weight: "600",
+      path: "./fonts/sequoia/PitchSansApp-Medium.4e29e2bf.woff2",
+      weight: "500",
       style: "normal",
     },
     {
-      path: "./fonts/paradigm/martina-plantijn-medium-italic.woff2",
-      weight: "600",
-      style: "italic",
-    },
-    {
-      path: "./fonts/paradigm/martina-plantijn-bold.woff2",
-      weight: "800",
+      path: "./fonts/sequoia/PitchSansApp-Bold.e62747bf.woff2",
+      weight: "700",
       style: "normal",
-    },
-    {
-      path: "./fonts/paradigm/martina-plantijn-bold-italic.woff2",
-      weight: "800",
-      style: "italic",
     },
   ],
 });
@@ -120,24 +123,6 @@ const atlasTypewriter = localFont({
   ],
 });
 
-const brandDisplay = localFont({
-  variable: "--font-brand-display",
-  display: "swap",
-  fallback: ["Arial", "Helvetica", "sans-serif"],
-  src: [
-    {
-      path: "./fonts/sequoia/Unica77LLWeb-Regular.1492eabb.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/sequoia/Unica77LLWeb-Bold.3928012f.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-});
-
 // metadataBase is required so Next.js can resolve the opengraph-image
 // route to an absolute URL in the rendered og:image meta tag.
 const SITE_URL = "https://alltogethercapital.com";
@@ -179,7 +164,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${newsreader.variable} ${martinaPlantijn.variable} ${atlasTypewriter.variable} ${brandDisplay.variable} h-full antialiased`}
+      className={`${rosart.variable} ${unica77.variable} ${pitchSans.variable} ${atlasTypewriter.variable} h-full antialiased`}
       style={hiddenScrollbarStyle}
     >
       <body className="min-h-full" style={hiddenScrollbarStyle}>

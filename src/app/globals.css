@@ -8,9 +8,9 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --font-sans: var(--font-newsreader);
-  --font-display: var(--font-newsreader);
-  --font-serif: var(--font-newsreader);
+  --font-sans: var(--font-unica);
+  --font-display: var(--font-rosart);
+  --font-serif: var(--font-rosart);
   --font-mono: var(--font-atlas-typewriter);
 
   --color-sidebar-ring: var(--sidebar-ring);
@@ -128,7 +128,7 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-serif;
+    @apply font-sans;
   }
   :is(h1, h2, h3, h4, h5, h6) {
     @apply font-display;
@@ -164,10 +164,11 @@ body::-webkit-scrollbar {
   height: 0;
 }
 
-/* Editorial type roles:
-   — Newsreader: prose, display, and identity text.
-   — Unica: labels, captions, and other supporting copy.
-   — Atlas Typewriter: glyph systems and genuinely machine-like data only. */
+/* Sequoia's editorial type roles, self-hosted from the public site:
+   — Rosart: display headings and editorial statements.
+   — Unica77: body copy, card titles, captions, and the wordmark.
+   — Pitch Sans: uppercase navigation, actions, and categorical labels.
+   — Atlas Typewriter: All Together's glyph systems and financial data only. */
 :root {
   --cog-bg: #f7f6f5;
   --cog-ink: #000000;
@@ -176,10 +177,8 @@ body::-webkit-scrollbar {
   --cog-accent: #006fce;
   --cog-sun: #ffc62c;
   --cog-dark: #191919;
-  --font-unica: var(--font-newsreader);
-  --font-rosart: var(--font-newsreader);
-  --font-pitch-sans: var(--font-newsreader);
-  --cog-support: var(--font-brand-display), "Helvetica Neue", Arial, sans-serif;
+  --cog-support: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
+  --cog-ui: var(--font-pitch-sans), "Helvetica Neue", Arial, sans-serif;
   --cog-mono: var(--font-atlas-typewriter), ui-monospace, "SF Mono", Menlo, monospace;
   --site-max: 1520px;
 
@@ -211,8 +210,8 @@ body::-webkit-scrollbar {
   --rule-strong: rgba(13, 13, 12, 0.88);
 
   /* Type families by role. */
-  --font-display: var(--font-newsreader), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-brand-display), "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-rosart), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   --font-mono: var(--font-atlas-typewriter), ui-monospace, "SF Mono", Menlo, monospace;
 
   /* Type scale. Display steps are fluid; text steps are fixed so the
@@ -348,11 +347,11 @@ body {
 /* Heading for the landing-page notes strip. */
 .cog-strip-heading {
   margin: 0 0 20px;
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-rosart), Georgia, "Times New Roman", serif;
   font-size: 24px;
   font-weight: 400;
   line-height: 1.02;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
 }
 
 .cog-updates-head {
@@ -422,7 +421,7 @@ body {
   gap: 14px;
   padding: 0;
   color: var(--cog-ink);
-  font-family: var(--font-brand-display), "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.34em;
@@ -470,7 +469,7 @@ body {
   overflow-x: hidden;
   background-color: var(--cog-bg);
   color: var(--cog-ink);
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Cap the composition on wide screens: the content, the vertical rules, and
@@ -535,10 +534,11 @@ body {
   background: var(--cog-bg);
   box-shadow: 0 0 0 10px var(--cog-bg);
   color: var(--cog-ink);
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
-  font-size: 17px;
-  letter-spacing: -0.015em;
-  line-height: 1.3;
+  font-family: var(--cog-ui);
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-transform: uppercase;
 }
 
 .cog-nav-logo {
@@ -664,10 +664,11 @@ body {
   background: transparent;
   padding: 5px 10px 6px;
   color: var(--cog-ink);
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
-  font-size: 17px;
-  line-height: 1.25;
+  font-family: var(--cog-ui);
+  font-size: 14px;
+  line-height: 1.5;
   text-decoration: none;
+  text-transform: uppercase;
   transition: background-color 160ms ease, color 160ms ease;
 }
 
@@ -678,7 +679,7 @@ body {
   border-top: 1px solid var(--cog-line);
   padding: 10px 0 0;
   color: var(--cog-muted);
-  font-family: var(--cog-support);
+  font-family: var(--cog-ui);
   font-size: 14px;
 }
 
@@ -794,8 +795,9 @@ body {
   background: transparent;
   color: var(--cog-ink);
   cursor: pointer;
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
-  font-size: 17px;
+  font-family: var(--cog-ui);
+  font-size: 14px;
+  text-transform: uppercase;
 }
 
 .cog-search-close svg {
@@ -824,11 +826,11 @@ body {
   outline: 0;
   background: transparent;
   color: var(--cog-ink);
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-rosart), Georgia, "Times New Roman", serif;
   font-size: clamp(40px, 5vw, 72px);
   font-weight: 400;
   line-height: 1;
-  letter-spacing: -0.045em;
+  letter-spacing: 0;
 }
 
 .cog-search-field input::-webkit-search-cancel-button {
@@ -873,7 +875,7 @@ body {
   align-items: center;
   gap: 14px;
   margin-bottom: 18px;
-  font-family: var(--cog-support);
+  font-family: var(--cog-ui);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.025em;
@@ -943,16 +945,16 @@ body {
 }
 
 .cog-search-result-copy strong {
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-rosart), Georgia, "Times New Roman", serif;
   font-size: clamp(24px, 2.4vw, 36px);
   font-weight: 400;
   line-height: 1.04;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
 }
 
 .cog-search-result-copy > span {
   color: currentColor;
-  font-family: var(--cog-support);
+  font-family: var(--cog-ui);
   font-size: 12px;
   line-height: 1.35;
   text-transform: uppercase;
@@ -964,7 +966,7 @@ body {
   max-width: 680px;
   overflow: hidden;
   color: var(--cog-muted);
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.35;
@@ -1150,11 +1152,11 @@ body {
 .cog-title {
   margin: 0;
   color: var(--cog-ink);
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-rosart), Georgia, "Times New Roman", serif;
   font-size: 42px;
   font-weight: 400;
-  line-height: 0.98;
-  letter-spacing: -0.03em;
+  line-height: 1.05;
+  letter-spacing: 0;
   text-wrap: balance;
   word-spacing: 0.03em;
 }
@@ -1230,10 +1232,10 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: 17px;
   line-height: 1.1;
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
 }
 
 .cog-strip {
@@ -1303,11 +1305,11 @@ body {
   display: block;
   margin: 13px 0 0;
   color: var(--cog-ink);
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: 24px;
   font-weight: 400;
   line-height: 1.02;
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
   overflow-wrap: break-word;
   text-wrap: balance;
   word-spacing: 0.04em;
@@ -1453,7 +1455,7 @@ body {
 }
 
 .cog-company-card-title {
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: 24px;
   font-weight: 700;
   line-height: 1.08;
@@ -1479,10 +1481,10 @@ body {
   gap: 10px 14px;
   margin-top: 14px;
   color: var(--cog-muted);
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: 15px;
   line-height: 1.18;
-  letter-spacing: -0.015em;
+  letter-spacing: 0;
 }
 
 .cog-person-links a {
@@ -1506,11 +1508,11 @@ body {
 
 .cog-legal-section h2 {
   margin: 0;
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-rosart), Georgia, "Times New Roman", serif;
   font-size: 24px;
   font-weight: 400;
   line-height: 1.02;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
 }
 
 .cog-legal-section p {
@@ -1532,10 +1534,10 @@ body {
 
 .cog-footer-heading {
   margin: 0;
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-rosart), Georgia, "Times New Roman", serif;
   font-size: 24px;
   line-height: 1.02;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
 }
 
 .cog-footer-copy {
@@ -1564,10 +1566,10 @@ body {
   /* 20px tall missed the 24px minimum target size; the padding is invisible
      against the existing 4px column gaps but makes the rows tappable. */
   padding-block: 3px;
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: 17px;
   line-height: 1.15;
-  letter-spacing: -0.015em;
+  letter-spacing: 0;
 }
 
 .cog-footer-bottom {
@@ -1683,7 +1685,7 @@ body {
     padding: 0 var(--mobile-gutter);
     background: color-mix(in srgb, var(--cog-bg) 88%, transparent);
     backdrop-filter: blur(12px);
-    font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+    font-family: var(--cog-ui);
   }
 
   .cog-search-trigger {
@@ -1788,10 +1790,11 @@ body {
     border: 0;
     background: transparent;
     color: var(--cog-ink);
-    font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
-    font-size: 19px;
-    line-height: 1;
+    font-family: var(--cog-ui);
+    font-size: 14px;
+    line-height: 1.5;
     text-align: right;
+    text-transform: uppercase;
   }
 
   .cog-mobile-menu {
@@ -1812,11 +1815,11 @@ body {
 
   .cog-mobile-menu-link {
     min-height: 44px;
-    font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
-    font-size: 42px;
-    line-height: 1.02;
-    letter-spacing: -0.025em;
-    word-spacing: 0.04em;
+    font-family: var(--cog-ui);
+    font-size: 32px;
+    line-height: 1.08;
+    letter-spacing: 0;
+    text-transform: uppercase;
   }
 
   .cog-mobile-menu-link.cog-mobile-menu-contact {
@@ -1825,7 +1828,7 @@ body {
     border-top: 1px solid var(--cog-line);
     padding: 14px 0 0;
     color: var(--cog-muted);
-    font-family: var(--cog-support);
+    font-family: var(--cog-ui);
     font-size: 16px;
     letter-spacing: 0;
     line-height: 1.3;
@@ -2137,7 +2140,7 @@ body {
   display: block;
   margin-bottom: 8px;
   color: var(--lp-muted);
-  font-family: var(--cog-support);
+  font-family: var(--cog-ui);
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.07em;
@@ -2188,8 +2191,9 @@ body {
   background: var(--lp-ink);
   padding: 0 14px;
   color: var(--lp-white);
-  font-family: var(--font-newsreader), Georgia, serif;
-  font-size: 15px;
+  font-family: var(--cog-ui);
+  font-size: 14px;
+  text-transform: uppercase;
   transition: background-color 150ms ease, color 150ms ease;
 }
 
@@ -2227,7 +2231,7 @@ body {
   position: relative;
   min-height: 100vh;
   overflow-x: hidden;
-  font-family: var(--font-newsreader), Georgia, serif;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
 }
 
 .lp-portal-page::before {
@@ -2258,8 +2262,10 @@ body {
   background: var(--lp-paper);
   box-shadow: 0 0 0 10px var(--lp-paper);
   color: var(--lp-ink);
-  font-size: 17px;
-  line-height: 1.3;
+  font-family: var(--cog-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  text-transform: uppercase;
 }
 
 .lp-portal-nav-logo {
@@ -2273,7 +2279,7 @@ body {
   gap: 4px;
   margin-bottom: 20px;
   color: var(--lp-muted);
-  font-family: var(--cog-support);
+  font-family: var(--cog-ui);
   font-size: 13px;
   line-height: 1.3;
   text-decoration: none;
@@ -2368,7 +2374,7 @@ body {
 .lp-eyebrow {
   margin: 0 0 12px;
   color: var(--lp-muted);
-  font-family: var(--cog-support);
+  font-family: var(--cog-ui);
   font-size: 13px;
   line-height: 1.4;
   text-transform: uppercase;
@@ -2378,11 +2384,11 @@ body {
 .lp-detail-heading h1 {
   margin: 0;
   color: var(--lp-ink);
-  font-family: var(--font-newsreader), Georgia, serif;
+  font-family: var(--font-rosart), Georgia, serif;
   font-size: clamp(54px, 6vw, 90px);
   font-weight: 400;
-  line-height: 0.92;
-  letter-spacing: -0.055em;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .lp-summary-grid {
@@ -2555,7 +2561,7 @@ body {
   font-weight: 400;
   font-variant-numeric: tabular-nums;
   line-height: 1;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
 }
 
 .lp-portfolio-section {
@@ -2579,7 +2585,7 @@ body {
   font-size: 34px;
   font-weight: 400;
   line-height: 1;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
 }
 
 .lp-portfolio-view-switch {
@@ -2744,7 +2750,7 @@ body {
 
 .lp-company-name strong {
   overflow: hidden;
-  font-family: var(--font-newsreader), Georgia, serif;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.1;
@@ -2943,7 +2949,7 @@ body {
   font-size: clamp(19px, 2.1vw, 28px);
   font-weight: 400;
   line-height: 1.12;
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
 }
 
 .lp-performance {
@@ -3112,8 +3118,8 @@ body {
   margin: 18px 0 16px;
   font-size: clamp(50px, 6vw, 76px);
   font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -0.045em;
+  line-height: 1.05;
+  letter-spacing: 0;
 }
 
 .lp-updates-index-header p {
@@ -3175,7 +3181,7 @@ body {
   font-size: clamp(27px, 2.6vw, 38px);
   font-weight: 400;
   line-height: 1;
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
   transition: color 180ms ease;
 }
 
@@ -3244,8 +3250,8 @@ body {
   margin: 18px 0 0;
   font-size: clamp(46px, 5.6vw, 68px);
   font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -0.045em;
+  line-height: 1.05;
+  letter-spacing: 0;
 }
 
 .lp-update-article-subtitle {
@@ -3253,7 +3259,7 @@ body {
   color: var(--lp-muted);
   font-size: clamp(23px, 2.6vw, 32px);
   line-height: 1.15;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 .lp-update-article-copy {
@@ -3338,7 +3344,7 @@ body {
   margin: 0;
   font-size: 17px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 
 .lp-figure-heading span {
@@ -4237,8 +4243,8 @@ body {
   }
 
   .cog-mobile-menu-link {
-    font-size: 40px;
-    line-height: 1.02;
+    font-size: 30px;
+    line-height: 1.08;
   }
 }
 
@@ -4247,4 +4253,43 @@ body {
     font-size: 31px;
     line-height: 1;
   }
+}
+
+/* Sequoia-style interface voice: Pitch Sans is reserved for navigation,
+   actions, and categorical labels; it never replaces readable body copy. */
+:is(
+  .cog-kicker,
+  .cog-strip-label,
+  .lp-summary-grid dt,
+  .lp-portfolio-view-switch button,
+  .lp-portfolio-table th,
+  .lp-portal-footer,
+  .lp-detail-heading .lp-detail-meta,
+  .lp-detail-facts dt,
+  .lp-performance dt,
+  .lp-updates-index-header > span,
+  .lp-update-article-meta,
+  .lp-update-list-meta,
+  .lp-update-list-arrow,
+  .lp-mobile-investment-facts dt
+) {
+  font-family: var(--cog-ui);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+:is(
+  .lp-portfolio-tabs a,
+  .lp-back-link,
+  .lp-update-back-link,
+  .lp-company-website
+) {
+  font-family: var(--cog-ui);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.cog-footer-meta {
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
