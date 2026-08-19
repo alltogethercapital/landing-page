@@ -25,9 +25,6 @@ export function LpPortalNav() {
         <Link href="/lp" aria-current={!isUpdate ? "page" : undefined} className={!isUpdate ? "is-active" : undefined}>Portfolio</Link>
         <Link href="/lp/updates" aria-current={isUpdate ? "page" : undefined} className={isUpdate ? "is-active" : undefined}>Investor Updates</Link>
       </nav>
-      <form action="/api/lp/logout" method="post" className="lp-portal-sign-out">
-        <button type="submit">Sign out</button>
-      </form>
     </aside>
   );
 }

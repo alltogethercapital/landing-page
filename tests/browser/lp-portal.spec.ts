@@ -32,14 +32,24 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(graphViewButton).toHaveAttribute("aria-pressed", "true");
   await expect(tableViewButton).toHaveAttribute("aria-pressed", "false");
   await expect(page.getByText("43 companies · 1 not-yet-allocated balance", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("$549,014.25", { exact: true })).toBeVisible();
+  await expect(page.getByText("$661,014.25", { exact: true })).toBeVisible();
   const summaryGrid = page.locator(".lp-summary-grid");
-  await expect(summaryGrid.getByText("Not yet allocated", { exact: true })).toBeVisible();
+  const aumTerm = summaryGrid.locator(".lp-summary-term").filter({ has: page.getByText("AUM", { exact: true }) });
+  const navTerm = summaryGrid.locator(".lp-summary-term").filter({ has: page.getByText("NAV", { exact: true }) });
+  await expect(aumTerm).toHaveAttribute("aria-describedby", "lp-aum-tooltip");
+  await expect(navTerm).toHaveAttribute("aria-describedby", "lp-nav-tooltip");
+  await aumTerm.hover();
+  await expect(summaryGrid.getByRole("tooltip").filter({ hasText: /Assets under management \(AUM\), shown at recorded cost/ })).toBeVisible();
+  await navTerm.focus();
+  await expect(summaryGrid.getByRole("tooltip").filter({ hasText: /Net asset value \(NAV\) is assets minus liabilities/ })).toBeVisible();
+  await expect(summaryGrid.locator(".lp-summary-metric--primary")).toHaveCount(2);
+  await expect(summaryGrid.getByText("Pending allocation", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("$112,000.00", { exact: true })).toBeVisible();
-  await expect(page.getByText("$629,760.05", { exact: true })).toBeVisible();
-  await expect(page.getByText("Current value multiple", { exact: true })).toBeVisible();
+  await expect(page.getByText("$741,760.05", { exact: true })).toBeVisible();
+  await expect(page.getByText("Gross value multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("1.15×", { exact: true })).toBeVisible();
+  await expect(page.getByText("1.12×", { exact: true })).toBeVisible();
+  await expect(page.getByText("1.15×", { exact: true })).toHaveCount(0);
   await expect(page.getByText(/Projection as of 2026-08-18/i)).toHaveCount(0);
   const portalLogoBox = await page.locator(".lp-portal-nav-logo").boundingBox();
   expect(portalLogoBox).not.toBeNull();
@@ -114,7 +124,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(investmentsSectionLink).not.toHaveAttribute("aria-current");
   await expect(page.getByRole("heading", { name: "Portfolio at a glance" })).toBeVisible();
   await expect(page.locator(".lp-summary-grid")).toBeVisible();
-  await expect(page.locator(".lp-summary-grid").getByText("$629,760.05", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("$741,760.05", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("1.12×", { exact: true })).toBeVisible();
   const analysisSummaryBox = await page.locator(".lp-summary-grid").boundingBox();
   const analysisTabsBox = await portfolioSections.boundingBox();
   expect(analysisSummaryBox).not.toBeNull();
@@ -355,10 +366,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByRole("heading", { name: "Atoms" })).toBeVisible();
   await expect(page.getByText("$9,350", { exact: true })).toHaveCount(2);
 
-  await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Sign out" })).toHaveCount(0);
   await expect(page.getByLabel("Account options")).toHaveCount(0);
-  await page.getByRole("button", { name: "Sign out" }).click();
-  await expect(page).toHaveURL(/\/lp-login$/);
 });
 
 test("renders the login, portfolio, and detail views at every supported layout", async ({ browser }) => {
@@ -393,7 +402,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await page.getByRole("button", { name: /Sign in/ }).click();
     await expect(page).toHaveURL(/\/lp$/);
     await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Sign out" })).toHaveCount(0);
     const portfolioSections = page.getByRole("navigation", { name: "Portfolio sections" });
     await expect(portfolioSections.getByRole("link", { name: "Investments", exact: true })).toHaveAttribute("aria-current", "page");
     await expect(portfolioSections.getByRole("link", { name: "Insights", exact: true })).toBeVisible();
