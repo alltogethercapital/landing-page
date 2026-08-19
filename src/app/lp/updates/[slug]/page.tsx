@@ -6,16 +6,6 @@ import {
   LP_AUGUST_2026_PORTFOLIO_AS_OF,
   LP_INVESTOR_UPDATES,
 } from "@/data/lp-investor-updates";
-import {
-  LETTER_ALLOCATION,
-  LETTER_H256_DEPLOYED_AMOUNT,
-  LETTER_H256_PENDING_AMOUNT,
-  LETTER_H256_POSITION_SHARE,
-  LETTER_ALLOCATION_PROSE,
-  LETTER_TOP_FIVE_SHARE,
-  type LetterAllocationCategory,
-} from "@/data/lp-letter-figures";
-import { H256_VEHICLE_ALLOCATION } from "@/data/lp-investments";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -50,25 +40,6 @@ function currency(value: number) {
   }).format(value);
 }
 
-function wholePercent(value: number) {
-  return `${Math.round(value * 100)}%`;
-}
-
-const NUMBER_WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
-
-// "24.1% is in defense and aerospace, 21.7% in AI and compute, …" —
-// built from the same allocation the figure below the letter draws, so the
-// sentence cannot drift from the chart.
-function allocationSentence() {
-  return LETTER_ALLOCATION.map((row, index) => {
-    const share = `${(row.share * 100).toFixed(1)}%`;
-    const label = LETTER_ALLOCATION_PROSE[row.key as LetterAllocationCategory];
-    const lead = index === 0 ? `${share} is in ${label}` : `${share} in ${label}`;
-    if (index === 0) return lead;
-    return index === LETTER_ALLOCATION.length - 1 ? `and ${lead}` : lead;
-  }).join(", ");
-}
-
 export default async function LpInvestorUpdatePage({ params }: PageProps) {
   const { slug } = await params;
   const update = LP_INVESTOR_UPDATES.find((entry) => entry.slug === slug);
@@ -95,9 +66,8 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         <p>To our investors,</p>
 
         <p>
-          We owe you an update. This is our first formal investor update since we began investing, and it
-          should have come sooner. We will publish at least twice per year from here, with shorter updates
-          when something material changes between them.
+          This is our first formal update since we began investing, and it should have come sooner. We will
+          publish at least twice per year, with shorter notes when something material changes.
         </p>
 
         <p>
@@ -108,20 +78,24 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
             rel="noreferrer"
           >
             AI will change the basic economics of production
-          </a>. Models can already perform cognitive tasks that once required people. As those models improve
-          and move into robots, more physical work will become machine-produced as well. Human judgment
-          and ambition will remain essential, but each unit of output will require fewer human hours. This
-          is what we mean by a post-labor economy.
+          </a>. Models already perform cognitive tasks that once required people. As they improve and move into
+          machines, more physical work will become machine-produced. Human judgment and ambition will remain
+          essential, but each unit of output will require fewer human hours. This is what we mean by a
+          post-labor economy.
         </p>
 
         <p>
-          That shift changes who captures the value. If intelligence and labor are increasingly produced
-          by capital—compute, models, robots, factories, and energy systems—the owners of that capital will
-          participate most directly in what it creates.
+          Intelligence is becoming abundant, but the physical world remains scarce. The marginal cost of
+          cognition is falling while power, chips, manufacturing capacity, reliable machines, and permission
+          to operate remain difficult to build. We believe value will move toward the bottlenecks that turn
+          cheap intelligence into dependable real-world capability.
         </p>
 
         <p>
-          Another reason is personal. We wanted our friends, families, and the people close to us to
+          That shift changes who captures the value. As intelligence and labor are produced by compute,
+          models, robots, factories, and energy systems, the owners of those systems participate most
+          directly in what they create. The ownership question is also personal. We wanted the people close
+          to us to
           participate in the technologies that could carry civilization beyond the{" "}
           <a
             href="https://humanorigins.si.edu/research/age-humans-evolutionary-perspectives-anthropocene"
@@ -130,75 +104,59 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
           >
             Anthropocene
           </a>{" "}
-          and into whatever comes next—not merely watch that transition from the sidelines. We do not know
-          what kind of civilization will emerge on the other side. We do want to support its builders and
-          bring our investors into the ownership layer of the productive, consequential companies they
-          create.
+          and into whatever comes next—not merely watch from the sidelines. We want to support its builders
+          and bring our investors into the ownership layer of the consequential companies they create.
         </p>
 
         <p>
-          AI adoption is no longer the question. The{" "}
+          The current landscape reinforces that view. The{" "}
           <a href="https://hai.stanford.edu/ai-index/2026-ai-index-report/economy" target="_blank" rel="noreferrer">
             Stanford AI Index
           </a>{" "}
-          reports that 88% of organizations now use it. The constraint is increasingly physical. The{" "}
+          shows adoption spreading across the economy, while the{" "}
           <a href="https://www.iea.org/reports/energy-and-ai/energy-supply-for-ai" target="_blank" rel="noreferrer">
             International Energy Agency
           </a>{" "}
-          expects electricity supplying data centers to rise from roughly 460 terawatt-hours in 2024 to
-          more than 1,000 by 2030. Software spreads instantly; power, chips, cooling, robots, and factories
-          do not.
+          documents the energy system behind it. Models and applications diffuse quickly; power, factories,
+          regulation, distribution, and trust do not. The investment question is no longer whether AI
+          matters. It is where scarcity, control, and pricing power persist as intelligence gets cheaper.
         </p>
 
         <p>
           As of {LP_AUGUST_2026_PORTFOLIO_AS_OF}, we had invested {currency(snapshot.investedCost)} across
-          {` ${snapshot.positions} positions in ${snapshot.companies} companies`}. Our directional gross
-          view was {currency(snapshot.projectedGrossValue)}, or{" "}
-          {(snapshot.projectedGrossValue / snapshot.investedCost).toFixed(2)}× invested cost.{" "}
-          {NUMBER_WORDS[snapshot.markedPositions]} positions use{" "}
-          <a
-            href="https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/IPEV%20Valuation%20Guidelines%20-%20December%202022.pdf"
-            target="_blank"
-            rel="noreferrer"
-          >
-            sourced comparable financings
-          </a>; the remainder are held at cost. This is not audited net asset value, and it is too early to
-          call it performance.
+          {` ${snapshot.positions} positions`}. Our directional gross view was{" "}
+          {(snapshot.projectedGrossValue / snapshot.investedCost).toFixed(2)}× invested cost. Most positions
+          remain held at cost; a small number reflect sourced comparable financings. This is not audited net
+          asset value, and it is too early to call it performance.
         </p>
 
         <p>
-          The portfolio reflects that thesis. At invested cost, {allocationSentence()}. Together,
-          these positions span the intelligence, machines, and infrastructure of a post-labor
-          economy.
+          The portfolio began broad by design. We used it as a listening system while the market was
+          forming: to learn which founders could turn technical possibility into institutions, which layers
+          were becoming commodities, and which constraints would endure. Breadth gave us a map. Now we are
+          turning that map into concentration of thought, not simply concentration of capital.
         </p>
 
         <p>
-          We built broadly while the market was forming. Our 44 positions gave us breadth. The largest is
-          the $200,000 H256 LLC Series 3 vehicle, representing{" "}
-          {(LETTER_H256_POSITION_SHARE * 100).toFixed(1)}% of invested cost. It remains one legal position,
-          but the allocation view splits it into {currency(LETTER_H256_DEPLOYED_AMOUNT)} ({wholePercent(H256_VEHICLE_ALLOCATION.deployedShare)})
-          deployed to {H256_VEHICLE_ALLOCATION.deployedCompany} in its {H256_VEHICLE_ALLOCATION.deployedRound} and{" "}
-          a pending allocation of {currency(LETTER_H256_PENDING_AMOUNT)} ({wholePercent(H256_VEHICLE_ALLOCATION.awaitingShare)}).
-          Our five largest positions represent{" "}
-          {(LETTER_TOP_FIVE_SHARE * 100).toFixed(1)}%. We do not plan to repeat that construction. Next we
-          will favor fewer direct positions, clearer economics, better information rights, and room to
-          support the companies that earn conviction.
+          All Together backs the companies building civilization in an age of abundant intelligence. We
+          focus on efficient compute and inference, robotics and physical automation, power and industrial
+          infrastructure, and defense and aerospace. Compute makes intelligence cheaper. Robots turn it
+          into physical work. Energy and industry let both scale. Defense and aerospace test reliability.
         </p>
 
         <p>
-          Our priorities are efficient compute and{" "}
-          <a href="https://developers.google.com/machine-learning/glossary/#inference" target="_blank" rel="noreferrer">
-            inference
-          </a>, robotics and physical automation, power and industrial infrastructure, and defense and
-          aerospace. Compute makes intelligence cheaper. Robots turn it into physical work. Energy and
-          industry let both scale. Defense and aerospace test these systems where reliability matters most.
+          Within those areas, we look for a durable point of control: a technical advantage that compounds,
+          a product embedded in a critical workflow, infrastructure others must build on, or an operating
+          system for a newly possible market. We care about founder ambition, technical truth, capital
+          efficiency, price, structure, and enduring leverage rather than temporary attention.
         </p>
 
         <p>
           Access alone is not an advantage when capital is crowded. Price, structure, technical judgment,
-          and the willingness to pass matter. You trusted us before there was a record; we owe you
-          disciplined decisions and plain reporting. The portfolio is young, and the outcomes that matter
-          will take years. We will keep showing you what we learn.
+          and the willingness to pass matter. We will favor fewer direct positions, clearer economics,
+          better information rights, and room to support the companies that earn conviction. You trusted
+          us before there was a record; we owe you disciplined decisions and plain reporting. The outcomes
+          that matter will take years. We will keep showing you what we learn.
         </p>
 
         <p>Thank you for building this with us.</p>
