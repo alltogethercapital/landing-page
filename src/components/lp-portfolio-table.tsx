@@ -177,6 +177,22 @@ export function LpPortfolioTable({
     <section className="lp-portfolio-section" aria-labelledby="lp-portfolio-heading">
       <div className="lp-table-heading">
         <h2 id="lp-portfolio-heading">Investments</h2>
+        <div className="lp-portfolio-view-switch" role="group" aria-label="Investment grouping">
+          <button
+            type="button"
+            aria-pressed={display === "positions"}
+            onClick={() => setDisplay("positions")}
+          >
+            By investment
+          </button>
+          <button
+            type="button"
+            aria-pressed={display === "companies"}
+            onClick={() => setDisplay("companies")}
+          >
+            By company
+          </button>
+        </div>
       </div>
 
       <form className="lp-table-controls" action="/lp" method="get">
@@ -194,26 +210,6 @@ export function LpPortfolioTable({
         </label>
         <button type="submit" className="lp-filter-submit">Search</button>
       </form>
-
-      <div className="lp-portfolio-view-row">
-        <h3>{display === "positions" ? "Individual investments" : "All companies"}</h3>
-        <div className="lp-portfolio-view-switch" role="group" aria-label="Portfolio view">
-          <button
-            type="button"
-            aria-pressed={display === "positions"}
-            onClick={() => setDisplay("positions")}
-          >
-            Individual investments
-          </button>
-          <button
-            type="button"
-            aria-pressed={display === "companies"}
-            onClick={() => setDisplay("companies")}
-          >
-            Allocation by company
-          </button>
-        </div>
-      </div>
 
       {display === "positions" ? (
         <>
@@ -318,7 +314,7 @@ export function LpPortfolioTable({
           </div>
         </>
       ) : (
-        <section className="lp-company-allocation-view" aria-label="All companies">
+        <section className="lp-company-allocation-view" aria-label="Investments by company">
           {filteredCompanyAllocationRows.length > 0 ? (
             <div className="lp-figure-bars" role="list" aria-label="Allocation by company across total capital">
               {filteredCompanyAllocationRows.map((row, index) => (

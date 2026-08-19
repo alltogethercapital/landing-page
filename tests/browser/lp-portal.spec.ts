@@ -25,10 +25,10 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(investmentsSectionLink).toHaveAttribute("aria-current", "page");
   await expect(insightsLink).not.toHaveAttribute("aria-current");
   await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
-  const individualInvestmentsButton = page.getByRole("button", { name: "Individual investments" });
-  const allocationByCompanyButton = page.getByRole("button", { name: "Allocation by company" });
-  await expect(allocationByCompanyButton).toHaveAttribute("aria-pressed", "true");
-  await expect(individualInvestmentsButton).toHaveAttribute("aria-pressed", "false");
+  const byInvestmentButton = page.getByRole("button", { name: "By investment" });
+  const byCompanyButton = page.getByRole("button", { name: "By company" });
+  await expect(byCompanyButton).toHaveAttribute("aria-pressed", "true");
+  await expect(byInvestmentButton).toHaveAttribute("aria-pressed", "false");
   await expect(page.getByText("43 companies · 1 not-yet-allocated balance", { exact: true })).toHaveCount(0);
   await expect(page.getByText("$549,014.25", { exact: true })).toBeVisible();
   const summaryGrid = page.locator(".lp-summary-grid");
@@ -51,12 +51,19 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByText("Equity", { exact: true })).toHaveCount(0);
   await expect(page.getByText("SAFE", { exact: true })).toHaveCount(0);
   await expect(page.getByText("SPV", { exact: true })).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "All companies" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "All companies" })).toHaveCount(0);
+  await expect(page.getByRole("group", { name: "Investment grouping" })).toBeVisible();
+  const tableHeadingBox = await page.locator(".lp-table-heading").boundingBox();
   const searchControlsBox = await page.locator(".lp-table-controls").boundingBox();
   const portfolioViewSwitchBox = await page.locator(".lp-portfolio-view-switch").boundingBox();
+  expect(tableHeadingBox).not.toBeNull();
   expect(searchControlsBox).not.toBeNull();
   expect(portfolioViewSwitchBox).not.toBeNull();
-  expect(portfolioViewSwitchBox!.y).toBeGreaterThan(searchControlsBox!.y + searchControlsBox!.height);
+  expect(portfolioViewSwitchBox!.y).toBeGreaterThanOrEqual(tableHeadingBox!.y);
+  expect(portfolioViewSwitchBox!.y + portfolioViewSwitchBox!.height).toBeLessThanOrEqual(
+    tableHeadingBox!.y + tableHeadingBox!.height,
+  );
+  expect(searchControlsBox!.y).toBeGreaterThanOrEqual(tableHeadingBox!.y + tableHeadingBox!.height);
   const companyAllocationRows = page.locator(".lp-company-allocation-view .lp-figure-bar-row");
   await expect(companyAllocationRows).toHaveCount(44);
   await expect(companyAllocationRows.nth(0)).toContainText("Not yet allocated");
@@ -82,8 +89,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
     path: "output/playwright/lp-portal/company-allocation-desktop.png",
     fullPage: true,
   });
-  await individualInvestmentsButton.click();
-  await expect(individualInvestmentsButton).toHaveAttribute("aria-pressed", "true");
+  await byInvestmentButton.click();
+  await expect(byInvestmentButton).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator(".lp-portfolio-table tbody tr")).toHaveCount(44);
   await expect(page.locator(".lp-portfolio-table").getByText("Positron", { exact: true })).toBeVisible();
   const h256Row = page.locator(".lp-portfolio-table tbody tr").filter({ hasText: "H256 LLC Series 3" });
@@ -111,8 +118,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   expect(analysisSummaryBox).not.toBeNull();
   expect(analysisTabsBox).not.toBeNull();
   expect(analysisTabsBox!.y).toBeGreaterThan(analysisSummaryBox!.y + analysisSummaryBox!.height);
-  await expect(page.getByRole("button", { name: "Individual investments" })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Allocation by company" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "By investment" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "By company" })).toHaveCount(0);
 
   const allocationFigure = page.locator(".lp-figure-section").first();
   await expect(allocationFigure.getByRole("heading", { name: "Allocation by category" })).toBeVisible();
@@ -238,8 +245,8 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   )).toBe(true);
   await page.screenshot({ path: "output/playwright/lp-portal/update-august-2026-desktop.png", fullPage: true });
 
-  await expect(page.getByRole("link", { name: "Home", exact: true })).toHaveAttribute("href", "/");
-  await page.getByRole("link", { name: "Home", exact: true }).click();
+  await expect(page.getByRole("link", { name: "Back to All Together" })).toHaveAttribute("href", "/");
+  await page.getByRole("link", { name: "Back to All Together" }).click();
   await expect(page).toHaveURL(/\/$/);
   await expect(page.locator(".cog-nav-button")).toHaveText("Email us");
   const publicNavSurface = await page.locator(".cog-desktop-nav").evaluate((element) => {
@@ -255,7 +262,7 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await expect(page.getByRole("heading", { name: "Investments" })).toBeVisible();
 
   await page.waitForLoadState("networkidle");
-  await page.getByRole("button", { name: "Individual investments" }).click();
+  await page.getByRole("button", { name: "By investment" }).click();
   const search = page.getByPlaceholder("Search investments…");
   await search.fill("Blue");
   await expect(page.locator(".lp-portfolio-table tbody tr")).toHaveCount(1);
@@ -287,9 +294,9 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
 
   await page.locator(".lp-back-link").click();
   await page.waitForLoadState("networkidle");
-  const returnedIndividualInvestmentsButton = page.getByRole("button", { name: "Individual investments" });
-  await returnedIndividualInvestmentsButton.click();
-  await expect(returnedIndividualInvestmentsButton).toHaveAttribute("aria-pressed", "true");
+  const returnedByInvestmentButton = page.getByRole("button", { name: "By investment" });
+  await returnedByInvestmentButton.click();
+  await expect(returnedByInvestmentButton).toHaveAttribute("aria-pressed", "true");
   await page.getByPlaceholder("Search investments…").fill("Positron");
   await page.getByPlaceholder("Search investments…").press("Enter");
   await page.locator(".lp-table-wrap").getByRole("link", { name: "View Positron" }).click();
@@ -324,6 +331,10 @@ test("protects, authenticates, searches, and opens an investment", async ({ page
   await page.goto("/lp/investments/41-atoms");
   await expect(page.getByRole("heading", { name: "Atoms" })).toBeVisible();
   await expect(page.getByText("$9,350", { exact: true })).toHaveCount(2);
+
+  await page.getByLabel("Account options").click();
+  await page.getByRole("button", { name: "Sign out" }).click();
+  await expect(page).toHaveURL(/\/lp-login$/);
 });
 
 test("renders the login, portfolio, and detail views at every supported layout", async ({ browser }) => {
@@ -392,8 +403,8 @@ test("renders the login, portfolio, and detail views at every supported layout",
     }
 
     await page.waitForLoadState("networkidle");
-    await expect(page.getByRole("button", { name: "Allocation by company" })).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByRole("heading", { name: "All companies" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "By company" })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("heading", { name: "All companies" })).toHaveCount(0);
     await expect(page.locator(".lp-company-allocation-view .lp-figure-bar-row")).toHaveCount(44);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     if (viewport.name === "phone") {
@@ -407,7 +418,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page).toHaveURL(/\/lp\?section=analysis$/);
     await expect(page.getByRole("heading", { name: "Portfolio at a glance" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Investments" })).toHaveCount(0);
-    await expect(page.getByRole("button", { name: "Individual investments" })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "By investment" })).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     await page.screenshot({
       path: `output/playwright/lp-portal/portfolio-analysis-${viewport.name}.png`,
@@ -417,7 +428,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
       .getByRole("link", { name: "Investments", exact: true })
       .click();
     await expect(page).toHaveURL(/\/lp$/);
-    await page.getByRole("button", { name: "Individual investments" }).click();
+    await page.getByRole("button", { name: "By investment" }).click();
 
     await page.screenshot({
       path: `output/playwright/lp-portal/portfolio-${viewport.name}.png`,
@@ -429,7 +440,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page.getByRole("heading", { name: "Investor Updates" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Investor Updates" })).toHaveAttribute("aria-current", "page");
     await expect(page.getByRole("link", { name: /Beyond the Anthropocene: Betting on the Post-Labor AI Economy/ })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Home", exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Back to All Together" })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     await page.screenshot({
       path: `output/playwright/lp-portal/updates-index-${viewport.name}.png`,
@@ -456,7 +467,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await page.getByRole("link", { name: "Portfolio", exact: true }).click();
     await expect(page).toHaveURL(/\/lp$/);
 
-    await page.getByRole("button", { name: "Individual investments" }).click();
+    await page.getByRole("button", { name: "By investment" }).click();
     await page.getByRole("link", { name: "View Blue Origin" }).click();
     await expect(page).toHaveURL(/43-blue-origin$/);
     await expect(page.getByRole("heading", { name: "Blue Origin" })).toBeVisible();

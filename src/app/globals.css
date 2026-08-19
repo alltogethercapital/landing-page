@@ -2247,7 +2247,7 @@ body {
 
 .lp-portal-nav {
   position: fixed;
-  top: 148px;
+  top: 112px;
   left: var(--lp-page-gutter);
   z-index: 80;
   display: flex;
@@ -2266,11 +2266,11 @@ body {
   margin-bottom: 22px;
 }
 
-.lp-portal-home {
+.lp-portal-back {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   color: var(--lp-muted);
   font-family: var(--cog-support);
   font-size: 13px;
@@ -2278,7 +2278,7 @@ body {
   text-decoration: none;
 }
 
-.lp-portal-home:hover {
+.lp-portal-back:hover {
   color: var(--lp-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -2292,7 +2292,7 @@ body {
 }
 
 .lp-portal-nav nav a,
-.lp-portal-nav form button {
+.lp-portal-account-menu button {
   border: 0;
   background: transparent;
   color: var(--lp-ink);
@@ -2320,32 +2320,80 @@ body {
   content: "";
 }
 
-.lp-portal-nav form {
+.lp-portal-account-menu {
+  position: relative;
   margin-top: 28px;
-}
-
-.lp-portal-nav form button {
-  min-height: auto;
-  border: 0;
-  border-bottom: 1px solid transparent;
-  padding: 0 0 2px;
-  color: var(--lp-muted);
   font-family: var(--cog-support);
-  font-size: 13px;
-  transition: border-color 160ms ease, color 160ms ease;
 }
 
-.lp-portal-nav form button:hover {
-  border-color: var(--lp-ink);
-  background: transparent;
+.lp-portal-account-menu summary {
+  display: grid;
+  width: 32px;
+  height: 28px;
+  justify-content: center;
+  place-items: center;
+  border: 0;
+  border-radius: 2px;
+  color: var(--lp-muted);
+  cursor: pointer;
+  list-style: none;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.lp-portal-account-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.lp-portal-account-menu summary span {
+  transform: translateY(-3px);
+  letter-spacing: 0.08em;
+}
+
+.lp-portal-account-menu summary:hover,
+.lp-portal-account-menu summary:focus-visible,
+.lp-portal-account-menu[open] summary {
+  background: color-mix(in srgb, var(--lp-ink) 7%, transparent);
   color: var(--lp-ink);
+  outline: 0;
+}
+
+.lp-portal-account-menu form {
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 0;
+  z-index: 2;
+  min-width: 108px;
+  margin: 0;
+  border: 1px solid var(--lp-line);
+  padding: 5px;
+  background: var(--lp-paper);
+  box-shadow: 0 8px 24px rgba(18, 18, 18, 0.12);
+}
+
+.lp-portal-account-menu form button {
+  width: 100%;
+  padding: 7px 9px;
+  color: var(--lp-ink);
+  font-family: var(--cog-support);
+  font-size: 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.lp-portal-account-menu form button:hover,
+.lp-portal-account-menu form button:focus-visible {
+  background: var(--lp-ink);
+  color: var(--lp-paper);
+  outline: 0;
 }
 
 /* Portal controls reach the 44px touch minimum on coarse pointers; mouse
    layouts keep their tighter rhythm. */
 @media (pointer: coarse) {
   .lp-portal-nav nav a,
-  .lp-portal-home {
+  .lp-portal-back,
+  .lp-portal-account-menu summary,
+  .lp-portal-account-menu form button {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -2359,13 +2407,11 @@ body {
 
   /* Underlined text links keep their visual box and grow only the hit area —
      a min-height would strand the rule 44px below the words. */
-  .lp-portal-nav form button,
   .lp-back-link,
   .lp-update-back-link {
     position: relative;
   }
 
-  .lp-portal-nav form button::after,
   .lp-back-link::after,
   .lp-update-back-link::after {
     position: absolute;
@@ -2508,6 +2554,10 @@ body {
 }
 
 .lp-table-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
   padding-bottom: 18px;
 }
 
@@ -2519,23 +2569,9 @@ body {
   letter-spacing: -0.035em;
 }
 
-.lp-portfolio-view-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 24px;
-  border-bottom: 1px solid var(--lp-ink);
-  padding: 18px var(--lp-component-inset) 10px;
-}
-
-.lp-portfolio-view-row h3 {
-  margin: 0;
-  font-size: 19px;
-  font-weight: 500;
-}
-
 .lp-portfolio-view-switch {
   display: flex;
+  flex: none;
   border: 1px solid var(--lp-ink);
 }
 
@@ -3931,7 +3967,7 @@ body {
     --lp-rail-end: 232px;
     --lp-content-gutter: 32px;
   }
-  .lp-portal-nav { top: 116px; width: 154px; }
+  .lp-portal-nav { top: 80px; width: 154px; }
   .lp-portal-shell { padding-top: 104px; padding-bottom: 32px; }
   .lp-summary-grid { grid-template-columns: 1fr; }
   /* Stacked, the values must share a left edge — flex let each one start
@@ -4040,10 +4076,11 @@ body {
   }
 
   .lp-portal-nav-logo { display: none; margin: 0; }
-  .lp-portal-home {
+  .lp-portal-back {
     flex: none;
-    margin: 0 18px 0 0;
+    margin: 0 16px 0 0;
   }
+  .lp-portal-back-label { display: none; }
   .lp-portal-nav nav { margin-left: 0; }
   .lp-portal-nav nav a,
   .lp-portal-nav nav a.is-active {
@@ -4053,15 +4090,11 @@ body {
     font-size: 14px;
   }
   .lp-portal-nav nav a.is-active::before { display: none; }
-  .lp-portal-nav form { margin: 0 52px 0 auto; }
-  .lp-portal-nav form button {
-    min-height: auto;
-    border: 0;
-    border-bottom: 1px solid var(--lp-ink);
-    padding: 4px 0;
-    color: var(--lp-muted);
-    font-size: 13px;
-    white-space: nowrap;
+  .lp-portal-account-menu { margin: 0 52px 0 auto; }
+  .lp-portal-account-menu form {
+    top: calc(100% + 9px);
+    right: 0;
+    left: auto;
   }
   .lp-portal-shell {
     margin-left: 0;
@@ -4080,14 +4113,9 @@ body {
     font-size: 17px;
   }
 
-  .lp-portfolio-view-row { display: block; }
-  .lp-portfolio-view-switch {
-    width: 100%;
-    margin-top: 12px;
-  }
-  .lp-portfolio-view-switch button {
-    flex: 1;
-  }
+  .lp-table-heading { gap: 12px; }
+  .lp-table-heading h2 { font-size: 30px; }
+  .lp-portfolio-view-switch button { min-height: 32px; padding-inline: 8px; font-size: 10px; }
 
   .lp-table-wrap { display: none; }
   .lp-portfolio-mobile {
@@ -4222,13 +4250,10 @@ body {
 }
 
 @media (max-width: 360px) {
-  .lp-portal-home {
-    margin-right: 14px;
-  }
-
-  .lp-portal-home-label {
-    display: none;
-  }
+  .lp-portal-back { margin-right: 12px; }
+  .lp-table-heading { gap: 8px; }
+  .lp-table-heading h2 { font-size: 27px; }
+  .lp-portfolio-view-switch button { padding-inline: 6px; font-size: 9px; }
 }
 
 @media (max-width: 480px) {
