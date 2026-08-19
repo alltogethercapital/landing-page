@@ -312,10 +312,10 @@ export function LpPortfolioTable({
         <section className="lp-company-allocation-view" aria-label="Investments by company">
           {filteredCompanyAllocationRows.length > 0 ? (
             <div className="lp-figure-bars" role="list" aria-label="Allocation by company across total capital">
-              {filteredCompanyAllocationRows.map((row, index) => (
+              {filteredCompanyAllocationRows.map((row) => (
                 <div
                   key={row.id}
-                  className={`lp-figure-bar-row${index === 0 && !normalizedQuery ? " is-lead" : ""}`}
+                  className="lp-figure-bar-row"
                   role="listitem"
                   aria-label={`${row.label}: ${formatWholeCurrency(row.amount)}, ${formatPercent(row.amount / totalCapital)} of total capital`}
                 >
