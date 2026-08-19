@@ -177,8 +177,8 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
           {(LETTER_H256_POSITION_SHARE * 100).toFixed(1)}% of invested cost. It remains one legal position,
           but the allocation view splits it into {currency(LETTER_H256_DEPLOYED_AMOUNT)} ({wholePercent(H256_VEHICLE_ALLOCATION.deployedShare)})
           deployed to {H256_VEHICLE_ALLOCATION.deployedCompany} in its {H256_VEHICLE_ALLOCATION.deployedRound} and{" "}
-          {currency(LETTER_H256_PENDING_AMOUNT)} ({wholePercent(H256_VEHICLE_ALLOCATION.awaitingShare)})
-          that is not yet allocated or deployed. Our five largest positions represent{" "}
+          a pending allocation of {currency(LETTER_H256_PENDING_AMOUNT)} ({wholePercent(H256_VEHICLE_ALLOCATION.awaitingShare)}).
+          Our five largest positions represent{" "}
           {(LETTER_TOP_FIVE_SHARE * 100).toFixed(1)}%. We do not plan to repeat that construction. Next we
           will favor fewer direct positions, clearer economics, better information rights, and room to
           support the companies that earn conviction.

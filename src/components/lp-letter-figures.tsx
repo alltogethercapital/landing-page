@@ -183,7 +183,7 @@ function PortfolioAtAGlance() {
               row.key === "aerospace"
                 ? `Includes ${dollars(LETTER_H256_DEPLOYED_AMOUNT)} deployed to ${H256_VEHICLE_ALLOCATION.deployedCompany} in its ${H256_VEHICLE_ALLOCATION.deployedRound} through H256`
                 : row.key === "pending"
-                  ? `${dollars(LETTER_H256_PENDING_AMOUNT)} in H256 not yet deployed`
+                  ? `Pending allocation: ${dollars(LETTER_H256_PENDING_AMOUNT)} in H256`
                 : undefined
             }
           />
@@ -250,8 +250,19 @@ function ConcentrationAndStructure() {
 /* 03 — Performance ---------------------------------------------------------- */
 
 function ValuationEvidence() {
-  const positions = LP_INVESTMENTS.map((position) => {
-    const mark = LP_PROJECTED_VALUATION_MARKS[position.id];
+  const positions = LP_INVESTMENTS.map((recordedPosition) => {
+    const mark = LP_PROJECTED_VALUATION_MARKS[recordedPosition.id];
+    const position = recordedPosition.vehicleAllocation && mark
+      ? {
+          ...recordedPosition,
+          id: `${recordedPosition.id}-anduril`,
+          company: recordedPosition.vehicleAllocation.deployedCompany,
+          investedCost: mark.costBasisAmount
+            ?? recordedPosition.investedCost * recordedPosition.vehicleAllocation.deployedShare,
+          round: `Via H256 · ${recordedPosition.vehicleAllocation.deployedRound}`,
+          entryValuation: mark.entryValuation ?? recordedPosition.entryValuation,
+        }
+      : recordedPosition;
     const markedMultiple = mark
       ? mark.latestValuationAmount / mark.entryValuationAmount
       : 1;
@@ -274,12 +285,17 @@ function ValuationEvidence() {
       || right.delta - left.delta
       || left.position.chronology - right.position.chronology,
   );
-  const totalCarried = positions.reduce((sum, position) => sum + position.carried, 0);
+  const totalCarried = positions.reduce((sum, position) => sum + position.carried, 0)
+    + LETTER_H256_PENDING_AMOUNT;
   const totalDelta = totalCarried - LETTER_INVESTED_TOTAL;
 
   return (
-    <FigureSection id="valuation-evidence" title="Performance">
-      <FigureHeading title="Every position" note="Green delta = gain vs. cost" />
+    <section
+      className="lp-figure-section lp-figure-section--standalone"
+      aria-labelledby="lp-performance-section-title"
+    >
+      <h2 id="lp-performance-section-title" className="sr-only">Performance</h2>
+      <FigureHeading title="Allocated positions" note="Green delta = gain vs. cost" />
       <div className="lp-figure-table-wrap">
         <table className="lp-figure-table lp-figure-table--marks">
           <thead>
@@ -305,7 +321,7 @@ function ValuationEvidence() {
                 </th>
                 <td>
                   {mark?.entryValuation ?? position.entryValuation}
-                  {mark?.costBasisAmount ? (
+                  {mark?.costBasisAmount && position.investedCost !== mark.costBasisAmount ? (
                     <small>{currency(mark.costBasisAmount)} marked slice</small>
                   ) : null}
                 </td>
@@ -333,7 +349,24 @@ function ValuationEvidence() {
             ))}
           </tbody>
           <tfoot>
-            <tr>
+            <tr className="lp-performance-pending-row">
+              <th scope="row">
+                <strong>Pending allocation</strong>
+                <small>H256 · excluded from performance until deployed</small>
+              </th>
+              <td>Awaiting an underlying company</td>
+              <td>
+                Included at cost
+                <small>In AUM, NAV, and total math</small>
+              </td>
+              <td className="is-number">{currency(LETTER_H256_PENDING_AMOUNT)}</td>
+              <td className="is-number lp-performance-change">
+                <strong>—</strong>
+                <small>No performance</small>
+              </td>
+              <td className="is-number">{currency(LETTER_H256_PENDING_AMOUNT)}</td>
+            </tr>
+            <tr className="lp-performance-total-row">
               <th scope="row">Total</th>
               <td />
               <td />
@@ -347,17 +380,24 @@ function ValuationEvidence() {
           </tfoot>
         </table>
       </div>
-    </FigureSection>
+    </section>
   );
 }
 
 /* ---------------------------------------------------------------------------- */
 
-export function LpLetterFigures() {
+export function LpPortfolioInsights() {
   return (
     <div className="lp-figure-suite">
       <PortfolioAtAGlance />
       <ConcentrationAndStructure />
+    </div>
+  );
+}
+
+export function LpPortfolioPerformance() {
+  return (
+    <div className="lp-figure-suite">
       <ValuationEvidence />
     </div>
   );

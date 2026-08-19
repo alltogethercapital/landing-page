@@ -77,7 +77,7 @@ const ENTRY_VALUATION_BY_CHRONOLOGY: Record<number, number> = {
 };
 
 export type LetterEntryRound =
-  | "Not yet allocated"
+  | "Pending allocation"
   | "Series C+"
   | "Series A"
   | "Series B"
@@ -167,7 +167,7 @@ export const LETTER_ALLOCATED_TOTAL = LETTER_INVESTED_TOTAL - LETTER_H256_PENDIN
 
 // The Schedule of Investments continues to carry H256 as one legal position.
 // For allocation reporting, look through that position only far enough to show the
-// amount already deployed to Anduril and the capital that is not yet deployed.
+// amount already deployed to Anduril and the pending allocation.
 export const LETTER_ALLOCATION = (() => {
   const totals = new Map<LetterAllocationCategory, number>();
   const add = (category: LetterAllocationCategory, amount: number) =>
@@ -288,7 +288,7 @@ export const LETTER_ENTRY_ROUND_SPLIT = (() => {
   for (const position of LETTER_POSITIONS) {
     if (position.id === H256_POSITION.id) {
       add("Series C+", LETTER_H256_DEPLOYED_AMOUNT);
-      add("Not yet allocated", LETTER_H256_PENDING_AMOUNT);
+      add("Pending allocation", LETTER_H256_PENDING_AMOUNT);
     } else {
       add(position.entryRound, position.investedCost);
     }
