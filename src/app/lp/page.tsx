@@ -91,9 +91,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         <LpPortfolioTable investments={investments} view={view} />
       ) : (
         <div className="lp-portfolio-analysis">
-          <LpLetterFigures
-            grossValue={projectedValue}
-          />
+          <LpLetterFigures />
         </div>
       )}
 

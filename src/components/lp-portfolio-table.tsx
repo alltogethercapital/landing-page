@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { LpInvestmentDto } from "@/lib/lp-data";
@@ -23,6 +23,10 @@ type CompanyAllocationRow = {
   href: string;
   searchText: string;
 };
+
+const subscribeToHydration = () => () => {};
+const getClientHydrationSnapshot = () => true;
+const getServerHydrationSnapshot = () => false;
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("en-US", {
@@ -136,6 +140,11 @@ export function LpPortfolioTable({
 }) {
   const [query, setQuery] = useState(view.query?.trim() || "");
   const [display, setDisplay] = useState<LpPortfolioDisplay>(view.display || "companies");
+  const isInteractive = useSyncExternalStore(
+    subscribeToHydration,
+    getClientHydrationSnapshot,
+    getServerHydrationSnapshot,
+  );
   const sort = view.sort || "chronology";
   const ascending = view.direction === "asc";
   const normalizedQuery = query.trim().toLocaleLowerCase();
@@ -177,20 +186,22 @@ export function LpPortfolioTable({
     <section className="lp-portfolio-section" aria-labelledby="lp-portfolio-heading">
       <div className="lp-table-heading">
         <h2 id="lp-portfolio-heading">Investments</h2>
-        <div className="lp-portfolio-view-switch" role="group" aria-label="Investment grouping">
+        <div className="lp-portfolio-view-switch" role="group" aria-label="Investment view">
           <button
             type="button"
-            aria-pressed={display === "positions"}
-            onClick={() => setDisplay("positions")}
-          >
-            By investment
-          </button>
-          <button
-            type="button"
+            disabled={!isInteractive}
             aria-pressed={display === "companies"}
             onClick={() => setDisplay("companies")}
           >
-            By company
+            Graph view
+          </button>
+          <button
+            type="button"
+            disabled={!isInteractive}
+            aria-pressed={display === "positions"}
+            onClick={() => setDisplay("positions")}
+          >
+            Table view
           </button>
         </div>
       </div>

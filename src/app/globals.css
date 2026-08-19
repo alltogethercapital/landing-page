@@ -2080,6 +2080,7 @@ body {
   --lp-paper: #f7f6f2;
   --lp-white: #fff;
   --lp-ink: #111;
+  --lp-gain: #1f6b43;
   /* 0.62 clears WCAG AA (4.5:1) on paper; 0.55 measured 4.08:1. */
   --lp-muted: rgba(17, 17, 17, 0.62);
   --lp-line: rgba(17, 17, 17, 0.11);
@@ -2292,7 +2293,7 @@ body {
 }
 
 .lp-portal-nav nav a,
-.lp-portal-account-menu button {
+.lp-portal-sign-out button {
   border: 0;
   background: transparent;
   color: var(--lp-ink);
@@ -2320,71 +2321,29 @@ body {
   content: "";
 }
 
-.lp-portal-account-menu {
-  position: relative;
+.lp-portal-sign-out {
   margin-top: 28px;
   font-family: var(--cog-support);
 }
 
-.lp-portal-account-menu summary {
-  display: grid;
-  width: 32px;
-  height: 28px;
-  justify-content: center;
-  place-items: center;
+.lp-portal-sign-out button {
+  min-height: auto;
   border: 0;
-  border-radius: 2px;
+  padding: 2px 0 3px;
+  background: transparent;
   color: var(--lp-muted);
-  cursor: pointer;
-  list-style: none;
-  transition: background-color 160ms ease, color 160ms ease;
-}
-
-.lp-portal-account-menu summary::-webkit-details-marker {
-  display: none;
-}
-
-.lp-portal-account-menu summary span {
-  transform: translateY(-3px);
-  letter-spacing: 0.08em;
-}
-
-.lp-portal-account-menu summary:hover,
-.lp-portal-account-menu summary:focus-visible,
-.lp-portal-account-menu[open] summary {
-  background: color-mix(in srgb, var(--lp-ink) 7%, transparent);
-  color: var(--lp-ink);
-  outline: 0;
-}
-
-.lp-portal-account-menu form {
-  position: absolute;
-  top: calc(100% + 7px);
-  left: 0;
-  z-index: 2;
-  min-width: 108px;
-  margin: 0;
-  border: 1px solid var(--lp-line);
-  padding: 5px;
-  background: var(--lp-paper);
-  box-shadow: 0 8px 24px rgba(18, 18, 18, 0.12);
-}
-
-.lp-portal-account-menu form button {
-  width: 100%;
-  padding: 7px 9px;
-  color: var(--lp-ink);
   font-family: var(--cog-support);
-  font-size: 12px;
-  text-align: left;
+  font-size: 13px;
+  cursor: pointer;
   white-space: nowrap;
+  transition: color 160ms ease;
 }
 
-.lp-portal-account-menu form button:hover,
-.lp-portal-account-menu form button:focus-visible {
-  background: var(--lp-ink);
-  color: var(--lp-paper);
-  outline: 0;
+.lp-portal-sign-out button:hover,
+.lp-portal-sign-out button:focus-visible {
+  color: var(--lp-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* Portal controls reach the 44px touch minimum on coarse pointers; mouse
@@ -2392,8 +2351,7 @@ body {
 @media (pointer: coarse) {
   .lp-portal-nav nav a,
   .lp-portal-back,
-  .lp-portal-account-menu summary,
-  .lp-portal-account-menu form button {
+  .lp-portal-sign-out button {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -3449,11 +3407,11 @@ body {
   color: var(--lp-accent);
 }
 
-/* Three small distributions side by side */
-.lp-figure-triptych {
+/* Four portfolio distributions in a two-by-two quadrant. */
+.lp-figure-quad {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px 48px;
   margin-top: 50px;
 }
 
@@ -3601,76 +3559,6 @@ body {
   stroke: none;
 }
 
-/* Entry-price ticks */
-.lp-figure-chart--ticks {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.lp-figure-chart--ticks svg {
-  grid-column: 1;
-  grid-row: 2;
-  block-size: 150px;
-}
-
-.lp-figure-chart--ticks .lp-figure-chart-x {
-  grid-column: 1;
-  grid-row: 3;
-}
-
-.lp-figure-tick-callouts {
-  position: relative;
-  grid-column: 1;
-  grid-row: 1;
-  block-size: 20px;
-  color: var(--lp-muted);
-  font-family: var(--cog-support);
-  font-size: var(--lp-micro);
-}
-
-.lp-figure-tick-callouts span {
-  position: absolute;
-  inset-block-end: 2px;
-  white-space: nowrap;
-}
-
-.lp-figure-tick-callouts span.is-end {
-  transform: translateX(50%);
-}
-
-.lp-figure-tick {
-  stroke: var(--lp-ink);
-  stroke-width: 2;
-}
-
-.lp-figure-tick.is-edge {
-  stroke: var(--lp-accent);
-}
-
-/* Concentration curve */
-.lp-figure-chart--curve svg {
-  block-size: 160px;
-}
-
-.lp-figure-curve-callout {
-  position: relative;
-  grid-column: 2;
-  grid-row: 1;
-  justify-self: start;
-  align-self: start;
-  margin: -7px 0 0 9px;
-  color: var(--lp-accent);
-  font-family: var(--cog-support);
-  font-size: var(--lp-micro);
-  white-space: nowrap;
-}
-
-.lp-figure-pair {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 48px;
-  margin-top: 50px;
-}
-
 /* Data tables */
 .lp-figure-table-wrap {
   margin-top: 26px;
@@ -3768,19 +3656,34 @@ body {
   font-size: var(--lp-data);
 }
 
-.lp-figure-table--marks tbody tr.is-marked th {
-  box-shadow: inset 2px 0 0 var(--lp-accent);
+.lp-figure-table--marks tbody tr.has-gain th {
+  box-shadow: inset 2px 0 0 var(--lp-gain);
   padding-left: var(--lp-component-inset);
 }
 
-.lp-figure-table--marks tbody tr.is-marked {
-  background: color-mix(in srgb, var(--lp-accent) 5%, transparent);
+.lp-figure-table--marks tbody tr.has-gain {
+  background: color-mix(in srgb, var(--lp-gain) 5%, transparent);
 }
 
 .lp-figure-table--marks a {
   color: var(--lp-ink);
-  text-decoration-color: var(--lp-accent);
+  text-decoration-color: var(--lp-gain);
   text-underline-offset: 3px;
+}
+
+.lp-performance-change strong {
+  display: block;
+  font-weight: 500;
+}
+
+.lp-performance-change small {
+  font-family: var(--cog-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-performance-change.is-gain,
+.lp-performance-change.is-gain small {
+  color: var(--lp-gain);
 }
 
 .lp-figure-table--schedule tbody tr:hover {
@@ -3788,12 +3691,6 @@ body {
 }
 
 @media (max-width: 1023px) {
-  .lp-figure-triptych,
-  .lp-figure-pair {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 40px;
-  }
-
   .lp-figure-bar-row {
     grid-template-columns: 160px minmax(0, 1fr) 48px;
     gap: 12px;
@@ -3825,6 +3722,11 @@ body {
 }
 
 @media (max-width: 639px) {
+  .lp-figure-quad {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+
   .lp-figure-section-head h2 {
     font-size: 24px;
   }
@@ -3875,9 +3777,6 @@ body {
     block-size: 150px;
   }
 
-  .lp-figure-tick-callouts {
-    display: none;
-  }
 }
 
 @media (max-width: 719px) {
@@ -4090,12 +3989,7 @@ body {
     font-size: 14px;
   }
   .lp-portal-nav nav a.is-active::before { display: none; }
-  .lp-portal-account-menu { margin: 0 52px 0 auto; }
-  .lp-portal-account-menu form {
-    top: calc(100% + 9px);
-    right: 0;
-    left: auto;
-  }
+  .lp-portal-sign-out { margin: 0 52px 0 auto; }
   .lp-portal-shell {
     margin-left: 0;
     padding: calc(var(--mobile-header-height) + 38px) var(--mobile-gutter) 28px;
