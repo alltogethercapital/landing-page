@@ -29,6 +29,25 @@ function currency(value: number) {
   }).format(value);
 }
 
+function MetricTerm({
+  label,
+  description,
+  tooltipId,
+}: {
+  label: string;
+  description: string;
+  tooltipId: string;
+}) {
+  return (
+    <span className="lp-summary-term" tabIndex={0} aria-describedby={tooltipId}>
+      <abbr>{label}</abbr>
+      <span className="lp-summary-tooltip" id={tooltipId} role="tooltip">
+        {description}
+      </span>
+    </span>
+  );
+}
+
 export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageProps) {
   const [investments, params] = await Promise.all([getLpPortfolio(), searchParams]);
   const value = (key: string) => typeof params[key] === "string" ? params[key] : undefined;
@@ -50,13 +69,11 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
     (total, item) => total + (item.vehicleAllocation?.pendingAmount ?? 0),
     0,
   );
-  const allocatedCost = investedCost - notYetAllocated;
   const totalProjectedValue = investments.reduce(
     (total, item) => total + item.projection.projectedValue,
     0,
   );
-  const projectedValue = totalProjectedValue - notYetAllocated;
-  const currentValueMultiple = projectedValue / allocatedCost;
+  const currentValueMultiple = totalProjectedValue / investedCost;
   const sourceDate = new Intl.DateTimeFormat("en-US", {
     month: "short", day: "numeric", year: "numeric", timeZone: "America/Los_Angeles",
   }).format(new Date(snapshot.sourceModifiedAt));
@@ -66,10 +83,30 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
       <h1 className="sr-only">Portfolio</h1>
 
       <dl className="lp-summary-grid lp-summary-grid--four" aria-label="Portfolio summary">
-        <div><dt>Amount invested</dt><dd>{currency(allocatedCost)}</dd></div>
-        <div><dt>Not yet allocated</dt><dd>{currency(notYetAllocated)}</dd></div>
-        <div><dt>Projected value</dt><dd>{currency(projectedValue)}</dd></div>
-        <div><dt>Current value multiple</dt><dd>{currentValueMultiple.toFixed(2)}×</dd></div>
+        <div className="lp-summary-metric--primary">
+          <dt>
+            <MetricTerm
+              label="AUM"
+              tooltipId="lp-aum-tooltip"
+              description={`Assets under management (AUM), shown at recorded cost: all ${investments.length} legal positions in the Schedule of Investments, including ${currency(notYetAllocated)} in H256 awaiting underlying allocation. This is not a fair-value or regulatory AUM calculation.`}
+            />
+            <span> · at cost</span>
+          </dt>
+          <dd>{currency(investedCost)}</dd>
+        </div>
+        <div className="lp-summary-metric--primary">
+          <dt>
+            Projected{" "}
+            <MetricTerm
+              label="NAV"
+              tooltipId="lp-nav-tooltip"
+              description={`Net asset value (NAV) is assets minus liabilities. This projected NAV includes H256's pending ${currency(notYetAllocated)} at cost and assumes no fund liabilities or other deductions. It is a gross scenario estimate, not administrator-reported NAV.`}
+            />
+          </dt>
+          <dd>{currency(totalProjectedValue)}</dd>
+        </div>
+        <div><dt>Pending allocation</dt><dd>{currency(notYetAllocated)}</dd></div>
+        <div><dt>Gross value multiple</dt><dd>{currentValueMultiple.toFixed(2)}×</dd></div>
       </dl>
 
       <nav className="lp-portfolio-tabs" aria-label="Portfolio sections">

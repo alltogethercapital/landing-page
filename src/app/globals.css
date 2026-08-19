@@ -2292,8 +2292,7 @@ body {
   gap: 2px;
 }
 
-.lp-portal-nav nav a,
-.lp-portal-sign-out button {
+.lp-portal-nav nav a {
   border: 0;
   background: transparent;
   color: var(--lp-ink);
@@ -2321,37 +2320,11 @@ body {
   content: "";
 }
 
-.lp-portal-sign-out {
-  margin-top: 28px;
-  font-family: var(--cog-support);
-}
-
-.lp-portal-sign-out button {
-  min-height: auto;
-  border: 0;
-  padding: 2px 0 3px;
-  background: transparent;
-  color: var(--lp-muted);
-  font-family: var(--cog-support);
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: color 160ms ease;
-}
-
-.lp-portal-sign-out button:hover,
-.lp-portal-sign-out button:focus-visible {
-  color: var(--lp-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
 /* Portal controls reach the 44px touch minimum on coarse pointers; mouse
    layouts keep their tighter rhythm. */
 @media (pointer: coarse) {
   .lp-portal-nav nav a,
-  .lp-portal-back,
-  .lp-portal-sign-out button {
+  .lp-portal-back {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -2489,6 +2462,15 @@ body {
   padding-left: 24px;
 }
 
+.lp-summary-grid > .lp-summary-metric--primary {
+  background: color-mix(in srgb, var(--lp-accent) 5%, transparent);
+}
+
+.lp-summary-metric--primary dd {
+  color: var(--lp-accent);
+  font-size: clamp(25px, 2.4vw, 35px);
+}
+
 .lp-summary-grid dt {
   margin: 0;
   color: var(--lp-muted);
@@ -2496,6 +2478,54 @@ body {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.lp-summary-term {
+  position: relative;
+  display: inline-block;
+  outline: 0;
+}
+
+.lp-summary-term abbr {
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: help;
+}
+
+.lp-summary-term:focus-visible abbr {
+  outline: 1px solid var(--lp-accent);
+  outline-offset: 3px;
+}
+
+.lp-summary-tooltip {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 9px);
+  left: 0;
+  width: min(320px, 72vw);
+  border: 1px solid var(--lp-ink);
+  padding: 10px 12px;
+  background: var(--lp-ink);
+  color: var(--lp-paper);
+  font-family: var(--cog-support);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.45;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-3px);
+  transition: opacity 120ms ease, transform 120ms ease, visibility 120ms;
+  visibility: hidden;
+}
+
+.lp-summary-term:hover .lp-summary-tooltip,
+.lp-summary-term:focus .lp-summary-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
 }
 
 .lp-summary-grid dd {
@@ -3989,7 +4019,6 @@ body {
     font-size: 14px;
   }
   .lp-portal-nav nav a.is-active::before { display: none; }
-  .lp-portal-sign-out { margin: 0 52px 0 auto; }
   .lp-portal-shell {
     margin-left: 0;
     padding: calc(var(--mobile-header-height) + 38px) var(--mobile-gutter) 28px;
