@@ -98,6 +98,7 @@ test("protects, authenticates, switches views, and opens an investment", async (
   );
   const companyAllocationRows = page.locator(".lp-company-allocation-view .lp-figure-bar-row");
   await expect(companyAllocationRows).toHaveCount(44);
+  await expect(page.locator(".lp-company-allocation-view .lp-figure-bar-row.is-lead")).toHaveCount(0);
   await expect(companyAllocationRows.nth(0)).toContainText("Pending allocation");
   await expect(companyAllocationRows.nth(0)).toContainText("$112,000");
   await expect(companyAllocationRows.nth(0)).toContainText("16.9%");
@@ -162,6 +163,7 @@ test("protects, authenticates, switches views, and opens an investment", async (
 
   const allocationFigure = page.locator(".lp-figure-section").first();
   await expect(allocationFigure.getByRole("heading", { name: "Allocation by category" })).toBeVisible();
+  await expect(allocationFigure.locator(".lp-figure-bar-row.is-lead")).toHaveCount(0);
   await expect(allocationFigure).toContainText("Defense and aerospace");
   await expect(allocationFigure).toContainText("$159,586");
   await expect(allocationFigure).toContainText("24.1%");
@@ -238,6 +240,7 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(performanceRows.filter({ hasText: "H256 LLC Series 3" })).toHaveCount(0);
   const valuationRows = page.locator(".lp-figure-table--marks tbody tr.has-gain");
   await expect(valuationRows).toHaveCount(9);
+  await expect(valuationRows.first().getByRole("rowheader")).toHaveCSS("box-shadow", "none");
   for (const [company, carried] of [
     ["Replit", "$10,465.12"],
     ["Hark", "$10,389.61"],

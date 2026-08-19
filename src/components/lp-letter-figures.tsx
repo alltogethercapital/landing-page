@@ -91,21 +91,19 @@ function BarRow({
   share,
   scale,
   amount,
-  lead,
   detail,
 }: {
   label: string;
   share: number;
   scale: number;
   amount?: number;
-  lead?: boolean;
   detail?: string;
 }) {
   // When a row carries a dollar label the bar gives up its last fifth, so the
   // longest bar cannot run into the label that trails it.
   const reserve = amount === undefined ? 1 : 0.8;
   return (
-    <div className={`lp-figure-bar-row${lead ? " is-lead" : ""}`}>
+    <div className="lp-figure-bar-row">
       <span className="lp-figure-bar-label">
         {label}
         {detail ? <small>{detail}</small> : null}
@@ -169,14 +167,13 @@ function PortfolioAtAGlance() {
     <FigureSection id="portfolio-at-a-glance" title="Portfolio at a glance">
       <FigureHeading title="Allocation by category" />
       <div className="lp-figure-bars">
-        {LETTER_ALLOCATION.map((row, index) => (
+        {LETTER_ALLOCATION.map((row) => (
           <BarRow
             key={row.key}
             label={row.label}
             share={row.share}
             scale={allocationScale}
             amount={row.amount}
-            lead={index === 0}
             detail={
               row.key === "aerospace"
                 ? `Includes ${dollars(LETTER_H256_DEPLOYED_AMOUNT)} deployed to ${H256_VEHICLE_ALLOCATION.deployedCompany} in its ${H256_VEHICLE_ALLOCATION.deployedRound} through H256`
