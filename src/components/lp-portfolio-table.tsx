@@ -79,11 +79,11 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
       });
       rows.set(`${investment.id}-pending`, {
         id: `${investment.id}-pending`,
-        label: "Not yet allocated",
+        label: "Pending allocation",
         amount: allocation.pendingAmount,
         detail: `H256 · ${formatWholePercent(allocation.awaitingShare)} of vehicle`,
         href: `/lp/investments/${investment.id}`,
-        searchText: "H256 not yet allocated pending allocation not yet deployed",
+        searchText: "H256 pending allocation undeployed awaiting underlying company",
         positionCount: 1,
       });
       continue;
@@ -184,8 +184,8 @@ export function LpPortfolioTable({
 
   return (
     <section className="lp-portfolio-section" aria-labelledby="lp-portfolio-heading">
-      <div className="lp-table-heading">
-        <h2 id="lp-portfolio-heading">Investments</h2>
+      <div className="lp-table-heading lp-table-heading--controls-only">
+        <h2 id="lp-portfolio-heading" className="sr-only">Investments</h2>
         <div className="lp-portfolio-view-switch" role="group" aria-label="Investment view">
           <button
             type="button"
@@ -205,22 +205,6 @@ export function LpPortfolioTable({
           </button>
         </div>
       </div>
-
-      <form className="lp-table-controls" action="/lp" method="get">
-        <input type="hidden" name="display" value={display} />
-        <label>
-          <span className="sr-only">Search investments</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.4 15.4 4.1 4.1" /></svg>
-          <input
-            name="query"
-            type="search"
-            placeholder="Search investments…"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-          />
-        </label>
-        <button type="submit" className="lp-filter-submit">Search</button>
-      </form>
 
       {display === "positions" ? (
         <>
@@ -254,7 +238,7 @@ export function LpPortfolioTable({
                               {formatCurrency(investment.vehicleAllocation.deployedAmount)} to {investment.vehicleAllocation.deployedCompany}
                               {" in its "}{investment.vehicleAllocation.deployedRound}
                               {" ("}{formatWholePercent(investment.vehicleAllocation.deployedShare)})
-                              {" · "}{formatCurrency(investment.vehicleAllocation.pendingAmount)} not yet allocated
+                              {" · Pending allocation: "}{formatCurrency(investment.vehicleAllocation.pendingAmount)}
                               {" ("}{formatWholePercent(investment.vehicleAllocation.awaitingShare)})
                             </small>
                           ) : null}
@@ -300,7 +284,7 @@ export function LpPortfolioTable({
                           {formatCurrency(investment.vehicleAllocation.deployedAmount)} to {investment.vehicleAllocation.deployedCompany}
                           {" in its "}{investment.vehicleAllocation.deployedRound}
                           {" ("}{formatWholePercent(investment.vehicleAllocation.deployedShare)})
-                          {" · "}{formatCurrency(investment.vehicleAllocation.pendingAmount)} not yet allocated
+                          {" · Pending allocation: "}{formatCurrency(investment.vehicleAllocation.pendingAmount)}
                           {" ("}{formatWholePercent(investment.vehicleAllocation.awaitingShare)})
                         </small>
                       ) : null}

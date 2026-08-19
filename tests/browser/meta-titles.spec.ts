@@ -51,6 +51,7 @@ test("uses the page name and All Together Capital suffix on every page", async (
   const privatePages = [
     { path: "/lp", name: "Portfolio" },
     { path: "/lp?section=analysis", name: "Insights" },
+    { path: "/lp?section=performance", name: "Performance" },
     { path: "/lp/updates", name: "Investor Updates" },
     ...LP_INVESTOR_UPDATES.map((update) => ({
       path: `/lp/updates/${update.slug}`,

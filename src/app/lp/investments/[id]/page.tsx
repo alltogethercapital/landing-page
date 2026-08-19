@@ -100,15 +100,15 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
             <div>
               <strong>{currency(investment.vehicleAllocation.pendingAmount)}</strong>
               <span>
-                {wholePercent(investment.vehicleAllocation.awaitingShare)} not yet allocated to an
-                underlying company
+                Pending allocation · {wholePercent(investment.vehicleAllocation.awaitingShare)} of
+                the vehicle awaiting an underlying company
               </span>
             </div>
           </div>
           <p>
             This {currency(investment.investedCost)} vehicle investment remains one legal portfolio
-            position. The remaining {currency(investment.vehicleAllocation.pendingAmount)} has not
-            yet been allocated or deployed to an underlying company.
+            position. The pending allocation of {currency(investment.vehicleAllocation.pendingAmount)}{" "}
+            is awaiting assignment and deployment to an underlying company.
           </p>
         </section>
       ) : null}

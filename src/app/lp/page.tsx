@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LpLetterFigures } from "@/components/lp-letter-figures";
+import {
+  LpPortfolioInsights,
+  LpPortfolioPerformance,
+} from "@/components/lp-letter-figures";
 import {
   LpPortfolioTable,
   type LpPortfolioDisplay,
@@ -14,8 +17,13 @@ type LpPortfolioPageProps = {
 
 export async function generateMetadata({ searchParams }: LpPortfolioPageProps): Promise<Metadata> {
   const params = await searchParams;
+  const section = params.section === "performance"
+    ? "Performance"
+    : params.section === "analysis"
+      ? "Insights"
+      : "Portfolio";
   return {
-    title: params.section === "analysis" ? "Insights" : "Portfolio",
+    title: section,
     robots: { index: false, follow: false, nocache: true },
   };
 }
@@ -29,7 +37,7 @@ function currency(value: number) {
   }).format(value);
 }
 
-function MetricTerm({
+function MetricLabel({
   label,
   description,
   tooltipId,
@@ -39,10 +47,18 @@ function MetricTerm({
   tooltipId: string;
 }) {
   return (
-    <span className="lp-summary-term" tabIndex={0} aria-describedby={tooltipId}>
-      <abbr>{label}</abbr>
-      <span className="lp-summary-tooltip" id={tooltipId} role="tooltip">
-        {description}
+    <span className="lp-summary-label">
+      <span>{label}</span>
+      <span
+        className="lp-summary-term"
+        tabIndex={0}
+        aria-label={`About ${label}`}
+        aria-describedby={tooltipId}
+      >
+        <span className="lp-summary-info" aria-hidden="true">i</span>
+        <span className="lp-summary-tooltip" id={tooltipId} role="tooltip">
+          {description}
+        </span>
       </span>
     </span>
   );
@@ -52,7 +68,11 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
   const [investments, params] = await Promise.all([getLpPortfolio(), searchParams]);
   const value = (key: string) => typeof params[key] === "string" ? params[key] : undefined;
   const requestedSort = value("sort");
-  const section = value("section") === "analysis" ? "analysis" : "investments";
+  const section = value("section") === "analysis"
+    ? "analysis"
+    : value("section") === "performance"
+      ? "performance"
+      : "investments";
   const display: LpPortfolioDisplay = value("display") === "positions" ? "positions" : "companies";
   const sort: LpTableSort = ["chronology", "company", "investedCost", "investmentDate"].includes(requestedSort || "")
     ? requestedSort as LpTableSort
@@ -65,7 +85,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
   };
   const snapshot = getLpSnapshot();
   const investedCost = investments.reduce((total, item) => total + item.investedCost, 0);
-  const notYetAllocated = investments.reduce(
+  const pendingAllocation = investments.reduce(
     (total, item) => total + (item.vehicleAllocation?.pendingAmount ?? 0),
     0,
   );
@@ -85,28 +105,44 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
       <dl className="lp-summary-grid lp-summary-grid--four" aria-label="Portfolio summary">
         <div className="lp-summary-metric--primary">
           <dt>
-            <MetricTerm
+            <MetricLabel
               label="AUM"
               tooltipId="lp-aum-tooltip"
-              description={`Assets under management (AUM), shown at recorded cost: all ${investments.length} legal positions in the Schedule of Investments, including ${currency(notYetAllocated)} in H256 awaiting underlying allocation. This is not a fair-value or regulatory AUM calculation.`}
+              description={`Assets under management (AUM) at recorded cost: all ${investments.length} legal positions in the Schedule of Investments, including the ${currency(pendingAllocation)} pending allocation in H256. This is not a fair-value or regulatory AUM calculation.`}
             />
-            <span> · at cost</span>
           </dt>
           <dd>{currency(investedCost)}</dd>
         </div>
         <div className="lp-summary-metric--primary">
           <dt>
-            Projected{" "}
-            <MetricTerm
+            <MetricLabel
               label="NAV"
               tooltipId="lp-nav-tooltip"
-              description={`Net asset value (NAV) is assets minus liabilities. This projected NAV includes H256's pending ${currency(notYetAllocated)} at cost and assumes no fund liabilities or other deductions. It is a gross scenario estimate, not administrator-reported NAV.`}
+              description={`Net asset value (NAV) is assets minus liabilities. This projected NAV includes H256's ${currency(pendingAllocation)} pending allocation at cost and assumes no fund liabilities or other deductions. It is a gross scenario estimate, not administrator-reported NAV.`}
             />
           </dt>
           <dd>{currency(totalProjectedValue)}</dd>
         </div>
-        <div><dt>Pending allocation</dt><dd>{currency(notYetAllocated)}</dd></div>
-        <div><dt>Gross value multiple</dt><dd>{currentValueMultiple.toFixed(2)}×</dd></div>
+        <div>
+          <dt>
+            <MetricLabel
+              label="Pending allocation"
+              tooltipId="lp-pending-allocation-tooltip"
+              description={`Pending allocation is the ${currency(pendingAllocation)} portion of H256 awaiting assignment and deployment to an underlying company. It remains included at recorded cost in both AUM and projected NAV.`}
+            />
+          </dt>
+          <dd>{currency(pendingAllocation)}</dd>
+        </div>
+        <div>
+          <dt>
+            <MetricLabel
+              label="Gross value multiple"
+              tooltipId="lp-gross-value-multiple-tooltip"
+              description={`Gross value multiple is projected NAV divided by AUM at recorded cost: ${currency(totalProjectedValue)} ÷ ${currency(investedCost)} = ${currentValueMultiple.toFixed(2)}×. It is before fees, carry, liabilities, and other deductions.`}
+            />
+          </dt>
+          <dd>{currentValueMultiple.toFixed(2)}×</dd>
+        </div>
       </dl>
 
       <nav className="lp-portfolio-tabs" aria-label="Portfolio sections">
@@ -122,13 +158,25 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         >
           Insights
         </Link>
+        <Link
+          href="/lp?section=performance"
+          aria-current={section === "performance" ? "page" : undefined}
+        >
+          Performance
+        </Link>
       </nav>
 
-      {section === "investments" ? (
+      {section === "investments" && (
         <LpPortfolioTable investments={investments} view={view} />
-      ) : (
+      )}
+      {section === "analysis" && (
         <div className="lp-portfolio-analysis">
-          <LpLetterFigures />
+          <LpPortfolioInsights />
+        </div>
+      )}
+      {section === "performance" && (
+        <div className="lp-portfolio-analysis">
+          <LpPortfolioPerformance />
         </div>
       )}
 
