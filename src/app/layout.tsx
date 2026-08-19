@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import type { CSSProperties, ReactNode } from "react";
+import { SiteInteractionSounds } from "@/components/site-interaction-sounds";
 import { SiteSearch } from "@/components/site-search";
 import { SitePreloader } from "@/components/site-preloader";
 import { buildSearchIndex } from "@/lib/search";
@@ -168,6 +169,7 @@ export default function RootLayout({
       style={hiddenScrollbarStyle}
     >
       <body className="min-h-full" style={hiddenScrollbarStyle}>
+        <SiteInteractionSounds />
         <SitePreloader />
         <SiteSearch index={buildSearchIndex()} />
         {children}

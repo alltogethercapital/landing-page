@@ -90,3 +90,70 @@ test("uses the Sequoia font families in their intended roles", async ({ page }) 
   expect(portalTypography.label).toContain(portalTypography.pitch);
   expect(portalTypography.action).toContain(portalTypography.pitch);
 });
+
+test("keeps navigation hover feedback snappy", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
+
+  const nav = page.locator(".cog-nav-links");
+  const hoverPlate = nav.locator(".cog-nav-hover-plate");
+  await nav.locator(".cog-nav-link").nth(1).hover();
+
+  await expect(nav).toHaveAttribute("data-hover-ready", "true");
+  await expect(hoverPlate).toHaveCSS("opacity", "1");
+
+  const transitionDurations = await hoverPlate.evaluate((element) =>
+    getComputedStyle(element)
+      .transitionDuration.split(",")
+      .map((duration) => Number.parseFloat(duration) * 1000),
+  );
+
+  expect(Math.max(...transitionDurations)).toBeLessThanOrEqual(60);
+});
+
+test("uses subtle press and email cues for navigation", async ({ page }) => {
+  await page.addInitScript(() => {
+    const probe = { noiseLayers: 0, toneLayers: 0 };
+    Object.assign(window, { __cuelumeProbe: probe });
+
+    const AudioContextConstructor = window.AudioContext;
+    if (!AudioContextConstructor) return;
+
+    const createBufferSource = AudioContextConstructor.prototype.createBufferSource;
+    const createOscillator = AudioContextConstructor.prototype.createOscillator;
+
+    AudioContextConstructor.prototype.createBufferSource = function (this: AudioContext) {
+      probe.noiseLayers += 1;
+      return createBufferSource.call(this);
+    };
+    AudioContextConstructor.prototype.createOscillator = function (this: AudioContext) {
+      probe.toneLayers += 1;
+      return createOscillator.call(this);
+    };
+  });
+
+  const readProbe = () =>
+    page.evaluate(
+      () =>
+        (
+          window as typeof window & {
+            __cuelumeProbe: { noiseLayers: number; toneLayers: number };
+          }
+        ).__cuelumeProbe,
+    );
+
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
+
+  const pageLink = page.locator(".cog-nav-link").nth(1);
+  await pageLink.hover();
+  await page.mouse.down();
+  await expect.poll(readProbe).toEqual({ noiseLayers: 1, toneLayers: 0 });
+  await page.mouse.up();
+  await expect(page).toHaveURL(/\/companies$/);
+
+  const emailLink = page.locator(".cog-nav-button");
+  await emailLink.hover();
+  await page.mouse.down();
+  await expect.poll(readProbe).toEqual({ noiseLayers: 2, toneLayers: 1 });
+});
