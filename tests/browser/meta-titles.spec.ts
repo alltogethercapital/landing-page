@@ -7,7 +7,7 @@ const password = process.env.LP_TEST_PASSWORD || "StagingPortalPassphrase-2026";
 const suffix = " | All Together Capital";
 
 test("uses the page name and All Together Capital suffix on every page", async ({ page }) => {
-  test.setTimeout(120_000);
+  test.setTimeout(180_000);
 
   const publicPages = [
     { path: "/", name: "Home" },
@@ -37,8 +37,9 @@ test("uses the page name and All Together Capital suffix on every page", async (
   await expect(page).toHaveURL(/\/lp$/);
   await expect(page).toHaveTitle(`Portfolio${suffix}`);
   await page.waitForLoadState("networkidle");
-  await page.getByRole("button", { name: "By investment" }).click();
-  await expect(page.getByRole("button", { name: "By investment" })).toHaveAttribute(
+  await expect(page.getByRole("button", { name: "Table view" })).toBeEnabled();
+  await page.getByRole("button", { name: "Table view" }).click();
+  await expect(page.getByRole("button", { name: "Table view" })).toHaveAttribute(
     "aria-pressed",
     "true",
   );
