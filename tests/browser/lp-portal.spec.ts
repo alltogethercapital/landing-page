@@ -292,32 +292,39 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(page.getByText("Investor Update #1", { exact: true })).toBeVisible();
   await expect(page.getByText("August 14, 2026", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-update-article-copy")).toContainText("$661,014.25");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("$671,574.11");
   await expect(page.locator(".lp-update-article-copy")).toContainText("1.02×");
   await expect(page.locator(".lp-update-article-copy")).toContainText("post-labor economy");
   await expect(page.locator(".lp-update-article-copy")).toContainText("ownership layer");
   await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
   const updateParagraphs = page.locator(".lp-update-article-copy > p");
   await expect(updateParagraphs.nth(2)).toContainText("This is what we mean by a post-labor economy");
-  await expect(updateParagraphs.nth(3)).toContainText("That shift changes who captures the value");
-  await expect(updateParagraphs.nth(4)).toContainText("Another reason is personal");
+  await expect(updateParagraphs.nth(3)).toContainText("Intelligence is becoming abundant, but the physical world remains scarce");
+  await expect(updateParagraphs.nth(3)).toContainText("value will move toward the bottlenecks");
+  await expect(updateParagraphs.nth(4)).toContainText("That shift changes who captures the value");
   await expect(updateParagraphs.nth(4)).toContainText("beyond the Anthropocene");
   await expect(updateParagraphs.nth(4)).toContainText("ownership layer");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("30.3%");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("$200,000 H256 LLC Series 3");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("$88,000.00 (44%) deployed to Anduril in its Series H at a $60B entry valuation");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("a pending allocation of $112,000.00 (56%)");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("The investment question is no longer whether AI matters");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("The portfolio began broad by design");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("All Together backs the companies building civilization in an age of abundant intelligence");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("a durable point of control");
+  await expect(page.locator(".lp-update-article-copy")).toContainText("fewer direct positions");
+  await expect(page.locator(".lp-update-article-copy")).not.toContainText("$671,574.11");
+  await expect(page.locator(".lp-update-article-copy")).not.toContainText("30.3%");
+  await expect(page.locator(".lp-update-article-copy")).not.toContainText("$200,000 H256 LLC Series 3");
+  await expect(page.locator(".lp-update-article-copy")).not.toContainText("$88,000.00 (44%)");
+  await expect(page.locator(".lp-update-article-copy")).not.toContainText("$112,000.00 (56%)");
   await expect(page.locator(".lp-figure-section")).toHaveCount(0);
-  const updateWordCount = await page.locator(".lp-update-article-copy").evaluate((element) =>
-    (element.textContent ?? "").trim().split(/\s+/).length,
-  );
+  const updateCopyText = await page.locator(".lp-update-article-copy").innerText();
+  const numericReferences = updateCopyText.match(/\$?\d[\d,.]*(?:%|×)?/g) ?? [];
+  expect(numericReferences).toHaveLength(5);
+  const updateWordCount = updateCopyText.trim().split(/\s+/).length;
   expect(updateWordCount).toBeLessThan(600);
   // Stated in the letter body and confidentiality footer.
   await expect(page.getByText(/not audited net asset value/i)).toHaveCount(2);
   await expect(page.getByRole("heading", { name: "Checked and held flat" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Basis of preparation" })).toHaveCount(0);
   await expect(page.locator(".lp-figure-index")).toHaveCount(0);
-  await expect(page.locator(".lp-update-article-copy a")).toHaveCount(6);
+  await expect(page.locator(".lp-update-article-copy a")).toHaveCount(4);
   // The letter body stays unadorned prose. The figure suite below it is
   // allowed its own semantics, so these guards scope to the copy, not the page.
   await expect(page.locator(".lp-update-article-copy figure")).toHaveCount(0);
