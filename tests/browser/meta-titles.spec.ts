@@ -37,8 +37,8 @@ test("uses the page name and All Together Capital suffix on every page", async (
   await expect(page).toHaveURL(/\/lp$/);
   await expect(page).toHaveTitle(`Portfolio${suffix}`);
   await page.waitForLoadState("networkidle");
-  await page.getByRole("button", { name: "Individual investments" }).click();
-  await expect(page.getByRole("button", { name: "Individual investments" })).toHaveAttribute(
+  await page.getByRole("button", { name: "By investment" }).click();
+  await expect(page.getByRole("button", { name: "By investment" })).toHaveAttribute(
     "aria-pressed",
     "true",
   );
