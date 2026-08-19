@@ -21,15 +21,17 @@ export const LP_INVESTOR_UPDATES: LpInvestorUpdateSummary[] = [
   },
 ];
 
-export const LP_AUGUST_2026_PORTFOLIO_AS_OF = "August 14, 2026";
+export const LP_AUGUST_2026_PORTFOLIO_AS_OF = "August 18, 2026";
 
-// Figures of record, matching the August 2026 letter as mailed: three sourced
-// marks (Figure AI, Shield AI, Apptronik), the other 41 positions at cost.
+// Figures of record, reconciled to the live portfolio after the August 18,
+// 2026 portfolio-wide valuation review. Eight sourced company comparisons and
+// one owner-directed Anduril scenario are applied; all other positions remain
+// at cost. H256's pending allocation is included at cost in both totals.
 export const LP_AUGUST_2026_FUND_SNAPSHOT = {
   investedCost: 661_014.25,
-  projectedGrossValue: 671_574.11,
-  projectedGrossMultiple: 1.02,
+  projectedGrossValue: 741_760.05,
+  projectedGrossMultiple: 1.12,
   positions: 44,
   companies: 43,
-  markedPositions: 3,
+  markedPositions: 9,
 } as const;

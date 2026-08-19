@@ -65,6 +65,9 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.12×", { exact: true })).toBeVisible();
   await expect(page.getByText("1.15×", { exact: true })).toHaveCount(0);
+  const portfolioAum = await summaryGrid.locator("dd").nth(0).innerText();
+  const portfolioNav = await summaryGrid.locator("dd").nth(1).innerText();
+  const portfolioMultiple = await summaryGrid.locator("dd").nth(3).innerText();
   await expect(page.getByText(/Projection as of 2026-08-18/i)).toHaveCount(0);
   const portalLogoBox = await page.locator(".lp-portal-nav-logo").boundingBox();
   expect(portalLogoBox).not.toBeNull();
@@ -291,8 +294,12 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(page.getByText("Betting Together on the Post-Labor AI Economy", { exact: true })).toBeVisible();
   await expect(page.getByText("Investor Update #1", { exact: true })).toBeVisible();
   await expect(page.getByText("August 14, 2026", { exact: true })).toBeVisible();
-  await expect(page.locator(".lp-update-article-copy")).toContainText("$661,014.25");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("1.02×");
+  const updateCopy = page.locator(".lp-update-article-copy");
+  await expect(updateCopy).toContainText(portfolioAum);
+  await expect(updateCopy).toContainText(portfolioNav);
+  await expect(updateCopy).toContainText(portfolioMultiple);
+  await expect(updateCopy).not.toContainText("$671,574.11");
+  await expect(updateCopy).not.toContainText("1.02×");
   await expect(page.locator(".lp-update-article-copy")).toContainText("post-labor economy");
   await expect(page.locator(".lp-update-article-copy")).toContainText("ownership layer");
   await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
@@ -320,7 +327,9 @@ test("protects, authenticates, switches views, and opens an investment", async (
   const updateWordCount = updateCopyText.trim().split(/\s+/).length;
   expect(updateWordCount).toBeLessThan(600);
   // Stated in the letter body and confidentiality footer.
-  await expect(page.getByText(/not audited net asset value/i)).toHaveCount(2);
+  await expect(
+    page.getByText(/not (?:administrator-reported or )?audited net asset value/i),
+  ).toHaveCount(2);
   await expect(page.getByRole("heading", { name: "Checked and held flat" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Basis of preparation" })).toHaveCount(0);
   await expect(page.locator(".lp-figure-index")).toHaveCount(0);
@@ -585,6 +594,9 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page.getByRole("heading", { name: "Beyond the Anthropocene" })).toBeVisible();
     await expect(page.getByText("Betting Together on the Post-Labor AI Economy", { exact: true })).toBeVisible();
     await expect(page.locator(".lp-update-article-copy")).toContainText("$661,014.25");
+    await expect(page.locator(".lp-update-article-copy")).toContainText("$741,760.05");
+    await expect(page.locator(".lp-update-article-copy")).toContainText("1.12×");
+    await expect(page.locator(".lp-update-article-copy")).not.toContainText("1.02×");
     await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
     await expect(page.locator(".lp-figure-section")).toHaveCount(0);
     const updateCopyBox = await page.locator(".lp-update-article-copy").boundingBox();

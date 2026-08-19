@@ -123,11 +123,11 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         </p>
 
         <p>
-          As of {LP_AUGUST_2026_PORTFOLIO_AS_OF}, we had invested {currency(snapshot.investedCost)} across
-          {` ${snapshot.positions} positions`}. Our directional gross view was{" "}
-          {(snapshot.projectedGrossValue / snapshot.investedCost).toFixed(2)}× invested cost. Most positions
-          remain held at cost; a small number reflect sourced comparable financings. This is not audited net
-          asset value, and it is too early to call it performance.
+          As of {LP_AUGUST_2026_PORTFOLIO_AS_OF}, AUM at recorded cost was {currency(snapshot.investedCost)}.
+          Projected NAV was {currency(snapshot.projectedGrossValue)}, a{" "}
+          {snapshot.projectedGrossMultiple.toFixed(2)}× gross value multiple. Most positions remain at cost; a
+          few reflect sourced financings or a labeled scenario. This is not administrator-reported or audited
+          net asset value, and it is too early to call it performance.
         </p>
 
         <p>
