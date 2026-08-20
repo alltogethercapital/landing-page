@@ -79,11 +79,11 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
       });
       rows.set(`${investment.id}-pending`, {
         id: `${investment.id}-pending`,
-        label: "Pending allocation",
+        label: "Finalizing allocation",
         amount: allocation.pendingAmount,
-        detail: `H256 · ${formatWholePercent(allocation.awaitingShare)} of vehicle`,
+        detail: `H256 · Atoms or Applied Intuition · ${formatWholePercent(allocation.awaitingShare)} of vehicle`,
         href: `/lp/investments/${investment.id}`,
-        searchText: "H256 pending allocation undeployed awaiting underlying company",
+        searchText: "H256 finalizing allocation Atoms Applied Intuition",
         positionCount: 1,
       });
       continue;
@@ -238,7 +238,8 @@ export function LpPortfolioTable({
                               {formatCurrency(investment.vehicleAllocation.deployedAmount)} to {investment.vehicleAllocation.deployedCompany}
                               {" in its "}{investment.vehicleAllocation.deployedRound}
                               {" ("}{formatWholePercent(investment.vehicleAllocation.deployedShare)})
-                              {" · Pending allocation: "}{formatCurrency(investment.vehicleAllocation.pendingAmount)}
+                              {" · Finalizing allocation: "}{formatCurrency(investment.vehicleAllocation.pendingAmount)}
+                              {" to Atoms or Applied Intuition"}
                               {" ("}{formatWholePercent(investment.vehicleAllocation.awaitingShare)})
                             </small>
                           ) : null}
@@ -284,7 +285,8 @@ export function LpPortfolioTable({
                           {formatCurrency(investment.vehicleAllocation.deployedAmount)} to {investment.vehicleAllocation.deployedCompany}
                           {" in its "}{investment.vehicleAllocation.deployedRound}
                           {" ("}{formatWholePercent(investment.vehicleAllocation.deployedShare)})
-                          {" · Pending allocation: "}{formatCurrency(investment.vehicleAllocation.pendingAmount)}
+                          {" · Finalizing allocation: "}{formatCurrency(investment.vehicleAllocation.pendingAmount)}
+                          {" to Atoms or Applied Intuition"}
                           {" ("}{formatWholePercent(investment.vehicleAllocation.awaitingShare)})
                         </small>
                       ) : null}

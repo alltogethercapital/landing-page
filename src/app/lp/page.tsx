@@ -103,7 +103,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
             <MetricLabel
               label="AUM"
               tooltipId="lp-aum-tooltip"
-              description={`Assets under management (AUM) at recorded cost: all ${investments.length} legal positions in the Schedule of Investments, including the ${currency(pendingAllocation)} pending allocation in H256. This is not a fair-value or regulatory AUM calculation.`}
+              description={`Assets under management (AUM) at recorded cost: all ${investments.length} legal positions in the Schedule of Investments, including the ${currency(pendingAllocation)} H256 allocation being finalized between Atoms and Applied Intuition. This is not a fair-value or regulatory AUM calculation.`}
             />
           </dt>
           <dd>{currency(investedCost)}</dd>
@@ -113,7 +113,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
             <MetricLabel
               label="NAV"
               tooltipId="lp-nav-tooltip"
-              description={`Net asset value (NAV) is assets minus liabilities. This projected NAV includes H256's ${currency(pendingAllocation)} pending allocation at cost and assumes no fund liabilities or other deductions. It is a gross scenario estimate, not administrator-reported NAV.`}
+              description={`Net asset value (NAV) is assets minus liabilities. This projected NAV includes H256's ${currency(pendingAllocation)} allocation being finalized between Atoms and Applied Intuition at cost and assumes no fund liabilities or other deductions. It is a gross scenario estimate, not administrator-reported NAV.`}
             />
           </dt>
           <dd>{currency(totalProjectedValue)}</dd>
@@ -121,9 +121,9 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         <div>
           <dt>
             <MetricLabel
-              label="Pending allocation"
+              label="Finalizing allocation"
               tooltipId="lp-pending-allocation-tooltip"
-              description={`Pending allocation is the ${currency(pendingAllocation)} portion of H256 awaiting assignment and deployment to an underlying company. It remains included at recorded cost in both AUM and projected NAV.`}
+              description={`The ${currency(pendingAllocation)} portion of H256 is being finalized between Atoms and Applied Intuition. It remains included at recorded cost in both AUM and projected NAV until the allocation is deployed.`}
             />
           </dt>
           <dd>{currency(pendingAllocation)}</dd>

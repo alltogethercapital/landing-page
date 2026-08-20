@@ -18,7 +18,8 @@ import {
 // Two positions carry no company price at entry: Lance AI was an uncapped SAFE,
 // and Maven Robotics priced against a financing model. H256 remains one legal
 // position, but its round and valuation views look through to the 44% already
-// deployed into Anduril and keep the other 56% explicitly unallocated.
+// deployed into Anduril and show that the other 56% is being finalized between
+// Atoms and Applied Intuition.
 
 export type LetterAllocationCategory =
   | "ai"
@@ -34,7 +35,7 @@ export const LETTER_ALLOCATION_LABELS: Record<LetterAllocationCategory, string> 
   aerospace: "Defense and aerospace",
   energy: "Energy and hard infrastructure",
   applications: "Applications and resilience",
-  pending: "Pending allocation",
+  pending: "Finalizing allocation",
 };
 
 // Same categories, cased to sit inside a sentence in the letter body.
@@ -44,7 +45,7 @@ export const LETTER_ALLOCATION_PROSE: Record<LetterAllocationCategory, string> =
   aerospace: "defense and aerospace",
   energy: "energy and hard infrastructure",
   applications: "applications and resilience",
-  pending: "pending allocation",
+  pending: "finalizing allocation",
 };
 
 // Allocation category is an internal classification and is not a field on the
@@ -77,7 +78,7 @@ const ENTRY_VALUATION_BY_CHRONOLOGY: Record<number, number> = {
 };
 
 export type LetterEntryRound =
-  | "Pending allocation"
+  | "Finalizing allocation"
   | "Series C+"
   | "Series A"
   | "Series B"
@@ -167,7 +168,7 @@ export const LETTER_ALLOCATED_TOTAL = LETTER_INVESTED_TOTAL - LETTER_H256_PENDIN
 
 // The Schedule of Investments continues to carry H256 as one legal position.
 // For allocation reporting, look through that position only far enough to show the
-// amount already deployed to Anduril and the pending allocation.
+// amount already deployed to Anduril and the allocation being finalized.
 export const LETTER_ALLOCATION = (() => {
   const totals = new Map<LetterAllocationCategory, number>();
   const add = (category: LetterAllocationCategory, amount: number) =>
@@ -288,7 +289,7 @@ export const LETTER_ENTRY_ROUND_SPLIT = (() => {
   for (const position of LETTER_POSITIONS) {
     if (position.id === H256_POSITION.id) {
       add("Series C+", LETTER_H256_DEPLOYED_AMOUNT);
-      add("Pending allocation", LETTER_H256_PENDING_AMOUNT);
+      add("Finalizing allocation", LETTER_H256_PENDING_AMOUNT);
     } else {
       add(position.entryRound, position.investedCost);
     }
@@ -309,8 +310,8 @@ const LETTER_DIRECT_PRICED_POSITIONS = LETTER_POSITIONS.filter(
 
 // Entry-price analysis follows the economic exposure without pretending that
 // Anduril is a second legal position. The $88,000 deployed slice receives its
-// known $60B company price; H256's unallocated $112,000 stays out of price-based
-// charts until it is deployed.
+// known $60B company price; H256's remaining $112,000 stays out of price-based
+// charts while the allocation is finalized between Atoms and Applied Intuition.
 export const LETTER_PRICED_POSITIONS = [
   ...LETTER_DIRECT_PRICED_POSITIONS,
   {

@@ -26,7 +26,7 @@ export const LP_AUGUST_2026_PORTFOLIO_AS_OF = "August 18, 2026";
 // Figures of record, reconciled to the live portfolio after the August 18,
 // 2026 portfolio-wide valuation review. Eight sourced company comparisons and
 // one owner-directed Anduril scenario are applied; all other positions remain
-// at cost. H256's pending allocation is included at cost in both totals.
+// at cost. H256's allocation being finalized is included at cost in both totals.
 export const LP_AUGUST_2026_FUND_SNAPSHOT = {
   investedCost: 661_014.25,
   projectedGrossValue: 741_760.05,

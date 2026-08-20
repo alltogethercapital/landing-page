@@ -178,7 +178,7 @@ function PortfolioAtAGlance() {
               row.key === "aerospace"
                 ? `Includes ${dollars(LETTER_H256_DEPLOYED_AMOUNT)} deployed to ${H256_VEHICLE_ALLOCATION.deployedCompany} in its ${H256_VEHICLE_ALLOCATION.deployedRound} through H256`
                 : row.key === "pending"
-                  ? `Pending allocation: ${dollars(LETTER_H256_PENDING_AMOUNT)} in H256`
+                  ? `H256 decision between Atoms and Applied Intuition · ${dollars(LETTER_H256_PENDING_AMOUNT)}`
                 : undefined
             }
           />
@@ -290,7 +290,6 @@ function ValuationEvidence() {
       aria-labelledby="lp-performance-section-title"
     >
       <h2 id="lp-performance-section-title" className="sr-only">Performance</h2>
-      <FigureHeading title="Allocated positions" note="Green delta = gain vs. cost" />
       <div className="lp-figure-table-wrap">
         <table className="lp-figure-table lp-figure-table--marks">
           <thead>
@@ -346,10 +345,10 @@ function ValuationEvidence() {
           <tfoot>
             <tr className="lp-performance-pending-row">
               <th scope="row">
-                <strong>Pending allocation</strong>
-                <small>H256 · excluded from performance until deployed</small>
+                <strong>Finalizing allocation</strong>
+                <small>H256 · Atoms or Applied Intuition</small>
               </th>
-              <td>Awaiting an underlying company</td>
+              <td>Atoms or Applied Intuition</td>
               <td>
                 Included at cost
                 <small>In AUM, NAV, and total math</small>
