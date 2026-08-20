@@ -78,10 +78,11 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
             target="_blank"
             rel="noreferrer"
           >
-            AI will change the basic economics of production
+            AI will reunderwrite the entire world
           </a>
-          {", "}and we wanted the people close to us to own what comes next, not just watch it happen. Our aim is
-          to invest alongside you in the builders who can carry civilization beyond the{" "}
+          {"—not only how we produce, but how we work, build, and live—and "}we wanted the people close to us
+          to own what comes next, not just watch it happen. Our aim is to invest alongside you in the builders
+          who can carry civilization beyond the{" "}
           <a
             href="https://humanorigins.si.edu/research/age-humans-evolutionary-perspectives-anthropocene"
             target="_blank"
@@ -128,6 +129,47 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         </p>
 
         <p>
+          You can see that thesis in the portfolio. Starcloud is building data centers in orbit, where solar
+          power and the vacuum of space become part of the compute stack. OpenAI needs little introduction; it
+          gives us exposure to the frontier intelligence layer itself. Through H256, Anduril combines AI,
+          autonomous systems, and manufacturing capacity to help rebuild American defense. Each sits at a
+          different layer, but each is assembling capabilities that are difficult to reproduce.
+        </p>
+
+        <p>
+          We are participating across the humanoid robotics movement through 1X, Figure AI, Apptronik, and
+          Weave Robotics: machines for the home, the workforce, industry, and everyday household work. Some
+          of these companies will compete with one another. That is intentional. We believe the category can
+          experience a rising tide, so we have deliberately indexed its strongest expressions rather than
+          pretending we can already know the single winner.
+        </p>
+
+        <p>
+          The opportunity extends well beyond humanoids. Aformic moves pallets, carts, and racks through
+          factories and warehouses. Maven Robotics brings general-purpose robots into manufacturing and
+          logistics. Budbreak Innovations sends autonomous scouting robots through vineyards and orchards,
+          turning every plant into a stream of actionable agricultural data. These companies are hard to
+          replicate because their moats live in deployed hardware, supply chains, safety systems, field data,
+          and integration with real-world workflows—and AI can make each layer more capable over time.
+        </p>
+
+        <p>
+          Physical infrastructure is not the only durable moat. We also invest selectively in software where
+          network effects, proprietary data, distribution, or deep workflow integration strengthen with every
+          customer. The test is the same: as intelligence becomes cheaper, does the company retain a point of
+          control that becomes harder, not easier, to displace?
+        </p>
+
+        <p>
+          Energy is the foundation underneath all of it. Aalo Atomics and Apollo Atomics are turning nuclear
+          power into a factory-built product. Quaise Energy is pursuing superhot geothermal at depths ordinary
+          drilling cannot reach. Exowatt is building modular solar-thermal power and storage for the AI compute
+          era. These companies—and others in the portfolio—address the power constraint that every serious AI
+          system eventually meets. We believe their infrastructure will remain critical and their moats can
+          deepen as demand grows.
+        </p>
+
+        <p>
           A compelling market is only the starting point. Within those areas, we look for a durable point of
           control: a technical advantage that compounds, a product embedded in a critical workflow,
           infrastructure others must build on, or an operating system for a newly possible market. Founder
@@ -135,10 +177,14 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         </p>
 
         <p>
-          The portfolio began broad by design. In a market forming this quickly, each investment helped us
-          see which founders could turn technical possibility into an institution and which constraints would
-          endure. Breadth gave us a map. Now we are using it to become more selective and to concentrate our
-          thinking before we concentrate capital.
+          Another part of our strategy is to follow respected institutional investors into a round or invest
+          alongside them when our own underwriting agrees. Y Combinator, Sequoia Capital, Khosla Ventures,
+          Andreessen Horowitz (a16z), and firms like them bring governance, recruiting reach, follow-on capital,
+          and experience navigating acquisitions, secondary sales, and public markets. Their business is also
+          to create returns for their own investors, which can align the shareholder base around building a
+          durable company and eventually creating liquidity. Their presence never replaces our judgment or
+          guarantees an exit, but we believe it can improve the odds that a strong company produces a future
+          exit opportunity for all of its shareholders, including us.
         </p>
 
         <p>
@@ -147,15 +193,6 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
           {snapshot.projectedGrossMultiple.toFixed(2)}× gross value multiple. We will keep this financial
           checkpoint concise and use these letters to share the thinking behind the portfolio, including what
           is changing our minds.
-        </p>
-
-        <p>
-          Access alone is not an advantage when capital is crowded. Price, structure, technical judgment,
-          and the willingness to pass matter. We will favor fewer direct positions, clearer economics,
-          better information rights, and room to support the companies that earn conviction. You trusted us
-          before there was a record, and we do not take that lightly. We owe you disciplined decisions, plain
-          reporting, and an honest account of what we learn. The outcomes that matter will take years. We are
-          grateful to be building toward them with you.
         </p>
 
         <p>Thank you for building this with us.</p>
