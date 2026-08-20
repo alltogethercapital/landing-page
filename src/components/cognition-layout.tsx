@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { AsciiBackground } from "@/components/ascii-backgrounds/ascii-background";
 import { ArrowUpRight } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
@@ -48,7 +49,12 @@ export function CognitionPage({
   children: ReactNode;
   className?: string;
 }) {
-  return <main className={cn("cog-page min-h-screen", className)}>{children}</main>;
+  return (
+    <main className={cn("cog-page min-h-screen", className)}>
+      <AsciiBackground />
+      {children}
+    </main>
+  );
 }
 
 export function CognitionSection({

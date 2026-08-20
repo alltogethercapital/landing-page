@@ -472,6 +472,103 @@ body {
   font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
 }
 
+/* Licensed Shaders ASCII catalog. One fixed GPU canvas sits beneath every
+   public-page surface; the low-opacity blue treatment keeps it atmospheric
+   instead of competing with the editorial content. */
+.cog-page > .ascii-background-stage {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background-color: var(--cog-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='32'%3E%3Ctext x='4' y='19' font-family='monospace' font-size='9' letter-spacing='4' fill='%23006fce' fill-opacity='.075'%3E%2B . / * ~%3C/text%3E%3C/svg%3E");
+  background-size: 120px 32px;
+}
+
+.ascii-background-stage::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: rgba(247, 246, 245, 0.18);
+}
+
+.ascii-background-shader {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.16;
+  filter: grayscale(0.78) sepia(0.16) saturate(1.8) hue-rotate(164deg) contrast(0.78);
+  mix-blend-mode: multiply;
+}
+
+.ascii-background-fallback {
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 22px, rgba(0, 111, 206, 0.08) 22px 23px),
+    repeating-linear-gradient(90deg, transparent 0 22px, rgba(0, 0, 0, 0.035) 22px 23px);
+}
+
+.cog-page > .ascii-background-toggle {
+  position: fixed;
+  right: 64px;
+  bottom: 28px;
+  z-index: 42;
+  display: grid;
+  width: min(340px, calc(100vw - 128px));
+  min-height: 38px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  background: color-mix(in srgb, var(--cog-bg) 94%, transparent);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.06);
+  padding: 8px 10px;
+  color: var(--cog-ink);
+  font-family: var(--cog-ui);
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: left;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  transition:
+    border-color 60ms linear,
+    background-color 60ms linear,
+    color 60ms linear;
+}
+
+.ascii-background-toggle:hover,
+.ascii-background-toggle:focus-visible {
+  border-color: var(--cog-accent);
+  background: var(--cog-dark);
+  color: var(--cog-bg);
+}
+
+.ascii-background-toggle-label {
+  color: var(--cog-accent);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.ascii-background-toggle:hover .ascii-background-toggle-label,
+.ascii-background-toggle:focus-visible .ascii-background-toggle-label {
+  color: var(--cog-sun);
+}
+
+.ascii-background-toggle-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ascii-background-toggle-count {
+  color: currentColor;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.58;
+}
+
 /* Cap the composition on wide screens: the content, the vertical rules, and
    the fixed nav all center together inside --site-max. */
 @media (min-width: 1521px) {
@@ -490,6 +587,10 @@ body {
 
   .cog-page .cog-desktop-nav {
     left: calc((100vw - var(--site-max)) / 2 + 64px);
+  }
+
+  .cog-page .ascii-background-toggle {
+    right: calc((100vw - var(--site-max)) / 2 + 64px);
   }
 }
 
@@ -649,6 +750,10 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .cog-nav-hover-plate {
+    transition: none;
+  }
+
+  .cog-page > .ascii-background-toggle {
     transition: none;
   }
 }
@@ -1704,6 +1809,15 @@ body {
   .cog-search-trigger svg {
     width: 21px;
     height: 21px;
+  }
+
+  .cog-page > .ascii-background-toggle {
+    right: var(--mobile-gutter);
+    bottom: 14px;
+    left: var(--mobile-gutter);
+    width: auto;
+    min-height: 42px;
+    background: color-mix(in srgb, var(--cog-bg) 96%, transparent);
   }
 
   .cog-search-shell {
