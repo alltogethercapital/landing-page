@@ -2651,21 +2651,27 @@ body {
   table-layout: fixed;
 }
 
-.lp-portfolio-table th {
+.lp-portfolio-table thead th {
   position: static;
-  height: 42px;
-  border-bottom: 1px solid var(--lp-line);
+  border-bottom: 1px solid var(--lp-ink);
+  padding: 0 12px 8px 0;
   background: var(--lp-paper);
   color: var(--lp-muted);
-  font-family: var(--cog-support);
-  font-size: 12px;
+  font-family: var(--cog-mono);
+  font-size: var(--lp-micro);
   font-weight: 400;
   text-align: left;
   text-transform: uppercase;
-  letter-spacing: 0.045em;
+  letter-spacing: 0.08em;
+  vertical-align: top;
+  white-space: nowrap;
 }
 
-.lp-portfolio-table th a {
+.lp-portfolio-table thead th:first-child {
+  padding-left: var(--lp-component-inset);
+}
+
+.lp-portfolio-table thead th a {
   color: inherit;
   font: inherit;
   text-decoration: none;
@@ -4262,7 +4268,6 @@ body {
   .cog-strip-label,
   .lp-summary-grid dt,
   .lp-portfolio-view-switch button,
-  .lp-portfolio-table th,
   .lp-portal-footer,
   .lp-detail-heading .lp-detail-meta,
   .lp-detail-facts dt,
