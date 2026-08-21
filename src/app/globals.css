@@ -2602,16 +2602,35 @@ body {
   margin-top: 0;
 }
 
-.lp-company-allocation-view .lp-figure-bar-label a {
+.lp-company-allocation-view .lp-figure-bar-label a,
+.lp-figure-table--marks a {
   color: inherit;
   text-decoration: none;
 }
 
 .lp-company-allocation-view .lp-figure-bar-label a:hover,
-.lp-company-allocation-view .lp-figure-bar-label a:focus-visible {
+.lp-company-allocation-view .lp-figure-bar-label a:focus-visible,
+.lp-figure-table--marks a:hover,
+.lp-figure-table--marks a:focus-visible {
   color: var(--lp-accent);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+}
+
+.lp-link-arrow {
+  display: inline-block;
+  margin-left: 0.3em;
+  color: var(--lp-muted);
+  font-family: var(--cog-mono);
+  font-size: 0.72em;
+  font-weight: 400;
+  line-height: 1;
+  transform: translateY(-0.08em);
+  transition: color 150ms ease, transform 150ms ease;
+}
+
+a:hover > .lp-link-arrow,
+a:focus-visible > .lp-link-arrow {
+  color: var(--lp-accent);
+  transform: translate(1px, calc(-0.08em - 1px));
 }
 
 .lp-portfolio-table {
@@ -3675,12 +3694,6 @@ body {
 .lp-figure-table--marks .lp-performance-total-row th,
 .lp-figure-table--marks .lp-performance-total-row td {
   border-top: 1px solid var(--lp-ink);
-}
-
-.lp-figure-table--marks a {
-  color: var(--lp-ink);
-  text-decoration-color: var(--lp-gain);
-  text-underline-offset: 3px;
 }
 
 .lp-performance-change strong {

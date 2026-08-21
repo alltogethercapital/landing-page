@@ -11,10 +11,6 @@ type CompanyAllocationRow = {
   searchText: string;
 };
 
-function formatWholePercent(value: number) {
-  return `${Math.round(value * 100)}%`;
-}
-
 function formatPercent(value: number) {
   return `${(value * 100).toFixed(1)}%`;
 }
@@ -37,9 +33,8 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
         id: `${investment.id}-deployed`,
         label: allocation.deployedCompany,
         amount: allocation.deployedAmount,
-        detail: `Through H256 · ${formatWholePercent(allocation.deployedShare)} of vehicle`,
         href: `/lp/investments/${investment.id}`,
-        searchText: `${allocation.deployedCompany} H256 deployed`.toLocaleLowerCase(),
+        searchText: allocation.deployedCompany.toLocaleLowerCase(),
         positionCount: 1,
       });
       rows.set(`${investment.id}-pending`, {
@@ -48,14 +43,17 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
         amount: allocation.pendingAmount,
         detail: (
           <>
-            H256 · Will go to <Link href="/companies#applied-intuition">Applied Intuition</Link>
+            Will go to <Link href="/companies#applied-intuition">
+              Applied Intuition<span className="lp-link-arrow" aria-hidden="true">↗</span>
+            </Link>
             {" or "}
-            <Link href="/lp/investments/41-atoms">Atoms</Link>
-            {` · ${formatWholePercent(allocation.awaitingShare)} of vehicle`}
+            <Link href="/lp/investments/41-atoms">
+              Atoms<span className="lp-link-arrow" aria-hidden="true">↗</span>
+            </Link>
           </>
         ),
         href: `/lp/investments/${investment.id}`,
-        searchText: "H256 finalizing allocation Atoms Applied Intuition",
+        searchText: "finalizing allocation Atoms Applied Intuition",
         positionCount: 1,
       });
       continue;
@@ -128,7 +126,9 @@ export function LpPortfolioTable({
                 aria-label={`${row.label}: ${formatWholeCurrency(row.amount)}, ${formatPercent(row.amount / totalCapital)} of total capital`}
               >
                 <span className="lp-figure-bar-label">
-                  <Link href={row.href}>{row.label}</Link>
+                  <Link href={row.href}>
+                    {row.label}<span className="lp-link-arrow" aria-hidden="true">↗</span>
+                  </Link>
                   {row.detail ? <small>{row.detail}</small> : null}
                 </span>
                 <span className="lp-figure-bar-track" aria-hidden="true">
@@ -145,7 +145,9 @@ export function LpPortfolioTable({
         ) : (
           <div className="lp-table-empty">
             <p>No company allocations match this view.</p>
-            <Link href="/lp">Clear search</Link>
+            <Link href="/lp">
+              Clear search<span className="lp-link-arrow" aria-hidden="true">↗</span>
+            </Link>
           </div>
         )}
       </section>

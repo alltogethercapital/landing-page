@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   LETTER_ACCESS_CHANNEL_SPLIT,
   LETTER_ALLOCATION,
@@ -268,6 +269,7 @@ function ValuationEvidence() {
     const delta = carried - position.investedCost;
     return {
       position,
+      detailHref: `/lp/investments/${recordedPosition.id}`,
       mark,
       carried,
       delta,
@@ -303,10 +305,14 @@ function ValuationEvidence() {
             </tr>
           </thead>
           <tbody>
-            {positions.map(({ position, mark, carried, delta, multiple, hasGain, hasLoss }) => (
+            {positions.map(({ position, detailHref, mark, carried, delta, multiple, hasGain, hasLoss }) => (
               <tr key={position.id} className={hasGain ? "has-gain" : undefined}>
                 <th scope="row">
-                  <strong>{position.company}</strong>
+                  <strong>
+                    <Link href={detailHref} className="lp-performance-position-link">
+                      {position.company}<span className="lp-link-arrow" aria-hidden="true">↗</span>
+                    </Link>
+                  </strong>
                   <small>
                     {mark?.positionLabel && mark.positionLabel !== position.company
                       ? `${mark.positionLabel} mark`
@@ -322,7 +328,7 @@ function ValuationEvidence() {
                 <td>
                   {mark?.sourceUrl ? (
                     <a href={mark.sourceUrl} target="_blank" rel="noreferrer">
-                      {mark.latestValuation}
+                      {mark.latestValuation}<span className="lp-link-arrow" aria-hidden="true">↗</span>
                     </a>
                   ) : mark ? (
                     mark.latestValuation
