@@ -60,7 +60,7 @@ const CATEGORY_BY_CHRONOLOGY: Record<number, LetterAllocationCategory> = {
   26: "applications", 27: "ai", 28: "aerospace", 29: "applications", 30: "robotics",
   31: "applications", 32: "ai", 33: "energy", 34: "energy", 35: "ai",
   36: "ai", 37: "aerospace", 38: "ai", 39: "applications", 40: "aerospace",
-  41: "applications", 42: "robotics", 43: "aerospace", 44: "ai",
+  41: "applications", 42: "robotics", 43: "aerospace", 44: "ai", 45: "ai",
 };
 
 // Entry valuation as reported at the time of investment. These are entry prices,
@@ -74,7 +74,7 @@ const ENTRY_VALUATION_BY_CHRONOLOGY: Record<number, number> = {
   26: 500e6, 27: 30e6, 28: 35e6, 29: 35e6, 30: 60e6,
   31: 50e6, 32: 3.4e9, 33: 600e6, 34: 120e6, 35: 3.8e9,
   36: 60e6, 37: 6e6, 38: 10.5e9, 39: 30e6, 40: 50e6,
-  41: 15.9e9, 42: 180e6, 43: 130e9, 44: 4.5e9,
+  41: 15.9e9, 42: 180e6, 43: 130e9, 44: 4.5e9, 45: 5e9,
 };
 
 export type LetterEntryRound =
