@@ -37,13 +37,9 @@ test("uses the page name and All Together Capital suffix on every page", async (
   await expect(page).toHaveURL(/\/lp$/);
   await expect(page).toHaveTitle(`Portfolio${suffix}`);
   await page.waitForLoadState("networkidle");
-  await expect(page.getByRole("button", { name: "Table view" })).toBeEnabled();
-  await page.getByRole("button", { name: "Table view" }).click();
-  await expect(page.getByRole("button", { name: "Table view" })).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  );
-  await expect(page.locator(".lp-portfolio-table tbody tr")).toHaveCount(44);
+  await expect(page.getByRole("button", { name: "Table view" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Graph view" })).toHaveCount(0);
+  await expect(page.locator(".lp-company-allocation-view .lp-figure-bar-row")).toHaveCount(44);
   const investmentPaths = await page
     .locator('a[href^="/lp/investments/"]')
     .evaluateAll((links) => [...new Set(links.map((link) => link.getAttribute("href")))].filter(Boolean));
@@ -64,7 +60,9 @@ test("uses the page name and All Together Capital suffix on every page", async (
     await expect(page).toHaveTitle(`${route.name}${suffix}`);
   }
 
-  expect(investmentPaths).toHaveLength(44);
+  // The graph exposes 42 distinct detail routes: H256's two allocation bars
+  // share one legal-position detail, and 1X's two positions remain grouped.
+  expect(investmentPaths).toHaveLength(42);
   for (const path of investmentPaths) {
     await page.goto(path!);
     const pageName = await page.getByRole("heading", { level: 1 }).textContent();
