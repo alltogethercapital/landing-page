@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const password = process.env.LP_TEST_PASSWORD || "StagingPortalPassphrase-2026";
 
-test("protects, authenticates, switches views, and opens an investment", async ({ page }) => {
+test("protects, authenticates, shows the investment graph, and opens an investment", async ({ page }) => {
   test.setTimeout(60_000);
 
   await page.goto("/lp/updates");
@@ -27,15 +27,14 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(insightsLink).not.toHaveAttribute("aria-current");
   await expect(performanceLink).not.toHaveAttribute("aria-current");
   await expect(page.locator("#lp-portfolio-heading")).toHaveClass(/sr-only/);
-  const graphViewButton = page.getByRole("button", { name: "Graph view" });
-  const tableViewButton = page.getByRole("button", { name: "Table view" });
-  await expect(graphViewButton).toBeEnabled();
-  await expect(tableViewButton).toBeEnabled();
-  await expect(graphViewButton).toHaveAttribute("aria-pressed", "true");
-  await expect(tableViewButton).toHaveAttribute("aria-pressed", "false");
+  await expect(page.getByRole("button", { name: "Graph view" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Table view" })).toHaveCount(0);
   await expect(page.getByText("43 companies · 1 not-yet-allocated balance", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("$661,014.25", { exact: true })).toBeVisible();
+  await expect(page.getByText("$661,014", { exact: true })).toBeVisible();
   const summaryGrid = page.locator(".lp-summary-grid");
+  await expect(summaryGrid.getByText("$661,014.25", { exact: true })).toHaveCount(0);
+  await expect(summaryGrid.getByText("$741,760.05", { exact: true })).toHaveCount(0);
+  await expect(summaryGrid.getByText("$112,000.00", { exact: true })).toHaveCount(0);
   const aumTerm = summaryGrid.getByLabel("About AUM");
   const navTerm = summaryGrid.getByLabel("About NAV");
   const finalizingTerm = summaryGrid.getByLabel("About Finalizing allocation");
@@ -50,7 +49,7 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await navTerm.focus();
   await expect(summaryGrid.getByRole("tooltip").filter({ hasText: /Net asset value \(NAV\) is assets minus liabilities/ })).toBeVisible();
   await finalizingTerm.hover();
-  await expect(summaryGrid.getByRole("tooltip").filter({ hasText: /\$112,000.00 portion of H256 is being finalized between Atoms and Applied Intuition/ })).toBeVisible();
+  await expect(summaryGrid.getByRole("tooltip").filter({ hasText: /\$112,000 portion of H256 is being finalized between Atoms and Applied Intuition/ })).toBeVisible();
   await multipleTerm.focus();
   await expect(summaryGrid.getByRole("tooltip").filter({ hasText: /Gross value multiple is projected NAV divided by AUM at recorded cost/ })).toBeVisible();
   await expect(summaryGrid.locator(".lp-summary-metric--primary")).toHaveCount(2);
@@ -60,8 +59,8 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(summaryGrid.getByText("Projected NAV", { exact: true })).toHaveCount(0);
   await expect(summaryGrid.getByText("Finalizing allocation", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("Pending allocation", { exact: true })).toHaveCount(0);
-  await expect(summaryGrid.getByText("$112,000.00", { exact: true })).toBeVisible();
-  await expect(page.getByText("$741,760.05", { exact: true })).toBeVisible();
+  await expect(summaryGrid.getByText("$112,000", { exact: true })).toBeVisible();
+  await expect(page.getByText("$741,760", { exact: true })).toBeVisible();
   await expect(page.getByText("Gross value multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.12×", { exact: true })).toBeVisible();
@@ -83,23 +82,20 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(page.getByText("SAFE", { exact: true })).toHaveCount(0);
   await expect(page.getByText("SPV", { exact: true })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "All companies" })).toHaveCount(0);
-  await expect(page.getByRole("group", { name: "Investment view" })).toBeVisible();
+  await expect(page.getByRole("group", { name: "Investment view" })).toHaveCount(0);
   await expect(page.getByPlaceholder("Search investments…")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Open search" })).toHaveCount(0);
   await expect(page.locator(".lp-table-controls")).toHaveCount(0);
-  const tableHeadingBox = await page.locator(".lp-table-heading").boundingBox();
   const portfolioTabsBox = await portfolioSections.boundingBox();
-  const portfolioViewSwitchBox = await page.locator(".lp-portfolio-view-switch").boundingBox();
-  expect(tableHeadingBox).not.toBeNull();
+  const investmentHeaderBox = await page.locator(".lp-company-allocation-head").boundingBox();
   expect(portfolioTabsBox).not.toBeNull();
-  expect(portfolioViewSwitchBox).not.toBeNull();
-  const investmentContentGap = tableHeadingBox!.y - (portfolioTabsBox!.y + portfolioTabsBox!.height);
+  expect(investmentHeaderBox).not.toBeNull();
+  const investmentContentGap = investmentHeaderBox!.y - (portfolioTabsBox!.y + portfolioTabsBox!.height);
   expect(investmentContentGap).toBeGreaterThanOrEqual(16);
   expect(investmentContentGap).toBeLessThanOrEqual(32);
-  expect(portfolioViewSwitchBox!.y).toBeGreaterThanOrEqual(tableHeadingBox!.y);
-  expect(portfolioViewSwitchBox!.y + portfolioViewSwitchBox!.height).toBeLessThanOrEqual(
-    tableHeadingBox!.y + tableHeadingBox!.height,
-  );
+  await expect(page.locator(".lp-company-allocation-head")).toHaveText(/Company \/ allocationAmountAUM share/);
+  await expect(page.locator(".lp-company-allocation-head")).toHaveCSS("border-bottom-style", "solid");
+  await expect(page.locator(".lp-company-allocation-head")).toHaveCSS("border-bottom-width", "1px");
   const companyAllocationRows = page.locator(".lp-company-allocation-view .lp-figure-bar-row");
   await expect(companyAllocationRows).toHaveCount(44);
   await expect(page.locator(".lp-company-allocation-view .lp-figure-bar-row.is-lead")).toHaveCount(0);
@@ -127,39 +123,19 @@ test("protects, authenticates, switches views, and opens an investment", async (
     path: "output/playwright/lp-portal/company-allocation-desktop.png",
     fullPage: true,
   });
-  await tableViewButton.click();
-  await expect(tableViewButton).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator(".lp-portfolio-table tbody tr")).toHaveCount(44);
-  await expect(page.locator(".lp-portfolio-table").getByText("Positron", { exact: true })).toBeVisible();
-  const h256Row = page.locator(".lp-portfolio-table tbody tr").filter({ hasText: "H256 LLC Series 3" });
-  await expect(h256Row).toBeVisible();
-  await expect(h256Row).toContainText("$200,000");
-  await expect(h256Row).toContainText("$88,000 to Anduril in its Series H at a $60B entry valuation (44%) · Finalizing allocation: $112,000 to Atoms or Applied Intuition (56%)");
-  await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M fund / $1M investment entity", { exact: true })).toBeVisible();
-  await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M model financing", { exact: true })).toBeVisible();
-  const investmentColumnTitleStyle = await page.getByRole("columnheader", { name: "Company" }).evaluate((element) => {
+  await expect(page.locator(".lp-portfolio-table")).toHaveCount(0);
+  const investmentColumnTitleStyle = await page.locator(".lp-company-allocation-head span").first().evaluate((element) => {
     const styles = getComputedStyle(element);
     return {
-      borderBottomColor: styles.borderBottomColor,
-      borderBottomStyle: styles.borderBottomStyle,
-      borderBottomWidth: styles.borderBottomWidth,
       color: styles.color,
       fontFamily: styles.fontFamily,
       fontSize: styles.fontSize,
       fontWeight: styles.fontWeight,
       letterSpacing: styles.letterSpacing,
-      paddingBottom: styles.paddingBottom,
-      paddingLeft: styles.paddingLeft,
       textTransform: styles.textTransform,
-      verticalAlign: styles.verticalAlign,
       whiteSpace: styles.whiteSpace,
     };
   });
-  await expect(page.locator(".lp-portfolio-table .lp-company-logo img")).toHaveCount(44);
-  await page.locator(".lp-portfolio-table .lp-company-logo img").last().scrollIntoViewIfNeeded();
-  await expect.poll(() => page.locator(".lp-portfolio-table .lp-company-logo img").evaluateAll((logos) =>
-    logos.filter((logo) => (logo as HTMLImageElement).complete && (logo as HTMLImageElement).naturalWidth > 0).length,
-  )).toBe(44);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-desktop.png", fullPage: true });
 
   await insightsLink.click();
@@ -170,7 +146,7 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(page.locator("#lp-figure-concentration-and-structure")).toHaveClass(/sr-only/);
   await expect(page.locator(".lp-figure-section-head")).toHaveCount(0);
   await expect(page.locator(".lp-summary-grid")).toBeVisible();
-  await expect(page.locator(".lp-summary-grid").getByText("$741,760.05", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("$741,760", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-summary-grid").getByText("1.12×", { exact: true })).toBeVisible();
   const analysisSummaryBox = await page.locator(".lp-summary-grid").boundingBox();
   const analysisTabsBox = await portfolioSections.boundingBox();
@@ -254,18 +230,12 @@ test("protects, authenticates, switches views, and opens an investment", async (
   const performanceColumnTitleStyle = await page.getByRole("columnheader", { name: "Position" }).evaluate((element) => {
     const styles = getComputedStyle(element);
     return {
-      borderBottomColor: styles.borderBottomColor,
-      borderBottomStyle: styles.borderBottomStyle,
-      borderBottomWidth: styles.borderBottomWidth,
       color: styles.color,
       fontFamily: styles.fontFamily,
       fontSize: styles.fontSize,
       fontWeight: styles.fontWeight,
       letterSpacing: styles.letterSpacing,
-      paddingBottom: styles.paddingBottom,
-      paddingLeft: styles.paddingLeft,
       textTransform: styles.textTransform,
-      verticalAlign: styles.verticalAlign,
       whiteSpace: styles.whiteSpace,
     };
   });
@@ -411,9 +381,7 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(page.locator(".lp-portal-footer > span")).toHaveCount(1);
 
   await page.waitForLoadState("networkidle");
-  await page.getByRole("button", { name: "Table view" }).click();
-  await expect(page.locator(".lp-portfolio-table tbody tr")).toHaveCount(44);
-  await page.locator(".lp-table-wrap").getByRole("link", { name: "View Blue Origin" }).click();
+  await page.locator(".lp-company-allocation-view").getByRole("link", { name: "Blue Origin", exact: true }).click();
   await expect(page).toHaveURL(/43-blue-origin$/);
   await expect(page.getByText("Pending acceptance", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Data status", { exact: true })).toHaveCount(0);
@@ -433,10 +401,7 @@ test("protects, authenticates, switches views, and opens an investment", async (
 
   await page.locator(".lp-back-link").click();
   await page.waitForLoadState("networkidle");
-  const returnedTableViewButton = page.getByRole("button", { name: "Table view" });
-  await returnedTableViewButton.click();
-  await expect(returnedTableViewButton).toHaveAttribute("aria-pressed", "true");
-  await page.locator(".lp-table-wrap").getByRole("link", { name: "View Positron" }).click();
+  await page.locator(".lp-company-allocation-view").getByRole("link", { name: "Positron", exact: true }).click();
   await expect(page).toHaveURL(/44-positron$/);
   await expect(page.getByRole("link", { name: "Visit Positron website" })).toHaveAttribute("href", "https://www.positron.ai/");
   await expect(page.getByText("$4.5B before the round", { exact: true })).toHaveCount(2);
@@ -546,10 +511,10 @@ test("renders the login, portfolio, and detail views at every supported layout",
     }
 
     await page.waitForLoadState("networkidle");
-    await expect(page.getByRole("button", { name: "Graph view" })).toBeEnabled();
-    await expect(page.getByRole("button", { name: "Graph view" })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("button", { name: "Graph view" })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Table view" })).toHaveCount(0);
     const investmentTabsBox = await portfolioSections.boundingBox();
-    const investmentHeadingBox = await page.locator(".lp-table-heading").boundingBox();
+    const investmentHeadingBox = await page.locator(".lp-company-allocation-head").boundingBox();
     expect(investmentTabsBox).not.toBeNull();
     expect(investmentHeadingBox).not.toBeNull();
     const viewportInvestmentGap = investmentHeadingBox!.y - (investmentTabsBox!.y + investmentTabsBox!.height);
@@ -608,7 +573,6 @@ test("renders the login, portfolio, and detail views at every supported layout",
       .getByRole("link", { name: "Investments", exact: true })
       .click();
     await expect(page).toHaveURL(/\/lp$/);
-    await page.getByRole("button", { name: "Table view" }).click();
 
     await page.screenshot({
       path: `output/playwright/lp-portal/portfolio-${viewport.name}.png`,
@@ -666,8 +630,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await page.getByRole("link", { name: "Portfolio", exact: true }).click();
     await expect(page).toHaveURL(/\/lp$/);
 
-    await page.getByRole("button", { name: "Table view" }).click();
-    await page.getByRole("link", { name: "View Blue Origin" }).click();
+    await page.locator(".lp-company-allocation-view").getByRole("link", { name: "Blue Origin", exact: true }).click();
     await expect(page).toHaveURL(/43-blue-origin$/);
     await expect(page.getByRole("heading", { name: "Blue Origin" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Visit Blue Origin website" })).toBeVisible();

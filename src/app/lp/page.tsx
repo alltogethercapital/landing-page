@@ -4,11 +4,7 @@ import {
   LpPortfolioInsights,
   LpPortfolioPerformance,
 } from "@/components/lp-letter-figures";
-import {
-  LpPortfolioTable,
-  type LpPortfolioDisplay,
-  type LpTableSort,
-} from "@/components/lp-portfolio-table";
+import { LpPortfolioTable } from "@/components/lp-portfolio-table";
 import { getLpPortfolio } from "@/lib/lp-data";
 
 type LpPortfolioPageProps = {
@@ -32,8 +28,7 @@ function currency(value: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 0,
   }).format(value);
 }
 
@@ -67,22 +62,11 @@ function MetricLabel({
 export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageProps) {
   const [investments, params] = await Promise.all([getLpPortfolio(), searchParams]);
   const value = (key: string) => typeof params[key] === "string" ? params[key] : undefined;
-  const requestedSort = value("sort");
   const section = value("section") === "analysis"
     ? "analysis"
     : value("section") === "performance"
       ? "performance"
       : "investments";
-  const display: LpPortfolioDisplay = value("display") === "positions" ? "positions" : "companies";
-  const sort: LpTableSort = ["chronology", "company", "investedCost", "investmentDate"].includes(requestedSort || "")
-    ? requestedSort as LpTableSort
-    : "chronology";
-  const view = {
-    query: value("query"),
-    sort,
-    direction: value("direction") === "asc" ? "asc" as const : "desc" as const,
-    display,
-  };
   const investedCost = investments.reduce((total, item) => total + item.investedCost, 0);
   const pendingAllocation = investments.reduce(
     (total, item) => total + (item.vehicleAllocation?.pendingAmount ?? 0),
@@ -162,7 +146,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
       </nav>
 
       {section === "investments" && (
-        <LpPortfolioTable investments={investments} view={view} />
+        <LpPortfolioTable investments={investments} query={value("query")} />
       )}
       {section === "analysis" && (
         <div className="lp-portfolio-analysis">
