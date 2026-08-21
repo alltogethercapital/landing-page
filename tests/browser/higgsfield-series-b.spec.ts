@@ -38,7 +38,10 @@ test("publishes the Higgsfield follow-on across the public portfolio surfaces", 
     page.getByRole("link", { name: /Higgsfield, again\./ }),
   ).toHaveAttribute("href", "/updates/higgsfield-series-b");
 
-  await page.goto("/updates/higgsfield-series-b");
+  await expect(async () => {
+    const articleResponse = await page.goto("/updates/higgsfield-series-b");
+    expect(articleResponse?.status()).toBe(200);
+  }).toPass({ timeout: 15_000 });
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Higgsfield, again.",
   );
@@ -55,4 +58,28 @@ test("publishes the Higgsfield follow-on across the public portfolio surfaces", 
     path: "output/playwright/higgsfield-series-b/article.png",
     fullPage: true,
   });
+});
+
+test("serves the current homepage social preview with cache-busted metadata", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    "content",
+    /\/opengraph-image\?[a-f0-9]+$/,
+  );
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
+    "content",
+    "1200",
+  );
+  await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute(
+    "content",
+    "630",
+  );
+
+  const previewResponse = await page.request.get("/opengraph-image");
+  expect(previewResponse.ok()).toBe(true);
+  expect(previewResponse.headers()["content-type"]).toContain("image/png");
+  expect((await previewResponse.body()).byteLength).toBeGreaterThan(20_000);
 });
