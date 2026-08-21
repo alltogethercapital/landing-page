@@ -75,7 +75,7 @@ export type ProjectedValuationMark = {
 };
 
 // Approved cost-basis snapshot of the All Together Drive Schedule of Investments.
-// Reconciled 2026-08-14. Values are preserved exactly from the source sheet;
+// Reconciled 2026-08-21. Values are preserved exactly from the source sheet;
 // Performance fields remain absent until a sourced, dated mark is approved.
 export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "01-budbreak-innovations", chronology: 1, company: "Budbreak Innovations", investedCost: 10000, investmentDate: "2026-04-19", round: "Seed", entryValuation: "$25M post-money cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "1iS2O7ATyv0UgTfRDReE5Uv8MD7Lo8n-N", logo: "/logos/cards/budbreak.png", description: "The robotics platform for agriculture.", reviewStatus: "verified" },
@@ -122,6 +122,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "42-weave-robotics", chronology: 42, company: "Weave Robotics", investedCost: 5000, investmentDate: "2026-08-11", round: "Seed+", entryValuation: "$180M post-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1f2LWuGRnoxsws4tCC5-JY-mmJdopMC1-", logo: "/logos/cards/weave-robotics.png", description: "Practical home robots for everyday household work.", reviewStatus: "verified", reviewNote: "Final amount reflects the owner's August 14 correction; the original outbound wire remains recorded separately." },
   { id: "43-blue-origin", chronology: 43, company: "Blue Origin", investedCost: 15000, investmentDate: "2026-08-12", round: "N/A", entryValuation: "$130B pre-money", instrument: "SPV", platform: "Capital Company", driveFolderId: "13wS3KegZWqt9lzc6Vomib40bjMQJ1Ya9", logo: "/logos/cards/blue-origin.png", description: "Reusable rockets, engines, lunar systems, and space infrastructure.", reviewStatus: "pending", reviewNote: "Wire confirmed; final fund acceptance and countersignature remain pending.", securityAllocation: [{ securityType: "Not specified", share: 1 }] },
   { id: "44-positron", chronology: 44, company: "Positron", investedCost: 5000, investmentDate: "2026-08-13", round: "Series C", entryValuation: "$4.5B pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "17qCf0zOiYhtSZxFOCChlHLK1qViEJsId", logo: "/logos/cards/positron.svg", logoTreatment: "inverse", description: "Purpose-built AI inference hardware and systems.", reviewStatus: "verified" },
+  { id: "45-higgsfield", chronology: 45, company: "Higgsfield", investedCost: 10000, investmentDate: "2026-08-21", round: "Series B", entryValuation: "$5B pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1GLPKzbsjW3P5-H6Pa4D8WtDFq0E5_QAL", logo: "/logos/cards/higgsfield.png", description: "AI video and image creation workflows for creators, marketers, and enterprise teams.", reviewStatus: "pending", reviewNote: "Position amount confirmed by the owner; bank transfer route/date and executed closing evidence remain pending." },
 ];
 
 // Valuation inputs used for the LP-facing gross projection. Most inputs are
@@ -190,15 +191,15 @@ export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark
   },
 };
 
-export const LP_PROJECTION_AS_OF = "2026-08-18";
+export const LP_PROJECTION_AS_OF = "2026-08-21";
 
 export const LP_SNAPSHOT = {
   source: "All Together Drive · Schedule of Investments",
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
-  sourceRange: "Sheet1!A2:J45",
-  sourceModifiedAt: "2026-08-14T22:20:54.020Z",
-  publishedAt: "2026-08-14T22:22:27.000Z",
-  recordCount: 44,
-  investedCostTotal: 661014.25,
+  sourceRange: "Sheet1!A2:J46",
+  sourceModifiedAt: "2026-08-21T20:01:18.119Z",
+  publishedAt: "2026-08-21T20:01:18.119Z",
+  recordCount: 45,
+  investedCostTotal: 671014.25,
   status: "Reconciled with projected gross return model",
 } as const;
