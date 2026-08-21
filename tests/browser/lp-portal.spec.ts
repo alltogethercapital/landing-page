@@ -99,10 +99,15 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   const companyAllocationRows = page.locator(".lp-company-allocation-view .lp-figure-bar-row");
   await expect(companyAllocationRows).toHaveCount(44);
   await expect(page.locator(".lp-company-allocation-view .lp-figure-bar-row.is-lead")).toHaveCount(0);
-  await expect(companyAllocationRows.nth(0)).toContainText("Finalizing allocation");
-  await expect(companyAllocationRows.nth(0)).toContainText("Atoms or Applied Intuition");
-  await expect(companyAllocationRows.nth(0)).toContainText("$112,000");
-  await expect(companyAllocationRows.nth(0)).toContainText("16.9%");
+  const finalizingAllocationRow = companyAllocationRows.nth(0);
+  await expect(finalizingAllocationRow).toContainText("Finalizing allocation");
+  await expect(finalizingAllocationRow).toContainText("H256 · Will go to Applied Intuition or Atoms · 56% of vehicle");
+  await expect(finalizingAllocationRow.getByRole("link", { name: "Applied Intuition", exact: true }))
+    .toHaveAttribute("href", "/companies#applied-intuition");
+  await expect(finalizingAllocationRow.getByRole("link", { name: "Atoms", exact: true }))
+    .toHaveAttribute("href", "/lp/investments/41-atoms");
+  await expect(finalizingAllocationRow).toContainText("$112,000");
+  await expect(finalizingAllocationRow).toContainText("16.9%");
   await expect(companyAllocationRows.nth(1)).toContainText("Anduril");
   await expect(companyAllocationRows.nth(1)).toContainText("$88,000");
   await expect(companyAllocationRows.nth(1)).toContainText("13.3%");

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import type { LpInvestmentDto } from "@/lib/lp-data";
 
@@ -5,7 +6,7 @@ type CompanyAllocationRow = {
   id: string;
   label: string;
   amount: number;
-  detail?: string;
+  detail?: ReactNode;
   href: string;
   searchText: string;
 };
@@ -45,7 +46,14 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
         id: `${investment.id}-pending`,
         label: "Finalizing allocation",
         amount: allocation.pendingAmount,
-        detail: `H256 · Atoms or Applied Intuition · ${formatWholePercent(allocation.awaitingShare)} of vehicle`,
+        detail: (
+          <>
+            H256 · Will go to <Link href="/companies#applied-intuition">Applied Intuition</Link>
+            {" or "}
+            <Link href="/lp/investments/41-atoms">Atoms</Link>
+            {` · ${formatWholePercent(allocation.awaitingShare)} of vehicle`}
+          </>
+        ),
         href: `/lp/investments/${investment.id}`,
         searchText: "H256 finalizing allocation Atoms Applied Intuition",
         positionCount: 1,
