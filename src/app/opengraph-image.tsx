@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { GLYPH_RAMP } from "@/lib/glyphs";
 
 // Share-preview card (iMessage / Slack / X / LinkedIn). Static TTFs are kept in
 // /public/fonts because Satori in this build accepts only static TTF/OTF.
@@ -18,28 +17,50 @@ export default async function OpenGraphImage() {
     atlasMedium,
     newsreaderRegular,
     newsreaderSemiBold,
-    aformicCover,
-    arrayLabsCover,
-    mavenCover,
-    volantisCover,
     brandMark,
+    shieldAiLogo,
+    oneXLogo,
+    openAiLogo,
+    blueOriginLogo,
+    longshotLogo,
+    weaveLogo,
+    supabaseLogo,
+    valstadLogo,
+    atomsLogo,
+    higgsfieldLogo,
   ] = await Promise.all([
     readFile(join(process.cwd(), "public/fonts/AtlasTypewriter-Medium-Web.ttf")),
     readFile(join(process.cwd(), "public/fonts/Newsreader-Regular.ttf")),
     readFile(join(process.cwd(), "public/fonts/Newsreader-SemiBold.ttf")),
-    readFile(join(process.cwd(), "public/work/cards/aformic.jpg")),
-    readFile(join(process.cwd(), "public/work/cards/array-labs.jpg")),
-    readFile(join(process.cwd(), "public/work/cards/maven.jpg")),
-    readFile(join(process.cwd(), "public/work/cards/volantis.jpg")),
     readFile(
       join(process.cwd(), "public/brand/all-together-rising-circles-logo.png"),
     ),
+    readFile(join(process.cwd(), "public/logos/cards/shield-ai.png")),
+    readFile(join(process.cwd(), "public/logos/cards/1x.png")),
+    readFile(join(process.cwd(), "public/logos/cards/openai.png")),
+    readFile(join(process.cwd(), "public/logos/cards/blue-origin.png")),
+    readFile(join(process.cwd(), "public/logos/cards/longshot-space.png")),
+    readFile(join(process.cwd(), "public/logos/cards/weave-robotics.png")),
+    readFile(join(process.cwd(), "public/logos/cards/supabase.png")),
+    readFile(join(process.cwd(), "public/logos/cards/valstad.png")),
+    readFile(join(process.cwd(), "public/logos/cards/atoms.png")),
+    readFile(join(process.cwd(), "public/logos/cards/higgsfield.png")),
   ]);
-  const productCovers = [aformicCover, arrayLabsCover, mavenCover, volantisCover].map(
-    (image) => `data:image/jpeg;base64,${image.toString("base64")}`,
-  );
   const brandMarkSrc = `data:image/png;base64,${brandMark.toString("base64")}`;
-  const verticalRules = [64, 291, 367, 894, 1046];
+  const companyLogos = [
+    shieldAiLogo,
+    oneXLogo,
+    openAiLogo,
+    blueOriginLogo,
+    longshotLogo,
+    weaveLogo,
+    supabaseLogo,
+    valstadLogo,
+    atomsLogo,
+    higgsfieldLogo,
+  ].map((image) => `data:image/png;base64,${image.toString("base64")}`);
+  const verticalRules = [56, 254, 320, 849, 980, 1144];
+  const navigation = ["HOME", "OUR COMPANIES", "OUR ENTREPRENEURS", "OUR TEAM", "UPDATES"];
 
   return new ImageResponse(
     (
@@ -73,28 +94,21 @@ export default async function OpenGraphImage() {
           style={{
             position: "absolute",
             top: 72,
-            left: 80,
+            left: 56,
             display: "flex",
             flexDirection: "column",
-            width: 164,
+            width: 198,
           }}
         >
           <div
             style={{
-              position: "relative",
               display: "flex",
-              width: 90,
-              height: 31,
               alignItems: "center",
-              justifyContent: "center",
-              gap: 9,
-              border: "1.5px solid #000000",
-              paddingLeft: 10,
-              paddingRight: 7,
+              gap: 10,
               fontFamily: "Atlas Typewriter",
-              fontSize: 13,
+              fontSize: 18,
               fontWeight: 500,
-              letterSpacing: 4.2,
+              letterSpacing: 5,
               lineHeight: 1,
               color: "#000000",
             }}
@@ -102,71 +116,69 @@ export default async function OpenGraphImage() {
             <img
               alt=""
               src={brandMarkSrc}
-              width={18}
-              height={18}
-              style={{ width: 18, height: 18, borderRadius: 999 }}
+              width={22}
+              height={22}
+              style={{ width: 22, height: 22, borderRadius: 999 }}
             />
-            <span style={{ marginRight: -4.2 }}>A2R</span>
-            <div
-              style={{
-                position: "absolute",
-                right: -1.5,
-                bottom: -5,
-                left: -1.5,
-                height: 1.5,
-                backgroundColor: "#000000",
-              }}
-            />
+            <span style={{ marginRight: -5 }}>A2R</span>
           </div>
           <div
             style={{
-              marginTop: 30,
+              marginTop: 34,
               display: "flex",
               flexDirection: "column",
-              gap: 8,
-              color: "rgba(0, 0, 0, 0.54)",
+              gap: 12,
               fontFamily: "Atlas Typewriter",
-              fontSize: 14,
+              fontSize: 12,
               lineHeight: 1.25,
             }}
           >
-            <span>companies</span>
-            <span>founders</span>
-            <span>updates</span>
+            {navigation.map((item, index) => (
+              <div
+                key={item}
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  color: index === 0 ? "#1685e5" : "rgba(0, 0, 0, 0.56)",
+                }}
+              >
+                {index === 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: -2,
+                      left: -14,
+                      width: 2,
+                      height: 16,
+                      backgroundColor: "#1685e5",
+                    }}
+                  />
+                )}
+                {item}
+              </div>
+            ))}
           </div>
         </div>
 
         <div
           style={{
             position: "absolute",
-            top: 92,
-            left: 367,
+            top: 74,
+            left: 320,
             display: "flex",
             flexDirection: "column",
-            width: 760,
+            width: 824,
           }}
         >
           <div
             style={{
-              color: "#006FCE",
-              fontFamily: "Atlas Typewriter",
-              fontSize: 15,
-              fontWeight: 500,
-              lineHeight: 1,
-            }}
-          >
-            [all together]
-          </div>
-          <div
-            style={{
-              marginTop: 26,
               display: "flex",
               flexDirection: "column",
               fontFamily: "Newsreader",
-              fontSize: 55,
+              fontSize: 58,
               fontWeight: 400,
-              lineHeight: 0.96,
-              letterSpacing: -1.8,
+              lineHeight: 0.94,
+              letterSpacing: -2,
               color: "#000000",
             }}
           >
@@ -175,62 +187,61 @@ export default async function OpenGraphImage() {
           </div>
           <div
             style={{
-              marginTop: 28,
-              width: 610,
-              fontSize: 20,
+              marginTop: 24,
+              width: 670,
+              fontFamily: "Newsreader",
+              fontSize: 21,
               fontWeight: 400,
               lineHeight: 1.35,
               color: "rgba(0, 0, 0, 0.72)",
             }}
           >
-            Backing founders across AI, defense, energy, robotics, semiconductors, and space.
+            All Together backs the founders rebuilding the hard frontier across AI,
+            defense, energy, robotics, semiconductors, and space.
           </div>
         </div>
 
         <div
           style={{
             position: "absolute",
-            left: 367,
-            right: 64,
-            bottom: 82,
+            left: 320,
+            right: 56,
+            bottom: 54,
             display: "flex",
-            gap: 8,
+            flexWrap: "wrap",
+            height: 206,
+            borderTop: "1px solid rgba(0, 0, 0, 0.10)",
+            borderLeft: "1px solid rgba(0, 0, 0, 0.10)",
+            backgroundColor: "rgba(255, 255, 255, 0.54)",
           }}
         >
-          {productCovers.map((src, index) => (
-            <img
+          {companyLogos.map((src, index) => (
+            <div
               key={index}
-              alt=""
-              src={src}
-              width={184}
-              height={106}
               style={{
-                width: 184,
-                height: 106,
-                objectFit: "cover",
-                border: "1px solid rgba(0, 0, 0, 0.10)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "20%",
+                height: 103,
+                borderRight: "1px solid rgba(0, 0, 0, 0.10)",
+                borderBottom: "1px solid rgba(0, 0, 0, 0.10)",
               }}
-            />
+            >
+              <img
+                alt=""
+                src={src}
+                width={116}
+                height={42}
+                style={{
+                  width: 116,
+                  height: 42,
+                  objectFit: "contain",
+                  opacity: 0.58,
+                }}
+              />
+            </div>
           ))}
-        </div>
-
-        <div
-          style={{
-            position: "absolute",
-            left: 367,
-            right: 64,
-            bottom: 34,
-            display: "flex",
-            overflow: "hidden",
-            fontFamily: "Atlas Typewriter",
-            fontSize: 18,
-            fontWeight: 500,
-            letterSpacing: 4,
-            color: "rgba(0, 0, 0, 0.26)",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {GLYPH_RAMP}
         </div>
       </div>
     ),
