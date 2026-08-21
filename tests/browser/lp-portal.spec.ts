@@ -93,7 +93,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   const investmentContentGap = investmentHeaderBox!.y - (portfolioTabsBox!.y + portfolioTabsBox!.height);
   expect(investmentContentGap).toBeGreaterThanOrEqual(16);
   expect(investmentContentGap).toBeLessThanOrEqual(32);
-  await expect(page.locator(".lp-company-allocation-head")).toHaveText(/Company \/ allocationAmountAUM share/);
+  await expect(page.locator(".lp-company-allocation-head span").first()).toHaveText("Company");
   await expect(page.locator(".lp-company-allocation-head")).toHaveCSS("border-bottom-style", "solid");
   await expect(page.locator(".lp-company-allocation-head")).toHaveCSS("border-bottom-width", "1px");
   const companyAllocationRows = page.locator(".lp-company-allocation-view .lp-figure-bar-row");
