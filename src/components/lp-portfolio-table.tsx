@@ -106,7 +106,7 @@ export function LpPortfolioTable({
       <h2 id="lp-portfolio-heading" className="sr-only">Investments</h2>
       <section className="lp-company-allocation-view" aria-label="Investments by company">
         <div className="lp-company-allocation-head" aria-hidden="true">
-          <span>Company / allocation</span>
+          <span>Company</span>
           <span>Amount</span>
           <span>AUM share</span>
         </div>
