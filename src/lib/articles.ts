@@ -19,6 +19,39 @@ export type Article = {
 // Updates: the firm's writing. Newest first.
 const ARTICLE_ENTRIES: Article[] = [
   {
+    slug: "higgsfield-series-b",
+    title: "Higgsfield, again.",
+    date: "August 21, 2026",
+    dateISO: "2026-08-21",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt:
+      "We invested again in Higgsfield, the AI-native creative platform for professional video, images, and visual production.",
+    image: "/updates/covers/higgsfield.jpg",
+    sections: [
+      {
+        body: [
+          "We invested again in Higgsfield. The company has moved from an impressive AI video product into a broad creative operating system for creators, brands, agencies, and studios, and it is doing so at unusual speed.",
+          "On August 17, Higgsfield announced a $400 million Series B at a $5.4 billion valuation, led by DST Global. The company says it has passed 30 million users across 238 countries and territories, reached $700 million in annualized revenue, and now powers visual production for 390 of the Fortune 500. Those are public milestones, but the more important signal is what sits underneath them: a new production workflow is moving from experimentation into daily commercial use.",
+        ],
+      },
+      {
+        heading: "What they're building",
+        body: [
+          "Higgsfield is not betting the company on one generation model. It brings more than 50 image, video, and audio models into one workspace, then builds the professional controls around them: shared projects, reusable characters and assets, camera direction, editing, enterprise administration, and agentic workflows that can carry an idea through multiple scenes and formats.",
+          "Cinema Studio makes that product philosophy visible. Instead of asking a filmmaker to describe a look in vague language, it exposes cameras, lenses, focal lengths, pacing, and genre, then preserves those choices across a project. Supercomputer pushes the same idea further by automating multi-step creative work. The underlying models will keep changing. Higgsfield is building the layer where a team can direct them, combine them, and turn the output into finished work.",
+        ],
+      },
+      {
+        heading: "Why we invested again",
+        body: [
+          "Our first investment was a bet that the application layer in generative media would matter as much as the models. Better models expand what is possible, but professional adoption depends on everything around them: control, consistency, speed, collaboration, distribution, and trust. Higgsfield has kept assembling those pieces while the model frontier moves underneath it.",
+          "Alex, Yerzat, Mahi, and the team have paired a fast product cadence with real commercial pull. They are building for the creator with taste and no production budget, and for the enterprise team that needs hundreds of assets to stay coherent and usable. That span is difficult to earn. We invested again because Higgsfield is turning frontier capability into a creative system people can use every day.",
+        ],
+      },
+    ],
+  },
+  {
     slug: "the-future-is-built-together",
     title: "The future is built together.",
     date: "June 11, 2026",
