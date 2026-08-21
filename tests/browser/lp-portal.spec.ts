@@ -137,6 +137,24 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(h256Row).toContainText("$88,000 to Anduril in its Series H at a $60B entry valuation (44%) · Finalizing allocation: $112,000 to Atoms or Applied Intuition (56%)");
   await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M fund / $1M investment entity", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-portfolio-table").getByText("No company valuation; $50M model financing", { exact: true })).toBeVisible();
+  const investmentColumnTitleStyle = await page.getByRole("columnheader", { name: "Company" }).evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      borderBottomColor: styles.borderBottomColor,
+      borderBottomStyle: styles.borderBottomStyle,
+      borderBottomWidth: styles.borderBottomWidth,
+      color: styles.color,
+      fontFamily: styles.fontFamily,
+      fontSize: styles.fontSize,
+      fontWeight: styles.fontWeight,
+      letterSpacing: styles.letterSpacing,
+      paddingBottom: styles.paddingBottom,
+      paddingLeft: styles.paddingLeft,
+      textTransform: styles.textTransform,
+      verticalAlign: styles.verticalAlign,
+      whiteSpace: styles.whiteSpace,
+    };
+  });
   await expect(page.locator(".lp-portfolio-table .lp-company-logo img")).toHaveCount(44);
   await page.locator(".lp-portfolio-table .lp-company-logo img").last().scrollIntoViewIfNeeded();
   await expect.poll(() => page.locator(".lp-portfolio-table .lp-company-logo img").evaluateAll((logos) =>
@@ -233,6 +251,25 @@ test("protects, authenticates, switches views, and opens an investment", async (
   const performanceContentGap = performanceTableBox!.y - (performanceTabsBox!.y + performanceTabsBox!.height);
   expect(performanceContentGap).toBeGreaterThanOrEqual(16);
   expect(performanceContentGap).toBeLessThanOrEqual(32);
+  const performanceColumnTitleStyle = await page.getByRole("columnheader", { name: "Position" }).evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      borderBottomColor: styles.borderBottomColor,
+      borderBottomStyle: styles.borderBottomStyle,
+      borderBottomWidth: styles.borderBottomWidth,
+      color: styles.color,
+      fontFamily: styles.fontFamily,
+      fontSize: styles.fontSize,
+      fontWeight: styles.fontWeight,
+      letterSpacing: styles.letterSpacing,
+      paddingBottom: styles.paddingBottom,
+      paddingLeft: styles.paddingLeft,
+      textTransform: styles.textTransform,
+      verticalAlign: styles.verticalAlign,
+      whiteSpace: styles.whiteSpace,
+    };
+  });
+  expect(investmentColumnTitleStyle).toEqual(performanceColumnTitleStyle);
   const performanceRows = page.locator(".lp-figure-table--marks tbody tr");
   await expect(performanceRows).toHaveCount(44);
   const h256AndurilMark = performanceRows.filter({ hasText: "Anduril" });
@@ -305,51 +342,39 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(updateCopy).toContainText(portfolioMultiple);
   await expect(updateCopy).not.toContainText("$671,574.11");
   await expect(updateCopy).not.toContainText("1.02×");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("post-labor economy");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("ownership layer");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("trusting us while we found our footing");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("AI will reunderwrite the entire world");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("not only how we produce, but how we work, build, and live");
-  await expect(page.locator(".lp-update-article-copy")).not.toContainText("basic economics of production");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("That is the personal reason for the firm");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("At the center of our thesis is the post-labor economy");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("Intelligence is becoming abundant, but the physical world remains scarce");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("durable value will move toward the bottlenecks");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("beyond the Anthropocene");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("The investment question is no longer whether AI matters");
-  await expect(page.locator(".lp-update-article-copy")).not.toContainText("The portfolio began broad by design");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("All Together backs the companies building civilization in an age of abundant intelligence");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("Starcloud is building data centers in orbit");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("OpenAI needs little introduction");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("help rebuild American defense");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("1X, Figure AI, Apptronik, and Weave Robotics");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("deliberately indexed its strongest expressions");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("Aformic moves pallets, carts, and racks");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("Budbreak Innovations sends autonomous scouting robots");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("network effects, proprietary data, distribution, or deep workflow integration");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("Aalo Atomics and Apollo Atomics");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("Quaise Energy");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("Exowatt");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("follow respected institutional investors into a round or invest alongside them");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("Y Combinator, Sequoia Capital, Khosla Ventures, Andreessen Horowitz (a16z)");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("never replaces our judgment or guarantees an exit");
-  await expect(page.locator(".lp-update-article-copy")).toContainText("a durable point of control");
-  await expect(page.locator(".lp-update-article-copy")).not.toContainText("Access alone is not an advantage");
-  await expect(page.locator(".lp-update-article-copy")).not.toContainText("fewer direct positions");
-  await expect(page.locator(".lp-update-article-copy")).not.toContainText("Most positions remain at cost");
-  await expect(page.locator(".lp-update-article-copy")).not.toContainText("too early to call it performance");
-  await expect(page.locator(".lp-update-article-copy")).not.toContainText("$671,574.11");
-  await expect(page.locator(".lp-update-article-copy")).not.toContainText("30.3%");
-  await expect(page.locator(".lp-update-article-copy")).not.toContainText("$200,000 H256 LLC Series 3");
-  await expect(page.locator(".lp-update-article-copy")).not.toContainText("$88,000.00 (44%)");
-  await expect(page.locator(".lp-update-article-copy")).not.toContainText("$112,000.00 (56%)");
+  const updateParagraphs = updateCopy.locator(":scope > p");
+  await expect(updateParagraphs).toHaveCount(15);
+  await expect(updateParagraphs.nth(1)).toContainText("This is our first formal update");
+  await expect(updateParagraphs.nth(2)).toContainText("We started All Together for a simple reason");
+  await expect(updateParagraphs.nth(3)).toContainText("Our thesis is simple");
+  await expect(updateParagraphs.nth(3)).toContainText("All Together exists to give our investors ownership in those companies");
+  await expect(updateParagraphs.nth(4)).toContainText("We call this the post-labor economy");
+  await expect(updateParagraphs.nth(5)).toContainText("Every investment therefore has to answer a direct question");
+  await expect(updateParagraphs.nth(6)).toContainText("The portfolio reflects that test");
+  await expect(updateParagraphs.nth(12)).toContainText("We do not know exactly which companies will define this transition");
+  await expect(updateParagraphs.nth(12)).toContainText("That is how we will invest from here and how we will report to you");
+  await expect(updateCopy).toContainText("at least twice per year");
+  await expect(updateCopy).toContainText("1X, Figure AI, Apptronik, and Weave Robotics");
+  await expect(updateCopy).toContainText("Aalo Atomics and Apollo Atomics");
+  await expect(updateCopy).toContainText("Their presence is evidence, not a thesis");
+  await expect(updateCopy).not.toContainText("The current landscape reinforces that view");
+  await expect(updateCopy).not.toContainText("Stanford AI Index");
+  await expect(updateCopy).not.toContainText("International Energy Agency");
+  await expect(updateCopy).not.toContainText("That leads us to efficient compute and inference");
+  await expect(updateCopy).not.toContainText("Compute makes intelligence cheaper");
+  await expect(updateCopy).not.toContainText("Most positions remain at cost");
+  await expect(updateCopy).not.toContainText("too early to call it performance");
+  await expect(updateCopy).not.toContainText("$671,574.11");
+  await expect(updateCopy).not.toContainText("30.3%");
+  await expect(updateCopy).not.toContainText("$200,000 H256 LLC Series 3");
+  await expect(updateCopy).not.toContainText("$88,000.00 (44%)");
+  await expect(updateCopy).not.toContainText("$112,000.00 (56%)");
   await expect(page.locator(".lp-figure-section")).toHaveCount(0);
   const updateCopyText = await page.locator(".lp-update-article-copy").innerText();
   const financialReferences = updateCopyText.match(/\$(?:\d{1,3}(?:,\d{3})*|\d+)(?:\.\d+)?|[\d.]+%|[\d.]+×/g) ?? [];
   expect(financialReferences).toEqual(["$661,014.25", "$741,760.05", "1.12×"]);
   const updateWordCount = updateCopyText.trim().split(/\s+/).length;
-  expect(updateWordCount).toBeLessThan(1000);
+  expect(updateWordCount).toBeLessThan(750);
   // Stated only in the confidentiality footer, not in the GP-to-LP letter body.
   await expect(
     page.getByText(/not (?:administrator-reported or )?audited net asset value/i),
@@ -357,7 +382,7 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(page.getByRole("heading", { name: "Checked and held flat" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Basis of preparation" })).toHaveCount(0);
   await expect(page.locator(".lp-figure-index")).toHaveCount(0);
-  await expect(page.locator(".lp-update-article-copy a")).toHaveCount(4);
+  await expect(page.locator(".lp-update-article-copy a")).toHaveCount(0);
   // The letter body stays unadorned prose. The figure suite below it is
   // allowed its own semantics, so these guards scope to the copy, not the page.
   await expect(page.locator(".lp-update-article-copy figure")).toHaveCount(0);
@@ -365,9 +390,6 @@ test("protects, authenticates, switches views, and opens an investment", async (
   await expect(
     page.locator(".lp-update-article-copy ol, .lp-update-article-copy ul, .lp-update-article-copy dl"),
   ).toHaveCount(0);
-  expect(await page.locator(".lp-update-article-copy a").evaluateAll((links) =>
-    links.every((link) => link.getAttribute("target") === "_blank" && link.getAttribute("rel") === "noreferrer"),
-  )).toBe(true);
   await page.screenshot({ path: "output/playwright/lp-portal/update-august-2026-desktop.png", fullPage: true });
 
   await expect(page.getByRole("link", { name: "Back home" })).toHaveAttribute("href", "/");
@@ -625,10 +647,10 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page.locator(".lp-update-article-copy")).toContainText("1.12×");
     await expect(page.locator(".lp-update-article-copy")).not.toContainText("1.02×");
     await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
-    await expect(page.locator(".lp-update-article-copy")).toContainText("AI will reunderwrite the entire world");
+    await expect(page.locator(".lp-update-article-copy")).toContainText("Our thesis is simple");
     await expect(page.locator(".lp-update-article-copy")).toContainText("1X, Figure AI, Apptronik, and Weave Robotics");
     await expect(page.locator(".lp-update-article-copy")).toContainText("Aalo Atomics and Apollo Atomics");
-    await expect(page.locator(".lp-update-article-copy")).toContainText("Y Combinator, Sequoia Capital, Khosla Ventures");
+    await expect(page.locator(".lp-update-article-copy")).toContainText("That is how we will invest from here and how we will report to you");
     await expect(page.locator(".lp-figure-section")).toHaveCount(0);
     const updateCopyBox = await page.locator(".lp-update-article-copy").boundingBox();
     expect(updateCopyBox).not.toBeNull();
