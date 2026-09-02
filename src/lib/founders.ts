@@ -12,6 +12,12 @@ export type Founder = {
 // investor, publication, LinkedIn, or founder-owned social sources.
 export const FOUNDERS: Founder[] = [
   {
+    name: "Aidan Pratt",
+    companyName: "Autostep",
+    linkedin: "https://www.linkedin.com/in/aidan-pratt",
+    x: "https://x.com/aidan__pratt",
+  },
+  {
     name: "Brandon Tseng",
     companyName: "Shield AI",
     headshot: "/founders/cutouts/brandon-tseng.png",

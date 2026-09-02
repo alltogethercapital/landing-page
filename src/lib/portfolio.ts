@@ -15,6 +15,17 @@ export type Company = {
 // All Together portfolio (alltogethercapital.com/portfolio)
 export const PORTFOLIO: Company[] = [
   {
+    name: "Autostep",
+    href: "https://www.autostep.ai/",
+    sectors: ["AI", "Software"],
+    blurb:
+      "Maps how work happens, measures its cost, and finds the highest-impact process or agent improvements.",
+    logo: "/logos/autostep.png",
+    cardLogo: "/logos/cards/autostep.png",
+    image: "/work/cards/autostep.png",
+    cardImage: "/work/cards/autostep.png",
+  },
+  {
     name: "Shield AI",
     href: "https://shield.ai/",
     sectors: ["Defense", "AI"],

@@ -19,6 +19,39 @@ export type Article = {
 // Updates: the firm's writing. Newest first.
 const ARTICLE_ENTRIES: Article[] = [
   {
+    slug: "autostep",
+    title: "Autostep.",
+    date: "September 1, 2026",
+    dateISO: "2026-09-01",
+    category: "Portfolio",
+    author: "All Together",
+    excerpt:
+      "We invested in Autostep, the P&L for knowledge work and the measurement layer for human and agent workflows.",
+    image: "/updates/covers/autostep.png",
+    sections: [
+      {
+        body: [
+          "We invested in Autostep. The company maps how work actually happens across an organization, measures the cost and impact of human and agent tasks, and shows teams where a process should be removed, changed, routed to existing software, or rebuilt with an agent.",
+          "Most companies can see what they spend on software and AI. Far fewer can trace what came back. Autostep starts from the work itself: repeated tasks, bottlenecks, waiting, and administrative loops. It turns that activity into a ranked view of what costs the organization time and what is worth fixing first.",
+        ],
+      },
+      {
+        heading: "What they're building",
+        body: [
+          "Autostep installs across a company and maps real workflows without requiring teams to assemble a clean system of integrations first. Its operational-intelligence layer organizes work by department, role, and task, then connects each pattern to cost and impact.",
+          "The product does not assume that every problem needs a new agent. It can recommend removing a step, standardizing a process, using software the company already has, or building an agent inside the existing workflow. Over time, that creates a current, queryable record of how the company works and whether each intervention produced a measurable result.",
+        ],
+      },
+      {
+        heading: "Why we backed the founder and team",
+        body: [
+          "Aidan Pratt founded Autostep after years of building and shipping developer tools, automation products, and AI agents. He studied machine learning and computer science at Georgia Tech, and he has approached this problem from the product layer: watch the work, find the bottleneck, and prove what changed.",
+          "As agents spread through companies, measurement becomes part of the infrastructure. Teams need to know which workflows return capacity, which ones add cost, and which work should disappear entirely. Autostep is building that scorecard and the action layer behind it. We backed Aidan and the team because they are making AI adoption accountable to outcomes rather than activity.",
+        ],
+      },
+    ],
+  },
+  {
     slug: "higgsfield-series-b",
     title: "Higgsfield, again.",
     date: "August 21, 2026",
