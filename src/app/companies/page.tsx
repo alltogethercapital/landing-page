@@ -33,7 +33,20 @@ function CompanyArticle({ company }: { company: Company }) {
         </span>
         <span className="cog-company-card-content">
           <span className="cog-company-logo-wrap">
-            {logo ? (
+            {logo && company.logoLabel ? (
+              <span className="cog-company-logo-lockup">
+                <Image
+                  src={logo}
+                  alt=""
+                  width={56}
+                  height={56}
+                  unoptimized
+                  loading="eager"
+                  className="cog-company-logo-lockup-mark"
+                />
+                <span>{company.logoLabel}</span>
+              </span>
+            ) : logo ? (
               <Image
                 src={logo}
                 alt={company.name}

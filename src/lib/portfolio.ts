@@ -8,6 +8,7 @@ export type Company = {
   image?: string; // /public product image — falls back to a sector gradient when absent
   cardImage?: string; // product image used on the /companies page
   cardLogo?: string; // /public path to a transparent-PNG wordmark for the /companies card
+  logoLabel?: string; // text paired with an icon-only logo to form a complete wordmark
   video?: string; // YouTube video id (11 chars) — shows a "Watch video" button when present
   videoStart?: number; // optional start time (seconds) for the video
 };
@@ -22,6 +23,7 @@ export const PORTFOLIO: Company[] = [
       "Maps how work happens, measures its cost, and finds the highest-impact process or agent improvements.",
     logo: "/logos/autostep.png",
     cardLogo: "/logos/cards/autostep.png",
+    logoLabel: "AUTOSTEP",
     image: "/work/cards/autostep.png",
     cardImage: "/work/cards/autostep.png",
   },
