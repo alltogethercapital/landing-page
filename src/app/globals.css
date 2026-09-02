@@ -1221,6 +1221,26 @@ body {
   padding: 18px 22px;
 }
 
+.cog-logo-lockup {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+}
+
+.cog-logo-cell .cog-logo-lockup-mark {
+  position: static;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  object-fit: contain;
+}
+
 .cog-logo-cell:hover {
   opacity: 0.82;
   filter: grayscale(1) contrast(1.18);
@@ -1452,6 +1472,23 @@ body {
   max-height: 72px;
   object-fit: contain;
   object-position: left top;
+}
+
+.cog-company-logo-lockup {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(24px, 2.2vw, 32px);
+  font-weight: 700;
+  letter-spacing: 0.035em;
+}
+
+.cog-company-logo-lockup-mark {
+  display: block;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }
 
 .cog-company-card-title {

@@ -75,14 +75,28 @@ export default function Home() {
                 className="cog-logo-cell"
                 aria-label={company.name}
               >
-                <Image
-                  src={logo}
-                  alt={company.name}
-                  fill
-                  sizes="(max-width: 899px) calc((100vw - 64px) / 3), 152px"
-                  unoptimized
-                  className="object-contain"
-                />
+                {company.logoLabel ? (
+                  <span className="cog-logo-lockup">
+                    <Image
+                      src={logo}
+                      alt=""
+                      width={38}
+                      height={38}
+                      unoptimized
+                      className="cog-logo-lockup-mark"
+                    />
+                    <span>{company.logoLabel}</span>
+                  </span>
+                ) : (
+                  <Image
+                    src={logo}
+                    alt={company.name}
+                    fill
+                    sizes="(max-width: 899px) calc((100vw - 64px) / 3), 152px"
+                    unoptimized
+                    className="object-contain"
+                  />
+                )}
               </a>
             );
           })}

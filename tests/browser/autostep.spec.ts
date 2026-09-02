@@ -9,6 +9,7 @@ test("publishes Autostep across every public portfolio surface", async ({
     "href",
     "https://www.autostep.ai/",
   );
+  await expect(page.locator('a[aria-label="Autostep"]')).toContainText("AUTOSTEP");
   await expect(page.getByRole("link", { name: /Autostep\./ })).toHaveAttribute(
     "href",
     "/updates/autostep",
@@ -19,6 +20,7 @@ test("publishes Autostep across every public portfolio surface", async ({
   await expect(
     companyCard.getByRole("link", { name: "Visit Autostep" }),
   ).toHaveAttribute("href", "https://www.autostep.ai/");
+  await expect(companyCard).toContainText("AUTOSTEP");
 
   await page.goto("/founders");
   const founder = page.locator("#aidan-pratt-autostep");
