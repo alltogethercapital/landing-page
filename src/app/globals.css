@@ -1035,18 +1035,17 @@ body {
   position: relative;
   margin-right: 154px;
   margin-left: 291px;
-  height: min(86vh, 940px);
-  height: min(86svh, 940px);
-  min-height: min(440px, 100vh);
-  min-height: min(440px, 100svh);
+  height: 100vh;
+  height: 100svh;
+  min-height: 0;
   overflow: hidden;
   background: #000;
 }
 
 @media (min-width: 900px) and (max-width: 1180px) {
   .ascii-hero {
-    height: min(64vh, 720px);
-    height: min(64svh, 720px);
+    height: 100vh;
+    height: 100svh;
   }
 }
 
@@ -1072,6 +1071,45 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.ascii-hero-shade {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.06) 35%, rgba(0, 0, 0, 0.8) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.38), transparent 66%);
+}
+
+.ascii-hero-copy {
+  position: absolute;
+  right: clamp(28px, 5vw, 80px);
+  bottom: clamp(36px, 8svh, 96px);
+  left: clamp(28px, 5vw, 80px);
+  z-index: 2;
+  display: grid;
+  max-width: 1040px;
+  gap: clamp(16px, 2.2vw, 28px);
+}
+
+.ascii-hero-rule {
+  width: clamp(48px, 7vw, 92px);
+  height: 2px;
+  background: var(--cog-accent);
+}
+
+.ascii-hero-motto {
+  max-width: 17ch;
+  margin: 0;
+  color: #fff;
+  font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(44px, 5.4vw, 88px);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+  text-wrap: balance;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.42);
 }
 
 .ascii-hero + .cog-hero-section {
@@ -1872,10 +1910,23 @@ body {
   }
 
   .ascii-hero {
-    margin: calc(var(--mobile-header-height) + 14px) var(--mobile-gutter) 0;
-    height: min(46vh, 420px);
-    height: min(46svh, 420px);
-    min-height: 300px;
+    margin: var(--mobile-header-height) 0 0;
+    height: calc(100vh - var(--mobile-header-height));
+    height: calc(100svh - var(--mobile-header-height));
+    min-height: 0;
+  }
+
+  .ascii-hero-copy {
+    right: var(--mobile-gutter);
+    bottom: clamp(30px, 7svh, 64px);
+    left: var(--mobile-gutter);
+    gap: 16px;
+  }
+
+  .ascii-hero-motto {
+    max-width: 15ch;
+    font-size: clamp(38px, 11.6vw, 62px);
+    line-height: 0.98;
   }
 
   .cog-section {
