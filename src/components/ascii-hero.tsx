@@ -648,7 +648,7 @@ export function AsciiHero() {
   }, [reducedMotion]);
 
   return (
-    <section ref={sectionRef} className="ascii-hero" aria-label="All Together film reel">
+    <section ref={sectionRef} className="ascii-hero" aria-labelledby="ascii-hero-motto">
       <canvas ref={canvasRef} className="ascii-hero-canvas" aria-hidden="true" />
       {!webglOk && (
         <video
@@ -673,6 +673,13 @@ export function AsciiHero() {
         aria-hidden="true"
         tabIndex={-1}
       />
+      <div className="ascii-hero-shade" aria-hidden="true" />
+      <div className="ascii-hero-copy">
+        <span className="ascii-hero-rule" aria-hidden="true" />
+        <h1 id="ascii-hero-motto" className="ascii-hero-motto">
+          Investing in the best founders building legendary companies of the future.
+        </h1>
+      </div>
     </section>
   );
 }

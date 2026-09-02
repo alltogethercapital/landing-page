@@ -34,33 +34,6 @@ export default function Home() {
 
       <AsciiHero />
 
-      <CognitionSection
-        title={
-          <>
-            <span className="cog-title-line">
-              <span className="cog-title-keep">The future is built</span>{" "}
-              <span>together.</span>
-            </span>
-            <span className="cog-title-line">
-              <span className="cog-title-keep">The future is built</span>{" "}
-              <span>now.</span>
-            </span>
-          </>
-        }
-        className="cog-hero-section"
-      >
-        <div className="cog-copy-stack">
-          <p>
-            All Together backs the founders rebuilding the hard frontier
-            across AI, defense, energy, robotics, semiconductors, and space.
-          </p>
-          <p>
-            Investing in America&apos;s companies, resurgence, and future.
-            We are based in Seattle, WA.
-          </p>
-        </div>
-      </CognitionSection>
-
       <CognitionSection wide className="cog-logo-section">
         <div className="cog-logo-mosaic" aria-label="All Together companies">
           {logoCompanies.map((company) => {
