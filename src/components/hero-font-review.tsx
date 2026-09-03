@@ -150,7 +150,9 @@ export function HeroFontReview({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <span style={optionStyle(option)}>{children}</span>
+      <h1 id="ascii-hero-motto" className="ascii-hero-motto">
+        <span style={optionStyle(option)}>{children}</span>
+      </h1>
       <div className="hero-font-review" aria-label="Hero font review">
         <button type="button" onClick={() => choose(selected - 1)} aria-label="Previous font">
           ←

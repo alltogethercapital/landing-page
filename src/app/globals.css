@@ -1033,6 +1033,7 @@ body {
    calc(100% - 154px) rule. */
 .ascii-hero {
   position: relative;
+  container-type: inline-size;
   margin-right: 154px;
   margin-left: 291px;
   height: 100vh;
@@ -1084,9 +1085,9 @@ body {
 
 .ascii-hero-copy {
   position: absolute;
-  right: clamp(28px, 5vw, 80px);
+  right: clamp(20px, 2.5vw, 40px);
   bottom: clamp(36px, 8svh, 96px);
-  left: clamp(28px, 5vw, 80px);
+  left: clamp(20px, 2.5vw, 40px);
   z-index: 2;
   display: grid;
   max-width: 1040px;
@@ -1094,15 +1095,15 @@ body {
 }
 
 .ascii-hero-motto {
-  max-width: 22ch;
+  max-width: none;
   margin: 0;
   color: #fff;
   font-family: var(--font-pitch-sans), "Helvetica Neue", Arial, sans-serif;
-  font-size: clamp(34px, 4.2vw, 68px);
+  font-size: clamp(10px, 2.85cqw, 46px);
   font-weight: 500;
   letter-spacing: -0.035em;
-  line-height: 0.94;
-  text-wrap: balance;
+  line-height: 0.98;
+  white-space: nowrap;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.42);
 }
 
@@ -1968,16 +1969,16 @@ body {
   }
 
   .ascii-hero-copy {
-    right: var(--mobile-gutter);
+    right: 12px;
     bottom: clamp(30px, 7svh, 64px);
-    left: var(--mobile-gutter);
+    left: 12px;
     gap: 16px;
   }
 
   .ascii-hero-motto {
-    max-width: 18ch;
-    font-size: clamp(30px, 9vw, 48px);
-    line-height: 0.95;
+    max-width: none;
+    font-size: clamp(10px, 2.85cqw, 46px);
+    line-height: 0.98;
   }
 
   .hero-font-review {
