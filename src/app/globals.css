@@ -1106,6 +1106,59 @@ body {
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.42);
 }
 
+.hero-font-review {
+  position: fixed;
+  right: clamp(16px, 2vw, 28px);
+  bottom: clamp(16px, 2vw, 28px);
+  z-index: 20;
+  display: grid;
+  grid-template-columns: 48px minmax(170px, auto) 48px;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(8, 8, 8, 0.82);
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.28);
+  color: #fff;
+  font-family: var(--font-pitch-sans), "Helvetica Neue", Arial, sans-serif;
+  backdrop-filter: blur(14px);
+}
+
+.hero-font-review button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 20px;
+  transition: background-color 150ms ease;
+}
+
+.hero-font-review button:hover,
+.hero-font-review button:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.hero-font-review-label {
+  display: grid;
+  align-content: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 7px 14px;
+  line-height: 1.05;
+}
+
+.hero-font-review-label span {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.hero-font-review-label strong {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
 .ascii-hero + .cog-hero-section {
   min-height: auto;
   padding-top: 110px;
@@ -1925,6 +1978,13 @@ body {
     max-width: 18ch;
     font-size: clamp(30px, 9vw, 48px);
     line-height: 0.95;
+  }
+
+  .hero-font-review {
+    right: 12px;
+    bottom: 12px;
+    grid-template-columns: 44px minmax(150px, auto) 44px;
+    min-height: 44px;
   }
 
   .cog-section {
