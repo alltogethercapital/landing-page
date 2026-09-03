@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { ASCII_HERO_CLIPS } from "@/lib/ascii-hero-assets";
+import { HeroFontReview } from "@/components/hero-font-review";
 
 // Video rendered as colored ASCII glyphs, in the spirit of generalintuition.com.
 // One WebGL draw per frame: the current video frame (TEXTURE0) is sampled once
@@ -676,7 +677,9 @@ export function AsciiHero() {
       <div className="ascii-hero-shade" aria-hidden="true" />
       <div className="ascii-hero-copy">
         <h1 id="ascii-hero-motto" className="ascii-hero-motto">
-          Investing in founders building legendary companies.
+          <HeroFontReview>
+            Investing in founders building legendary companies.
+          </HeroFontReview>
         </h1>
       </div>
     </section>
