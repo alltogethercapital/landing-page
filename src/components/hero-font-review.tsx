@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 type FontOption = {
   name: string;
@@ -62,8 +62,8 @@ const FONT_OPTIONS: FontOption[] = [
   { name: "Tomorrow", category: "sans-serif", scale: 0.9 },
 ];
 
-const REVIEW_PARAM = "font-review";
 const SELECTED_PARAM = "font";
+const STORAGE_KEY = "all-together-hero-font-review";
 
 function googleFontsUrl(name: string) {
   return `https://fonts.googleapis.com/css2?family=${name.replaceAll(" ", "+")}:wght@400;500;600&display=swap`;
@@ -84,19 +84,21 @@ function optionStyle(option: FontOption): CSSProperties {
 }
 
 export function HeroFontReview({ children }: { children: ReactNode }) {
-  const [reviewMode, setReviewMode] = useState(false);
   const [selected, setSelected] = useState(0);
+  const selectedRef = useRef(0);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get(REVIEW_PARAM) !== "1") return;
-
-    const requested = Number.parseInt(params.get(SELECTED_PARAM) ?? "1", 10);
+    const requested = Number.parseInt(
+      params.get(SELECTED_PARAM) ?? window.localStorage.getItem(STORAGE_KEY) ?? "1",
+      10,
+    );
     const initialSelection = Number.isFinite(requested)
       ? Math.min(FONT_OPTIONS.length - 1, Math.max(0, requested - 1))
       : 0;
+    if (initialSelection === 0) return;
     const frame = window.requestAnimationFrame(() => {
-      setReviewMode(true);
+      selectedRef.current = initialSelection;
       setSelected(initialSelection);
     });
     return () => window.cancelAnimationFrame(frame);
@@ -104,15 +106,19 @@ export function HeroFontReview({ children }: { children: ReactNode }) {
 
   const choose = useCallback((index: number) => {
     const next = (index + FONT_OPTIONS.length) % FONT_OPTIONS.length;
+    selectedRef.current = next;
     setSelected(next);
-    const url = new URL(window.location.href);
-    url.searchParams.set(REVIEW_PARAM, "1");
-    url.searchParams.set(SELECTED_PARAM, String(next + 1));
-    window.history.replaceState(null, "", url);
+    window.localStorage.setItem(STORAGE_KEY, String(next + 1));
+  }, []);
+
+  const shift = useCallback((direction: -1 | 1) => {
+    const next = (selectedRef.current + direction + FONT_OPTIONS.length) % FONT_OPTIONS.length;
+    selectedRef.current = next;
+    setSelected(next);
+    window.localStorage.setItem(STORAGE_KEY, String(next + 1));
   }, []);
 
   useEffect(() => {
-    if (!reviewMode) return;
     const option = FONT_OPTIONS[selected];
     if (option.name === "Pitch Sans") return;
 
@@ -123,37 +129,40 @@ export function HeroFontReview({ children }: { children: ReactNode }) {
     link.rel = "stylesheet";
     link.href = googleFontsUrl(option.name);
     document.head.appendChild(link);
-  }, [reviewMode, selected]);
+  }, [selected]);
 
   useEffect(() => {
-    if (!reviewMode) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft") choose(selected - 1);
-      if (event.key === "ArrowRight") choose(selected + 1);
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        shift(-1);
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        shift(1);
+      }
     };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [choose, reviewMode, selected]);
+    document.addEventListener("keydown", onKeyDown, { capture: true });
+    return () => document.removeEventListener("keydown", onKeyDown, { capture: true });
+  }, [shift]);
 
   const option = FONT_OPTIONS[selected];
 
   return (
     <>
-      <span style={reviewMode ? optionStyle(option) : undefined}>{children}</span>
-      {reviewMode && (
-        <div className="hero-font-review" aria-label="Hero font review">
-          <button type="button" onClick={() => choose(selected - 1)} aria-label="Previous font">
-            ←
-          </button>
-          <div className="hero-font-review-label" aria-live="polite">
-            <span>{String(selected + 1).padStart(2, "0")} / {FONT_OPTIONS.length}</span>
-            <strong>{option.name}</strong>
-          </div>
-          <button type="button" onClick={() => choose(selected + 1)} aria-label="Next font">
-            →
-          </button>
+      <span style={optionStyle(option)}>{children}</span>
+      <div className="hero-font-review" aria-label="Hero font review">
+        <button type="button" onClick={() => choose(selected - 1)} aria-label="Previous font">
+          ←
+        </button>
+        <div className="hero-font-review-label" aria-live="polite">
+          <span>{String(selected + 1).padStart(2, "0")} / {FONT_OPTIONS.length}</span>
+          <strong>{option.name}</strong>
         </div>
-      )}
+        <button type="button" onClick={() => choose(selected + 1)} aria-label="Next font">
+          →
+        </button>
+      </div>
     </>
   );
 }
