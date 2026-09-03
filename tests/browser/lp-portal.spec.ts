@@ -411,6 +411,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await page.locator(".lp-company-allocation-view").getByRole("link", { name: "Positron", exact: true }).click();
   await expect(page).toHaveURL(/44-positron$/);
   await expect(page.getByRole("link", { name: "Visit Positron website" })).toHaveAttribute("href", "https://www.positron.ai/");
+  await expect(page.getByText("$20,000", { exact: true })).toHaveCount(2);
   await expect(page.getByText("$4.5B before the round", { exact: true })).toHaveCount(2);
 
   await page.goto("/lp/investments/35-decart-ai");
