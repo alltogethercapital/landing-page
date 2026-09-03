@@ -675,9 +675,8 @@ export function AsciiHero() {
       />
       <div className="ascii-hero-shade" aria-hidden="true" />
       <div className="ascii-hero-copy">
-        <span className="ascii-hero-rule" aria-hidden="true" />
         <h1 id="ascii-hero-motto" className="ascii-hero-motto">
-          Investing in the best founders building legendary companies of the future.
+          Helping high-agency founders build legendary companies.
         </h1>
       </div>
     </section>
