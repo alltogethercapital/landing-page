@@ -676,11 +676,9 @@ export function AsciiHero() {
       />
       <div className="ascii-hero-shade" aria-hidden="true" />
       <div className="ascii-hero-copy">
-        <h1 id="ascii-hero-motto" className="ascii-hero-motto">
-          <HeroFontReview>
-            Investing in founders building legendary companies.
-          </HeroFontReview>
-        </h1>
+        <HeroFontReview>
+          Investing in founders building legendary companies.
+        </HeroFontReview>
       </div>
     </section>
   );
