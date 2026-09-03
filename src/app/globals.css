@@ -1105,9 +1105,9 @@ body {
   color: #fff;
   font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: clamp(34px, 4.2vw, 68px);
-  font-weight: 400;
-  letter-spacing: -0.045em;
-  line-height: 0.96;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.94;
   text-wrap: balance;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.42);
 }
@@ -1297,7 +1297,7 @@ body {
 }
 
 .cog-strip {
-  margin-top: 96px;
+  margin-top: 120px;
   padding-right: 64px;
   padding-left: 64px;
 }
@@ -1596,15 +1596,15 @@ body {
 }
 
 .cog-footer {
-  margin-top: 120px;
+  margin-top: 144px;
   border-top: 1px solid var(--cog-line);
   padding: 42px 64px 28px 64px;
 }
 
 .cog-footer-body {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(120px, 1fr));
-  gap: 28px;
+  grid-template-columns: minmax(0, 1.6fr) repeat(2, minmax(160px, 1fr));
+  gap: clamp(48px, 6vw, 96px);
 }
 
 .cog-footer-heading {
@@ -1926,7 +1926,7 @@ body {
   .ascii-hero-motto {
     max-width: 18ch;
     font-size: clamp(30px, 9vw, 48px);
-    line-height: 0.98;
+    line-height: 0.95;
   }
 
   .cog-section {
@@ -2022,7 +2022,7 @@ body {
   }
 
   .cog-strip {
-    margin-top: 50px;
+    margin-top: 72px;
     padding-right: var(--mobile-gutter);
     padding-left: var(--mobile-gutter);
   }
@@ -2126,13 +2126,13 @@ body {
   }
 
   .cog-footer {
-    margin-top: 64px;
-    padding: 28px var(--mobile-gutter) 22px;
+    margin-top: 88px;
+    padding: 36px var(--mobile-gutter) 24px;
   }
 
   .cog-footer-body {
     grid-template-columns: 1fr 1fr;
-    gap: 24px 20px;
+    gap: 36px 28px;
   }
 
   .cog-footer-body > div:first-child {
