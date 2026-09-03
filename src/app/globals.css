@@ -1033,7 +1033,6 @@ body {
    calc(100% - 154px) rule. */
 .ascii-hero {
   position: relative;
-  container-type: inline-size;
   margin-right: 154px;
   margin-left: 291px;
   height: 100vh;
@@ -1072,92 +1071,6 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.ascii-hero-shade {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.06) 35%, rgba(0, 0, 0, 0.8) 100%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.38), transparent 66%);
-}
-
-.ascii-hero-copy {
-  position: absolute;
-  right: clamp(20px, 2.5vw, 40px);
-  bottom: clamp(36px, 8svh, 96px);
-  left: clamp(20px, 2.5vw, 40px);
-  z-index: 2;
-  display: grid;
-  max-width: 1040px;
-  gap: clamp(16px, 2.2vw, 28px);
-}
-
-.ascii-hero-motto {
-  max-width: none;
-  margin: 0;
-  color: #fff;
-  font-family: var(--font-pitch-sans), "Helvetica Neue", Arial, sans-serif;
-  font-size: clamp(10px, 2.85cqw, 46px);
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 0.98;
-  white-space: nowrap;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.42);
-}
-
-.hero-font-review {
-  position: fixed;
-  right: clamp(16px, 2vw, 28px);
-  bottom: clamp(16px, 2vw, 28px);
-  z-index: 20;
-  display: grid;
-  grid-template-columns: 48px minmax(170px, auto) 48px;
-  min-height: 48px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  background: rgba(8, 8, 8, 0.82);
-  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.28);
-  color: #fff;
-  font-family: var(--font-pitch-sans), "Helvetica Neue", Arial, sans-serif;
-  backdrop-filter: blur(14px);
-}
-
-.hero-font-review button {
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  font-size: 20px;
-  transition: background-color 150ms ease;
-}
-
-.hero-font-review button:hover,
-.hero-font-review button:focus-visible {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.hero-font-review-label {
-  display: grid;
-  align-content: center;
-  border-right: 1px solid rgba(255, 255, 255, 0.18);
-  border-left: 1px solid rgba(255, 255, 255, 0.18);
-  padding: 7px 14px;
-  line-height: 1.05;
-}
-
-.hero-font-review-label span {
-  color: rgba(255, 255, 255, 0.58);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-}
-
-.hero-font-review-label strong {
-  margin-top: 4px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
 }
 
 .ascii-hero + .cog-hero-section {
@@ -1966,26 +1879,6 @@ body {
     height: calc(100vh - var(--mobile-header-height));
     height: calc(100svh - var(--mobile-header-height));
     min-height: 0;
-  }
-
-  .ascii-hero-copy {
-    right: 12px;
-    bottom: clamp(30px, 7svh, 64px);
-    left: 12px;
-    gap: 16px;
-  }
-
-  .ascii-hero-motto {
-    max-width: none;
-    font-size: clamp(10px, 2.85cqw, 46px);
-    line-height: 0.98;
-  }
-
-  .hero-font-review {
-    right: 12px;
-    bottom: 12px;
-    grid-template-columns: 44px minmax(150px, auto) 44px;
-    min-height: 44px;
   }
 
   .cog-section {

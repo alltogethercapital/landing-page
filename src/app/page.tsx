@@ -34,6 +34,22 @@ export default function Home() {
 
       <AsciiHero />
 
+      <CognitionSection
+        title="Investing in founders building legendary companies."
+        className="cog-hero-section"
+      >
+        <div className="cog-copy-stack">
+          <p>
+            All Together backs the founders rebuilding the hard frontier
+            across AI, defense, energy, robotics, semiconductors, and space.
+          </p>
+          <p>
+            Investing in America&apos;s companies, resurgence, and future. We
+            are based in Seattle, WA.
+          </p>
+        </div>
+      </CognitionSection>
+
       <CognitionSection wide className="cog-logo-section">
         <div className="cog-logo-mosaic" aria-label="All Together companies">
           {logoCompanies.map((company) => {
