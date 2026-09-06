@@ -418,20 +418,20 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 10px;
   padding: 0;
   color: var(--cog-ink);
   font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 400;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.18em;
   line-height: 1;
   white-space: nowrap;
 }
 
 .cog-wordmark-text {
   display: block;
-  margin-right: -0.34em;
+  margin-right: -0.18em;
   text-transform: uppercase;
 }
 
