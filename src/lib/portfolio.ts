@@ -15,6 +15,12 @@ export type Company = {
 
 // All Together portfolio (alltogethercapital.com/portfolio)
 export const PORTFOLIO: Company[] = [
+  { name: "Molagri", href: "https://molagri.com/", sectors: ["Bio", "Agriculture"], blurb: "Precision biopesticides engineered to protect crops while sparing beneficial species.", logo: "/logos/molagri.svg", cardLogo: "/logos/cards/molagri.svg" },
+  { name: "TryNearby", href: "https://trynearby.com/", sectors: ["Software", "AI"], blurb: "Connects local businesses with nearby creators to build word-of-mouth discovery.", logo: "/logos/trynearby.svg", cardLogo: "/logos/cards/trynearby.svg" },
+  { name: "Familiar Labs", href: "https://www.thefamiliarlab.com/", sectors: ["AI", "Video"], blurb: "AI dubbing that preserves voice, performance, and lip sync across languages.", logo: "/logos/familiar-labs.svg", cardLogo: "/logos/cards/familiar-labs.svg" },
+  { name: "CarSignal", href: "https://trycarsignal.com/", sectors: ["AI", "Software"], blurb: "An AI operating system connecting every step of an auto repair shop.", logo: "/logos/carsignal.svg", cardLogo: "/logos/cards/carsignal.svg" },
+  { name: "Datoric", href: "https://www.datoric.com/", sectors: ["AI", "Robotics"], blurb: "Licensed multimodal training data for robotics, world models, and voice AI.", logo: "/logos/datoric.svg", cardLogo: "/logos/cards/datoric.svg" },
+  { name: "Rasyn", href: "https://www.rasyn.ai/", sectors: ["AI", "Bio"], blurb: "AI models and closed-loop experimentation for discovering new chemical formulations.", logo: "/logos/rasyn.svg", cardLogo: "/logos/cards/rasyn.svg" },
   {
     name: "Autostep",
     href: "https://www.autostep.ai/",

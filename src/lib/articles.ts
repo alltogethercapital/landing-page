@@ -16,8 +16,32 @@ export type Article = {
   sections: ArticleSection[];
 };
 
+const NEW_INVESTMENT_ARTICLES: Article[] = [
+  ["molagri", "Molagri", "precision biological crop protection", "species-specific biopesticides engineered from biology's own blueprints", "crop protection that can remain effective as pests evolve while reducing unnecessary impact on pollinators and the wider environment"],
+  ["trynearby", "TryNearby", "word-of-mouth discovery for local businesses", "a recurring network that matches nearby creators with restaurants and coordinates each visit", "a distribution system built around authentic local recommendations rather than another advertising dashboard"],
+  ["familiar-labs", "Familiar Labs", "world translation for video", "one-model dubbing that preserves voice, performance, translation, and lip sync across languages", "technology that lets a performance travel without replacing the person inside it"],
+  ["carsignal", "CarSignal", "the AI operating system for independent auto shops", "one connected workflow for intake, diagnosis, estimates, scheduling, payments, and customer follow-up", "software designed around the whole repair rather than another disconnected tool"],
+  ["datoric", "Datoric", "licensed multimodal training data for frontier AI", "traceable voice, video, and action data for robotics, world models, and voice systems", "a research-and-production system where provenance, consent, and quality travel with the data"],
+  ["rasyn", "Rasyn", "AI models for chemical discovery", "a closed-loop system that combines computational candidate generation with experimental validation", "a path from years of formulation trial and error toward faster, testable materials discovery"],
+].map(([slug, title, excerpt, product, thesis]) => ({
+  slug,
+  title: `${title}.`,
+  date: "September 7, 2026",
+  dateISO: "2026-09-07",
+  category: "Portfolio",
+  author: "All Together",
+  excerpt: `We invested in ${title}, building ${excerpt}.`,
+  image: "/updates/covers/six-new-founders.svg",
+  sections: [
+    { body: [`We invested in ${title}. The company is building ${excerpt}.`, `The work starts from a specific customer problem and carries new technical capability into a product people can use.`] },
+    { heading: "What they are building", body: [`${title} is building ${product}.`, `The result is ${thesis}.`] },
+    { heading: "Why we backed the founders", body: [`The strongest frontier companies make difficult technology useful in the real world. That requires product judgment alongside technical ambition.`, `We backed the ${title} founders because they are building through that full system rather than stopping at the demo.`] },
+  ],
+}));
+
 // Updates: the firm's writing. Newest first.
 const ARTICLE_ENTRIES: Article[] = [
+  ...NEW_INVESTMENT_ARTICLES,
   {
     slug: "autostep",
     title: "Autostep.",
