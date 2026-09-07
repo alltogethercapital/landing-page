@@ -11,6 +11,19 @@ export type Founder = {
 // Founder names, profiles, and portraits are grounded in public company,
 // investor, publication, LinkedIn, or founder-owned social sources.
 export const FOUNDERS: Founder[] = [
+  { name: "Zaky Hassan", companyName: "Molagri" },
+  { name: "Min Jin", companyName: "Molagri" },
+  { name: "Yousef Abdelfattah", companyName: "TryNearby" },
+  { name: "Obaida Albaroudi", companyName: "TryNearby" },
+  { name: "Ahmad Ibrahim", companyName: "TryNearby" },
+  { name: "An Zhu Liu", companyName: "Familiar Labs" },
+  { name: "Mingi Kwon", companyName: "Familiar Labs" },
+  { name: "Xu Zheng", companyName: "Familiar Labs" },
+  { name: "Nikhil Reddy", companyName: "Datoric" },
+  { name: "Jeffrey Lin", companyName: "Datoric" },
+  { name: "Ansh Tiwari", companyName: "Rasyn" },
+  { name: "Ayush Chauhan", companyName: "Rasyn" },
+  { name: "Daood Hashmi", companyName: "Rasyn" },
   {
     name: "Aidan Pratt",
     companyName: "Autostep",
