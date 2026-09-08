@@ -17,6 +17,7 @@ export type Article = {
 };
 
 const NEW_INVESTMENT_ARTICLES: Article[] = [
+  ["path-robotics", "Path Robotics", "physical AI for manufacturing", "adaptive autonomous welding cells powered by a purpose-built foundation model", "a manufacturing platform that learns from production work and expands the capacity of skilled teams"],
   ["molagri", "Molagri", "precision biological crop protection", "species-specific biopesticides engineered from biology's own blueprints", "crop protection that can remain effective as pests evolve while reducing unnecessary impact on pollinators and the wider environment"],
   ["trynearby", "TryNearby", "word-of-mouth discovery for local businesses", "a recurring network that matches nearby creators with restaurants and coordinates each visit", "a distribution system built around authentic local recommendations rather than another advertising dashboard"],
   ["familiar-labs", "Familiar Labs", "world translation for video", "one-model dubbing that preserves voice, performance, translation, and lip sync across languages", "technology that lets a performance travel without replacing the person inside it"],
@@ -26,12 +27,12 @@ const NEW_INVESTMENT_ARTICLES: Article[] = [
 ].map(([slug, title, excerpt, product, thesis]) => ({
   slug,
   title: `${title}.`,
-  date: "September 7, 2026",
-  dateISO: "2026-09-07",
+  date: slug === "path-robotics" ? "September 8, 2026" : "September 7, 2026",
+  dateISO: slug === "path-robotics" ? "2026-09-08" : "2026-09-07",
   category: "Portfolio",
   author: "All Together",
   excerpt: `We invested in ${title}, building ${excerpt}.`,
-  image: `/updates/covers/${slug}.${slug === "molagri" || slug === "rasyn" ? "webp" : "png"}`,
+  image: `/updates/covers/${slug}.${slug === "molagri" || slug === "rasyn" ? "webp" : slug === "path-robotics" ? "jpg" : "png"}`,
   sections: [
     { body: [`We invested in ${title}. The company is building ${excerpt}.`, `The work starts from a specific customer problem and carries new technical capability into a product people can use.`] },
     { heading: "What they are building", body: [`${title} is building ${product}.`, `The result is ${thesis}.`] },
