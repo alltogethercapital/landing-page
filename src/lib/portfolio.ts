@@ -15,6 +15,7 @@ export type Company = {
 
 // All Together portfolio (alltogethercapital.com/portfolio)
 export const PORTFOLIO: Company[] = [
+  { name: "Path Robotics", href: "https://www.path-robotics.com/", sectors: ["Robotics", "AI", "Manufacturing"], blurb: "Physical AI that brings adaptive autonomous welding to American manufacturing.", logo: "/logos/path-robotics.svg", cardLogo: "/logos/cards/path-robotics.svg", image: "/work/cards/path-robotics.jpg", cardImage: "/work/cards/path-robotics.jpg" },
   { name: "Molagri", href: "https://molagri.com/", sectors: ["Bio", "Agriculture"], blurb: "Precision biopesticides engineered to protect crops while sparing beneficial species.", logo: "/logos/molagri.svg", cardLogo: "/logos/cards/molagri.svg" },
   { name: "TryNearby", href: "https://trynearby.com/", sectors: ["Software", "AI"], blurb: "Connects local businesses with nearby creators to build word-of-mouth discovery.", logo: "/logos/trynearby.svg", cardLogo: "/logos/cards/trynearby.svg" },
   { name: "Familiar Labs", href: "https://www.thefamiliarlab.com/", sectors: ["AI", "Video"], blurb: "AI dubbing that preserves voice, performance, and lip sync across languages.", logo: "/logos/familiar-labs.svg", cardLogo: "/logos/cards/familiar-labs.svg" },
