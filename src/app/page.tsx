@@ -11,11 +11,10 @@ import { UpdatesCarousel } from "@/components/updates-carousel";
 import { ARTICLES } from "@/lib/articles";
 import { PORTFOLIO } from "@/lib/portfolio";
 
-// 25 fills the desktop mosaic exactly (5 columns x 5 rows). The 3-column
-// mobile grid hides the last one, so 24 divides evenly there too — neither
-// breakpoint is left with an orphan cell. Order is the portfolio's own
-// most-known-first ordering; the mosaic is a selection, not the full list.
-const logoCompanies = PORTFOLIO.filter((company) => company.cardLogo ?? company.logo).slice(0, 25);
+// The homepage mosaic is the complete public portfolio. Its dense responsive
+// grid keeps every company visible without turning the section into a long
+// directory; the full company cards remain available on /companies.
+const logoCompanies = PORTFOLIO.filter((company) => company.cardLogo ?? company.logo);
 const homepageUpdates = ARTICLES.map(
   ({ slug, title, date, dateISO, category, image }) => ({
     slug,

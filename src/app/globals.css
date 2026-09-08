@@ -1103,6 +1103,10 @@ body {
   margin-top: 0;
 }
 
+.cog-logo-section .cog-section-body {
+  width: min(100%, 960px);
+}
+
 .ascii-hero + .cog-logo-section {
   padding-top: 120px;
 }
@@ -1202,10 +1206,10 @@ body {
    rules never cross the marks. */
 .cog-logo-mosaic {
   display: grid;
-  width: min(100%, 816px);
-  grid-template-columns: repeat(5, minmax(0, 152px));
-  grid-auto-rows: 76px;
-  padding: 28px;
+  width: 100%;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-auto-rows: 60px;
+  padding: 20px;
   border: 1px solid var(--cog-line);
   background: #fff;
 }
@@ -1221,7 +1225,7 @@ body {
 
 .cog-logo-cell img {
   box-sizing: border-box;
-  padding: 18px 22px;
+  padding: 13px 10px;
 }
 
 .cog-logo-lockup {
@@ -1229,17 +1233,17 @@ body {
   height: 100%;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 4px;
   font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.035em;
 }
 
 .cog-logo-cell .cog-logo-lockup-mark {
   position: static;
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   padding: 0;
   object-fit: contain;
 }
@@ -1958,15 +1962,9 @@ body {
 
   .cog-logo-mosaic {
     width: 100%;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-rows: 56px;
-    padding: 12px;
-  }
-
-  /* 25 fills the 5-column desktop grid; three columns need a multiple of 3,
-     so the last mark drops here rather than leaving two empty cells. */
-  .cog-logo-cell:nth-child(n + 25) {
-    display: none;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-auto-rows: 48px;
+    padding: 8px;
   }
 
   .cog-logo-cell {
@@ -1974,7 +1972,18 @@ body {
   }
 
   .cog-logo-cell img {
-    padding: 9px 12px;
+    padding: 10px 7px;
+  }
+
+  .cog-logo-lockup {
+    gap: 2px;
+    font-size: 7px;
+    letter-spacing: 0;
+  }
+
+  .cog-logo-cell .cog-logo-lockup-mark {
+    width: 15px;
+    height: 15px;
   }
 
   .cog-strip {

@@ -31,7 +31,7 @@ const NEW_INVESTMENT_ARTICLES: Article[] = [
   category: "Portfolio",
   author: "All Together",
   excerpt: `We invested in ${title}, building ${excerpt}.`,
-  image: "/updates/covers/six-new-founders.svg",
+  image: `/updates/covers/${slug}.${slug === "molagri" || slug === "rasyn" ? "webp" : "png"}`,
   sections: [
     { body: [`We invested in ${title}. The company is building ${excerpt}.`, `The work starts from a specific customer problem and carries new technical capability into a product people can use.`] },
     { heading: "What they are building", body: [`${title} is building ${product}.`, `The result is ${thesis}.`] },
