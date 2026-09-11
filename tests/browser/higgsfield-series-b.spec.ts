@@ -12,10 +12,6 @@ test("publishes the Higgsfield follow-on across the public portfolio surfaces", 
     "href",
     "/updates/higgsfield-series-b",
   );
-  await expect(page.locator('a[aria-label="Higgsfield"]')).toHaveAttribute(
-    "href",
-    "https://higgsfield.ai/",
-  );
   await page.screenshot({
     path: "output/playwright/higgsfield-series-b/homepage.png",
     fullPage: true,

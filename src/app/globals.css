@@ -501,17 +501,11 @@ body {
   content: "";
   background-image:
     linear-gradient(var(--cog-line), var(--cog-line)),
-    linear-gradient(var(--cog-line), var(--cog-line)),
-    linear-gradient(var(--cog-line), var(--cog-line)),
-    linear-gradient(var(--cog-line), var(--cog-line)),
     linear-gradient(var(--cog-line), var(--cog-line));
   background-repeat: no-repeat;
   background-position:
     64px 0,
-    291px 0,
-    367px 0,
-    calc(100% - 306px) 0,
-    calc(100% - 154px) 0;
+    calc(100% - 64px) 0;
   background-size: 1px 100%;
 }
 
@@ -1028,9 +1022,7 @@ body {
   }
 }
 
-/* ASCII video hero (landing page) — boxed inside the page's vertical rules:
-   left edge on the 291px rule (clear of the fixed nav), right edge on the
-   calc(100% - 154px) rule. */
+/* ASCII video hero (landing page) — inset beyond the fixed navigation rail. */
 .ascii-hero {
   position: relative;
   margin-right: 154px;
@@ -1410,8 +1402,8 @@ body {
 
 .cog-company-card {
   position: relative;
-  min-height: 300px;
-  aspect-ratio: 1 / 1.08;
+  min-height: 270px;
+  aspect-ratio: 1 / 0.92;
   transition:
     opacity 200ms ease-in-out,
     transform 200ms ease-in-out;
@@ -1427,7 +1419,7 @@ body {
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  padding: 32px 32px 42px;
+  padding: 30px 32px 36px;
   background: #fff;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.055);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 36px), calc(100% - 36px) 100%, 0 100%);
@@ -1486,7 +1478,7 @@ body {
 
 .cog-company-logo-wrap {
   display: flex;
-  min-height: 78px;
+  min-height: 70px;
   align-items: flex-start;
   padding-right: 48px;
 }
@@ -1527,11 +1519,12 @@ body {
 
 .cog-company-card-description {
   display: block;
-  margin-top: auto;
+  max-width: 94%;
+  margin-top: 28px;
   color: rgba(0, 0, 0, 0.66);
   font-family: var(--cog-support);
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 16px;
+  line-height: 1.4;
   text-wrap: pretty;
 }
 
@@ -2070,8 +2063,9 @@ body {
   }
 
   .cog-company-card-description {
-    font-size: 13.5px;
-    line-height: 1.45;
+    margin-top: 22px;
+    font-size: 15px;
+    line-height: 1.4;
   }
 
   .cog-article-title,
@@ -4287,8 +4281,9 @@ body {
 
   .cog-company-card-description {
     max-width: 92%;
-    font-size: 13px;
-    line-height: 1.4;
+    margin-top: 18px;
+    font-size: 14px;
+    line-height: 1.38;
   }
 
   .cog-title-line + .cog-title-line {

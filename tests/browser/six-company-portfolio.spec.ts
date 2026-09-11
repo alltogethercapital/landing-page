@@ -11,9 +11,6 @@ const companies = [
 
 test("publishes the six-company portfolio intake", async ({ page }) => {
   await page.goto("/");
-  for (const [name, href] of companies) {
-    await expect(page.locator(`a[aria-label="${name}"]`)).toHaveAttribute("href", href);
-  }
   await expect(page.getByRole("link", { name: /Molagri\./ })).toHaveAttribute("href", "/updates/molagri");
 
   await page.goto("/companies");

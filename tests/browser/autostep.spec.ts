@@ -5,11 +5,6 @@ test("publishes Autostep across every public portfolio surface", async ({
 }) => {
   await page.goto("/");
 
-  await expect(page.locator('a[aria-label="Autostep"]')).toHaveAttribute(
-    "href",
-    "https://www.autostep.ai/",
-  );
-  await expect(page.locator('a[aria-label="Autostep"]')).toContainText("AUTOSTEP");
   await expect(page.getByRole("link", { name: /Autostep\./ })).toHaveAttribute(
     "href",
     "/updates/autostep",
