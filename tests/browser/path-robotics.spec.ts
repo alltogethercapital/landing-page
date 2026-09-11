@@ -8,6 +8,9 @@ test("publishes Path Robotics across every authorized surface", async ({ page })
   await expect(previewCompanies.nth(1)).toHaveAttribute("aria-label", "Anduril");
   await expect(page.getByRole("link", { name: "View all 50 companies" })).toHaveAttribute("href", "/companies");
   await expect(previewCompanies.nth(0).locator("img")).toHaveCSS("object-position", "0% 50%");
+  await expect(previewCompanies.nth(0)).toHaveCSS("--homepage-logo-scale", "0.76");
+  await expect(page.locator('a[aria-label="Blue Origin"]')).toHaveCSS("--homepage-logo-scale", "1.16");
+  await expect(page.locator('a[aria-label="1X"]')).toHaveCSS("--homepage-logo-scale", "0.7");
   const homeLogo = page.locator('a[aria-label="Path Robotics"] img');
   await expect(homeLogo).toBeVisible();
   await expect(homeLogo).toHaveJSProperty("complete", true);

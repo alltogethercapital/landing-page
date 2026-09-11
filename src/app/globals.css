@@ -1219,6 +1219,8 @@ body {
   box-sizing: border-box;
   padding: 20px 12px 20px 0;
   object-position: left center;
+  transform: scale(var(--homepage-logo-scale, 1));
+  transform-origin: left center;
 }
 
 .cog-logo-lockup {

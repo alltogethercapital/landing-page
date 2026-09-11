@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { AsciiHero } from "@/components/ascii-hero";
 import {
   CognitionPage,
@@ -28,6 +29,22 @@ const featuredCompanyNames = [
   "Aalo Atomics",
   "Path Robotics",
 ] as const;
+// Normalize perceived logo size without distorting each company's artwork.
+// Compact marks need less of the shared cell than long, lightweight wordmarks.
+const homepageLogoScale: Record<string, number> = {
+  OpenAI: 0.76,
+  Anduril: 0.88,
+  "Blue Origin": 1.16,
+  "Shield AI": 0.86,
+  Replit: 0.76,
+  "1X": 0.7,
+  "Figure AI": 0.9,
+  Apptronik: 1,
+  "Applied Intuition": 1.08,
+  Supabase: 0.9,
+  "Aalo Atomics": 0.64,
+  "Path Robotics": 0.96,
+};
 const logoCompanies = featuredCompanyNames.flatMap((name) => {
   const company = PORTFOLIO.find((entry) => entry.name === name);
   return company && (company.cardLogo ?? company.logo) ? [company] : [];
@@ -79,6 +96,12 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="cog-logo-cell"
                 aria-label={company.name}
+                style={
+                  {
+                    "--homepage-logo-scale":
+                      homepageLogoScale[company.name] ?? 1,
+                  } as CSSProperties
+                }
               >
                 {company.logoLabel ? (
                   <span className="cog-logo-lockup">
