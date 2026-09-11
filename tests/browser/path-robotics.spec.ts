@@ -7,6 +7,7 @@ test("publishes Path Robotics across every authorized surface", async ({ page })
   await expect(previewCompanies.nth(0)).toHaveAttribute("aria-label", "OpenAI");
   await expect(previewCompanies.nth(1)).toHaveAttribute("aria-label", "Anduril");
   await expect(page.getByRole("link", { name: "View all 50 companies" })).toHaveAttribute("href", "/companies");
+  await expect(previewCompanies.nth(0).locator("img")).toHaveCSS("object-position", "0% 50%");
   const homeLogo = page.locator('a[aria-label="Path Robotics"] img');
   await expect(homeLogo).toBeVisible();
   await expect(homeLogo).toHaveJSProperty("complete", true);
