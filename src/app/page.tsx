@@ -29,21 +29,22 @@ const featuredCompanyNames = [
   "Aalo Atomics",
   "Path Robotics",
 ] as const;
-// Normalize perceived logo size without distorting each company's artwork.
-// Compact marks need less of the shared cell than long, lightweight wordmarks.
-const homepageLogoScale: Record<string, number> = {
-  OpenAI: 0.76,
-  Anduril: 0.88,
-  "Blue Origin": 1.16,
-  "Shield AI": 0.86,
-  Replit: 0.76,
-  "1X": 0.7,
-  "Figure AI": 0.9,
-  Apptronik: 1,
-  "Applied Intuition": 1.08,
-  Supabase: 0.9,
-  "Aalo Atomics": 0.64,
-  "Path Robotics": 0.96,
+const homepageLogoFrame: Record<
+  string,
+  { width: number; height: number; mobileWidth: number; mobileHeight: number }
+> = {
+  OpenAI: { width: 104, height: 28, mobileWidth: 86, mobileHeight: 23 },
+  Anduril: { width: 130, height: 28, mobileWidth: 94, mobileHeight: 21 },
+  "Blue Origin": { width: 106, height: 36, mobileWidth: 82, mobileHeight: 28 },
+  "Shield AI": { width: 130, height: 28, mobileWidth: 94, mobileHeight: 21 },
+  Replit: { width: 104, height: 29, mobileWidth: 84, mobileHeight: 23 },
+  "1X": { width: 44, height: 30, mobileWidth: 38, mobileHeight: 26 },
+  "Figure AI": { width: 135, height: 24, mobileWidth: 94, mobileHeight: 17 },
+  Apptronik: { width: 142, height: 19, mobileWidth: 98, mobileHeight: 14 },
+  "Applied Intuition": { width: 144, height: 23, mobileWidth: 98, mobileHeight: 16 },
+  Supabase: { width: 110, height: 30, mobileWidth: 88, mobileHeight: 24 },
+  "Aalo Atomics": { width: 64, height: 28, mobileWidth: 52, mobileHeight: 23 },
+  "Path Robotics": { width: 130, height: 28, mobileWidth: 94, mobileHeight: 20 },
 };
 const logoCompanies = featuredCompanyNames.flatMap((name) => {
   const company = PORTFOLIO.find((entry) => entry.name === name);
@@ -87,6 +88,7 @@ export default function Home() {
         <div className="cog-logo-mosaic" aria-label="All Together companies">
           {logoCompanies.map((company) => {
             const logo = company.cardLogo ?? company.logo;
+            const frame = homepageLogoFrame[company.name];
             if (!logo) return null;
             return (
               <a
@@ -96,12 +98,6 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="cog-logo-cell"
                 aria-label={company.name}
-                style={
-                  {
-                    "--homepage-logo-scale":
-                      homepageLogoScale[company.name] ?? 1,
-                  } as CSSProperties
-                }
               >
                 {company.logoLabel ? (
                   <span className="cog-logo-lockup">
@@ -116,14 +112,28 @@ export default function Home() {
                     <span>{company.logoLabel}</span>
                   </span>
                 ) : (
-                  <Image
-                    src={logo}
-                    alt={company.name}
-                    fill
-                    sizes="(max-width: 899px) calc((100vw - 64px) / 3), 152px"
-                    unoptimized
-                    className="object-contain"
-                  />
+                  <span
+                    className="cog-logo-frame"
+                    style={
+                      frame
+                        ? ({
+                            "--logo-frame-width": `${frame.width}px`,
+                            "--logo-frame-height": `${frame.height}px`,
+                            "--logo-frame-mobile-width": `${frame.mobileWidth}px`,
+                            "--logo-frame-mobile-height": `${frame.mobileHeight}px`,
+                          } as CSSProperties)
+                        : undefined
+                    }
+                  >
+                    <Image
+                      src={logo}
+                      alt={company.name}
+                      fill
+                      sizes="(max-width: 899px) 96px, 156px"
+                      unoptimized
+                      className="object-contain"
+                    />
+                  </span>
                 )}
               </a>
             );
