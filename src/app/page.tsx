@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { AsciiHero } from "@/components/ascii-hero";
 import {
   CognitionPage,
@@ -11,10 +12,26 @@ import { UpdatesCarousel } from "@/components/updates-carousel";
 import { ARTICLES } from "@/lib/articles";
 import { PORTFOLIO } from "@/lib/portfolio";
 
-// The homepage mosaic is the complete public portfolio. Its dense responsive
-// grid keeps every company visible without turning the section into a long
-// directory; the full company cards remain available on /companies.
-const logoCompanies = PORTFOLIO.filter((company) => company.cardLogo ?? company.logo);
+// Lead with recognizable companies and keep the homepage preview scannable.
+// The complete portfolio remains available on /companies.
+const featuredCompanyNames = [
+  "OpenAI",
+  "Anduril",
+  "Blue Origin",
+  "Shield AI",
+  "Replit",
+  "1X",
+  "Figure AI",
+  "Apptronik",
+  "Applied Intuition",
+  "Supabase",
+  "Aalo Atomics",
+  "Path Robotics",
+] as const;
+const logoCompanies = featuredCompanyNames.flatMap((name) => {
+  const company = PORTFOLIO.find((entry) => entry.name === name);
+  return company && (company.cardLogo ?? company.logo) ? [company] : [];
+});
 const homepageUpdates = ARTICLES.map(
   ({ slug, title, date, dateISO, category, image }) => ({
     slug,
@@ -89,6 +106,10 @@ export default function Home() {
             );
           })}
         </div>
+        <Link href="/companies" className="cog-logo-directory-link">
+          View all {PORTFOLIO.length} companies
+          <span aria-hidden="true">↗</span>
+        </Link>
       </CognitionSection>
 
       <CognitionStrip className="cog-strip--inset">
