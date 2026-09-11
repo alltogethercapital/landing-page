@@ -2,11 +2,17 @@ import { expect, test } from "@playwright/test";
 
 test("publishes Path Robotics across every authorized surface", async ({ page }) => {
   await page.goto("/");
+  const homeLogo = page.locator('a[aria-label="Path Robotics"] img');
+  await expect(homeLogo).toBeVisible();
+  await expect(homeLogo).toHaveJSProperty("complete", true);
   await expect(page.locator('a[aria-label="Path Robotics"]')).toHaveAttribute("href", "https://www.path-robotics.com/");
   await expect(page.getByRole("link", { name: /Path Robotics\./ })).toHaveAttribute("href", "/updates/path-robotics");
 
   await page.goto("/companies#path-robotics");
-  await expect(page.locator("#path-robotics").getByRole("link", { name: "Visit Path Robotics" })).toHaveAttribute("href", "https://www.path-robotics.com/");
+  const companyCard = page.locator("#path-robotics");
+  await expect(companyCard.locator("img")).toBeVisible();
+  await expect(companyCard.locator("img")).toHaveJSProperty("complete", true);
+  await expect(companyCard.getByRole("link", { name: "Visit Path Robotics" })).toHaveAttribute("href", "https://www.path-robotics.com/");
 
   await page.goto("/founders");
   await expect(page.getByRole("heading", { name: "Andy Lonsberry" })).toBeVisible();
