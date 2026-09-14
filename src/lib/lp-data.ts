@@ -59,6 +59,7 @@ const lpWebsiteFallbacks = new Map([
   ["positron", "https://www.positron.ai/"],
   ["raspire", "https://raspire.com/"],
   ["rendezvous robotics", "https://www.rdvrobotics.com/"],
+  ["ultrasonium", "https://www.ultrasonium.com/"],
 ]);
 const investmentsWithoutCompanyWebsite = new Set(["09-h256-series-3"]);
 
