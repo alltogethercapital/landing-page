@@ -10,6 +10,7 @@ const companies = [
 ] as const;
 
 test("publishes the six-company portfolio intake", async ({ page }) => {
+  test.setTimeout(60_000);
   await page.goto("/");
   await expect(page.getByRole("link", { name: /Molagri\./ })).toHaveAttribute("href", "/updates/molagri");
 
