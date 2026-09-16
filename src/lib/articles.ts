@@ -17,6 +17,7 @@ export type Article = {
 };
 
 const NEW_INVESTMENT_ARTICLES: Article[] = [
+  ["atomarine", "Atomarine", "floating data center campuses at sea", "standardized compute barges built in shipyards, towed to site, and paired with standalone power vessels", "infrastructure that can expand without waiting for a grid connection or rebuilding the data halls around each new power source"],
   ["astro-mechanica", "Astro Mechanica", "the next generation of flight", "turboelectric adaptive engines engineered for efficiency across subsonic and supersonic speeds", "a vertically integrated aerospace platform spanning propulsion, airframes, and flight systems"],
   ["allia-health", "Allia Health", "connected infrastructure for behavioral health practices", "a modern EHR that brings intake, scheduling, documentation, referrals, outcomes, and billing into one place", "a shared operating system that gives clinicians more time for patient care and helps independent practices coordinate care"],
   ["path-robotics", "Path Robotics", "physical AI for manufacturing", "adaptive autonomous welding cells powered by a purpose-built foundation model", "a manufacturing platform that learns from production work and expands the capacity of skilled teams"],
@@ -29,12 +30,12 @@ const NEW_INVESTMENT_ARTICLES: Article[] = [
 ].map(([slug, title, excerpt, product, thesis]) => ({
   slug,
   title: `${title}.`,
-  date: slug === "astro-mechanica" ? "September 14, 2026" : slug === "allia-health" ? "September 12, 2026" : slug === "path-robotics" ? "September 8, 2026" : "September 7, 2026",
-  dateISO: slug === "astro-mechanica" ? "2026-09-14" : slug === "allia-health" ? "2026-09-12" : slug === "path-robotics" ? "2026-09-08" : "2026-09-07",
+  date: slug === "atomarine" ? "September 16, 2026" : slug === "astro-mechanica" ? "September 14, 2026" : slug === "allia-health" ? "September 12, 2026" : slug === "path-robotics" ? "September 8, 2026" : "September 7, 2026",
+  dateISO: slug === "atomarine" ? "2026-09-16" : slug === "astro-mechanica" ? "2026-09-14" : slug === "allia-health" ? "2026-09-12" : slug === "path-robotics" ? "2026-09-08" : "2026-09-07",
   category: "Portfolio",
   author: "All Together",
   excerpt: `We invested in ${title}, building ${excerpt}.`,
-  image: `/updates/covers/${slug}.${slug === "molagri" || slug === "rasyn" ? "webp" : slug === "path-robotics" || slug === "allia-health" || slug === "astro-mechanica" ? "jpg" : "png"}`,
+  image: `/updates/covers/${slug}.${slug === "molagri" || slug === "rasyn" ? "webp" : slug === "atomarine" || slug === "path-robotics" || slug === "allia-health" || slug === "astro-mechanica" ? "jpg" : "png"}`,
   sections: [
     { body: [`We invested in ${title}. The company is building ${excerpt}.`, `The work starts from a specific customer problem and carries new technical capability into a product people can use.`] },
     { heading: "What they are building", body: [`${title} is building ${product}.`, `The result is ${thesis}.`] },
