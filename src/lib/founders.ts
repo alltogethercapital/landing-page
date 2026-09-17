@@ -11,6 +11,8 @@ export type Founder = {
 // Founder names, profiles, and portraits are grounded in public company,
 // investor, publication, LinkedIn, or founder-owned social sources.
 export const FOUNDERS: Founder[] = [
+  { name: "Akshay Narisetti", companyName: "Pocket", linkedin: "https://www.linkedin.com/in/akshaynarisetti" },
+  { name: "Gabriel Dymowski", companyName: "Pocket", linkedin: "https://www.linkedin.com/in/gabrieldymowski" },
   { name: "Dimitris Koutentakis", companyName: "Atomarine", linkedin: "https://www.linkedin.com/in/dkoutentakis/" },
   { name: "Emile Germonpre", companyName: "Atomarine", linkedin: "https://www.linkedin.com/in/emile-germonpr%C3%A9-766045245/" },
   { name: "Ian Brooke", companyName: "Astro Mechanica", linkedin: "https://www.linkedin.com/in/ian-brooke-b7496325/" },

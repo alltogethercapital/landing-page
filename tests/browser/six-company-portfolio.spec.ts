@@ -17,10 +17,10 @@ test("publishes the six-company portfolio intake", async ({ page }) => {
   await page.goto("/companies");
   await expect(page.locator(".cog-company-logo-wrap").first()).toHaveCSS("align-items", "flex-end");
   const pathLogo = await page.locator("#path-robotics .cog-company-card-logo").boundingBox();
-  const molagriLogo = await page.locator("#molagri .cog-company-card-logo").boundingBox();
+  const pocketLogo = await page.locator("#pocket .cog-company-card-logo").boundingBox();
   expect(pathLogo).not.toBeNull();
-  expect(molagriLogo).not.toBeNull();
-  expect(Math.abs(pathLogo!.y + pathLogo!.height - (molagriLogo!.y + molagriLogo!.height))).toBeLessThanOrEqual(1);
+  expect(pocketLogo).not.toBeNull();
+  expect(Math.abs(pathLogo!.y + pathLogo!.height - (pocketLogo!.y + pocketLogo!.height))).toBeLessThanOrEqual(1);
   for (const [name, href] of companies) {
     await expect(page.locator(`#${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`).getByRole("link", { name: `Visit ${name}` })).toHaveAttribute("href", href);
   }
