@@ -10,6 +10,16 @@ export type LpInvestorUpdateSummary = {
 
 export const LP_INVESTOR_UPDATES: LpInvestorUpdateSummary[] = [
   {
+    slug: "september-2026",
+    issue: 2,
+    title: "The Work Moves Into the World",
+    subtitle: "What Thirteen New Positions Reveal About Intelligence, Infrastructure, and the Application Layer",
+    published: "September 17, 2026",
+    publishedAt: "2026-09-17",
+    excerpt:
+      "The portfolio's latest additions, the operating systems forming around AI, and where we are becoming more selective.",
+  },
+  {
     slug: "august-2026",
     issue: 1,
     title: "Beyond the Anthropocene",
@@ -34,4 +44,22 @@ export const LP_AUGUST_2026_FUND_SNAPSHOT = {
   positions: 44,
   companies: 43,
   markedPositions: 9,
+} as const;
+
+export const LP_SEPTEMBER_2026_PORTFOLIO_AS_OF = "September 16, 2026";
+
+// Reconciled to the live Schedule of Investments after the Pocket intake. The
+// change from the August letter comprises $145,000 across thirteen new
+// positions plus a $15,000 correction to Positron's recorded cost. New and
+// corrected cost remains at cost in the current value estimate.
+export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
+  investedCost: 821_014.25,
+  projectedGrossValue: 901_760.05,
+  projectedGrossMultiple: 1.10,
+  grossValueChange: 80_745.80,
+  positions: 57,
+  companies: 56,
+  newPositionsSinceAugust: 13,
+  newInvestedCostSinceAugust: 145_000,
+  reconciliationAdjustmentSinceAugust: 15_000,
 } as const;
