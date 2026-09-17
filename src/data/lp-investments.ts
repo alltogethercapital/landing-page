@@ -134,6 +134,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "54-path-robotics", chronology: 54, company: "Path Robotics", investedCost: 10000, investmentDate: "2026-09-08", round: "Series E", entryValuation: "$2.15B pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1LaXIvy7BtKrX-Sl9x_KCutcLq5CkiLQV", logo: "/logos/cards/path-robotics.svg", logoTreatment: "inverse", description: "Physical AI for adaptive autonomous manufacturing.", reviewStatus: "pending", reviewNote: "Owner-confirmed amount, date, and AngelList funding movement; supplied subscription document points to a separate electronic signature package and does not itself evidence GP acceptance.", securityAllocation: [{ securityType: "Equity", share: 1 }] },
   { id: "55-ultrasonium", chronology: 55, company: "Ultrasonium", investedCost: 10000, investmentDate: "2026-09-09", round: "Seed", entryValuation: "$50M post-money", instrument: "SAFE", platform: "AngelList", driveFolderId: "1RmBLZl7z0adZHBlkRW3ms7UjgpbXaNej", logo: "/logos/cards/ultrasonium.png", description: "Next-generation metals manufacturing.", reviewStatus: "pending", reviewNote: "Recorded from the live SOI; executed acceptance and cash-movement evidence were not supplied with this website release.", securityAllocation: [{ securityType: "SAFE", share: 1 }] },
   { id: "56-allia-health", chronology: 56, company: "Allia Health", investedCost: 10000, investmentDate: "2026-09-12", round: "Seed", entryValuation: "$50M post-money", instrument: "SAFE", platform: "AngelList", driveFolderId: "1SrJGSEWLdIucl2xYAUP9iiJbYyoVXcfu", logo: "/logos/cards/allia-health.png", description: "Connected infrastructure for behavioral health practices.", reviewStatus: "pending", reviewNote: "Owner-confirmed position; supplied subscription package is generic and unsigned, and cash-movement evidence remains pending.", securityAllocation: [{ securityType: "SAFE", share: 1 }] },
+  { id: "57-pocket", chronology: 57, company: "Pocket", investedCost: 25000, investmentDate: "2026-09-16", round: "Series A", entryValuation: "TBD (deal-room estimate up to $500M)", instrument: "Equity", platform: "AngelList", driveFolderId: "1YslMnAweDHAeMsxY00QspItA_1LAxd39", logo: "/logos/cards/pocket.png", description: "AI for real-world conversations, from capture through follow-through.", reviewStatus: "pending", reviewNote: "Owner-confirmed commitment; valuation is not final, the supplied offering documents are generic and unsigned, and cash-movement evidence remains pending.", securityAllocation: [{ securityType: "Equity", share: 1 }] },
 ];
 
 // Valuation inputs used for the LP-facing gross projection. Most inputs are
@@ -207,10 +208,10 @@ export const LP_PROJECTION_AS_OF = "2026-08-21";
 export const LP_SNAPSHOT = {
   source: "All Together Drive · Schedule of Investments",
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
-  sourceRange: "Sheet1!A2:J57",
-  sourceModifiedAt: "2026-09-12",
-  publishedAt: "2026-09-12",
-  recordCount: 56,
-  investedCostTotal: 796014.25,
+  sourceRange: "Sheet1!A2:J60",
+  sourceModifiedAt: "2026-09-16",
+  publishedAt: "2026-09-16",
+  recordCount: 57,
+  investedCostTotal: 821014.25,
   status: "Reconciled to SOI; pending records retain explicit evidence caveats",
 } as const;

@@ -17,6 +17,7 @@ export type Article = {
 };
 
 const NEW_INVESTMENT_ARTICLES: Article[] = [
+  ["pocket", "Pocket", "AI for the conversations that happen away from a screen", "a compact device that captures in-person and phone conversations, then turns them into transcripts, summaries, action items, and searchable context", "a simple way to stay present while the details become useful work afterward"],
   ["atomarine", "Atomarine", "floating data center campuses at sea", "standardized compute barges built in shipyards, towed to site, and paired with standalone power vessels", "infrastructure that can expand without waiting for a grid connection or rebuilding the data halls around each new power source"],
   ["astro-mechanica", "Astro Mechanica", "the next generation of flight", "turboelectric adaptive engines engineered for efficiency across subsonic and supersonic speeds", "a vertically integrated aerospace platform spanning propulsion, airframes, and flight systems"],
   ["allia-health", "Allia Health", "connected infrastructure for behavioral health practices", "a modern EHR that brings intake, scheduling, documentation, referrals, outcomes, and billing into one place", "a shared operating system that gives clinicians more time for patient care and helps independent practices coordinate care"],
@@ -30,8 +31,8 @@ const NEW_INVESTMENT_ARTICLES: Article[] = [
 ].map(([slug, title, excerpt, product, thesis]) => ({
   slug,
   title: `${title}.`,
-  date: slug === "atomarine" ? "September 16, 2026" : slug === "astro-mechanica" ? "September 14, 2026" : slug === "allia-health" ? "September 12, 2026" : slug === "path-robotics" ? "September 8, 2026" : "September 7, 2026",
-  dateISO: slug === "atomarine" ? "2026-09-16" : slug === "astro-mechanica" ? "2026-09-14" : slug === "allia-health" ? "2026-09-12" : slug === "path-robotics" ? "2026-09-08" : "2026-09-07",
+  date: slug === "pocket" ? "September 16, 2026" : slug === "atomarine" ? "September 16, 2026" : slug === "astro-mechanica" ? "September 14, 2026" : slug === "allia-health" ? "September 12, 2026" : slug === "path-robotics" ? "September 8, 2026" : "September 7, 2026",
+  dateISO: slug === "pocket" ? "2026-09-16" : slug === "atomarine" ? "2026-09-16" : slug === "astro-mechanica" ? "2026-09-14" : slug === "allia-health" ? "2026-09-12" : slug === "path-robotics" ? "2026-09-08" : "2026-09-07",
   category: "Portfolio",
   author: "All Together",
   excerpt: `We invested in ${title}, building ${excerpt}.`,

@@ -15,6 +15,7 @@ export type Company = {
 
 // All Together portfolio (alltogethercapital.com/portfolio)
 export const PORTFOLIO: Company[] = [
+  { name: "Pocket", href: "https://heypocket.com/", sectors: ["AI", "Hardware", "Software"], blurb: "A dedicated AI device that turns real-world conversations into transcripts, summaries, and action items.", logo: "/logos/pocket.png", cardLogo: "/logos/cards/pocket.png", image: "/work/cards/pocket.png", cardImage: "/work/cards/pocket.png" },
   { name: "Path Robotics", href: "https://www.path-robotics.com/", sectors: ["Robotics", "AI", "Manufacturing"], blurb: "Physical AI that brings adaptive autonomous welding to American manufacturing.", logo: "/logos/path-robotics.svg?v=20260915", cardLogo: "/logos/cards/path-robotics.svg?v=20260915", image: "/work/cards/path-robotics.jpg", cardImage: "/work/cards/path-robotics.jpg" },
   { name: "Molagri", href: "https://molagri.com/", sectors: ["Bio", "Agriculture"], blurb: "Precision biopesticides engineered to protect crops while sparing beneficial species.", logo: "/logos/molagri.svg", cardLogo: "/logos/cards/molagri.svg" },
   { name: "Atomarine", href: "https://atomarine.co/", sectors: ["Energy", "Infrastructure", "AI"], blurb: "Floating data center campuses with standalone power and seawater cooling.", logo: "/logos/atomarine.png", cardLogo: "/logos/cards/atomarine.png", logoLabel: "Atomarine", image: "/work/cards/atomarine.jpg", cardImage: "/work/cards/atomarine.jpg" },
