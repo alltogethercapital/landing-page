@@ -53,14 +53,6 @@ const publicPortfolioAliases = new Map([
   ["decart.ai", "decart"],
   ["lance ai", "lance"],
 ]);
-const lpWebsiteFallbacks = new Map([
-  ["compresr", "https://www.compresr.com/"],
-  ["matforge", "https://discoveredmaterials.com/"],
-  ["positron", "https://www.positron.ai/"],
-  ["raspire", "https://raspire.com/"],
-  ["rendezvous robotics", "https://www.rdvrobotics.com/"],
-  ["ultrasonium", "https://www.ultrasonium.com/"],
-]);
 const investmentsWithoutCompanyWebsite = new Set(["09-h256-series-3"]);
 
 function assertLpData() {
@@ -225,8 +217,8 @@ export function getCompanyContext(name: string) {
   const requestedName = name.toLocaleLowerCase();
   const portfolioName = publicPortfolioAliases.get(requestedName) || requestedName;
   const company = publicPortfolio.get(portfolioName);
-  const website = company?.href || lpWebsiteFallbacks.get(requestedName);
-  if (!company && !website) return null;
+  const website = company?.href;
+  if (!company) return null;
   return {
     sectors: company?.sectors || [],
     website,
