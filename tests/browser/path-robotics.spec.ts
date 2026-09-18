@@ -6,7 +6,7 @@ test("publishes Path Robotics across every authorized surface", async ({ page })
   await expect(previewCompanies).toHaveCount(12);
   await expect(previewCompanies.nth(0)).toHaveAttribute("aria-label", "OpenAI");
   await expect(previewCompanies.nth(1)).toHaveAttribute("aria-label", "Anduril");
-  await expect(page.getByRole("link", { name: "View all 54 companies" })).toHaveAttribute("href", "/companies");
+  await expect(page.getByRole("link", { name: "View all 60 companies" })).toHaveAttribute("href", "/companies");
   await expect(previewCompanies.nth(0).locator("img")).toHaveCSS("object-position", "0% 50%");
   await expect(previewCompanies.nth(0).locator(".cog-logo-frame")).toHaveCSS("width", "104px");
   await expect(page.locator('a[aria-label="Blue Origin"] .cog-logo-frame')).toHaveCSS("width", "106px");
