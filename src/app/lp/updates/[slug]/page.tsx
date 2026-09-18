@@ -53,7 +53,7 @@ function SeptemberUpdateCopy() {
         A month ago, we wrote that cheaper intelligence would not make every AI company more valuable. It
         would reward the companies that control something difficult to replace: a workflow, a physical
         system, proprietary data, distribution, or infrastructure that compounds as the models improve. The
-        thirteen positions added since that letter make the next part of the thesis clearer. Intelligence is
+        fifteen positions added since that letter make the next part of the thesis clearer. Intelligence is
         leaving the chat window and entering the systems where work actually happens.
       </p>
 
@@ -157,9 +157,9 @@ function SeptemberUpdateCopy() {
 
       <p>
         The change from the August letter includes {currency(snapshot.newInvestedCostSinceAugust)} across the
-        thirteen additions and a {currency(snapshot.reconciliationAdjustmentSinceAugust)}{" "}correction to
+        fifteen additions and a {currency(snapshot.reconciliationAdjustmentSinceAugust)}{" "}correction to
         Positron&apos;s recorded cost. Those additions and the correction remain at cost in the current estimate.
-        That is why gross value increased while the current value multiple moved from 1.12× to 1.10×: the
+        That is why gross value increased while the current value multiple moved from 1.12× to 1.09×: the
         denominator grew, not because an existing mark was reduced.
       </p>
 

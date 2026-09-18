@@ -8,7 +8,7 @@ test("publishes the September investor update with a dated portfolio snapshot", 
 
   await page.goto("/lp/updates");
   const septemberUpdate = page.getByRole("link", {
-    name: /The Work Moves Into the World: What Thirteen New Positions Reveal/,
+    name: /The Work Moves Into the World: What Fifteen New Positions Reveal/,
   });
   await expect(septemberUpdate).toBeVisible();
   await expect(septemberUpdate).toHaveAttribute("href", "/lp/updates/september-2026");
@@ -19,12 +19,12 @@ test("publishes the September investor update with a dated portfolio snapshot", 
   await expect(page).toHaveURL(/\/lp\/updates\/september-2026$/);
   await expect(page.getByRole("heading", { name: "The Work Moves Into the World" })).toBeVisible();
   const copy = page.locator(".lp-update-article-copy");
-  await expect(copy).toContainText("57 recorded positions across 56 companies");
-  await expect(copy).toContainText("$821,014.25");
-  await expect(copy).toContainText("$901,760.05");
-  await expect(copy).toContainText("1.10× current value multiple");
+  await expect(copy).toContainText("59 recorded positions across 58 companies");
+  await expect(copy).toContainText("$856,014.25");
+  await expect(copy).toContainText("$936,760.05");
+  await expect(copy).toContainText("1.09× current value multiple");
   await expect(copy).toContainText("$80,745.80 above recorded cost");
-  await expect(copy).toContainText("$145,000.00 across the thirteen additions");
+  await expect(copy).toContainText("$180,000.00 across the fifteen additions");
   await expect(copy).toContainText("$15,000.00 correction to Positron");
   await expect(copy).toContainText("not audited NAV");
   await expect(copy).toContainText("do not convert a commitment");
