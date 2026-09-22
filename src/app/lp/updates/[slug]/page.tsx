@@ -156,6 +156,13 @@ function SeptemberUpdateCopy() {
       </p>
 
       <p>
+        <strong>Restated September 22, 2026.</strong> AngelList confirmed that the Apptronik SPV was
+        oversubscribed and reduced our allocation from $30,000.00 to $29,222.00. We reduced recorded cost by
+        $778.00 and updated the directional value estimate proportionally. The excess was credited to our
+        AngelList Investor Account, not returned to our bank.
+      </p>
+
+      <p>
         The change from the August letter includes {currency(snapshot.newInvestedCostSinceAugust)} across the
         fifteen additions and a {currency(snapshot.reconciliationAdjustmentSinceAugust)}{" "}correction to
         Positron&apos;s recorded cost. Those additions and the correction remain at cost in the current estimate.
@@ -295,6 +302,13 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
           {snapshot.projectedGrossMultiple.toFixed(2)}× gross value multiple. We will keep this financial
           checkpoint concise and use these letters to share the thinking behind the portfolio, including what
           is changing our minds.
+        </p>
+
+        <p>
+          <strong>Restated September 22, 2026.</strong> AngelList later confirmed that the Apptronik SPV was
+          oversubscribed and reduced our allocation from $30,000.00 to $29,222.00. The figures above now reflect
+          the $778.00 reduction and the proportional change to the directional value estimate. The excess was
+          credited to our AngelList Investor Account, not returned to our bank.
         </p>
 
         <p>

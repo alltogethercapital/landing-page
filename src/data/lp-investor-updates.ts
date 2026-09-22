@@ -38,8 +38,8 @@ export const LP_AUGUST_2026_PORTFOLIO_AS_OF = "August 18, 2026";
 // one owner-directed Anduril scenario are applied; all other positions remain
 // at cost. H256's allocation being finalized is included at cost in both totals.
 export const LP_AUGUST_2026_FUND_SNAPSHOT = {
-  investedCost: 661_014.25,
-  projectedGrossValue: 741_760.05,
+  investedCost: 660_236.25,
+  projectedGrossValue: 740_918.54,
   projectedGrossMultiple: 1.12,
   positions: 44,
   companies: 43,
@@ -53,10 +53,10 @@ export const LP_SEPTEMBER_2026_PORTFOLIO_AS_OF = "September 16, 2026";
 // positions plus a $15,000 correction to Positron's recorded cost. New and
 // corrected cost remains at cost in the current value estimate.
 export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
-  investedCost: 856_014.25,
-  projectedGrossValue: 936_760.05,
+  investedCost: 855_236.25,
+  projectedGrossValue: 935_918.54,
   projectedGrossMultiple: 1.09,
-  grossValueChange: 80_745.80,
+  grossValueChange: 80_682.29,
   positions: 59,
   companies: 58,
   newPositionsSinceAugust: 15,
