@@ -82,6 +82,10 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
         <div><dt>Company valuation when invested</dt><dd>{investment.valuationWhenInvested}</dd></div>
       </dl>
 
+      {investment.reviewNote ? (
+        <p className="lp-detail-note">{investment.reviewNote}</p>
+      ) : null}
+
       {investment.vehicleAllocation ? (
         <section className="lp-vehicle-allocation" aria-labelledby="lp-vehicle-allocation-heading">
           <header>

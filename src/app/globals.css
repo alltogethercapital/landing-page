@@ -2974,9 +2974,20 @@ body {
    closing rule only where a ruled block actually follows. */
 .lp-detail-facts:has(+ .lp-performance),
 .lp-detail-facts:has(+ .lp-vehicle-allocation),
+.lp-detail-facts:has(+ .lp-detail-note),
 .lp-detail-facts:has(+ .lp-portal-footer),
 .lp-performance:has(+ .lp-portal-footer) {
   border-bottom: 0;
+}
+
+.lp-detail-note {
+  margin: 0;
+  border-bottom: 1px solid var(--lp-line);
+  padding: 16px 0 18px;
+  color: var(--lp-muted);
+  font-family: var(--cog-support);
+  font-size: 12px;
+  line-height: 1.55;
 }
 
 .lp-detail-facts > div {
