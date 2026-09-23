@@ -49,17 +49,17 @@ export const LP_AUGUST_2026_FUND_SNAPSHOT = {
 export const LP_SEPTEMBER_2026_PORTFOLIO_AS_OF = "September 16, 2026";
 
 // Reconciled to the live Schedule of Investments after the recent amount
-// corrections. The change from the August letter comprises $180,000 across fifteen new
+// corrections. The change from the August letter comprises $170,000 across fifteen new
 // positions plus a $15,000 correction to Positron's recorded cost. New and
 // corrected cost remains at cost in the current value estimate.
 export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
-  investedCost: 855_236.25,
-  projectedGrossValue: 935_918.54,
-  projectedGrossMultiple: 1.09,
+  investedCost: 845_236.25,
+  projectedGrossValue: 925_918.54,
+  projectedGrossMultiple: 1.10,
   grossValueChange: 80_682.29,
   positions: 59,
   companies: 58,
   newPositionsSinceAugust: 15,
-  newInvestedCostSinceAugust: 180_000,
+  newInvestedCostSinceAugust: 170_000,
   reconciliationAdjustmentSinceAugust: 15_000,
 } as const;

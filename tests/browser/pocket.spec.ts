@@ -18,7 +18,7 @@ test("publishes Pocket across every authorized public surface", async ({ page })
   expect(response?.status()).toBe(200);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Pocket.");
   const article = await page.locator("main").innerText();
-  for (const confidential of ["$25,000", "$500M", "AngelList", "carry", "valuation", "annualized revenue", "run rate"]) {
+  for (const confidential of ["$15,000", "$25,000", "$500M", "AngelList", "carry", "valuation", "annualized revenue", "run rate"]) {
     expect(article).not.toContain(confidential);
   }
 });
