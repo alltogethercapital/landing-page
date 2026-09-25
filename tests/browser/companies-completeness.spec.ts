@@ -25,3 +25,24 @@ test("keeps Astro Mechanica named and Path Robotics legible", async ({ page }) =
   await expect(pathLogo).toHaveAttribute("src", /path-robotics\.svg\?v=20260915/);
   await expect(pathLogo).toHaveJSProperty("complete", true);
 });
+
+test("keeps icon-only company marks readable as complete lockups", async ({ page }) => {
+  await page.goto("/companies");
+
+  for (const company of [
+    "Allia Health",
+    "Raspire",
+    "Rendezvous Robotics",
+    "Compresr",
+    "Core Automation",
+  ]) {
+    const card = page.locator(`article[id="${slugify(company)}"]`);
+    await expect(card.locator(".cog-company-logo-lockup img")).toBeVisible();
+    await expect(card.getByText(company, { exact: true })).toBeVisible();
+  }
+
+  const unloadedLogos = await page.locator(".cog-company-logo-wrap img").evaluateAll((logos) =>
+    logos.filter((logo) => !(logo as HTMLImageElement).complete || (logo as HTMLImageElement).naturalWidth === 0).length,
+  );
+  expect(unloadedLogos).toBe(0);
+});
