@@ -1493,21 +1493,28 @@ body {
 .cog-company-card-logo {
   display: block;
   width: auto;
-  max-width: 92%;
+  max-width: 100%;
   height: auto;
-  max-height: 72px;
+  max-height: 64px;
   object-fit: contain;
   object-position: left bottom;
 }
 
 .cog-company-logo-lockup {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 14px;
   font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: clamp(24px, 2.2vw, 32px);
   font-weight: 700;
+  line-height: 0.95;
   letter-spacing: 0.035em;
+}
+
+.cog-company-logo-lockup > span:last-child {
+  min-width: 0;
+  text-wrap: balance;
 }
 
 .cog-company-logo-lockup-mark {
@@ -2066,8 +2073,18 @@ body {
   }
 
   .cog-company-card-logo {
-    max-width: 84%;
-    max-height: 54px;
+    max-width: 100%;
+    max-height: 58px;
+  }
+
+  .cog-company-logo-lockup {
+    gap: 10px;
+    font-size: clamp(20px, 2.7vw, 27px);
+  }
+
+  .cog-company-logo-lockup-mark {
+    width: 42px;
+    height: 42px;
   }
 
   .cog-company-card-description {
@@ -4289,8 +4306,19 @@ body {
   }
 
   .cog-company-card-logo {
-    max-width: 76%;
-    max-height: 34px;
+    max-width: 100%;
+    max-height: 38px;
+  }
+
+  .cog-company-logo-lockup {
+    gap: 8px;
+    font-size: 18px;
+    line-height: 0.95;
+  }
+
+  .cog-company-logo-lockup-mark {
+    width: 32px;
+    height: 32px;
   }
 
   .cog-company-card-title {
