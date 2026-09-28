@@ -20,8 +20,8 @@ test("publishes the September investor update with a dated portfolio snapshot", 
   await expect(page.getByRole("heading", { name: "The Work Moves Into the World" })).toBeVisible();
   const copy = page.locator(".lp-update-article-copy");
   await expect(copy).toContainText("59 recorded positions across 58 companies");
-  await expect(copy).toContainText("$845,236.25");
-  await expect(copy).toContainText("$925,918.54");
+  await expect(copy).toContainText("$845,217.77");
+  await expect(copy).toContainText("$925,900.06");
   await expect(copy).toContainText("1.10× current value multiple");
   await expect(copy).toContainText("$80,682.29 above recorded cost");
   await expect(copy).toContainText("$170,000.00 across the fifteen additions");

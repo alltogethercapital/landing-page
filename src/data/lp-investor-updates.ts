@@ -38,8 +38,8 @@ export const LP_AUGUST_2026_PORTFOLIO_AS_OF = "August 18, 2026";
 // one owner-directed Anduril scenario are applied; all other positions remain
 // at cost. H256's allocation being finalized is included at cost in both totals.
 export const LP_AUGUST_2026_FUND_SNAPSHOT = {
-  investedCost: 660_236.25,
-  projectedGrossValue: 740_918.54,
+  investedCost: 660_217.77,
+  projectedGrossValue: 740_900.06,
   projectedGrossMultiple: 1.12,
   positions: 44,
   companies: 43,
@@ -50,11 +50,12 @@ export const LP_SEPTEMBER_2026_PORTFOLIO_AS_OF = "September 16, 2026";
 
 // Reconciled to the live Schedule of Investments after the recent amount
 // corrections. The change from the August letter comprises $170,000 across fifteen new
-// positions plus a $15,000 correction to Positron's recorded cost. New and
-// corrected cost remains at cost in the current value estimate.
+// positions plus a $15,000 correction to Positron's recorded cost. Supabase's final
+// allocation is $18.48 below its originally recorded cost; that pre-August correction
+// is reflected in both historical snapshots. New and corrected cost remains at cost.
 export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
-  investedCost: 845_236.25,
-  projectedGrossValue: 925_918.54,
+  investedCost: 845_217.77,
+  projectedGrossValue: 925_900.06,
   projectedGrossMultiple: 1.10,
   grossValueChange: 80_682.29,
   positions: 59,
