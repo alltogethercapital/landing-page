@@ -174,8 +174,8 @@ body::-webkit-scrollbar {
   --cog-ink: #000000;
   --cog-muted: rgba(0, 0, 0, 0.56);
   --cog-line: rgba(0, 0, 0, 0.08);
-  --cog-accent: #006fce;
-  --cog-sun: #ffc62c;
+  --cog-accent: #111111;
+  --cog-sun: #525252;
   --cog-dark: #191919;
   --cog-support: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   --cog-ui: var(--font-pitch-sans), "Helvetica Neue", Arial, sans-serif;
@@ -198,12 +198,12 @@ body::-webkit-scrollbar {
   --ink-inverse: #f7f6f5;
   --charcoal: #191919;
 
-  /* One accent, carried over from the sun-and-Earth mark. Blue is the
-     interactive/live colour; the sun is reserved for selection and marks. */
-  --accent: #006fce;
-  --accent-hover: #0059a6;
-  --accent-wash: rgba(0, 111, 206, 0.08);
-  --sun: #ffc62c;
+  /* Brand 025 is the default monochrome system. Brand 069 swaps these
+     shared interaction tokens without changing semantic gain/loss colours. */
+  --accent: #111111;
+  --accent-hover: #000000;
+  --accent-wash: rgba(0, 0, 0, 0.07);
+  --sun: #525252;
 
   /* Rules. Two weights only: a hairline seam and a structural rule. */
   --rule-hair: rgba(13, 13, 12, 0.12);
@@ -269,6 +269,15 @@ body::-webkit-scrollbar {
   --duration-slow: 300ms;
   --ease-standard: cubic-bezier(0.2, 0, 0.1, 1);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
+html[data-brand-theme="069"] {
+  --cog-accent: #d92cff;
+  --cog-sun: #7957ff;
+  --accent: #d92cff;
+  --accent-hover: #b817dc;
+  --accent-wash: rgba(217, 44, 255, 0.09);
+  --sun: #7957ff;
 }
 
 /* Breakpoints, recorded as custom properties so the values stay documented
@@ -436,12 +445,33 @@ body {
 }
 
 .cog-wordmark-logo {
+  position: absolute;
+  inset: 0;
   display: block;
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
   flex: none;
-  border-radius: 50%;
   object-fit: cover;
+}
+
+.cog-wordmark-logo-stack {
+  position: relative;
+  display: block;
+  width: 32px;
+  height: 32px;
+  flex: none;
+}
+
+.cog-wordmark-logo--069 {
+  opacity: 0;
+}
+
+html[data-brand-theme="069"] .cog-wordmark-logo--025 {
+  opacity: 0;
+}
+
+html[data-brand-theme="069"] .cog-wordmark-logo--069 {
+  opacity: 1;
 }
 
 .cog-brand-dot {
@@ -569,7 +599,7 @@ body {
   width: var(--nav-hover-width);
   height: var(--nav-hover-height);
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(0, 111, 206, 0.56) 0 2px, rgba(255, 198, 44, 0.18) 2px);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--cog-accent) 56%, transparent) 0 2px, color-mix(in srgb, var(--cog-sun) 18%, transparent) 2px);
   clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 50%, calc(100% - 7px) 100%, 0 100%);
   opacity: 0;
   transform: translate3d(var(--nav-hover-left), var(--nav-hover-top), 0);
@@ -910,8 +940,8 @@ body {
   position: absolute;
   inset: 5px -12px;
   z-index: -1;
-  background: rgba(0, 111, 206, 0.08);
-  border: 1px solid rgba(0, 111, 206, 0.22);
+  background: var(--accent-wash);
+  border: 1px solid color-mix(in srgb, var(--cog-accent) 22%, transparent);
   content: "";
   opacity: 0;
   transition: opacity 160ms ease;
@@ -1441,7 +1471,7 @@ body {
   content: "";
   opacity: 0;
   background:
-    linear-gradient(135deg, rgba(255, 198, 44, 0.12), transparent 42%),
+    linear-gradient(135deg, color-mix(in srgb, var(--cog-sun) 12%, transparent), transparent 42%),
     linear-gradient(315deg, rgba(0, 0, 0, 0.055), transparent 34%);
   transition: opacity 200ms ease-in-out;
 }
@@ -2770,7 +2800,64 @@ body {
 }
 
 .lp-portfolio-table tbody tr:hover {
-  background: rgba(0, 111, 206, 0.055);
+  background: color-mix(in srgb, var(--cog-accent) 5.5%, transparent);
+}
+
+.brand-theme-switcher {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid var(--rule-hair);
+  background: color-mix(in srgb, var(--paper-raised) 94%, transparent);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.brand-theme-switcher__label {
+  padding: 0 7px;
+  color: var(--ink-tertiary);
+  font-family: var(--cog-ui);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.brand-theme-switcher button {
+  min-width: 38px;
+  border: 0;
+  padding: 7px 8px;
+  background: transparent;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  font-family: var(--cog-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.brand-theme-switcher button[aria-pressed="true"] {
+  background: var(--cog-accent);
+  color: #ffffff;
+}
+
+.brand-theme-switcher button:focus-visible {
+  outline: 2px solid var(--cog-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .brand-theme-switcher {
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .brand-theme-switcher__label {
+    display: none;
+  }
 }
 
 .lp-portfolio-table tbody tr[data-status="review"] {

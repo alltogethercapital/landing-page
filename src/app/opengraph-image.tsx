@@ -33,7 +33,7 @@ export default async function OpenGraphImage() {
     readFile(join(process.cwd(), "public/fonts/Newsreader-Regular.ttf")),
     readFile(join(process.cwd(), "public/fonts/Newsreader-SemiBold.ttf")),
     readFile(
-      join(process.cwd(), "public/brand/all-together-rising-circles-logo.png"),
+      join(process.cwd(), "public/brand/all-together-a-025.png"),
     ),
     readFile(join(process.cwd(), "public/logos/cards/shield-ai.png")),
     readFile(join(process.cwd(), "public/logos/cards/1x.png")),
@@ -118,9 +118,9 @@ export default async function OpenGraphImage() {
               src={brandMarkSrc}
               width={22}
               height={22}
-              style={{ width: 22, height: 22, borderRadius: 999 }}
+              style={{ width: 28, height: 28 }}
             />
-            <span style={{ marginRight: -5 }}>A2R</span>
+            <span style={{ marginRight: -5 }}>ALL TOGETHER</span>
           </div>
           <div
             style={{
@@ -139,7 +139,7 @@ export default async function OpenGraphImage() {
                 style={{
                   position: "relative",
                   display: "flex",
-                  color: index === 0 ? "#1685e5" : "rgba(0, 0, 0, 0.56)",
+                  color: index === 0 ? "#111111" : "rgba(0, 0, 0, 0.56)",
                 }}
               >
                 {index === 0 && (
@@ -150,7 +150,7 @@ export default async function OpenGraphImage() {
                       left: -14,
                       width: 2,
                       height: 16,
-                      backgroundColor: "#1685e5",
+                      backgroundColor: "#111111",
                     }}
                   />
                 )}

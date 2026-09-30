@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="title">
+  <title id="title">All Together A mark — concept 025</title>
+  <defs>
+    <linearGradient id="field" x1="18" y1="8" x2="82" y2="92" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#262626"/>
+      <stop offset="0.58" stop-color="#111111"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="18" fill="url(#field)"/>
+  <path fill="#fff" d="M50 16 46.6 27 21 76h20.5L50 49.5V16Z"/>
+  <path fill="#fff" d="M50 16v33.5L58.5 76H79L53.4 27 50 16Z"/>
+</svg>
