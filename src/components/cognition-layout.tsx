@@ -33,8 +33,8 @@ export function LogoMark({ className }: { className?: string }) {
       <Image
         src="/brand/all-together-a-069.svg"
         alt=""
-        width={32}
-        height={32}
+        width={20}
+        height={20}
         className="cog-wordmark-logo"
       />
     </span>
