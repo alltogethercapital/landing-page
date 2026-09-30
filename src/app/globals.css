@@ -174,8 +174,8 @@ body::-webkit-scrollbar {
   --cog-ink: #000000;
   --cog-muted: rgba(0, 0, 0, 0.56);
   --cog-line: rgba(0, 0, 0, 0.08);
-  --cog-accent: #111111;
-  --cog-sun: #525252;
+  --cog-accent: #e74650;
+  --cog-sun: #ffad32;
   --cog-dark: #191919;
   --cog-support: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   --cog-ui: var(--font-pitch-sans), "Helvetica Neue", Arial, sans-serif;
@@ -198,12 +198,12 @@ body::-webkit-scrollbar {
   --ink-inverse: #f7f6f5;
   --charcoal: #191919;
 
-  /* Brand 025 is the default monochrome system. Brand 069 swaps these
-     shared interaction tokens without changing semantic gain/loss colours. */
-  --accent: #111111;
-  --accent-hover: #000000;
-  --accent-wash: rgba(0, 0, 0, 0.07);
-  --sun: #525252;
+  /* The shared orange/red identity drives interactive accents while
+     semantic gain/loss colours retain their independent meanings. */
+  --accent: #e74650;
+  --accent-hover: #c92f42;
+  --accent-wash: rgba(231, 70, 80, 0.09);
+  --sun: #ffad32;
 
   /* Rules. Two weights only: a hairline seam and a structural rule. */
   --rule-hair: rgba(13, 13, 12, 0.12);
@@ -269,15 +269,6 @@ body::-webkit-scrollbar {
   --duration-slow: 300ms;
   --ease-standard: cubic-bezier(0.2, 0, 0.1, 1);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
-}
-
-html[data-brand-theme="069"] {
-  --cog-accent: #e74650;
-  --cog-sun: #ffad32;
-  --accent: #e74650;
-  --accent-hover: #c92f42;
-  --accent-wash: rgba(231, 70, 80, 0.09);
-  --sun: #ffad32;
 }
 
 /* Breakpoints, recorded as custom properties so the values stay documented
@@ -445,33 +436,11 @@ body {
 }
 
 .cog-wordmark-logo {
-  position: absolute;
-  inset: 0;
   display: block;
   width: 32px;
   height: 32px;
   flex: none;
   object-fit: cover;
-}
-
-.cog-wordmark-logo-stack {
-  position: relative;
-  display: block;
-  width: 32px;
-  height: 32px;
-  flex: none;
-}
-
-.cog-wordmark-logo--069 {
-  opacity: 0;
-}
-
-html[data-brand-theme="069"] .cog-wordmark-logo--025 {
-  opacity: 0;
-}
-
-html[data-brand-theme="069"] .cog-wordmark-logo--069 {
-  opacity: 1;
 }
 
 .cog-brand-dot {
@@ -2801,63 +2770,6 @@ html[data-brand-theme="069"] .cog-wordmark-logo--069 {
 
 .lp-portfolio-table tbody tr:hover {
   background: color-mix(in srgb, var(--cog-accent) 5.5%, transparent);
-}
-
-.brand-theme-switcher {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 120;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  padding: 4px;
-  border: 1px solid var(--rule-hair);
-  background: color-mix(in srgb, var(--paper-raised) 94%, transparent);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(12px);
-}
-
-.brand-theme-switcher__label {
-  padding: 0 7px;
-  color: var(--ink-tertiary);
-  font-family: var(--cog-ui);
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.brand-theme-switcher button {
-  min-width: 38px;
-  border: 0;
-  padding: 7px 8px;
-  background: transparent;
-  color: var(--ink-secondary);
-  cursor: pointer;
-  font-family: var(--cog-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-}
-
-.brand-theme-switcher button[aria-pressed="true"] {
-  background: var(--cog-accent);
-  color: #ffffff;
-}
-
-.brand-theme-switcher button:focus-visible {
-  outline: 2px solid var(--cog-accent);
-  outline-offset: 2px;
-}
-
-@media (max-width: 640px) {
-  .brand-theme-switcher {
-    right: 10px;
-    bottom: 10px;
-  }
-
-  .brand-theme-switcher__label {
-    display: none;
-  }
 }
 
 .lp-portfolio-table tbody tr[data-status="review"] {

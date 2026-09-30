@@ -7,11 +7,8 @@
       <stop offset=".68" stop-color="#f0344f"/>
       <stop offset="1" stop-color="#a91d55"/>
     </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
-      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#8d173d" flood-opacity=".35"/>
-    </filter>
   </defs>
-  <rect x="3" y="3" width="94" height="94" rx="15" fill="url(#field)" filter="url(#shadow)"/>
+  <rect width="100" height="100" fill="url(#field)"/>
   <path fill="#fff" d="M49 17 19 77h23l8-18V17h-1Z"/>
   <path fill="#fff" d="M51 17v42l8 18h23L52 17h-1Z"/>
 </svg>

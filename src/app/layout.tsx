@@ -4,11 +4,8 @@ import type { CSSProperties, ReactNode } from "react";
 import { SiteInteractionSounds } from "@/components/site-interaction-sounds";
 import { SiteSearch } from "@/components/site-search";
 import { SitePreloader } from "@/components/site-preloader";
-import { BrandThemeSwitcher } from "@/components/brand-theme-switcher";
 import { buildSearchIndex } from "@/lib/search";
 import "./globals.css";
-
-const brandThemeInitScript = `try{var t=localStorage.getItem("all-together-brand-theme");document.documentElement.dataset.brandTheme=t==="069"?"069":"025"}catch(e){document.documentElement.dataset.brandTheme="025"}`;
 
 const rosart = localFont({
   variable: "--font-rosart",
@@ -172,8 +169,6 @@ export default function RootLayout({
       style={hiddenScrollbarStyle}
     >
       <body className="min-h-full" style={hiddenScrollbarStyle}>
-        <script dangerouslySetInnerHTML={{ __html: brandThemeInitScript }} />
-        <BrandThemeSwitcher />
         <SiteInteractionSounds />
         <SitePreloader />
         <SiteSearch index={buildSearchIndex()} />

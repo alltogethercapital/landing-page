@@ -30,22 +30,13 @@ export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-wordmark", className)}>
       <span className="cog-wordmark-text">ALL TOGETHER</span>
-      <span className="cog-wordmark-logo-stack" aria-hidden="true">
-        <Image
-          src="/brand/all-together-a-025.svg"
-          alt=""
-          width={32}
-          height={32}
-          className="cog-wordmark-logo cog-wordmark-logo--025"
-        />
-        <Image
-          src="/brand/all-together-a-069.svg"
-          alt=""
-          width={32}
-          height={32}
-          className="cog-wordmark-logo cog-wordmark-logo--069"
-        />
-      </span>
+      <Image
+        src="/brand/all-together-a-069.svg"
+        alt=""
+        width={32}
+        height={32}
+        className="cog-wordmark-logo"
+      />
     </span>
   );
 }
