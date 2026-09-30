@@ -23,7 +23,7 @@ test("cycles persistently between brand 025 and 069 across public and LP surface
         getComputedStyle(document.documentElement).getPropertyValue("--cog-accent").trim(),
       ),
     )
-    .toBe("#d92cff");
+    .toBe("#e74650");
 
   await page.reload();
   await expect(root).toHaveAttribute("data-brand-theme", "069");

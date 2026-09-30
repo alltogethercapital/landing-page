@@ -1,23 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="title">
-  <title id="title">All Together A mark — concept 069</title>
+  <title id="title">All Together A mark — orange and red treatment</title>
   <defs>
-    <radialGradient id="field" cx="50%" cy="42%" r="72%">
-      <stop stop-color="#26133f"/>
-      <stop offset="0.5" stop-color="#100b22"/>
-      <stop offset="1" stop-color="#05050a"/>
-    </radialGradient>
-    <linearGradient id="frame" x1="12" y1="10" x2="88" y2="90" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#7838ff"/>
-      <stop offset="0.5" stop-color="#ef3dff"/>
-      <stop offset="1" stop-color="#7a2dff"/>
+    <linearGradient id="field" x1="8" y1="92" x2="91" y2="7" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffd05a"/>
+      <stop offset=".34" stop-color="#ff8a3d"/>
+      <stop offset=".68" stop-color="#f0344f"/>
+      <stop offset="1" stop-color="#a91d55"/>
     </linearGradient>
-    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="3.5" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#8d173d" flood-opacity=".35"/>
     </filter>
   </defs>
-  <rect width="100" height="100" rx="18" fill="url(#field)"/>
-  <rect x="5" y="5" width="90" height="90" rx="14" fill="none" stroke="url(#frame)" stroke-width="2" opacity="0.9" filter="url(#glow)"/>
-  <path fill="#fff" d="M50 16 46.6 27 21 76h20.5L50 49.5V16Z"/>
-  <path fill="#fff" d="M50 16v33.5L58.5 76H79L53.4 27 50 16Z"/>
+  <rect x="3" y="3" width="94" height="94" rx="15" fill="url(#field)" filter="url(#shadow)"/>
+  <path fill="#fff" d="M49 17 19 77h23l8-18V17h-1Z"/>
+  <path fill="#fff" d="M51 17v42l8 18h23L52 17h-1Z"/>
 </svg>

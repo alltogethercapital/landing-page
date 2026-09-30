@@ -272,12 +272,12 @@ body::-webkit-scrollbar {
 }
 
 html[data-brand-theme="069"] {
-  --cog-accent: #d92cff;
-  --cog-sun: #7957ff;
-  --accent: #d92cff;
-  --accent-hover: #b817dc;
-  --accent-wash: rgba(217, 44, 255, 0.09);
-  --sun: #7957ff;
+  --cog-accent: #e74650;
+  --cog-sun: #ffad32;
+  --accent: #e74650;
+  --accent-hover: #c92f42;
+  --accent-wash: rgba(231, 70, 80, 0.09);
+  --sun: #ffad32;
 }
 
 /* Breakpoints, recorded as custom properties so the values stay documented
