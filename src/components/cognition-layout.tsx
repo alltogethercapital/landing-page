@@ -31,7 +31,7 @@ export function LogoMark({ className }: { className?: string }) {
     <span className={cn("cog-wordmark", className)}>
       <span className="cog-wordmark-text">ALL TOGETHER</span>
       <Image
-        src="/brand/all-together-a-069.svg"
+        src="/brand/all-together-a-025.svg"
         alt=""
         width={20}
         height={20}

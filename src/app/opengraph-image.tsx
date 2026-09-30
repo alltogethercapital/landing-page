@@ -33,7 +33,7 @@ export default async function OpenGraphImage() {
     readFile(join(process.cwd(), "public/fonts/Newsreader-Regular.ttf")),
     readFile(join(process.cwd(), "public/fonts/Newsreader-SemiBold.ttf")),
     readFile(
-      join(process.cwd(), "public/brand/all-together-a-069.png"),
+      join(process.cwd(), "public/brand/all-together-a-025.png"),
     ),
     readFile(join(process.cwd(), "public/logos/cards/shield-ai.png")),
     readFile(join(process.cwd(), "public/logos/cards/1x.png")),

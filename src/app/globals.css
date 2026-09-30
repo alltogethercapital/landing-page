@@ -174,8 +174,8 @@ body::-webkit-scrollbar {
   --cog-ink: #000000;
   --cog-muted: rgba(0, 0, 0, 0.56);
   --cog-line: rgba(0, 0, 0, 0.08);
-  --cog-accent: #e74650;
-  --cog-sun: #ffad32;
+  --cog-accent: #111111;
+  --cog-sun: #525252;
   --cog-dark: #191919;
   --cog-support: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   --cog-ui: var(--font-pitch-sans), "Helvetica Neue", Arial, sans-serif;
@@ -198,12 +198,12 @@ body::-webkit-scrollbar {
   --ink-inverse: #f7f6f5;
   --charcoal: #191919;
 
-  /* The shared orange/red identity drives interactive accents while
+  /* The shared monochrome identity drives interactive accents while
      semantic gain/loss colours retain their independent meanings. */
-  --accent: #e74650;
-  --accent-hover: #c92f42;
-  --accent-wash: rgba(231, 70, 80, 0.09);
-  --sun: #ffad32;
+  --accent: #111111;
+  --accent-hover: #000000;
+  --accent-wash: rgba(0, 0, 0, 0.07);
+  --sun: #525252;
 
   /* Rules. Two weights only: a hairline seam and a structural rule. */
   --rule-hair: rgba(13, 13, 12, 0.12);
