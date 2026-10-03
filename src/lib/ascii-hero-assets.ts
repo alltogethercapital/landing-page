@@ -25,7 +25,7 @@ export type AsciiHeroClip = {
 // stale cache — regenerate it whenever the file changes.
 export const ASCII_HERO_CLIPS: AsciiHeroClip[] = [
   {
-    label: "All Together — portfolio montage",
+    label: "Machine Spirit — portfolio montage",
     src: "/hero-videos/ascii-homepage.1738e13b.mp4",
     poster: "/hero-videos/ascii-homepage.1738e13b.jpg",
   },

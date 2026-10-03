@@ -1,8 +1,8 @@
 import type { ComponentType } from "react";
 import { LinkedInIcon, MailIcon } from "@/components/icons";
 
-export const CONTACT_RECIPIENT = "robertneir@alltogethercapital.com";
-export const CONTACT_CC = "hisham@alltogethercapital.com";
+export const CONTACT_RECIPIENT = "robertneir@machinespirit.com";
+export const CONTACT_CC = "hisham@machinespirit.com";
 export const CONTACT_RECIPIENTS = [CONTACT_RECIPIENT, CONTACT_CC];
 export const CONTACT_MAILTO = `mailto:${CONTACT_RECIPIENT}?cc=${encodeURIComponent(
   CONTACT_CC,

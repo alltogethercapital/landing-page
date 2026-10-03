@@ -16,7 +16,7 @@ import { slugify } from "@/lib/portfolio";
 export const metadata: Metadata = {
   title: "Our team",
   description:
-    "All Together is led by founding partners Robert Neir and Hisham El-Husseini.",
+    "Machine Spirit is led by founding partners Robert Neir and Hisham El-Husseini.",
 };
 
 type Member = {
@@ -34,14 +34,14 @@ const MEMBERS: Member[] = [
     role: "Founding Partner",
     img: "/leadership/webp/robert-team-studio.webp",
     linkedin: "https://www.linkedin.com/in/robertmneir/",
-    email: "robertneir@alltogethercapital.com",
+    email: "robertneir@machinespirit.com",
   },
   {
     name: "Hisham El-Husseini",
     role: "Founding Partner",
     img: "/leadership/webp/hisham-team-studio.webp",
     linkedin: "https://www.linkedin.com/in/hisham-el-husseini/",
-    email: "hisham@alltogethercapital.com",
+    email: "hisham@machinespirit.com",
   },
   {
     name: "NEO",
@@ -127,7 +127,7 @@ export default function TeamPage() {
 
       <CognitionSection label="Our team" title="Our team.">
         <p className="cog-body-copy">
-          All Together is led by founding partners Robert Neir and
+          Machine Spirit is led by founding partners Robert Neir and
           Hisham El-Husseini.
         </p>
         <ArrowLink href={CONTACT_MAILTO} className="mt-8">

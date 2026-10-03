@@ -25,16 +25,16 @@ export function BrandDot({ className }: { className?: string }) {
   );
 }
 
-// Full wordmark paired with both approved brand treatments.
+// Compact wordmark used across desktop, mobile, search, and the LP portal.
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-wordmark", className)}>
-      <span className="cog-wordmark-text">ALL TOGETHER</span>
+      <span className="cog-wordmark-text">MACHINE SPIRIT</span>
       <Image
-        src="/brand/all-together-a-025.svg"
+        src="/brand/machine-spirit-mark.png"
         alt=""
-        width={20}
-        height={20}
+        width={24}
+        height={24}
         className="cog-wordmark-logo"
       />
     </span>

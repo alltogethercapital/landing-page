@@ -8,7 +8,7 @@ import { join } from "node:path";
 export const runtime = "nodejs";
 
 export const alt =
-  "All Together, backing the founders rebuilding the hard frontier.";
+  "Machine Spirit, backing the founders rebuilding the hard frontier.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -33,7 +33,7 @@ export default async function OpenGraphImage() {
     readFile(join(process.cwd(), "public/fonts/Newsreader-Regular.ttf")),
     readFile(join(process.cwd(), "public/fonts/Newsreader-SemiBold.ttf")),
     readFile(
-      join(process.cwd(), "public/brand/all-together-a-025.png"),
+      join(process.cwd(), "public/brand/machine-spirit-mark.png"),
     ),
     readFile(join(process.cwd(), "public/logos/cards/shield-ai.png")),
     readFile(join(process.cwd(), "public/logos/cards/1x.png")),
@@ -120,7 +120,7 @@ export default async function OpenGraphImage() {
               height={22}
               style={{ width: 28, height: 28 }}
             />
-            <span style={{ marginRight: -5 }}>ALL TOGETHER</span>
+            <span style={{ marginRight: -5 }}>MACHINE SPIRIT</span>
           </div>
           <div
             style={{
@@ -196,7 +196,7 @@ export default async function OpenGraphImage() {
               color: "rgba(0, 0, 0, 0.72)",
             }}
           >
-            All Together backs the founders rebuilding the hard frontier across AI,
+            Machine Spirit backs the founders rebuilding the hard frontier across AI,
             defense, energy, robotics, semiconductors, and space.
           </div>
         </div>

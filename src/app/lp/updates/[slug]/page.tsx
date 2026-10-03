@@ -233,7 +233,7 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         </p>
 
         <p>
-          We started All Together for a simple reason: we believe AI will change who produces economic value
+          We started Machine Spirit for a simple reason: we believe AI will change who produces economic value
           and who owns it. We wanted our friends, families, and the people close to us to participate in that
           change, not watch it from the sidelines. That is the personal reason for the firm and the idea behind
           its name.
@@ -242,7 +242,7 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         <p>
           Our thesis is simple: AI will make intelligence cheaper and move more cognitive and physical work
           into software and machines. When less human time is needed to produce something, the benefit flows to
-          whoever owns the systems that do the work and the scarce inputs they depend on. All Together exists
+          whoever owns the systems that do the work and the scarce inputs they depend on. Machine Spirit exists
           to give our investors ownership in those companies.
         </p>
 

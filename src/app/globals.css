@@ -168,7 +168,7 @@ body::-webkit-scrollbar {
    — Rosart: display headings and editorial statements.
    — Unica77: body copy, card titles, captions, and the wordmark.
    — Pitch Sans: uppercase navigation, actions, and categorical labels.
-   — Atlas Typewriter: All Together's glyph systems and financial data only. */
+   — Atlas Typewriter: Machine Spirit's glyph systems and financial data only. */
 :root {
   --cog-bg: #f7f6f5;
   --cog-ink: #000000;
@@ -412,35 +412,36 @@ body {
   scroll-snap-align: start;
 }
 
-/* Unframed all-caps identity paired with the sun-and-Earth mark. */
+/* Unframed all-caps identity paired with the spherical ribbon mark. */
 .cog-wordmark {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 8px;
   padding: 0;
   color: var(--cog-ink);
   font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: 13px;
   font-weight: 400;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.15em;
   line-height: 1;
   white-space: nowrap;
 }
 
 .cog-wordmark-text {
   display: block;
-  margin-right: -0.18em;
+  margin-right: -0.15em;
   text-transform: uppercase;
 }
 
 .cog-wordmark-logo {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   flex: none;
-  object-fit: cover;
+  object-fit: contain;
+  transform: translateY(-2px);
 }
 
 .cog-brand-dot {

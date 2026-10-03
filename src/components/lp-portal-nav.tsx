@@ -16,7 +16,7 @@ export function LpPortalNav() {
       </Link>
       <Link
         href="/lp"
-        aria-label="All Together investor portal home"
+        aria-label="Machine Spirit investor portal home"
         className="lp-portal-nav-logo"
       >
         <LogoMark />

@@ -216,11 +216,11 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
           className="cog-search-modal"
           role="dialog"
           aria-modal="true"
-          aria-label="Search All Together"
+          aria-label="Search Machine Spirit"
         >
           <div className="cog-search-shell">
             <header className="cog-search-header">
-              <Link href="/" aria-label="All Together home" onClick={closeSearch}>
+              <Link href="/" aria-label="Machine Spirit home" onClick={closeSearch}>
                 <LogoMark />
               </Link>
               <button
@@ -236,13 +236,13 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
 
             <div className="cog-search-main">
               <label className="cog-search-field" htmlFor="site-search-input">
-                <span className="sr-only">Search All Together</span>
+                <span className="sr-only">Search Machine Spirit</span>
                 <input
                   ref={inputRef}
                   id="site-search-input"
                   type="search"
                   value={query}
-                  placeholder="Search All Together"
+                  placeholder="Search Machine Spirit"
                   autoComplete="off"
                   spellCheck={false}
                   role="combobox"
