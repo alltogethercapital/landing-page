@@ -52,14 +52,14 @@
 }
 
 :root {
-  --background: #f4f2ee;
+  --background: #f1efe9;
   --foreground: #151513;
   --card: #fbfaf7;
   --card-foreground: #151513;
   --popover: #fbfaf7;
   --popover-foreground: #151513;
   --primary: #20201d;
-  --primary-foreground: #f4f2ee;
+  --primary-foreground: #f1efe9;
   --secondary: #ebe8e2;
   --secondary-foreground: #20201d;
   --muted: #ebe8e2;
@@ -79,7 +79,7 @@
   --sidebar: #fbfaf7;
   --sidebar-foreground: #151513;
   --sidebar-primary: #20201d;
-  --sidebar-primary-foreground: #f4f2ee;
+  --sidebar-primary-foreground: #f1efe9;
   --sidebar-accent: #ebe8e2;
   --sidebar-accent-foreground: #20201d;
   --sidebar-border: oklch(0.922 0 0);
@@ -87,14 +87,14 @@
 }
 
 .dark {
-  --background: #141412;
+  --background: #0f0f0e;
   --foreground: #ede9e1;
   --card: #1d1d1a;
   --card-foreground: #ede9e1;
   --popover: #1d1d1a;
   --popover-foreground: #ede9e1;
   --primary: #ede9e1;
-  --primary-foreground: #141412;
+  --primary-foreground: #0f0f0e;
   --secondary: #272722;
   --secondary-foreground: #ede9e1;
   --muted: #272722;
@@ -170,7 +170,7 @@ body::-webkit-scrollbar {
    — Pitch Sans: uppercase navigation, actions, and categorical labels.
    — Atlas Typewriter: Machine Spirit's glyph systems and financial data only. */
 :root {
-  --cog-bg: #f4f2ee;
+  --cog-bg: #f1efe9;
   --cog-ink: #151513;
   --cog-muted: rgba(0, 0, 0, 0.56);
   --cog-line: rgba(0, 0, 0, 0.08);
@@ -203,13 +203,13 @@ body::-webkit-scrollbar {
 
   /* Surface and ink. A warm paper ground, near-black ink, and graded
      neutrals for supporting text — no pure greys, they read cold on paper. */
-  --paper: #f4f2ee;
+  --paper: #f1efe9;
   --paper-raised: #fbfaf7;
   --paper-sunk: #ebe8e2;
   --ink: #0d0d0c;
   --ink-secondary: rgba(13, 13, 12, 0.72);
   --ink-tertiary: rgba(13, 13, 12, 0.58);
-  --ink-inverse: #f4f2ee;
+  --ink-inverse: #f1efe9;
   --charcoal: #20201d;
 
   /* The shared monochrome identity drives interactive accents while
@@ -286,7 +286,7 @@ body::-webkit-scrollbar {
 }
 
 html.dark {
-  --cog-bg: #141412;
+  --cog-bg: #0f0f0e;
   --cog-ink: #ede9e1;
   --cog-muted: rgba(237, 233, 225, 0.62);
   --cog-line: rgba(237, 233, 225, 0.12);
@@ -308,7 +308,7 @@ html.dark {
   --company-card-edge: rgba(5, 5, 5, 0.08);
   --company-card-control: #e4dfd6;
 
-  --paper: #141412;
+  --paper: #0f0f0e;
   --paper-raised: #1d1d1a;
   --paper-sunk: #0f0f0d;
   --ink: #ede9e1;
@@ -2332,7 +2332,7 @@ html.dark .cog-logo-cell:hover {
 .lp-login-page,
 .lp-portal-page {
   --lp-accent: var(--cog-accent);
-  --lp-paper: #f4f2ee;
+  --lp-paper: #f1efe9;
   --lp-white: #fbfaf7;
   --lp-ink: #151513;
   --lp-gain: #1f6b43;
@@ -2356,7 +2356,7 @@ html.dark .cog-logo-cell:hover {
 
 html.dark .lp-login-page,
 html.dark .lp-portal-page {
-  --lp-paper: #141412;
+  --lp-paper: #0f0f0e;
   --lp-white: #1d1d1a;
   --lp-ink: #ede9e1;
   --lp-gain: #73c99a;
