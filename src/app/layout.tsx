@@ -128,7 +128,7 @@ const atlasTypewriter = localFont({
 
 // metadataBase is required so Next.js can resolve the opengraph-image
 // route to an absolute URL in the rendered og:image meta tag.
-const SITE_URL = "https://www.alltogethercapital.com";
+const SITE_URL = "https://machinespirit.com";
 const SITE_TITLE = "Home | Machine Spirit Capital";
 const SITE_DESCRIPTION =
   "Machine Spirit Capital backs the founders rebuilding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.";
