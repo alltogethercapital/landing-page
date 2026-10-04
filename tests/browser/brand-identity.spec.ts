@@ -11,3 +11,15 @@ test("uses the wing mark across public and LP surfaces", async ({ page }) => {
     await expect(page.locator(".cog-theme-toggle")).toHaveCount(1);
   }
 });
+
+test("uses the animated static background across public pages", async ({ page }) => {
+  for (const route of ["/", "/companies", "/founders", "/updates"]) {
+    await page.goto(route);
+    const animationName = await page.locator(".cog-page").evaluate((element) =>
+      window.getComputedStyle(element, "::after").animationName,
+    );
+
+    expect(animationName).toBe("cog-signal-static");
+    await expect(page.getByRole("group", { name: "Background style" })).toHaveCount(0);
+  }
+});

@@ -551,6 +551,74 @@ html.dark .cog-wordmark-logo--dark {
   stroke-width: 1.6;
 }
 
+.cog-page::before,
+.cog-page::after {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  content: "";
+}
+
+.cog-page::before {
+  background-image: url("/brand/machine-spirit-wing-mark.png");
+  background-repeat: no-repeat;
+  background-position: 76% 24%;
+  background-size: min(68vw, 980px) auto;
+  opacity: 0.035;
+}
+
+html.dark .cog-page::before {
+  background-image: url("/brand/machine-spirit-wing-mark-ivory.png");
+  opacity: 0.045;
+}
+
+.cog-page::after {
+  background-image:
+    url("/brand/machine-spirit-static-noise.png"),
+    radial-gradient(circle, color-mix(in srgb, var(--cog-ink) 28%, transparent) 0 0.55px, transparent 0.7px);
+  background-repeat: repeat;
+  background-size: 512px 512px, 4px 4px;
+  animation: cog-signal-static 1.4s steps(1, end) infinite;
+  mix-blend-mode: multiply;
+  opacity: 0.28;
+  will-change: background-position;
+}
+
+html.dark .cog-page::after {
+  mix-blend-mode: screen;
+  opacity: 0.22;
+}
+
+@keyframes cog-signal-static {
+  0%,
+  100% {
+    background-position: 0 0, 0 0;
+  }
+
+  20% {
+    background-position: 3px -2px, 0 0;
+  }
+
+  40% {
+    background-position: -2px 4px, 0 0;
+  }
+
+  60% {
+    background-position: 5px 1px, 0 0;
+  }
+
+  80% {
+    background-position: -3px -4px, 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cog-page::after {
+    animation: none;
+  }
+}
+
 .cog-brand-dot {
   display: inline-block;
   width: var(--brand-dot-size, 0.86em);
@@ -606,10 +674,8 @@ html.dark .cog-wordmark-logo--dark {
   width: 164px;
   flex-direction: column;
   align-items: flex-start;
-  /* Match the investor portal: the paper backing masks the vertical guide
-     beneath the fixed navigation instead of letting it run through the text. */
-  background: var(--cog-bg);
-  box-shadow: 0 0 0 10px var(--cog-bg);
+  background: transparent;
+  box-shadow: none;
   color: var(--cog-ink);
   font-family: var(--cog-ui);
   font-size: 14px;
@@ -1293,8 +1359,11 @@ html.dark .cog-wordmark-logo--dark {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   min-width: 0;
+  padding-inline: 14px;
   opacity: 0.7;
+  text-align: center;
   filter: grayscale(1);
   transition: opacity 160ms ease, filter 160ms ease;
 }
@@ -1307,14 +1376,14 @@ html.dark .cog-wordmark-logo--dark {
 }
 
 .cog-logo-frame img {
-  object-position: left center;
+  object-position: center;
 }
 
 .cog-logo-lockup {
   display: flex;
   height: 100%;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 8px;
   font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   font-size: 15px;
@@ -2076,7 +2145,7 @@ html.dark .cog-logo-cell:hover {
   }
 
   .cog-logo-cell {
-    padding: 0;
+    padding-inline: 8px;
   }
 
   .cog-logo-frame {
