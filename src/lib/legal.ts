@@ -7,7 +7,7 @@ export type LegalDoc = {
 };
 
 const UPDATED = "May 19, 2026";
-const ENTITY = "Machine Spirit Group";
+const ENTITY = "Machine Spirit Capital";
 
 export const LEGAL_DOCS: Record<string, LegalDoc> = {
   "privacy-policy": {

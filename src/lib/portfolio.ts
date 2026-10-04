@@ -13,7 +13,7 @@ export type Company = {
   videoStart?: number; // optional start time (seconds) for the video
 };
 
-// Machine Spirit Group portfolio (machinespirit.com/portfolio)
+// Machine Spirit Capital portfolio (machinespirit.com/portfolio)
 export const PORTFOLIO: Company[] = [
   { name: "Pocket", href: "https://heypocket.com/", sectors: ["AI", "Hardware", "Software"], blurb: "A dedicated AI device that turns real-world conversations into transcripts, summaries, and action items.", logo: "/logos/pocket.png", cardLogo: "/logos/cards/pocket.png", image: "/work/cards/pocket.png", cardImage: "/work/cards/pocket.png" },
   { name: "Ultrasonium", href: "https://www.ultrasonium.com/", sectors: ["Manufacturing", "Materials", "Robotics"], blurb: "Next-generation manufacturing for complex, high-value metal parts.", cardLogo: "/logos/cards/ultrasonium.png" },

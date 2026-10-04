@@ -64,9 +64,9 @@ export function SiteFooter() {
       </div>
 
       <div className="cog-footer-bottom">
-        <p>© {new Date().getFullYear()} Machine Spirit Group.</p>
+        <p>© {new Date().getFullYear()} Machine Spirit Capital.</p>
         <p className="cog-footer-official">
-          <span aria-hidden="true">🇺🇸</span> The official website of Machine Spirit Group
+          <span aria-hidden="true">🇺🇸</span> The official website of Machine Spirit Capital
         </p>
         <p>All rights reserved.</p>
       </div>

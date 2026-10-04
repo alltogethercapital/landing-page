@@ -27,7 +27,7 @@ export const LP_INVESTOR_UPDATES: LpInvestorUpdateSummary[] = [
     published: "August 14, 2026",
     publishedAt: "2026-08-14",
     excerpt:
-      "Why Machine Spirit Group exists, the thesis behind the portfolio, and how we will invest from here.",
+      "Why Machine Spirit Capital exists, the thesis behind the portfolio, and how we will invest from here.",
   },
 ];
 

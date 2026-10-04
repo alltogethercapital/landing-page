@@ -4,7 +4,7 @@ import { LP_INVESTOR_UPDATES } from "@/data/lp-investor-updates";
 
 export const metadata: Metadata = {
   title: "Investor Updates",
-  description: "Private updates for Machine Spirit Group investors.",
+  description: "Private updates for Machine Spirit Capital investors.",
   robots: { index: false, follow: false, nocache: true },
 };
 

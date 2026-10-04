@@ -49,7 +49,7 @@ export function LogoMark({ className }: { className?: string }) {
       </span>
       <span className="cog-wordmark-text">
         <span className="cog-wordmark-line">MACHINE SPIRIT</span>
-        <span className="cog-wordmark-line">GROUP</span>
+        <span className="cog-wordmark-line">CAPITAL</span>
       </span>
     </span>
   );

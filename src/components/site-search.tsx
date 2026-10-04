@@ -216,11 +216,11 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
           className="cog-search-modal"
           role="dialog"
           aria-modal="true"
-          aria-label="Search Machine Spirit Group"
+          aria-label="Search Machine Spirit Capital"
         >
           <div className="cog-search-shell">
             <header className="cog-search-header">
-              <Link href="/" aria-label="Machine Spirit Group home" onClick={closeSearch}>
+              <Link href="/" aria-label="Machine Spirit Capital home" onClick={closeSearch}>
                 <LogoMark />
               </Link>
               <button
@@ -236,13 +236,13 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
 
             <div className="cog-search-main">
               <label className="cog-search-field" htmlFor="site-search-input">
-                <span className="sr-only">Search Machine Spirit Group</span>
+                <span className="sr-only">Search Machine Spirit Capital</span>
                 <input
                   ref={inputRef}
                   id="site-search-input"
                   type="search"
                   value={query}
-                  placeholder="Search Machine Spirit Group"
+                  placeholder="Search Machine Spirit Capital"
                   autoComplete="off"
                   spellCheck={false}
                   role="combobox"

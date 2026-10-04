@@ -8,7 +8,7 @@ import { join } from "node:path";
 export const runtime = "nodejs";
 
 export const alt =
-  "Machine Spirit Group, backing the founders rebuilding the hard frontier.";
+  "Machine Spirit Capital, backing the founders rebuilding the hard frontier.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -107,7 +107,7 @@ export default async function OpenGraphImage() {
             />
             <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
               <span>MACHINE SPIRIT</span>
-              <span>GROUP</span>
+              <span>CAPITAL</span>
             </div>
           </div>
           <div
@@ -185,7 +185,7 @@ export default async function OpenGraphImage() {
               color: "rgba(0, 0, 0, 0.72)",
             }}
           >
-            Machine Spirit Group backs the founders rebuilding the hard frontier across AI,
+            Machine Spirit Capital backs the founders rebuilding the hard frontier across AI,
             defense, energy, robotics, semiconductors, and space.
           </div>
         </div>
