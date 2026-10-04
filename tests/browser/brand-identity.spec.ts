@@ -13,6 +13,12 @@ test("uses the wing mark across public and LP surfaces", async ({ page }) => {
 });
 
 test("uses the animated static background across public pages", async ({ page }) => {
+  await page.goto("/");
+  const themeColor = page.locator('meta[name="theme-color"]');
+  await expect(themeColor).toHaveAttribute("content", "#f1efe9");
+  await page.locator(".cog-theme-toggle").click();
+  await expect(themeColor).toHaveAttribute("content", "#0f0f0e");
+
   for (const route of ["/", "/companies", "/founders", "/updates"]) {
     await page.goto(route);
     const animationName = await page.locator(".cog-page").evaluate((element) =>

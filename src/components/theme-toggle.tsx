@@ -22,7 +22,7 @@ function setThemeAssets(theme: Theme) {
 
   const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
   if (themeColor) {
-    themeColor.content = isDark ? "#141412" : "#f4f2ee";
+    themeColor.content = isDark ? "#0f0f0e" : "#f1efe9";
   }
 }
 
