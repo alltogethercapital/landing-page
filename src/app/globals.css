@@ -52,18 +52,18 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --background: #f4f2ee;
+  --foreground: #151513;
+  --card: #fbfaf7;
+  --card-foreground: #151513;
+  --popover: #fbfaf7;
+  --popover-foreground: #151513;
+  --primary: #20201d;
+  --primary-foreground: #f4f2ee;
+  --secondary: #ebe8e2;
+  --secondary-foreground: #20201d;
+  --muted: #ebe8e2;
+  --muted-foreground: #65635f;
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -76,29 +76,29 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar: #fbfaf7;
+  --sidebar-foreground: #151513;
+  --sidebar-primary: #20201d;
+  --sidebar-primary-foreground: #f4f2ee;
+  --sidebar-accent: #ebe8e2;
+  --sidebar-accent-foreground: #20201d;
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
+  --background: #141412;
+  --foreground: #ede9e1;
+  --card: #1d1d1a;
+  --card-foreground: #ede9e1;
+  --popover: #1d1d1a;
+  --popover-foreground: #ede9e1;
+  --primary: #ede9e1;
+  --primary-foreground: #141412;
+  --secondary: #272722;
+  --secondary-foreground: #ede9e1;
+  --muted: #272722;
+  --muted-foreground: #aaa69e;
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
@@ -110,12 +110,12 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar: #1d1d1a;
+  --sidebar-foreground: #ede9e1;
   --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-primary-foreground: #ede9e1;
+  --sidebar-accent: #272722;
+  --sidebar-accent-foreground: #ede9e1;
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
@@ -170,13 +170,27 @@ body::-webkit-scrollbar {
    — Pitch Sans: uppercase navigation, actions, and categorical labels.
    — Atlas Typewriter: Machine Spirit's glyph systems and financial data only. */
 :root {
-  --cog-bg: #f7f6f5;
-  --cog-ink: #000000;
+  --cog-bg: #f4f2ee;
+  --cog-ink: #151513;
   --cog-muted: rgba(0, 0, 0, 0.56);
   --cog-line: rgba(0, 0, 0, 0.08);
-  --cog-accent: #111111;
+  --cog-line-medium: rgba(0, 0, 0, 0.24);
+  --cog-line-strong: rgba(0, 0, 0, 0.34);
+  --cog-placeholder: rgba(0, 0, 0, 0.28);
+  --cog-surface: #fbfaf7;
+  --cog-media-surface: #ffffff;
+  --cog-soft-fill: rgba(0, 0, 0, 0.035);
+  --cog-shadow: rgba(0, 0, 0, 0.22);
+  --cog-accent: #181816;
   --cog-sun: #525252;
-  --cog-dark: #191919;
+  --cog-dark: #20201d;
+  --portfolio-field: #e8dfd7;
+  --portfolio-dot: rgba(0, 0, 0, 0.045);
+  --company-card-bg: #ffffff;
+  --company-card-ink: #000000;
+  --company-card-muted: rgba(0, 0, 0, 0.66);
+  --company-card-edge: rgba(0, 0, 0, 0.055);
+  --company-card-control: #e8dfd7;
   --cog-support: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   --cog-ui: var(--font-pitch-sans), "Helvetica Neue", Arial, sans-serif;
   --cog-mono: var(--font-atlas-typewriter), ui-monospace, "SF Mono", Menlo, monospace;
@@ -189,14 +203,14 @@ body::-webkit-scrollbar {
 
   /* Surface and ink. A warm paper ground, near-black ink, and graded
      neutrals for supporting text — no pure greys, they read cold on paper. */
-  --paper: #f7f6f5;
-  --paper-raised: #fffefd;
-  --paper-sunk: #efedea;
+  --paper: #f4f2ee;
+  --paper-raised: #fbfaf7;
+  --paper-sunk: #ebe8e2;
   --ink: #0d0d0c;
   --ink-secondary: rgba(13, 13, 12, 0.72);
   --ink-tertiary: rgba(13, 13, 12, 0.58);
-  --ink-inverse: #f7f6f5;
-  --charcoal: #191919;
+  --ink-inverse: #f4f2ee;
+  --charcoal: #20201d;
 
   /* The shared monochrome identity drives interactive accents while
      semantic gain/loss colours retain their independent meanings. */
@@ -271,6 +285,45 @@ body::-webkit-scrollbar {
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
 }
 
+html.dark {
+  --cog-bg: #141412;
+  --cog-ink: #ede9e1;
+  --cog-muted: rgba(237, 233, 225, 0.62);
+  --cog-line: rgba(237, 233, 225, 0.12);
+  --cog-line-medium: rgba(237, 233, 225, 0.26);
+  --cog-line-strong: rgba(237, 233, 225, 0.38);
+  --cog-placeholder: rgba(237, 233, 225, 0.34);
+  --cog-surface: #1d1d1a;
+  --cog-media-surface: #f7f6f2;
+  --cog-soft-fill: rgba(237, 233, 225, 0.055);
+  --cog-shadow: rgba(0, 0, 0, 0.52);
+  --cog-accent: #ede9e1;
+  --cog-sun: #b7b2a8;
+  --cog-dark: #ede9e1;
+  --portfolio-field: #191916;
+  --portfolio-dot: rgba(237, 233, 225, 0.065);
+  --company-card-bg: #f4f1eb;
+  --company-card-ink: #050505;
+  --company-card-muted: rgba(5, 5, 5, 0.66);
+  --company-card-edge: rgba(5, 5, 5, 0.08);
+  --company-card-control: #e4dfd6;
+
+  --paper: #141412;
+  --paper-raised: #1d1d1a;
+  --paper-sunk: #0f0f0d;
+  --ink: #ede9e1;
+  --ink-secondary: rgba(237, 233, 225, 0.74);
+  --ink-tertiary: rgba(237, 233, 225, 0.58);
+  --ink-inverse: #050505;
+  --charcoal: #ede9e1;
+  --accent: #ede9e1;
+  --accent-hover: #ffffff;
+  --accent-wash: rgba(237, 233, 225, 0.08);
+  --sun: #b7b2a8;
+  --rule-hair: rgba(237, 233, 225, 0.14);
+  --rule-strong: rgba(237, 233, 225, 0.88);
+}
+
 /* Breakpoints, recorded as custom properties so the values stay documented
    in one place even though media queries cannot read them:
      sm 390px · md 768px · lg 1024px · xl 1280px · 2xl 1440px */
@@ -286,12 +339,13 @@ body::-webkit-scrollbar {
 body {
   background: var(--cog-bg);
   color: var(--cog-ink);
+  transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 }
 
 /* The accent is reserved for "live" states — selection included. */
 ::selection {
   background: var(--cog-sun);
-  color: #000;
+  color: var(--ink-inverse);
 }
 
 :focus-visible {
@@ -317,7 +371,7 @@ body {
   z-index: 1;
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: var(--cog-media-surface);
   opacity: 1;
   transition: opacity 700ms ease;
 }
@@ -378,7 +432,7 @@ body {
   align-items: center;
   justify-content: center;
   border: 1px solid var(--cog-line);
-  background: #fff;
+  background: var(--cog-surface);
   color: var(--cog-ink);
   transition: background-color 160ms ease, color 160ms ease, opacity 160ms ease;
 }
@@ -412,7 +466,7 @@ body {
   scroll-snap-align: start;
 }
 
-/* Unframed all-caps identity paired with the spherical ribbon mark. */
+/* Unframed all-caps identity paired with the three-flow signal mark. */
 .cog-wordmark {
   position: relative;
   display: inline-flex;
@@ -437,10 +491,64 @@ body {
 
 .cog-wordmark-logo {
   display: block;
-  width: 25px;
-  height: 25px;
+  grid-area: 1 / 1;
+  width: 22px;
+  height: 11px;
   flex: none;
   object-fit: contain;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+
+.cog-wordmark-symbol {
+  display: grid;
+  width: 22px;
+  height: 11px;
+  flex: none;
+  place-items: center;
+}
+
+.cog-wordmark-logo--dark {
+  opacity: 0;
+}
+
+html.dark .cog-wordmark-logo--light {
+  opacity: 0;
+}
+
+html.dark .cog-wordmark-logo--dark {
+  opacity: 1;
+}
+
+.cog-theme-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 120;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--cog-line-medium);
+  background: color-mix(in srgb, var(--cog-bg) 88%, transparent);
+  box-shadow: 0 8px 28px var(--cog-shadow);
+  color: var(--cog-ink);
+  backdrop-filter: blur(14px);
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.cog-theme-toggle:hover {
+  border-color: var(--cog-ink);
+  transform: translateY(-2px);
+}
+
+.cog-theme-toggle svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.6;
 }
 
 .cog-brand-dot {
@@ -460,7 +568,7 @@ body {
   line-height: 2;
   letter-spacing: 0.42em;
   word-break: break-all;
-  color: rgba(0, 0, 0, 0.22);
+  color: color-mix(in srgb, var(--cog-ink) 22%, transparent);
 }
 
 .cog-page {
@@ -471,8 +579,7 @@ body {
   font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Cap the composition on wide screens: the content, the vertical rules, and
-   the fixed nav all center together inside --site-max. */
+/* Cap the composition on wide screens and keep the fixed nav aligned. */
 @media (min-width: 1521px) {
   .cog-page {
     max-width: var(--site-max);
@@ -480,32 +587,9 @@ body {
     overflow-x: visible;
   }
 
-  .cog-page::before {
-    left: 50%;
-    right: auto;
-    width: var(--site-max);
-    transform: translateX(-50%);
-  }
-
   .cog-page .cog-desktop-nav {
     left: calc((100vw - var(--site-max)) / 2 + 64px);
   }
-}
-
-.cog-page::before {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  content: "";
-  background-image:
-    linear-gradient(var(--cog-line), var(--cog-line)),
-    linear-gradient(var(--cog-line), var(--cog-line));
-  background-repeat: no-repeat;
-  background-position:
-    64px 0,
-    calc(100% - 64px) 0;
-  background-size: 1px 100%;
 }
 
 .cog-page > * {
@@ -685,7 +769,7 @@ body {
 .cog-button:hover {
   border-color: var(--cog-accent);
   background: var(--cog-accent);
-  color: #fff;
+  color: var(--ink-inverse);
 }
 
 .cog-nav-button:hover {
@@ -775,7 +859,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.24);
+  border-bottom: 1px solid var(--cog-line-medium);
   padding-bottom: 28px;
 }
 
@@ -831,7 +915,7 @@ body {
 }
 
 .cog-search-field input::placeholder {
-  color: rgba(0, 0, 0, 0.28);
+  color: var(--cog-placeholder);
 }
 
 .cog-search-field svg {
@@ -894,7 +978,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 28px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.34);
+  border-bottom: 1px solid var(--cog-line-strong);
   padding: 19px 0;
   color: var(--cog-ink);
   text-decoration: none;
@@ -902,7 +986,7 @@ body {
 }
 
 .cog-search-result:first-child {
-  border-top: 1px solid rgba(0, 0, 0, 0.34);
+  border-top: 1px solid var(--cog-line-strong);
 }
 
 .cog-search-result::before {
@@ -985,7 +1069,7 @@ body {
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border: 8px solid var(--cog-bg);
-  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 20px 70px var(--cog-shadow);
   opacity: 0.94;
   transform: translate(-50%, -50%) rotate(-1.5deg);
 }
@@ -994,7 +1078,7 @@ body {
   display: flex;
   justify-content: flex-end;
   gap: 22px;
-  border-top: 1px solid rgba(0, 0, 0, 0.24);
+  border-top: 1px solid var(--cog-line-medium);
   padding-top: 18px;
 }
 
@@ -1202,7 +1286,7 @@ body {
   grid-auto-rows: 80px;
   padding: 18px 20px;
   border: 1px solid var(--cog-line);
-  background: #fff;
+  background: var(--cog-surface);
 }
 
 .cog-logo-cell {
@@ -1249,6 +1333,14 @@ body {
 .cog-logo-cell:hover {
   opacity: 1;
   filter: grayscale(1) contrast(1.18);
+}
+
+html.dark .cog-logo-cell {
+  filter: grayscale(1) invert(1);
+}
+
+html.dark .cog-logo-cell:hover {
+  filter: grayscale(1) invert(1) contrast(1.18);
 }
 
 .cog-logo-directory-link {
@@ -1321,7 +1413,7 @@ body {
   position: relative;
   display: flex;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.035);
+  background: var(--cog-soft-fill);
 }
 
 .cog-article-media {
@@ -1330,7 +1422,7 @@ body {
 
 .cog-person-media {
   aspect-ratio: 303 / 350;
-  background: #fff;
+  background: var(--cog-media-surface);
 }
 
 .cog-article-media img,
@@ -1399,9 +1491,9 @@ body {
   z-index: -1;
   inset: 0 calc(50% - 50vw);
   content: "";
-  background-color: #e8dfd7;
+  background-color: var(--portfolio-field);
   background-image:
-    radial-gradient(rgba(0, 0, 0, 0.045) 0.75px, transparent 0.75px);
+    radial-gradient(var(--portfolio-dot) 0.75px, transparent 0.75px);
   background-position: 0 0;
   background-size: 7px 7px;
 }
@@ -1426,10 +1518,10 @@ body {
   overflow: hidden;
   flex-direction: column;
   padding: 30px 32px 36px;
-  background: #fff;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.055);
+  background: var(--company-card-bg);
+  box-shadow: inset 0 0 0 1px var(--company-card-edge);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 36px), calc(100% - 36px) 100%, 0 100%);
-  color: var(--cog-ink);
+  color: var(--company-card-ink);
   text-decoration: none;
 }
 
@@ -1441,7 +1533,7 @@ body {
   opacity: 0;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--cog-sun) 12%, transparent), transparent 42%),
-    linear-gradient(315deg, rgba(0, 0, 0, 0.055), transparent 34%);
+    linear-gradient(315deg, var(--company-card-edge), transparent 34%);
   transition: opacity 200ms ease-in-out;
 }
 
@@ -1459,8 +1551,8 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: #e8dfd7;
-  color: var(--cog-ink);
+  background: var(--company-card-control);
+  color: var(--company-card-ink);
   transition:
     background-color 200ms ease-in-out,
     color 200ms ease-in-out,
@@ -1469,8 +1561,8 @@ body {
 }
 
 .cog-company-card:hover .cog-company-card-arrow {
-  background: var(--cog-ink);
-  color: #fff;
+  background: var(--company-card-ink);
+  color: var(--company-card-bg);
   transform: translate(2px, -2px);
 }
 
@@ -1534,7 +1626,7 @@ body {
   display: block;
   max-width: 94%;
   margin-top: 28px;
-  color: rgba(0, 0, 0, 0.66);
+  color: var(--company-card-muted);
   font-family: var(--cog-support);
   font-size: 16px;
   line-height: 1.4;
@@ -1727,16 +1819,6 @@ body {
     --mobile-header-height: 58px;
   }
 
-  .cog-page::before {
-    background-image:
-      linear-gradient(var(--cog-line), var(--cog-line)),
-      linear-gradient(var(--cog-line), var(--cog-line));
-    background-position:
-      var(--mobile-gutter) 0,
-      calc(100% - var(--mobile-gutter)) 0;
-    background-size: 1px 100%;
-  }
-
   .cog-desktop-nav {
     display: none;
   }
@@ -1751,7 +1833,7 @@ body {
     height: var(--mobile-header-height);
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.045);
+    border-bottom: 1px solid var(--cog-line);
     padding: 0 var(--mobile-gutter);
     background: color-mix(in srgb, var(--cog-bg) 88%, transparent);
     backdrop-filter: blur(12px);
@@ -2170,15 +2252,20 @@ body {
     margin-bottom: 14px;
   }
 
+  .cog-theme-toggle {
+    right: 12px;
+    bottom: 12px;
+  }
+
 }
 
 /* Investor portal — the site's editorial system, tightened around private data. */
 .lp-login-page,
 .lp-portal-page {
   --lp-accent: var(--cog-accent);
-  --lp-paper: #f7f6f2;
-  --lp-white: #fff;
-  --lp-ink: #111;
+  --lp-paper: #f4f2ee;
+  --lp-white: #fbfaf7;
+  --lp-ink: #151513;
   --lp-gain: #1f6b43;
   /* 0.62 clears WCAG AA (4.5:1) on paper; 0.55 measured 4.08:1. */
   --lp-muted: rgba(17, 17, 17, 0.62);
@@ -2191,8 +2278,24 @@ body {
   --lp-data: 12px;
   --lp-caption: 13px;
   --lp-component-inset: 16px;
+  --lp-dots: rgba(0, 0, 0, 0.07);
+  --lp-input: rgba(255, 255, 255, 0.48);
+  --lp-logo-surface: #ffffff;
   background: var(--lp-paper);
   color: var(--lp-ink);
+}
+
+html.dark .lp-login-page,
+html.dark .lp-portal-page {
+  --lp-paper: #141412;
+  --lp-white: #1d1d1a;
+  --lp-ink: #ede9e1;
+  --lp-gain: #73c99a;
+  --lp-muted: rgba(237, 233, 225, 0.64);
+  --lp-line: rgba(237, 233, 225, 0.14);
+  --lp-dots: rgba(237, 233, 225, 0.1);
+  --lp-input: rgba(237, 233, 225, 0.05);
+  --lp-logo-surface: #f7f6f2;
 }
 
 .lp-portal-page::after {
@@ -2200,7 +2303,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background-image: radial-gradient(rgba(0, 0, 0, 0.07) 0.55px, transparent 0.55px);
+  background-image: radial-gradient(var(--lp-dots) 0.55px, transparent 0.55px);
   background-size: 5px 5px;
   opacity: 0.12;
   content: "";
@@ -2246,7 +2349,7 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 124px;
   border: 1px solid var(--lp-ink);
-  background: rgba(255, 255, 255, 0.48);
+  background: var(--lp-input);
   transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 
@@ -2328,22 +2431,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   font-family: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
-}
-
-.lp-portal-page::before {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    linear-gradient(var(--lp-line), var(--lp-line)),
-    linear-gradient(var(--lp-line), var(--lp-line));
-  background-repeat: no-repeat;
-  background-position:
-    var(--lp-page-gutter) 0,
-    var(--lp-rail-end) 0;
-  background-size: 1px 100%;
-  content: "";
 }
 
 .lp-portal-nav {
@@ -2798,7 +2885,7 @@ body {
   flex: none;
   place-items: center;
   border: 1px solid var(--lp-line);
-  background: var(--lp-white);
+  background: var(--lp-logo-surface);
   overflow: hidden;
 }
 
@@ -3974,13 +4061,6 @@ body {
     overflow-x: visible;
   }
 
-  .lp-portal-page::before {
-    right: auto;
-    left: 50%;
-    width: var(--site-max);
-    transform: translateX(-50%);
-  }
-
   .lp-portal-page .lp-portal-nav {
     left: calc((100vw - var(--site-max)) / 2 + 64px);
   }
@@ -4074,15 +4154,6 @@ body {
 @media (max-width: 719px) {
   .cog-search-trigger--portal {
     right: var(--mobile-gutter);
-  }
-
-  .lp-portal-page::before {
-    background-image:
-      linear-gradient(var(--lp-line), var(--lp-line)),
-      linear-gradient(var(--lp-line), var(--lp-line));
-    background-position:
-      var(--mobile-gutter) 0,
-      calc(100% - var(--mobile-gutter)) 0;
   }
 
   .lp-portal-nav {

@@ -33,7 +33,7 @@ export default async function OpenGraphImage() {
     readFile(join(process.cwd(), "public/fonts/Newsreader-Regular.ttf")),
     readFile(join(process.cwd(), "public/fonts/Newsreader-SemiBold.ttf")),
     readFile(
-      join(process.cwd(), "public/brand/machine-spirit-mark.png"),
+      join(process.cwd(), "public/brand/machine-spirit-wing-mark.png"),
     ),
     readFile(join(process.cwd(), "public/logos/cards/shield-ai.png")),
     readFile(join(process.cwd(), "public/logos/cards/1x.png")),
@@ -59,7 +59,6 @@ export default async function OpenGraphImage() {
     atomsLogo,
     higgsfieldLogo,
   ].map((image) => `data:image/png;base64,${image.toString("base64")}`);
-  const verticalRules = [56, 254, 320, 849, 980, 1144];
   const navigation = ["HOME", "OUR COMPANIES", "OUR ENTREPRENEURS", "OUR TEAM", "UPDATES"];
 
   return new ImageResponse(
@@ -71,25 +70,11 @@ export default async function OpenGraphImage() {
           width: "100%",
           height: "100%",
           overflow: "hidden",
-          backgroundColor: "#f7f6f5",
+          backgroundColor: "#f4f2ee",
           color: "#000000",
           fontFamily: "Newsreader",
         }}
       >
-        {verticalRules.map((x) => (
-          <div
-            key={x}
-            style={{
-              position: "absolute",
-              top: 0,
-              bottom: 0,
-              left: x,
-              width: 1,
-              backgroundColor: "rgba(0, 0, 0, 0.08)",
-            }}
-          />
-        ))}
-
         <div
           style={{
             position: "absolute",
@@ -113,14 +98,14 @@ export default async function OpenGraphImage() {
               color: "#000000",
             }}
           >
+            <span style={{ marginRight: -5 }}>MACHINE SPIRIT</span>
             <img
               alt=""
               src={brandMarkSrc}
-              width={22}
-              height={22}
-              style={{ width: 28, height: 28 }}
+              width={34}
+              height={17}
+              style={{ width: 34, height: 17, objectFit: "contain" }}
             />
-            <span style={{ marginRight: -5 }}>MACHINE SPIRIT</span>
           </div>
           <div
             style={{

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2872 1400" role="img" aria-labelledby="title">
+  <title id="title">Machine Spirit wing mark in ivory</title>
+  <g fill="#F4F2EE">
+      <path d="M0 0H1118V300H230L0 0Z"/>
+      <path d="M1754 0H2872L2636 300H1754V0Z"/>
+      <path d="M229 428H1118V666H467L229 428Z"/>
+      <path d="M1754 428H2643L2405 666H1754V428Z"/>
+      <rect x="1317" y="428" width="238" height="238"/>
+      <path d="M504 795H1118V1033H742L504 795Z"/>
+      <path d="M1754 795H2368L2130 1033H1754V795Z"/>
+      <path d="M826 1162H1118V1400H1064L826 1162Z"/>
+      <path d="M1754 1162H2046L1808 1400H1754V1162Z"/>
+    </g>
+</svg>

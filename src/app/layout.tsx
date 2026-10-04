@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import type { CSSProperties, ReactNode } from "react";
 import { SiteInteractionSounds } from "@/components/site-interaction-sounds";
 import { SiteSearch } from "@/components/site-search";
 import { SitePreloader } from "@/components/site-preloader";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { buildSearchIndex } from "@/lib/search";
 import "./globals.css";
 
@@ -136,6 +138,21 @@ const hiddenScrollbarStyle: CSSProperties = {
   scrollbarWidth: "none",
 };
 
+const themeInitializer = `
+  (function () {
+    try {
+      var savedTheme = window.localStorage.getItem("machine-spirit-theme");
+      var theme = savedTheme === "light" || savedTheme === "dark"
+        ? savedTheme
+        : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      var root = document.documentElement;
+      root.classList.toggle("dark", theme === "dark");
+      root.dataset.theme = theme;
+      root.style.colorScheme = theme;
+    } catch (_) {}
+  })();
+`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -167,12 +184,27 @@ export default function RootLayout({
       lang="en"
       className={`${rosart.variable} ${unica77.variable} ${pitchSans.variable} ${atlasTypewriter.variable} h-full antialiased`}
       style={hiddenScrollbarStyle}
+      suppressHydrationWarning
     >
+      <head>
+        <meta name="color-scheme" content="light dark" />
+        <meta name="theme-color" content="#f4f2ee" />
+        <link
+          id="machine-spirit-favicon"
+          rel="icon"
+          href="/brand/machine-spirit-favicon-light.png"
+          type="image/png"
+        />
+      </head>
       <body className="min-h-full" style={hiddenScrollbarStyle}>
+        <Script id="machine-spirit-theme" strategy="beforeInteractive">
+          {themeInitializer}
+        </Script>
         <SiteInteractionSounds />
         <SitePreloader />
         <SiteSearch index={buildSearchIndex()} />
         {children}
+        <ThemeToggle />
       </body>
     </html>
   );
