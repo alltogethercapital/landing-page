@@ -648,7 +648,7 @@ export function AsciiHero() {
   }, [reducedMotion]);
 
   return (
-    <section ref={sectionRef} className="ascii-hero" aria-label="Machine Spirit film reel">
+    <section ref={sectionRef} className="ascii-hero" aria-label="Machine Spirit Group film reel">
       <canvas ref={canvasRef} className="ascii-hero-canvas" aria-hidden="true" />
       {!webglOk && (
         <video

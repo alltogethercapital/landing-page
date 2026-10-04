@@ -16,7 +16,7 @@ import { slugify } from "@/lib/portfolio";
 export const metadata: Metadata = {
   title: "Our team",
   description:
-    "Machine Spirit is led by founding partners Robert Neir and Hisham El-Husseini.",
+    "Machine Spirit Group is led by founding partners Robert Neir and Hisham El-Husseini.",
 };
 
 type Member = {
@@ -127,7 +127,7 @@ export default function TeamPage() {
 
       <CognitionSection label="Our team" title="Our team.">
         <p className="cog-body-copy">
-          Machine Spirit is led by founding partners Robert Neir and
+          Machine Spirit Group is led by founding partners Robert Neir and
           Hisham El-Husseini.
         </p>
         <ArrowLink href={CONTACT_MAILTO} className="mt-8">

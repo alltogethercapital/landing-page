@@ -40,7 +40,7 @@ const NEW_INVESTMENT_ARTICLES: Article[] = [
   date: slug === "pocket" ? "September 16, 2026" : slug === "atomarine" ? "September 16, 2026" : slug === "astro-mechanica" ? "September 14, 2026" : slug === "allia-health" ? "September 12, 2026" : slug === "ultrasonium" ? "September 9, 2026" : slug === "path-robotics" ? "September 8, 2026" : slug === "positron" ? "August 13, 2026" : slug === "matforge" ? "June 17, 2026" : slug === "raspire" ? "June 14, 2026" : slug === "rendezvous-robotics" || slug === "compresr" ? "June 11, 2026" : "September 7, 2026",
   dateISO: slug === "pocket" ? "2026-09-16" : slug === "atomarine" ? "2026-09-16" : slug === "astro-mechanica" ? "2026-09-14" : slug === "allia-health" ? "2026-09-12" : slug === "ultrasonium" ? "2026-09-09" : slug === "path-robotics" ? "2026-09-08" : slug === "positron" ? "2026-08-13" : slug === "matforge" ? "2026-06-17" : slug === "raspire" ? "2026-06-14" : slug === "rendezvous-robotics" || slug === "compresr" ? "2026-06-11" : "2026-09-07",
   category: "Portfolio",
-  author: "Machine Spirit",
+  author: "Machine Spirit Group",
   excerpt: `We invested in ${title}, building ${excerpt}.`,
   image: ["positron", "matforge", "raspire", "rendezvous-robotics", "compresr"].includes(slug)
     ? `/logos/cards/${slug}.svg`
@@ -63,7 +63,7 @@ const ARTICLE_ENTRIES: Article[] = [
     date: "September 1, 2026",
     dateISO: "2026-09-01",
     category: "Portfolio",
-    author: "Machine Spirit",
+    author: "Machine Spirit Group",
     excerpt:
       "We invested in Autostep, the P&L for knowledge work and the measurement layer for human and agent workflows.",
     image: "/updates/covers/autostep.png",
@@ -96,7 +96,7 @@ const ARTICLE_ENTRIES: Article[] = [
     date: "August 21, 2026",
     dateISO: "2026-08-21",
     category: "Portfolio",
-    author: "Machine Spirit",
+    author: "Machine Spirit Group",
     excerpt:
       "We invested again in Higgsfield, the AI-native creative platform for professional video, images, and visual production.",
     image: "/updates/covers/higgsfield.jpg",
@@ -131,12 +131,12 @@ const ARTICLE_ENTRIES: Article[] = [
     category: "Letter",
     author: "Robert Neir & Hisham El-Husseini",
     excerpt:
-      "Why we started Machine Spirit: nothing important gets built alone, and the things that matter most are being built right now.",
+      "Why we started Machine Spirit Group: nothing important gets built alone, and the things that matter most are being built right now.",
     image: "/updates/covers/the-future-is-built-together.jpg",
     sections: [
       {
         body: [
-          "Machine Spirit is a venture firm in Seattle. We back founders building the hard frontier: AI, defense, energy, robotics, semiconductors, and space.",
+          "Machine Spirit Group is a venture firm in Seattle. We back founders building the hard frontier: AI, defense, energy, robotics, semiconductors, and space.",
           "This is the firm's founding letter, so it should answer the obvious question. Why start another venture firm? There are thousands, and most of them say the same things in the same fonts about the same companies. The honest answer is that we wanted to spend our working lives close to a certain kind of company, the kind that flies, welds, enriches, fabricates, and launches. That generation of companies is being built right now.",
         ],
       },

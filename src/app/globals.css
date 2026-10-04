@@ -168,7 +168,7 @@ body::-webkit-scrollbar {
    — Rosart: display headings and editorial statements.
    — Unica77: body copy, card titles, captions, and the wordmark.
    — Pitch Sans: uppercase navigation, actions, and categorical labels.
-   — Atlas Typewriter: Machine Spirit's glyph systems and financial data only. */
+   — Atlas Typewriter: Machine Spirit Group's glyph systems and financial data only. */
 :root {
   --cog-bg: #f1efe9;
   --cog-ink: #151513;
@@ -471,7 +471,7 @@ body {
   position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 8px;
   padding: 0;
   color: var(--cog-ink);
@@ -479,21 +479,28 @@ body {
   font-size: 13px;
   font-weight: 400;
   letter-spacing: 0.15em;
-  line-height: 1;
+  line-height: 1.05;
   white-space: nowrap;
 }
 
 .cog-wordmark-text {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
   margin-right: -0.15em;
   text-transform: uppercase;
+}
+
+.cog-wordmark-line {
+  display: block;
 }
 
 .cog-wordmark-logo {
   display: block;
   grid-area: 1 / 1;
-  width: 22px;
-  height: 11px;
+  width: 64px;
+  height: 31px;
   flex: none;
   object-fit: contain;
   transition: opacity var(--duration-base) var(--ease-standard);
@@ -501,8 +508,8 @@ body {
 
 .cog-wordmark-symbol {
   display: grid;
-  width: 22px;
-  height: 11px;
+  width: 64px;
+  height: 31px;
   flex: none;
   place-items: center;
 }
@@ -574,15 +581,15 @@ html.dark .cog-page::before {
 }
 
 .cog-page::after {
-  background-image:
-    url("/brand/machine-spirit-static-noise.png"),
-    radial-gradient(circle, color-mix(in srgb, var(--cog-ink) 28%, transparent) 0 0.55px, transparent 0.7px);
+  inset: -3%;
+  background-image: url("/brand/machine-spirit-static-noise.png");
   background-repeat: repeat;
-  background-size: 512px 512px, 4px 4px;
-  animation: cog-signal-static 1.4s steps(1, end) infinite;
+  background-size: 512px 512px;
+  animation: cog-signal-static 60s ease-in-out infinite alternate;
   mix-blend-mode: multiply;
-  opacity: 0.28;
-  will-change: background-position;
+  opacity: 0.18;
+  transform: translate3d(-0.06%, -0.04%, 0) scale(1.02);
+  will-change: transform;
 }
 
 html.dark .cog-page::after {
@@ -591,25 +598,8 @@ html.dark .cog-page::after {
 }
 
 @keyframes cog-signal-static {
-  0%,
-  100% {
-    background-position: 0 0, 0 0;
-  }
-
-  20% {
-    background-position: 3px -2px, 0 0;
-  }
-
-  40% {
-    background-position: -2px 4px, 0 0;
-  }
-
-  60% {
-    background-position: 5px 1px, 0 0;
-  }
-
-  80% {
-    background-position: -3px -4px, 0 0;
+  to {
+    transform: translate3d(0.06%, 0.04%, 0) scale(1.02);
   }
 }
 
@@ -656,7 +646,7 @@ html.dark .cog-page::after {
   }
 
   .cog-page .cog-desktop-nav {
-    left: calc((100vw - var(--site-max)) / 2 + 64px);
+    left: calc((100vw - var(--site-max)) / 2 + 88px);
   }
 }
 
@@ -668,7 +658,7 @@ html.dark .cog-page::after {
 .cog-desktop-nav {
   position: fixed;
   top: 148px;
-  left: 64px;
+  left: 88px;
   z-index: 30;
   display: flex;
   width: 164px;
@@ -687,6 +677,10 @@ html.dark .cog-page::after {
 .cog-nav-logo {
   display: block;
   margin-bottom: 22px;
+}
+
+.cog-nav-logo .cog-wordmark {
+  margin-left: -72px;
 }
 
 .cog-nav-links {

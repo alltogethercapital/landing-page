@@ -8,7 +8,7 @@ import { join } from "node:path";
 export const runtime = "nodejs";
 
 export const alt =
-  "Machine Spirit, backing the founders rebuilding the hard frontier.";
+  "Machine Spirit Group, backing the founders rebuilding the hard frontier.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -70,7 +70,7 @@ export default async function OpenGraphImage() {
           width: "100%",
           height: "100%",
           overflow: "hidden",
-          backgroundColor: "#f4f2ee",
+          backgroundColor: "#f1efe9",
           color: "#000000",
           fontFamily: "Newsreader",
         }}
@@ -82,7 +82,7 @@ export default async function OpenGraphImage() {
             left: 56,
             display: "flex",
             flexDirection: "column",
-            width: 198,
+            width: 220,
           }}
         >
           <div
@@ -91,25 +91,29 @@ export default async function OpenGraphImage() {
               alignItems: "center",
               gap: 10,
               fontFamily: "Atlas Typewriter",
-              fontSize: 18,
+              fontSize: 14,
               fontWeight: 500,
-              letterSpacing: 5,
-              lineHeight: 1,
+              letterSpacing: 3,
+              lineHeight: 1.05,
               color: "#000000",
             }}
           >
-            <span style={{ marginRight: -5 }}>MACHINE SPIRIT</span>
             <img
               alt=""
               src={brandMarkSrc}
-              width={34}
-              height={17}
-              style={{ width: 34, height: 17, objectFit: "contain" }}
+              width={70}
+              height={34}
+              style={{ width: 70, height: 34, objectFit: "contain" }}
             />
+            <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+              <span>MACHINE SPIRIT</span>
+              <span>GROUP</span>
+            </div>
           </div>
           <div
             style={{
-              marginTop: 34,
+              marginTop: 28,
+              marginLeft: 80,
               display: "flex",
               flexDirection: "column",
               gap: 12,
@@ -181,7 +185,7 @@ export default async function OpenGraphImage() {
               color: "rgba(0, 0, 0, 0.72)",
             }}
           >
-            Machine Spirit backs the founders rebuilding the hard frontier across AI,
+            Machine Spirit Group backs the founders rebuilding the hard frontier across AI,
             defense, energy, robotics, semiconductors, and space.
           </div>
         </div>

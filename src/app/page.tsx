@@ -74,7 +74,7 @@ export default function Home() {
       >
         <div className="cog-copy-stack">
           <p>
-            Machine Spirit backs the founders rebuilding the hard frontier
+            Machine Spirit Group backs the founders rebuilding the hard frontier
             across AI, defense, energy, robotics, semiconductors, and space.
           </p>
           <p>
@@ -85,7 +85,7 @@ export default function Home() {
       </CognitionSection>
 
       <CognitionSection wide className="cog-logo-section">
-        <div className="cog-logo-mosaic" aria-label="Machine Spirit companies">
+        <div className="cog-logo-mosaic" aria-label="Machine Spirit Group companies">
           {logoCompanies.map((company) => {
             const logo = company.cardLogo ?? company.logo;
             const frame = homepageLogoFrame[company.name];

@@ -7,7 +7,7 @@ import { hasValidLpSession } from "@/lib/lp-auth";
 
 export const metadata: Metadata = {
   title: "LP Login",
-  description: "Secure limited partner access for Machine Spirit.",
+  description: "Secure limited partner access for Machine Spirit Group.",
   robots: { index: false, follow: false, nocache: true },
 };
 
@@ -28,7 +28,7 @@ export default async function LpLoginPage({
         className="lp-login-section"
       >
         <p className="cog-body-copy lp-login-intro">
-          Sign in to view Machine Spirit&apos;s private investment portfolio and
+          Sign in to view Machine Spirit Group&apos;s private investment portfolio and
           supporting records.
         </p>
         <LpLoginForm error={error} />

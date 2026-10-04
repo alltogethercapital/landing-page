@@ -29,7 +29,6 @@ export function BrandDot({ className }: { className?: string }) {
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-wordmark", className)}>
-      <span className="cog-wordmark-text">MACHINE SPIRIT</span>
       <span className="cog-wordmark-symbol" aria-hidden="true">
         <Image
           src="/brand/machine-spirit-wing-mark.png"
@@ -47,6 +46,10 @@ export function LogoMark({ className }: { className?: string }) {
           unoptimized
           className="cog-wordmark-logo cog-wordmark-logo--dark"
         />
+      </span>
+      <span className="cog-wordmark-text">
+        <span className="cog-wordmark-line">MACHINE SPIRIT</span>
+        <span className="cog-wordmark-line">GROUP</span>
       </span>
     </span>
   );

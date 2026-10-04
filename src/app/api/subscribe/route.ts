@@ -32,7 +32,7 @@ export async function POST(request: Request) {
       from: FROM_EMAIL,
       to: CONTACT_RECIPIENTS,
       replyTo: clean,
-      subject: "New newsletter signup — Machine Spirit",
+      subject: "New newsletter signup — Machine Spirit Group",
       text: `New subscriber: ${clean}`,
     });
 

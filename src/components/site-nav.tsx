@@ -167,7 +167,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
   return (
     <>
       <aside className="cog-desktop-nav" aria-label="Primary">
-        <Link href="/" aria-label="Machine Spirit home" className="cog-nav-logo">
+        <Link href="/" aria-label="Machine Spirit Group home" className="cog-nav-logo">
           <LogoMark />
         </Link>
 
@@ -203,7 +203,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
       <header className="cog-mobile-header">
         <Link
           href="/"
-          aria-label="Machine Spirit home"
+          aria-label="Machine Spirit Group home"
           className="cog-mobile-logo"
           onClick={() => setOpen(false)}
         >

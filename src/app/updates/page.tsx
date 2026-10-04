@@ -13,7 +13,7 @@ import { ARTICLES } from "@/lib/articles";
 export const metadata: Metadata = {
   title: "Updates",
   description:
-    "Writing from Machine Spirit: letters, theses, and updates on the hard frontier.",
+    "Writing from Machine Spirit Group: letters, theses, and updates on the hard frontier.",
 };
 
 export default function NotesPage() {

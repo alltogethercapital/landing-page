@@ -129,9 +129,9 @@ const atlasTypewriter = localFont({
 // metadataBase is required so Next.js can resolve the opengraph-image
 // route to an absolute URL in the rendered og:image meta tag.
 const SITE_URL = "https://machinespirit.com";
-const SITE_TITLE = "Home | Machine Spirit";
+const SITE_TITLE = "Home | Machine Spirit Group";
 const SITE_DESCRIPTION =
-  "Machine Spirit backs the founders rebuilding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.";
+  "Machine Spirit Group backs the founders rebuilding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.";
 
 const hiddenScrollbarStyle: CSSProperties = {
   msOverflowStyle: "none",
@@ -157,14 +157,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_TITLE,
-    template: "%s | Machine Spirit",
+    template: "%s | Machine Spirit Group",
   },
   description: SITE_DESCRIPTION,
   openGraph: {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
-    siteName: "Machine Spirit",
+    siteName: "Machine Spirit Group",
     type: "website",
   },
   twitter: {
