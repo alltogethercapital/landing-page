@@ -6,9 +6,8 @@ import { ASCII_HERO_CLIPS } from "@/lib/ascii-hero-assets";
 // Video rendered as colored ASCII glyphs, in the spirit of generalintuition.com.
 // One WebGL draw per frame: the current video frame (TEXTURE0) is sampled once
 // per cell, luminance picks a glyph from a prerendered atlas (TEXTURE1), and the
-// glyph is tinted with the underlying video color. Pointer movement leaves a
-// short trail that animates nearby glyph density and brightness without drawing
-// a separate mark over the video.
+// glyph is tinted with the underlying video color. Pointer movement overlays a
+// compact, fading version of the brand's Assembly mark at the cursor.
 
 // Dense → sparse. 69 glyphs; luminance 0 picks "$", luminance 1 picks the space —
 // the same convention the reference effect ships with.
@@ -17,8 +16,7 @@ const GLYPH_RAMP =
 const ATLAS_COLS = 9;
 const ATLAS_ROWS = 8;
 const ATLAS_TILE = 64; // px per glyph tile in the atlas canvas
-const MAX_POINTER_ECHOES = 6;
-const POINTER_ECHO_LIFE_S = 0.48;
+const CURSOR_MARK_LIFE_S = 0.55;
 const CLIP_FADE_LEAD_S = 0.5; // start fading out this long before a clip ends
 const PIXEL_BUDGET = 8_000_000; // cap on canvas device pixels (5K displays)
 
@@ -44,16 +42,17 @@ precision mediump float;
 varying vec2 vUV;
 uniform sampler2D uVideo;
 uniform sampler2D uAtlas;
+uniform sampler2D uBrand;
 uniform vec2 uGrid;       // columns, rows
 uniform vec2 uCellPx;     // device px per cell
 uniform vec2 uCanvasPx;   // device px canvas size
 uniform vec2 uCropMin;    // cover-fit crop window into the video texture
 uniform vec2 uCropMax;
 uniform float uFade;      // clip transition fade, 0..1
-uniform int uPointerCount;
-uniform vec2 uPointerPts[${MAX_POINTER_ECHOES}];
-uniform float uPointerFade[${MAX_POINTER_ECHOES}];
-uniform float uPointerRadiusPx;
+uniform int uCursorMarkActive;
+uniform vec2 uCursorMarkPt;
+uniform float uCursorMarkFade;
+uniform float uCursorMarkRadiusPx;
 
 const float GAMMA = 1.6;
 const float TILE_OPACITY = 0.58;
@@ -65,23 +64,13 @@ const float ATLAS_PAD = ${(2 / ATLAS_TILE).toFixed(5)};
 
 float lumOf(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
 
-float pointerInfluenceAt(vec2 uv) {
-  float influence = 0.0;
-  for (int i = 0; i < ${MAX_POINTER_ECHOES}; i++) {
-    if (i < uPointerCount) {
-      // Work in device pixels so every echo stays compact and circular at each
-      // aspect ratio. The eased shoulder reads as moving glyphs, not a disc.
-      vec2 dp = (uv - uPointerPts[i]) * uCanvasPx;
-      float falloff = 1.0 - smoothstep(
-        uPointerRadiusPx * 0.18,
-        uPointerRadiusPx,
-        length(dp)
-      );
-      falloff = falloff * falloff * (3.0 - 2.0 * falloff);
-      influence = min(1.0, influence + falloff * uPointerFade[i]);
-    }
-  }
-  return influence;
+float cursorMarkAt(vec2 uv) {
+  if (uCursorMarkActive == 0) return 0.0;
+  vec2 dp = (uv - uCursorMarkPt) * uCanvasPx;
+  vec2 markUV = dp / (uCursorMarkRadiusPx * 2.0) + 0.5;
+  if (markUV.x < 0.0 || markUV.x > 1.0 || markUV.y < 0.0 || markUV.y > 1.0) return 0.0;
+  markUV.y = 1.0 - markUV.y;
+  return texture2D(uBrand, markUV).a * uCursorMarkFade;
 }
 
 void main() {
@@ -91,17 +80,8 @@ void main() {
 
   vec3 rgb = texture2D(uVideo, mix(uCropMin, uCropMax, center)).rgb;
   float lum = pow(clamp(lumOf(rgb), 0.0, 1.0), GAMMA);
-  float pointerInfluence = pointerInfluenceAt(center);
 
   float idx = floor(lum * (GLYPH_COUNT - 1.0) + 0.5);
-  // Shift individual cells toward the sparse end of the ramp. The small
-  // noise-weighted variation makes the characters flicker organically instead
-  // of revealing a uniformly processed circle.
-  float cellNoise = fract(sin(dot(cell, vec2(12.9898, 78.233))) * 43758.5453);
-  float glyphShift = floor(
-    pointerInfluence * (3.0 + step(0.58, cellNoise) * 2.0) + 0.5
-  );
-  idx = clamp(idx + glyphShift, 0.0, GLYPH_COUNT - 1.0);
 
   // Atlas tiles are square; the display cell is narrow (w/h ≈ 0.6). Draw the
   // glyph in a centered box that preserves the character's true aspect.
@@ -116,7 +96,6 @@ void main() {
   vec2 tile = vec2(mod(idx, ATLAS_GRID.x), floor(idx / ATLAS_GRID.x));
   float alpha = texture2D(uAtlas, (tile + gUV) / ATLAS_GRID).r;
   alpha = smoothstep(0.05, 0.9, alpha) * mask;
-  alpha = min(1.0, alpha * (1.0 + pointerInfluence * 0.18));
 
   // Dimmed video tile under a brighter hue-locked glyph.
   vec3 base = rgb * TILE_OPACITY;
@@ -125,7 +104,10 @@ void main() {
   float litL = max(0.0001, lumOf(lit));
   lit = clamp(base * (litL / baseL), 0.0, 1.0);
   vec3 col = mix(base, lit, alpha);
-  col = clamp(col * (1.0 + pointerInfluence * 0.12), 0.0, 1.0);
+
+  float markAlpha = cursorMarkAt(vUV);
+  // A white Assembly mark remains visible against the film reel.
+  col = mix(col, vec3(mix(0.58, 1.0, alpha)), markAlpha * 0.94);
 
   // Vividness: pull the final color away from its own gray.
   col = clamp(mix(vec3(lumOf(col)), col, VIVID), 0.0, 1.0);
@@ -181,14 +163,11 @@ function compileProgram(gl: WebGLRenderingContext): WebGLProgram | null {
   return program;
 }
 
-// Cell size drives how much detail survives: the grid is a uniform on a single
-// full-canvas draw, so a finer grid resolves more of the frame at no extra
-// fragment cost. Kept just coarse enough that glyphs still read as characters.
 function cellSizeCss(viewportW: number): number {
-  if (viewportW <= 480) return 3.5;
-  if (viewportW <= 768) return 4;
-  if (viewportW <= 1024) return 4.25;
-  return 4.5;
+  if (viewportW <= 480) return 4.5;
+  if (viewportW <= 768) return 5;
+  if (viewportW <= 1024) return 5.5;
+  return 6;
 }
 
 export function AsciiHero() {
@@ -248,10 +227,10 @@ export function AsciiHero() {
     const uCropMin = u("uCropMin");
     const uCropMax = u("uCropMax");
     const uFade = u("uFade");
-    const uPointerCount = u("uPointerCount");
-    const uPointerPts = u("uPointerPts");
-    const uPointerFade = u("uPointerFade");
-    const uPointerRadiusPx = u("uPointerRadiusPx");
+    const uCursorMarkActive = u("uCursorMarkActive");
+    const uCursorMarkPt = u("uCursorMarkPt");
+    const uCursorMarkFade = u("uCursorMarkFade");
+    const uCursorMarkRadiusPx = u("uCursorMarkRadiusPx");
 
     const makeTexture = (unit: number) => {
       const tex = gl.createTexture();
@@ -276,6 +255,9 @@ export function AsciiHero() {
 
     gl.uniform1i(u("uVideo"), 0);
     gl.uniform1i(u("uAtlas"), 1);
+    const brandTex = makeTexture(2);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 0]));
+    gl.uniform1i(u("uBrand"), 2);
 
     const state = {
       raf: 0,
@@ -290,12 +272,10 @@ export function AsciiHero() {
       inView: true,
       destroyed: false,
       contextLost: false,
-      pointerPts: new Float32Array(MAX_POINTER_ECHOES * 2),
-      pointerStart: new Float32Array(MAX_POINTER_ECHOES),
-      pointerFade: new Float32Array(MAX_POINTER_ECHOES),
-      pointerCount: 0,
-      pointerCursor: 0,
-      lastPointerSample: 0,
+      cursorMarkPt: new Float32Array(2),
+      cursorMarkStart: 0,
+      cursorMarkActive: false,
+      lastStamp: 0,
       cellDeviceW: 16,
       clip: 0,
       errorStreak: 0,
@@ -388,22 +368,18 @@ export function AsciiHero() {
       // Keep absolute timestamps on the CPU: fp16 mediump fragment shaders do
       // not have enough range for them.
       const now = nowS();
-      let pointerEchoesAlive = 0;
-      for (let i = 0; i < state.pointerCount; i++) {
-        const fade = 1 -
-          (now - state.pointerStart[i]) / POINTER_ECHO_LIFE_S;
-        state.pointerFade[i] = Math.min(1, Math.max(0, fade));
-        if (state.pointerFade[i] > 0) pointerEchoesAlive++;
-      }
-      if (state.pointerCount > 0 && pointerEchoesAlive === 0) {
-        state.pointerCount = 0;
-        state.pointerCursor = 0;
+      let cursorMarkFade = 0;
+      if (state.cursorMarkActive) {
+        cursorMarkFade = 1 -
+          (now - state.cursorMarkStart) / CURSOR_MARK_LIFE_S;
+        cursorMarkFade = Math.min(1, Math.max(0, cursorMarkFade));
+        if (cursorMarkFade === 0) state.cursorMarkActive = false;
       }
       gl.uniform1f(uFade, state.fade);
-      gl.uniform1i(uPointerCount, state.pointerCount);
-      gl.uniform2fv(uPointerPts, state.pointerPts);
-      gl.uniform1fv(uPointerFade, state.pointerFade);
-      gl.uniform1f(uPointerRadiusPx, state.cellDeviceW * 7);
+      gl.uniform1i(uCursorMarkActive, state.cursorMarkActive ? 1 : 0);
+      gl.uniform2fv(uCursorMarkPt, state.cursorMarkPt);
+      gl.uniform1f(uCursorMarkFade, cursorMarkFade);
+      gl.uniform1f(uCursorMarkRadiusPx, state.cellDeviceW * 5);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
@@ -546,25 +522,20 @@ export function AsciiHero() {
     video.addEventListener("error", onError);
     video.addEventListener("pause", onPause);
 
-    // --- Pointer character trail --------------------------------------------
+    // --- Pointer brand mark -------------------------------------------------
     const onPointerMove = (event: PointerEvent) => {
       if (event.pointerType !== "mouse" || reducedMotion) return;
       const now = performance.now();
-      if (now - state.lastPointerSample < 24) return;
+      if (now - state.lastStamp < 16) return;
       const rect = canvas.getBoundingClientRect();
       const x = (event.clientX - rect.left) / rect.width;
       const y = (event.clientY - rect.top) / rect.height;
       if (x < 0 || x > 1 || y < 0 || y > 1) return;
-      state.lastPointerSample = now;
-      const slot = state.pointerCursor % MAX_POINTER_ECHOES;
-      state.pointerPts[slot * 2] = x;
-      state.pointerPts[slot * 2 + 1] = 1 - y; // shader UV origin is bottom-left
-      state.pointerStart[slot] = nowS();
-      state.pointerCursor++;
-      state.pointerCount = Math.min(
-        state.pointerCount + 1,
-        MAX_POINTER_ECHOES,
-      );
+      state.lastStamp = now;
+      state.cursorMarkPt[0] = x;
+      state.cursorMarkPt[1] = 1 - y; // shader UV origin is bottom-left
+      state.cursorMarkStart = nowS();
+      state.cursorMarkActive = true;
     };
     section.addEventListener("pointermove", onPointerMove, { passive: true });
 
@@ -599,6 +570,16 @@ export function AsciiHero() {
       setWebglOk(false); // drop to the plain <video> fallback
     };
     canvas.addEventListener("webglcontextlost", onContextLost);
+
+    const brandImage = new Image();
+    brandImage.onload = () => {
+      if (state.destroyed || state.contextLost) return;
+      gl.activeTexture(gl.TEXTURE2);
+      gl.bindTexture(gl.TEXTURE_2D, brandTex);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, brandImage);
+    };
+    brandImage.src = "/brand/all-together-assembly-mark-white.png";
 
     // --- Boot ---------------------------------------------------------------
     applySize();
@@ -642,6 +623,8 @@ export function AsciiHero() {
       // poison the next setup. The context itself is reclaimed with the canvas.
       gl.deleteTexture(videoTex);
       gl.deleteTexture(atlasTex);
+      brandImage.onload = null;
+      gl.deleteTexture(brandTex);
       gl.deleteBuffer(buf);
       gl.deleteProgram(program);
     };

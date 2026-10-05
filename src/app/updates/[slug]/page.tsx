@@ -17,9 +17,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const article = articleBySlug(slug);
-  if (!article) return { title: "Page Not Found" };
+  if (!article) return { title: "Not found — Machine Spirit Capital" };
   return {
-    title: article.title,
+    title: `${article.title} — Machine Spirit Capital`,
     description: article.excerpt,
   };
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import {
+  ArrowLink,
   CognitionPage,
   CognitionSection,
   CognitionStrip,
@@ -18,9 +19,9 @@ import {
 } from "@/lib/founders";
 
 export const metadata: Metadata = {
-  title: "Our entrepreneurs",
+  title: "Our entrepreneurs — Machine Spirit Capital",
   description:
-    "The entrepreneurs we back, building the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
+    "The entrepreneurs building and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
 };
 
 function whiteHeadshotSrc(headshot: string) {
@@ -110,9 +111,13 @@ export default function FoundersPage() {
 
       <CognitionSection label="Our entrepreneurs" title="Our entrepreneurs.">
         <p className="cog-body-copy">
-          The entrepreneurs we back, building the hard frontier across AI,
-          defense, energy, robotics, semiconductors, and space.
+          The entrepreneurs we back are building and stewarding the hard
+          frontier, turning new technology into durable systems that expand
+          human capability.
         </p>
+        <ArrowLink href="/companies" className="mt-8">
+          See companies
+        </ArrowLink>
       </CognitionSection>
 
       <CognitionStrip className="cog-strip--inset">

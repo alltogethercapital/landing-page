@@ -1,112 +1,213 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { GLYPH_RAMP } from "@/lib/glyphs";
+
+// Share-preview card (iMessage / Slack / X / LinkedIn). Static TTFs are kept in
+// /public/fonts because Satori in this build accepts only static TTF/OTF.
 
 export const runtime = "nodejs";
 
-export const alt = "Machine Spirit Capital";
+export const alt =
+  "Machine Spirit Capital, backing the founders rebuilding the hard frontier.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function OpenGraphImage() {
-  const [unica77, brandMark, staticNoise] = await Promise.all([
-    readFile(join(process.cwd(), "public/fonts/Unica77LLWeb-Regular.ttf")),
-    readFile(join(process.cwd(), "public/brand/machine-spirit-wing-mark.png")),
-    readFile(join(process.cwd(), "public/brand/machine-spirit-static-noise.png")),
+  const [
+    atlasMedium,
+    newsreaderRegular,
+    newsreaderSemiBold,
+    aformicCover,
+    arrayLabsCover,
+    mavenCover,
+    volantisCover,
+    brandMark,
+  ] = await Promise.all([
+    readFile(join(process.cwd(), "public/fonts/AtlasTypewriter-Medium-Web.ttf")),
+    readFile(join(process.cwd(), "public/fonts/Newsreader-Regular.ttf")),
+    readFile(join(process.cwd(), "public/fonts/Newsreader-SemiBold.ttf")),
+    readFile(join(process.cwd(), "public/work/cards/aformic.jpg")),
+    readFile(join(process.cwd(), "public/work/cards/array-labs.jpg")),
+    readFile(join(process.cwd(), "public/work/cards/maven.jpg")),
+    readFile(join(process.cwd(), "public/work/cards/volantis.jpg")),
+    readFile(
+      join(process.cwd(), "public/brand/all-together-assembly-mark.png"),
+    ),
   ]);
-
+  const productCovers = [aformicCover, arrayLabsCover, mavenCover, volantisCover].map(
+    (image) => `data:image/jpeg;base64,${image.toString("base64")}`,
+  );
   const brandMarkSrc = `data:image/png;base64,${brandMark.toString("base64")}`;
-  const staticNoiseSrc = `data:image/png;base64,${staticNoise.toString("base64")}`;
+  const verticalRules = [64, 291, 367, 894, 1046];
 
   return new ImageResponse(
     (
       <div
         style={{
-          position: "relative",
           display: "flex",
+          position: "relative",
           width: "100%",
           height: "100%",
-          alignItems: "center",
-          justifyContent: "center",
           overflow: "hidden",
-          backgroundColor: "#f1efe9",
-          color: "#0f0f0e",
+          backgroundColor: "#f7f6f5",
+          color: "#000000",
+          fontFamily: "Newsreader",
         }}
       >
-        <img
-          alt=""
-          src={staticNoiseSrc}
-          width={1200}
-          height={630}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            opacity: 0.055,
-          }}
-        />
+        {verticalRules.map((x) => (
+          <div
+            key={x}
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: x,
+              width: 1,
+              backgroundColor: "rgba(0, 0, 0, 0.08)",
+            }}
+          />
+        ))}
 
         <div
           style={{
             position: "absolute",
-            top: 30,
-            right: 30,
-            bottom: 30,
-            left: 30,
+            top: 72,
+            left: 80,
             display: "flex",
-            border: "1px solid rgba(15, 15, 14, 0.08)",
-          }}
-        />
-
-        <div
-          style={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 30,
+            flexDirection: "column",
+            width: 164,
           }}
         >
           <img
-            alt=""
+            alt="Machine Spirit Capital"
             src={brandMarkSrc}
-            width={190}
-            height={93}
-            style={{ width: 190, height: 93, objectFit: "contain" }}
+            width={96}
+            height={96}
+            style={{ width: 96, height: 96, objectFit: "contain" }}
           />
           <div
             style={{
+              marginTop: 30,
               display: "flex",
               flexDirection: "column",
-              alignItems: "flex-start",
-              gap: 10,
-              fontFamily: "Unica77",
-              fontSize: 44,
-              fontWeight: 400,
-              letterSpacing: 7,
-              lineHeight: 1,
-              textTransform: "uppercase",
-              whiteSpace: "nowrap",
+              gap: 8,
+              color: "rgba(0, 0, 0, 0.54)",
+              fontFamily: "Atlas Typewriter",
+              fontSize: 14,
+              lineHeight: 1.25,
             }}
           >
-            <span>MACHINE SPIRIT</span>
-            <span>CAPITAL</span>
+            <span>companies</span>
+            <span>founders</span>
+            <span>updates</span>
           </div>
+        </div>
+
+        <div
+          style={{
+            position: "absolute",
+            top: 92,
+            left: 367,
+            display: "flex",
+            flexDirection: "column",
+            width: 760,
+          }}
+        >
+          <div
+            style={{
+              color: "#006FCE",
+              fontFamily: "Atlas Typewriter",
+              fontSize: 15,
+              fontWeight: 500,
+              lineHeight: 1,
+            }}
+          >
+            [machine spirit]
+          </div>
+          <div
+            style={{
+              marginTop: 26,
+              display: "flex",
+              flexDirection: "column",
+              fontFamily: "Newsreader",
+              fontSize: 55,
+              fontWeight: 400,
+              lineHeight: 0.96,
+              letterSpacing: -1.8,
+              color: "#000000",
+            }}
+          >
+            <span>The future is built together.</span>
+            <span>The future is built now.</span>
+          </div>
+          <div
+            style={{
+              marginTop: 28,
+              width: 610,
+              fontSize: 20,
+              fontWeight: 400,
+              lineHeight: 1.35,
+              color: "rgba(0, 0, 0, 0.72)",
+            }}
+          >
+            Backing the builders and stewards of the hard frontier.
+          </div>
+        </div>
+
+        <div
+          style={{
+            position: "absolute",
+            left: 367,
+            right: 64,
+            bottom: 82,
+            display: "flex",
+            gap: 8,
+          }}
+        >
+          {productCovers.map((src, index) => (
+            <img
+              key={index}
+              alt=""
+              src={src}
+              width={184}
+              height={106}
+              style={{
+                width: 184,
+                height: 106,
+                objectFit: "cover",
+                border: "1px solid rgba(0, 0, 0, 0.10)",
+              }}
+            />
+          ))}
+        </div>
+
+        <div
+          style={{
+            position: "absolute",
+            left: 367,
+            right: 64,
+            bottom: 34,
+            display: "flex",
+            overflow: "hidden",
+            fontFamily: "Atlas Typewriter",
+            fontSize: 18,
+            fontWeight: 500,
+            letterSpacing: 4,
+            color: "rgba(0, 0, 0, 0.26)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {GLYPH_RAMP}
         </div>
       </div>
     ),
     {
       ...size,
       fonts: [
-        {
-          name: "Unica77",
-          data: unica77,
-          style: "normal",
-          weight: 400,
-        },
+        { name: "Atlas Typewriter", data: atlasMedium, style: "normal", weight: 500 },
+        { name: "Newsreader", data: newsreaderRegular, style: "normal", weight: 400 },
+        { name: "Newsreader", data: newsreaderSemiBold, style: "normal", weight: 600 },
       ],
     },
   );

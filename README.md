@@ -1,6 +1,6 @@
-# Machine Spirit
+# All Together
 
-The Machine Spirit public site and private LP staging portal.
+The All Together public site and private LP staging portal.
 
 ## Getting Started
 

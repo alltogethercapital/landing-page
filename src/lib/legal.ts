@@ -7,7 +7,7 @@ export type LegalDoc = {
 };
 
 const UPDATED = "May 19, 2026";
-const ENTITY = "Machine Spirit Capital";
+const ENTITY = "All Together";
 
 export const LEGAL_DOCS: Record<string, LegalDoc> = {
   "privacy-policy": {
@@ -67,7 +67,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       {
         heading: "Contact",
         body: [
-          "Questions about this policy can be sent to hello@machinespirit.com.",
+          "Questions about this policy can be sent to hello@alltogethercapital.com.",
         ],
       },
     ],
@@ -123,7 +123,7 @@ export const LEGAL_DOCS: Record<string, LegalDoc> = {
       {
         heading: "Contact",
         body: [
-          "Questions about these terms can be sent to hello@machinespirit.com.",
+          "Questions about these terms can be sent to hello@alltogethercapital.com.",
         ],
       },
     ],

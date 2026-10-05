@@ -8,37 +8,12 @@ export type Company = {
   image?: string; // /public product image — falls back to a sector gradient when absent
   cardImage?: string; // product image used on the /companies page
   cardLogo?: string; // /public path to a transparent-PNG wordmark for the /companies card
-  logoLabel?: string; // text paired with an icon-only logo to form a complete wordmark
   video?: string; // YouTube video id (11 chars) — shows a "Watch video" button when present
   videoStart?: number; // optional start time (seconds) for the video
 };
 
-// Machine Spirit Capital portfolio (machinespirit.com/portfolio)
+// All Together portfolio (alltogethercapital.com/portfolio)
 export const PORTFOLIO: Company[] = [
-  { name: "Pocket", href: "https://heypocket.com/", sectors: ["AI", "Hardware", "Software"], blurb: "A dedicated AI device that turns real-world conversations into transcripts, summaries, and action items.", logo: "/logos/pocket.png", cardLogo: "/logos/cards/pocket.png", image: "/work/cards/pocket.png", cardImage: "/work/cards/pocket.png" },
-  { name: "Ultrasonium", href: "https://www.ultrasonium.com/", sectors: ["Manufacturing", "Materials", "Robotics"], blurb: "Next-generation manufacturing for complex, high-value metal parts.", cardLogo: "/logos/cards/ultrasonium.png" },
-  { name: "Path Robotics", href: "https://www.path-robotics.com/", sectors: ["Robotics", "AI", "Manufacturing"], blurb: "Physical AI that brings adaptive autonomous welding to American manufacturing.", logo: "/logos/path-robotics.svg?v=20260915", cardLogo: "/logos/cards/path-robotics.svg?v=20260915", image: "/work/cards/path-robotics.jpg", cardImage: "/work/cards/path-robotics.jpg" },
-  { name: "Molagri", href: "https://molagri.com/", sectors: ["Bio", "Agriculture"], blurb: "Precision biopesticides engineered to protect crops while sparing beneficial species.", logo: "/logos/molagri.svg", cardLogo: "/logos/cards/molagri.svg" },
-  { name: "Atomarine", href: "https://atomarine.co/", sectors: ["Energy", "Infrastructure", "AI"], blurb: "Floating data center campuses with standalone power and seawater cooling.", logo: "/logos/atomarine.png", cardLogo: "/logos/cards/atomarine.png", logoLabel: "Atomarine", image: "/work/cards/atomarine.jpg", cardImage: "/work/cards/atomarine.jpg" },
-  { name: "Astro Mechanica", href: "https://www.astromecha.co/", sectors: ["Aerospace", "Energy", "Defense"], blurb: "Turboelectric adaptive engines, airframes, and flight systems for the next generation of flight.", logo: "/logos/astro-mechanica.png", cardLogo: "/logos/cards/astro-mechanica.png", logoLabel: "Astro Mechanica", image: "/work/cards/astro-mechanica.jpg", cardImage: "/work/cards/astro-mechanica.jpg" },
-  { name: "Allia Health", href: "https://allia.health/", sectors: ["Healthcare", "AI", "Software"], blurb: "A modern EHR connecting intake, care, documentation, prescribing, and billing for behavioral health practices.", logo: "/logos/allia-health.png", cardLogo: "/logos/cards/allia-health.png", logoLabel: "Allia Health", image: "/work/cards/allia-health.jpg", cardImage: "/work/cards/allia-health.jpg" },
-  { name: "TryNearby", href: "https://trynearby.com/", sectors: ["Software", "AI"], blurb: "Connects local businesses with nearby creators to build word-of-mouth discovery.", logo: "/logos/trynearby.svg", cardLogo: "/logos/cards/trynearby.svg" },
-  { name: "Familiar Labs", href: "https://www.thefamiliarlab.com/", sectors: ["AI", "Video"], blurb: "AI dubbing that preserves voice, performance, and lip sync across languages.", logo: "/logos/familiar-labs.svg", cardLogo: "/logos/cards/familiar-labs.svg" },
-  { name: "CarSignal", href: "https://trycarsignal.com/", sectors: ["AI", "Software"], blurb: "An AI operating system connecting every step of an auto repair shop.", logo: "/logos/carsignal.png", cardLogo: "/logos/cards/carsignal.png", logoLabel: "CarSignal" },
-  { name: "Datoric", href: "https://www.datoric.com/", sectors: ["AI", "Robotics"], blurb: "Licensed multimodal training data for robotics, world models, and voice AI.", logo: "/logos/datoric.png", cardLogo: "/logos/cards/datoric.png", logoLabel: "Datoric" },
-  { name: "Rasyn", href: "https://www.rasyn.ai/", sectors: ["AI", "Bio"], blurb: "AI models and closed-loop experimentation for discovering new chemical formulations.", logo: "/logos/rasyn.svg", cardLogo: "/logos/cards/rasyn.svg", logoLabel: "Rasyn" },
-  {
-    name: "Autostep",
-    href: "https://www.autostep.ai/",
-    sectors: ["AI", "Software"],
-    blurb:
-      "Maps how work happens, measures its cost, and finds the highest-impact process or agent improvements.",
-    logo: "/logos/autostep.png",
-    cardLogo: "/logos/cards/autostep.png",
-    logoLabel: "AUTOSTEP",
-    image: "/work/cards/autostep.png",
-    cardImage: "/work/cards/autostep.png",
-  },
   {
     name: "Shield AI",
     href: "https://shield.ai/",
@@ -82,17 +57,6 @@ export const PORTFOLIO: Company[] = [
     image: "/work/cards/blue-origin.jpg",
     cardImage: "/work/cards/blue-origin.jpg",
   },
-  {
-    name: "Longshot Space",
-    href: "https://www.longshotspace.com/",
-    sectors: ["Space", "Aerospace", "Defense"],
-    blurb:
-      "Reusable ground accelerators for hypersonic testing and future cargo launch.",
-    cardLogo: "/logos/cards/longshot-space.png",
-    image: "/work/cards/longshot-space.jpg",
-    cardImage: "/work/cards/longshot-space.jpg",
-  },
-  { name: "Positron", href: "https://www.positron.ai/", sectors: ["AI", "Semiconductors", "Infrastructure"], blurb: "Purpose-built, memory-first systems for efficient generative AI inference.", cardLogo: "/logos/cards/positron.svg" },
   {
     name: "Weave Robotics",
     href: "https://www.weaverobotics.com/",
@@ -160,17 +124,12 @@ export const PORTFOLIO: Company[] = [
     cardLogo: "/logos/cards/decart.png",
     cardImage: "/work/cards/decart.jpg",
   },
-  { name: "Matforge", href: "https://discoveredmaterials.com/", sectors: ["AI", "Semiconductors", "Materials"], blurb: "Now Discovered Materials, building AI scientists for semiconductor materials discovery.", cardLogo: "/logos/cards/matforge.svg" },
-  { name: "Raspire", href: "https://raspire.com/", sectors: ["Security", "AI", "Software"], blurb: "AI-powered runtime security for mobile applications with no source-code changes.", cardLogo: "/logos/cards/raspire.svg", logoLabel: "Raspire" },
-  { name: "Rendezvous Robotics", href: "https://www.rdvrobotics.com/", sectors: ["Space", "Robotics", "Defense"], blurb: "Modular spacecraft that autonomously assemble and reconfigure in orbit.", cardLogo: "/logos/cards/rendezvous-robotics.svg", logoLabel: "Rendezvous Robotics" },
-  { name: "Compresr", href: "https://www.compresr.com/", sectors: ["AI", "Infrastructure", "Software"], blurb: "Question-aware context compression for faster, more accurate, lower-cost AI systems.", cardLogo: "/logos/cards/compresr.svg", logoLabel: "Compresr" },
   {
     name: "Core Automation",
     href: "https://www.coreauto.com/",
     sectors: ["AI", "Research"],
     blurb: "Building the world's most automated AI lab.",
     cardLogo: "/logos/cards/core-automation.png",
-    logoLabel: "Core Automation",
     cardImage: "/work/cards/core-automation.jpg",
   },
   {

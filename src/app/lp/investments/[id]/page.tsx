@@ -4,19 +4,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCompanyContext, getLpInvestment, getLpSnapshot } from "@/lib/lp-data";
 
-type PageProps = {
-  params: Promise<{ id: string }>;
+export const metadata: Metadata = {
+  title: "Investment detail — Machine Spirit Capital Investor Portal",
+  robots: { index: false, follow: false, nocache: true },
 };
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params;
-  const investment = await getLpInvestment(id);
-
-  return {
-    title: investment?.company ?? "Investment Detail",
-    robots: { index: false, follow: false, nocache: true },
-  };
-}
 
 function currency(value: number) {
   return new Intl.NumberFormat("en-US", {
@@ -33,11 +24,11 @@ function date(value: string) {
   }).format(new Date(`${value}T00:00:00Z`));
 }
 
-function wholePercent(value: number) {
-  return `${Math.round(value * 100)}%`;
-}
-
-export default async function LpInvestmentDetailPage({ params }: PageProps) {
+export default async function LpInvestmentDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const investment = await getLpInvestment(id);
   if (!investment) notFound();
@@ -82,41 +73,6 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
         <div><dt>Company valuation when invested</dt><dd>{investment.valuationWhenInvested}</dd></div>
       </dl>
 
-      {investment.reviewNote ? (
-        <p className="lp-detail-note">{investment.reviewNote}</p>
-      ) : null}
-
-      {investment.vehicleAllocation ? (
-        <section className="lp-vehicle-allocation" aria-labelledby="lp-vehicle-allocation-heading">
-          <header>
-            <h2 id="lp-vehicle-allocation-heading">Vehicle allocation</h2>
-            <span>As of {date(investment.vehicleAllocation.asOf)}</span>
-          </header>
-          <div className="lp-vehicle-allocation-grid">
-            <div>
-              <strong>{currency(investment.vehicleAllocation.deployedAmount)}</strong>
-              <span>
-                {wholePercent(investment.vehicleAllocation.deployedShare)} deployed to{" "}
-                {investment.vehicleAllocation.deployedCompany} in its{" "}
-                {investment.vehicleAllocation.deployedRound}
-              </span>
-            </div>
-            <div>
-              <strong>{currency(investment.vehicleAllocation.pendingAmount)}</strong>
-              <span>
-                Finalizing allocation · {wholePercent(investment.vehicleAllocation.awaitingShare)} of
-                the vehicle · Atoms or Applied Intuition
-              </span>
-            </div>
-          </div>
-          <p>
-            This {currency(investment.investedCost)} vehicle investment remains one legal portfolio
-            position. The remaining {currency(investment.vehicleAllocation.pendingAmount)} allocation
-            is being finalized between Atoms and Applied Intuition.
-          </p>
-        </section>
-      ) : null}
-
       <section className="lp-performance" aria-labelledby="lp-performance-heading">
         <header>
           <h2 id="lp-performance-heading">Position</h2>
@@ -126,22 +82,12 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
           <div>
             <dt>Projected value</dt>
             <dd>{currency(projection.projectedValue)}</dd>
-            <small>
-              {projection.basis === "cost"
-                ? "Held at invested cost"
-                : projection.basis === "assumption"
-                  ? "Based on a stated scenario assumption"
-                  : "Based on valuation reference"}
-            </small>
+            <small>{projection.basis === "cost" ? "Held at invested cost" : "Based on valuation reference"}</small>
           </div>
           <div>
             <dt>Latest company valuation</dt>
             <dd>{projection.latestCompanyValuation}</dd>
-            <small>
-              {projection.basis === "cost"
-                ? "Entry terms; no newer comparable mark"
-                : `${projection.basis === "assumption" ? "Scenario" : "As of"} ${date(projection.valuationAsOf)}`}
-            </small>
+            <small>{projection.basis === "cost" ? "Entry terms; no newer comparable mark" : `As of ${date(projection.valuationAsOf)}`}</small>
           </div>
           <div>
             <dt>Distributions</dt>
@@ -164,6 +110,7 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
       </section>
 
       <footer className="lp-portal-footer">
+        <span>{snapshot.source}</span>
         <span>Private and confidential</span>
       </footer>
     </div>

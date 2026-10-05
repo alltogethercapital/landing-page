@@ -14,7 +14,7 @@ import { CONTACT_MAILTO } from "@/lib/site";
 import { slugify } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
-  title: "Our team",
+  title: "Our team — Machine Spirit Capital",
   description:
     "Machine Spirit Capital is led by founding partners Robert Neir and Hisham El-Husseini.",
 };

@@ -12,10 +12,6 @@ export type InvestmentInstrument =
   | "Secondary"
   | "SPV";
 
-export type InvestmentSecurityType =
-  | Exclude<InvestmentInstrument, "SPV">
-  | "Not specified";
-
 const INVESTMENT_ACCESS_LABELS: Record<InvestmentPlatform, string> = {
   AngelList: "Invested with a group",
   "Capital Company": "Invested with a group",
