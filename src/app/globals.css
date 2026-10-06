@@ -52,17 +52,17 @@
 }
 
 :root {
-  --background: #f1efe9;
+  --background: #f7f6f5;
   --foreground: #151513;
-  --card: #fbfaf7;
+  --card: #fcfbfa;
   --card-foreground: #151513;
-  --popover: #fbfaf7;
+  --popover: #fcfbfa;
   --popover-foreground: #151513;
   --primary: #20201d;
-  --primary-foreground: #f1efe9;
-  --secondary: #ebe8e2;
+  --primary-foreground: #f7f6f5;
+  --secondary: #efeeec;
   --secondary-foreground: #20201d;
-  --muted: #ebe8e2;
+  --muted: #efeeec;
   --muted-foreground: #65635f;
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
@@ -76,28 +76,28 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: #fbfaf7;
+  --sidebar: #fcfbfa;
   --sidebar-foreground: #151513;
   --sidebar-primary: #20201d;
-  --sidebar-primary-foreground: #f1efe9;
-  --sidebar-accent: #ebe8e2;
+  --sidebar-primary-foreground: #f7f6f5;
+  --sidebar-accent: #efeeec;
   --sidebar-accent-foreground: #20201d;
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
-  --background: #0f0f0e;
-  --foreground: #ede9e1;
-  --card: #1d1d1a;
-  --card-foreground: #ede9e1;
-  --popover: #1d1d1a;
-  --popover-foreground: #ede9e1;
-  --primary: #ede9e1;
-  --primary-foreground: #0f0f0e;
-  --secondary: #272722;
-  --secondary-foreground: #ede9e1;
-  --muted: #272722;
+  --background: #121217;
+  --foreground: #f7f6f5;
+  --card: #1b1b20;
+  --card-foreground: #f7f6f5;
+  --popover: #1b1b20;
+  --popover-foreground: #f7f6f5;
+  --primary: #f7f6f5;
+  --primary-foreground: #121217;
+  --secondary: #24242a;
+  --secondary-foreground: #f7f6f5;
+  --muted: #24242a;
   --muted-foreground: #aaa69e;
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
@@ -110,12 +110,12 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: #1d1d1a;
-  --sidebar-foreground: #ede9e1;
+  --sidebar: #1b1b20;
+  --sidebar-foreground: #f7f6f5;
   --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: #ede9e1;
-  --sidebar-accent: #272722;
-  --sidebar-accent-foreground: #ede9e1;
+  --sidebar-primary-foreground: #f7f6f5;
+  --sidebar-accent: #24242a;
+  --sidebar-accent-foreground: #f7f6f5;
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
@@ -170,27 +170,27 @@ body::-webkit-scrollbar {
    — Pitch Sans: uppercase navigation, actions, and categorical labels.
    — Atlas Typewriter: Machine Spirit Capital's glyph systems and financial data only. */
 :root {
-  --cog-bg: #f1efe9;
+  --cog-bg: #f7f6f5;
   --cog-ink: #151513;
   --cog-muted: rgba(0, 0, 0, 0.56);
   --cog-line: rgba(0, 0, 0, 0.08);
   --cog-line-medium: rgba(0, 0, 0, 0.24);
   --cog-line-strong: rgba(0, 0, 0, 0.34);
   --cog-placeholder: rgba(0, 0, 0, 0.28);
-  --cog-surface: #fbfaf7;
-  --cog-media-surface: #ffffff;
+  --cog-surface: #fcfbfa;
+  --cog-media-surface: #fcfbfa;
   --cog-soft-fill: rgba(0, 0, 0, 0.035);
   --cog-shadow: rgba(0, 0, 0, 0.22);
   --cog-accent: #181816;
   --cog-sun: #525252;
   --cog-dark: #20201d;
-  --portfolio-field: #e8dfd7;
+  --portfolio-field: #eceae7;
   --portfolio-dot: rgba(0, 0, 0, 0.045);
-  --company-card-bg: #ffffff;
-  --company-card-ink: #000000;
+  --company-card-bg: #fcfbfa;
+  --company-card-ink: #151513;
   --company-card-muted: rgba(0, 0, 0, 0.66);
   --company-card-edge: rgba(0, 0, 0, 0.055);
-  --company-card-control: #e8dfd7;
+  --company-card-control: #eceae7;
   --cog-support: var(--font-unica), "Helvetica Neue", Arial, sans-serif;
   --cog-ui: var(--font-pitch-sans), "Helvetica Neue", Arial, sans-serif;
   --cog-mono: var(--font-atlas-typewriter), ui-monospace, "SF Mono", Menlo, monospace;
@@ -203,13 +203,13 @@ body::-webkit-scrollbar {
 
   /* Surface and ink. A warm paper ground, near-black ink, and graded
      neutrals for supporting text — no pure greys, they read cold on paper. */
-  --paper: #f1efe9;
-  --paper-raised: #fbfaf7;
-  --paper-sunk: #ebe8e2;
+  --paper: #f7f6f5;
+  --paper-raised: #fcfbfa;
+  --paper-sunk: #efeeec;
   --ink: #0d0d0c;
   --ink-secondary: rgba(13, 13, 12, 0.72);
   --ink-tertiary: rgba(13, 13, 12, 0.58);
-  --ink-inverse: #f1efe9;
+  --ink-inverse: #f7f6f5;
   --charcoal: #20201d;
 
   /* The shared monochrome identity drives interactive accents while
@@ -286,42 +286,42 @@ body::-webkit-scrollbar {
 }
 
 html.dark {
-  --cog-bg: #0f0f0e;
-  --cog-ink: #ede9e1;
-  --cog-muted: rgba(237, 233, 225, 0.62);
-  --cog-line: rgba(237, 233, 225, 0.12);
-  --cog-line-medium: rgba(237, 233, 225, 0.26);
-  --cog-line-strong: rgba(237, 233, 225, 0.38);
-  --cog-placeholder: rgba(237, 233, 225, 0.34);
-  --cog-surface: #1d1d1a;
-  --cog-media-surface: #f7f6f2;
-  --cog-soft-fill: rgba(237, 233, 225, 0.055);
+  --cog-bg: #121217;
+  --cog-ink: #f7f6f5;
+  --cog-muted: rgba(247, 246, 245, 0.62);
+  --cog-line: rgba(247, 246, 245, 0.12);
+  --cog-line-medium: rgba(247, 246, 245, 0.26);
+  --cog-line-strong: rgba(247, 246, 245, 0.38);
+  --cog-placeholder: rgba(247, 246, 245, 0.34);
+  --cog-surface: #1b1b20;
+  --cog-media-surface: #f7f6f5;
+  --cog-soft-fill: rgba(247, 246, 245, 0.055);
   --cog-shadow: rgba(0, 0, 0, 0.52);
-  --cog-accent: #ede9e1;
+  --cog-accent: #f7f6f5;
   --cog-sun: #b7b2a8;
-  --cog-dark: #ede9e1;
-  --portfolio-field: #191916;
-  --portfolio-dot: rgba(237, 233, 225, 0.065);
-  --company-card-bg: #f4f1eb;
-  --company-card-ink: #050505;
-  --company-card-muted: rgba(5, 5, 5, 0.66);
-  --company-card-edge: rgba(5, 5, 5, 0.08);
-  --company-card-control: #e4dfd6;
+  --cog-dark: #f7f6f5;
+  --portfolio-field: #18181d;
+  --portfolio-dot: rgba(247, 246, 245, 0.065);
+  --company-card-bg: #f7f6f5;
+  --company-card-ink: #121217;
+  --company-card-muted: rgba(18, 18, 23, 0.66);
+  --company-card-edge: rgba(18, 18, 23, 0.08);
+  --company-card-control: #e9e8e6;
 
-  --paper: #0f0f0e;
-  --paper-raised: #1d1d1a;
-  --paper-sunk: #0f0f0d;
-  --ink: #ede9e1;
-  --ink-secondary: rgba(237, 233, 225, 0.74);
-  --ink-tertiary: rgba(237, 233, 225, 0.58);
-  --ink-inverse: #050505;
-  --charcoal: #ede9e1;
-  --accent: #ede9e1;
+  --paper: #121217;
+  --paper-raised: #1b1b20;
+  --paper-sunk: #17171c;
+  --ink: #f7f6f5;
+  --ink-secondary: rgba(247, 246, 245, 0.74);
+  --ink-tertiary: rgba(247, 246, 245, 0.58);
+  --ink-inverse: #121217;
+  --charcoal: #f7f6f5;
+  --accent: #f7f6f5;
   --accent-hover: #ffffff;
-  --accent-wash: rgba(237, 233, 225, 0.08);
+  --accent-wash: rgba(247, 246, 245, 0.08);
   --sun: #b7b2a8;
-  --rule-hair: rgba(237, 233, 225, 0.14);
-  --rule-strong: rgba(237, 233, 225, 0.88);
+  --rule-hair: rgba(247, 246, 245, 0.14);
+  --rule-strong: rgba(247, 246, 245, 0.88);
 }
 
 /* Breakpoints, recorded as custom properties so the values stay documented
@@ -1174,7 +1174,7 @@ html.dark .cog-page::after {
   height: 100svh;
   min-height: 0;
   overflow: hidden;
-  background: #000;
+  background: var(--cog-bg);
 }
 
 @media (min-width: 900px) and (max-width: 1180px) {

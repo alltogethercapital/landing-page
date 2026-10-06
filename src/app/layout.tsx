@@ -188,7 +188,7 @@ export default function RootLayout({
     >
       <head>
         <meta name="color-scheme" content="light dark" />
-        <meta name="theme-color" content="#f1efe9" />
+        <meta name="theme-color" content="#f7f6f5" />
         <link
           id="machine-spirit-favicon"
           rel="icon"
