@@ -49,18 +49,19 @@ export const LP_AUGUST_2026_FUND_SNAPSHOT = {
 export const LP_SEPTEMBER_2026_PORTFOLIO_AS_OF = "September 16, 2026";
 
 // Reconciled to the live Schedule of Investments after the recent amount
-// corrections. The change from the August letter comprises $170,000 across fifteen new
+// corrections. The change from the August letter comprises $169,914.97 across fifteen new
 // positions plus a $15,000 correction to Positron's recorded cost. Supabase's final
 // allocation is $18.48 below its originally recorded cost; that pre-August correction
-// is reflected in both historical snapshots. New and corrected cost remains at cost.
+// is reflected in both historical snapshots. Ultrasonium's final allocation is $85.03
+// below its initially recorded cost. New and corrected cost remains at cost.
 export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
-  investedCost: 845_217.77,
-  projectedGrossValue: 925_900.06,
+  investedCost: 845_132.74,
+  projectedGrossValue: 925_815.03,
   projectedGrossMultiple: 1.10,
   grossValueChange: 80_682.29,
   positions: 59,
   companies: 58,
   newPositionsSinceAugust: 15,
-  newInvestedCostSinceAugust: 170_000,
+  newInvestedCostSinceAugust: 169_914.97,
   reconciliationAdjustmentSinceAugust: 15_000,
 } as const;
