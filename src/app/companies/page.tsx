@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import {
-  ArrowLink,
   CognitionPage,
   CognitionSection,
   CognitionStrip,
@@ -12,9 +11,9 @@ import { ArrowUpRight } from "@/components/icons";
 import { PORTFOLIO, slugify, type Company } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
-  title: "Our companies — Machine Spirit Capital",
+  title: "Our companies",
   description:
-    "Companies creating and stewarding the technologies that will define the machine age.",
+    "Our companies, across AI, defense, energy, robotics, semiconductors, and space.",
 };
 
 function CompanyArticle({ company }: { company: Company }) {
@@ -34,7 +33,20 @@ function CompanyArticle({ company }: { company: Company }) {
         </span>
         <span className="cog-company-card-content">
           <span className="cog-company-logo-wrap">
-            {logo ? (
+            {logo && company.logoLabel ? (
+              <span className="cog-company-logo-lockup">
+                <Image
+                  src={logo}
+                  alt=""
+                  width={56}
+                  height={56}
+                  unoptimized
+                  loading="eager"
+                  className="cog-company-logo-lockup-mark"
+                />
+                <span>{company.logoLabel}</span>
+              </span>
+            ) : logo ? (
               <Image
                 src={logo}
                 alt={company.name}
@@ -64,13 +76,8 @@ export default function CompaniesPage() {
 
       <CognitionSection label="Our companies" title="Our companies.">
         <p className="cog-body-copy">
-          Companies creating and stewarding the technologies that will define
-          the machine age, across AI, defense, energy, robotics,
-          semiconductors, and space.
+          Across AI, defense, energy, robotics, semiconductors, and space.
         </p>
-        <ArrowLink href="/founders" className="mt-8">
-          Meet the entrepreneurs
-        </ArrowLink>
       </CognitionSection>
 
       <CognitionStrip className="cog-strip--inset cog-strip--portfolio">

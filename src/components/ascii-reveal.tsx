@@ -147,7 +147,10 @@ export function AsciiReveal({ src }: { src: string }) {
             );
           } else if (since < FLASH_MS) {
             // The developing edge: settles in blue, then fades to ink.
-            ctx.fillStyle = "#006FCE";
+            ctx.fillStyle =
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--cog-accent")
+                .trim() || "#111111";
             ctx.fillText(
               cell.glyph,
               (cell.x + 0.5) * cellW,

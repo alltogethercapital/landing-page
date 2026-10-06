@@ -3,7 +3,7 @@ import Link from "next/link";
 import { LP_INVESTOR_UPDATES } from "@/data/lp-investor-updates";
 
 export const metadata: Metadata = {
-  title: "Investor Updates — Machine Spirit Capital Investor Portal",
+  title: "Investor Updates",
   description: "Private updates for Machine Spirit Capital investors.",
   robots: { index: false, follow: false, nocache: true },
 };
@@ -29,13 +29,16 @@ export default function LpInvestorUpdatesPage() {
           <li key={update.slug}>
             <Link
               href={`/lp/updates/${update.slug}`}
-              aria-label={`${update.title} — Investor Update #${update.issue} — ${update.published}`}
+              aria-label={`${update.title}: ${update.subtitle} — Investor Update #${update.issue} — ${update.published}`}
             >
               <span className="lp-update-list-meta">
                 <span>Investor Update #{update.issue}</span>
                 <time dateTime={update.publishedAt}>{update.published}</time>
               </span>
-              <strong>{update.title}</strong>
+              <span className="lp-update-list-heading">
+                <strong>{update.title}</strong>
+                <span className="lp-update-list-subtitle">{update.subtitle}</span>
+              </span>
               <span className="lp-update-list-arrow" aria-hidden="true">↗</span>
             </Link>
           </li>

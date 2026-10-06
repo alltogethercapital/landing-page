@@ -22,18 +22,27 @@ export type LpInvestmentProjectionDto = {
   valuationAsOf: string;
   source: string;
   sourceUrl?: string;
-  basis: "approved" | "comparable" | "cost";
+  basis: "approved" | "comparable" | "assumption" | "cost";
 };
 
 export type LpInvestmentDto = Omit<
   (typeof LP_INVESTMENTS)[number],
-  "driveFolderId" | "entryValuation" | "instrument" | "platform" | "round"
+  | "driveFolderId"
+  | "entryValuation"
+  | "instrument"
+  | "platform"
+  | "round"
+  | "vehicleAllocation"
 > & {
   investmentAccess: string;
   ownershipType: string;
   projection: LpInvestmentProjectionDto;
   round: string;
   valuationWhenInvested: string;
+  vehicleAllocation?: NonNullable<(typeof LP_INVESTMENTS)[number]["vehicleAllocation"]> & {
+    deployedAmount: number;
+    pendingAmount: number;
+  };
 };
 
 const publicPortfolio = new Map(
@@ -43,13 +52,6 @@ const publicPortfolioAliases = new Map([
   ["budbreak innovations", "bud break innovations"],
   ["decart.ai", "decart"],
   ["lance ai", "lance"],
-]);
-const lpWebsiteFallbacks = new Map([
-  ["compresr", "https://compresr.ai/"],
-  ["matforge", "https://discoveredmaterials.com/"],
-  ["positron", "https://www.positron.ai/"],
-  ["raspire", "https://raspire.com/"],
-  ["rendezvous robotics", "https://www.rdvrobotics.com/"],
 ]);
 const investmentsWithoutCompanyWebsite = new Set(["09-h256-series-3"]);
 
@@ -82,6 +84,37 @@ function assertLpData() {
         throw new Error(`Incomplete performance approval: ${investment.id}`);
       }
     }
+    if (investment.vehicleAllocation) {
+      const allocation = investment.vehicleAllocation;
+      if (
+        allocation.deployedShare <= 0 ||
+        allocation.awaitingShare <= 0 ||
+        Math.abs(allocation.deployedShare + allocation.awaitingShare - 1) > Number.EPSILON ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(allocation.asOf) ||
+        !allocation.deployedCompany ||
+        !allocation.deployedRound ||
+        allocation.deployedEntryValuationAmount <= 0
+      ) {
+        throw new Error(`Invalid vehicle allocation: ${investment.id}`);
+      }
+    }
+    if (investment.instrument === "SPV" && !investment.securityAllocation) {
+      throw new Error(`Missing underlying security allocation: ${investment.id}`);
+    }
+    if (investment.securityAllocation) {
+      const allocatedShare = investment.securityAllocation.reduce((sum, item) => {
+        if (item.share <= 0 || item.share > 1) {
+          throw new Error(`Invalid security allocation: ${investment.id}`);
+        }
+        return sum + item.share;
+      }, 0);
+      const expectedShare = investment.vehicleAllocation
+        ? investment.vehicleAllocation.deployedShare
+        : 1;
+      if (Math.abs(allocatedShare - expectedShare) > Number.EPSILON) {
+        throw new Error(`Security allocation share mismatch: ${investment.id}`);
+      }
+    }
     ids.add(investment.id);
     chronologies.add(investment.chronology);
     investedCostTotal += investment.investedCost;
@@ -91,6 +124,12 @@ function assertLpData() {
     if (!ids.has(id)) throw new Error(`Projection mark has no LP investment: ${id}`);
     if (mark.entryValuationAmount <= 0 || mark.latestValuationAmount <= 0) {
       throw new Error(`Invalid projected valuation mark: ${id}`);
+    }
+    const investment = LP_INVESTMENTS.find((record) => record.id === id)!;
+    if (mark.costBasisAmount !== undefined && (
+      mark.costBasisAmount <= 0 || mark.costBasisAmount > investment.investedCost
+    )) {
+      throw new Error(`Invalid projected valuation cost basis: ${id}`);
     }
     if (!/^\d{4}-\d{2}-\d{2}$/.test(mark.asOf) || !mark.latestValuation || !mark.source) {
       throw new Error(`Incomplete projected valuation mark: ${id}`);
@@ -126,10 +165,12 @@ function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
   const language = getLpInvestmentLanguage(platform, instrument);
   const mark = LP_PROJECTED_VALUATION_MARKS[investment.id];
   const approvedPerformance = investment.performance;
+  const markedCostBasis = mark?.costBasisAmount ?? investment.investedCost;
   const projectedValue = approvedPerformance
     ? approvedPerformance.currentValue + approvedPerformance.distributions
     : mark
-      ? investment.investedCost * (mark.latestValuationAmount / mark.entryValuationAmount)
+      ? investment.investedCost - markedCostBasis
+        + markedCostBasis * (mark.latestValuationAmount / mark.entryValuationAmount)
       : investment.investedCost;
   const projection: LpInvestmentProjectionDto = {
     projectedValue,
@@ -137,13 +178,26 @@ function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
     distributions: approvedPerformance?.distributions ?? 0,
     latestCompanyValuation: formatLpValuation(mark?.latestValuation ?? entryValuation),
     valuationAsOf: approvedPerformance?.asOf ?? mark?.asOf ?? investment.investmentDate,
-    source: approvedPerformance?.source ?? mark?.source ?? "Recorded investment terms",
+    source: approvedPerformance?.source
+      ?? (mark?.scope ? `${mark.source}; ${mark.scope}` : mark?.source)
+      ?? "Recorded investment terms",
     sourceUrl: mark?.sourceUrl,
-    basis: approvedPerformance ? "approved" : mark ? "comparable" : "cost",
+    basis: approvedPerformance ? "approved" : mark ? (mark.basis ?? "comparable") : "cost",
   };
+  const deployedAmount = investment.vehicleAllocation
+    ? investment.investedCost * investment.vehicleAllocation.deployedShare
+    : undefined;
+  const vehicleAllocation = investment.vehicleAllocation && deployedAmount !== undefined
+    ? {
+        ...investment.vehicleAllocation,
+        deployedAmount,
+        pendingAmount: investment.investedCost - deployedAmount,
+      }
+    : undefined;
   void _privateDriveFolderId;
   return {
     ...safeInvestment,
+    vehicleAllocation,
     ...language,
     projection,
     round: formatLpRound(round),
@@ -163,8 +217,8 @@ export function getCompanyContext(name: string) {
   const requestedName = name.toLocaleLowerCase();
   const portfolioName = publicPortfolioAliases.get(requestedName) || requestedName;
   const company = publicPortfolio.get(portfolioName);
-  const website = company?.href || lpWebsiteFallbacks.get(requestedName);
-  if (!company && !website) return null;
+  const website = company?.href;
+  if (!company) return null;
   return {
     sectors: company?.sectors || [],
     website,

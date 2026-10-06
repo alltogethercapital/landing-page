@@ -11,9 +11,9 @@ import { SiteNav } from "@/components/site-nav";
 import { ARTICLES } from "@/lib/articles";
 
 export const metadata: Metadata = {
-  title: "Updates — Machine Spirit Capital",
+  title: "Updates",
   description:
-    "Writing from Machine Spirit Capital on the companies and technologies shaping the machine age.",
+    "Writing from Machine Spirit Capital: letters, theses, and updates on the hard frontier.",
 };
 
 export default function NotesPage() {
@@ -23,9 +23,8 @@ export default function NotesPage() {
 
       <CognitionSection label="Updates" title="Updates.">
         <p className="cog-body-copy">
-          Letters, theses, and updates from the hard frontier, on the companies
-          and technologies shaping the machine age. We write when we have
-          something to say.
+          Letters, theses, and updates on the hard frontier. We write when we
+          have something to say.
         </p>
       </CognitionSection>
 

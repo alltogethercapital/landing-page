@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "@/components/icons";
-import { LEGAL, NAV, SOCIALS } from "@/lib/site";
+import { LEGAL, SOCIALS } from "@/lib/site";
 
 function FooterLink({
   href,
@@ -44,15 +44,6 @@ export function SiteFooter() {
           <p className="cog-footer-meta">Seattle, WA</p>
         </div>
 
-        <nav className="cog-footer-column" aria-label="Footer navigation">
-          <p className="cog-footer-meta">Site</p>
-          {NAV.map((item) => (
-            <FooterLink key={item.label} href={item.href}>
-              {item.label}
-            </FooterLink>
-          ))}
-        </nav>
-
         <nav className="cog-footer-column" aria-label="Legal">
           <p className="cog-footer-meta">Legal</p>
           {LEGAL.map((item) => (
@@ -74,6 +65,9 @@ export function SiteFooter() {
 
       <div className="cog-footer-bottom">
         <p>© {new Date().getFullYear()} Machine Spirit Capital.</p>
+        <p className="cog-footer-official">
+          <span aria-hidden="true">🇺🇸</span> The official website of Machine Spirit Capital
+        </p>
         <p>All rights reserved.</p>
       </div>
     </footer>

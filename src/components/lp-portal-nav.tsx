@@ -10,6 +10,10 @@ export function LpPortalNav() {
 
   return (
     <aside className="lp-portal-nav" aria-label="Investor portal navigation">
+      <Link href="/" aria-label="Back home" className="lp-portal-back">
+        <span aria-hidden="true">←</span>
+        <span className="lp-portal-back-label">Back home</span>
+      </Link>
       <Link
         href="/lp"
         aria-label="Machine Spirit Capital investor portal home"
@@ -17,17 +21,10 @@ export function LpPortalNav() {
       >
         <LogoMark />
       </Link>
-      <Link href="/" aria-label="Home" className="lp-portal-home">
-        <span aria-hidden="true">←</span>
-        <span className="lp-portal-home-label">Home</span>
-      </Link>
       <nav aria-label="Investor portal">
         <Link href="/lp" aria-current={!isUpdate ? "page" : undefined} className={!isUpdate ? "is-active" : undefined}>Portfolio</Link>
         <Link href="/lp/updates" aria-current={isUpdate ? "page" : undefined} className={isUpdate ? "is-active" : undefined}>Investor Updates</Link>
       </nav>
-      <form action="/api/lp/logout" method="post">
-        <button type="submit">Sign out</button>
-      </form>
     </aside>
   );
 }

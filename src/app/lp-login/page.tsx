@@ -6,7 +6,7 @@ import { SiteNav } from "@/components/site-nav";
 import { hasValidLpSession } from "@/lib/lp-auth";
 
 export const metadata: Metadata = {
-  title: "LP Login — Machine Spirit Capital",
+  title: "LP Login",
   description: "Secure limited partner access for Machine Spirit Capital.",
   robots: { index: false, follow: false, nocache: true },
 };

@@ -7,11 +7,27 @@ const immutableAssetHeaders = [
   },
 ];
 
+const legacyHosts = [
+  "alltogethercapital.com",
+  "www.alltogethercapital.com",
+  "all2capital.com",
+  "www.all2capital.com",
+  "www.machinespirit.com",
+];
+
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
   images: {
     qualities: [90],
     formats: ["image/avif", "image/webp"],
+  },
+  async redirects() {
+    return legacyHosts.map((host) => ({
+      source: "/:path*",
+      has: [{ type: "host" as const, value: host }],
+      destination: "https://machinespirit.com/:path*",
+      permanent: true,
+    }));
   },
   async headers() {
     return [

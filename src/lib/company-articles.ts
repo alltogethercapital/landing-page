@@ -10,7 +10,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "June 3, 2026",
     dateISO: "2026-06-03",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Shield AI builds Hivemind, an AI pilot for military aircraft, and X‑BAT, a runway-independent autonomous fighter jet.",
     image: "/updates/covers/shield-ai.jpg",
     sections: [
@@ -42,7 +42,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "May 31, 2026",
     dateISO: "2026-05-31",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "1X builds NEO, a soft-bodied humanoid for household chores, run by Redwood, its own generalist AI model.",
     image: "/updates/covers/1x.jpg",
     sections: [
@@ -74,7 +74,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "May 27, 2026",
     dateISO: "2026-05-27",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Frontier AI research turned into products, from ChatGPT and the GPT models to the machinery required to train and serve them.",
     image: "/updates/covers/openai.jpg",
     sections: [
@@ -106,7 +106,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "August 12, 2026",
     dateISO: "2026-08-12",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt:
       "Blue Origin builds reusable rockets, engines, lunar systems, and in-space infrastructure.",
     image: "/updates/covers/blue-origin.jpg",
@@ -134,12 +134,45 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
+    slug: "longshot-space",
+    title: "Longshot Space.",
+    date: "August 17, 2026",
+    dateISO: "2026-08-17",
+    category: "Portfolio",
+    author: "Machine Spirit Capital",
+    excerpt:
+      "Longshot Space builds reusable ground accelerators for hypersonic testing and future cargo launch.",
+    image: "/updates/covers/longshot-space.jpg",
+    sections: [
+    {
+      body: [
+        "Longshot Space is building reusable ground infrastructure that accelerates payloads instead of asking a rocket to carry all of its fuel and propulsion into flight. Its first market is high-cadence hypersonic testing; the longer-term goal is a lower-cost path to orbit for cargo.",
+        "The company has already fired a six-inch, 60-foot accelerator more than 100 times and reached Mach 4.2. It is now advancing side-injection testing on a 30-inch, 120-foot system at Alameda Point. The cover image is courtesy of Longshot Space.",
+      ],
+    },
+    {
+      heading: "What they're building",
+      body: [
+        "Longshot's accelerator uses many compressed-light-gas injection points along a long tube. Each one adds momentum as the payload passes, spreading acceleration across the length of the system instead of delivering one violent push at the start. Moving the machinery onto the ground makes the expensive infrastructure reusable and gives engineers a faster test-and-iterate loop.",
+        "The near-term product is repeatable test capacity for defense and aerospace teams developing hypersonic systems. From there, Longshot plans to scale toward a five-kilometer accelerator and future launch services for non-human cargo. The same architecture connects a present infrastructure bottleneck to a much larger space-access ambition.",
+      ],
+    },
+    {
+      heading: "Why we backed the founder and team",
+      body: [
+        "Mike Grace built Longshot's first multi-injection accelerator in a San Jose garage in 2020. The team then moved through larger systems, repeated shots, measured failures, and another round of hardware. That progression matters more to us than a pristine rendering: the company has built the machine, fired it, learned from it, and kept scaling.",
+        "Hard infrastructure companies earn credibility one test cycle at a time. Longshot pairs that practical engineering loop with a near-term customer problem and a long-term view of what dramatically cheaper cargo access could unlock in orbit. We backed Mike and the team because they are turning a radical idea into increasingly real, reusable infrastructure.",
+      ],
+    },
+    ],
+  },
+  {
     slug: "weave-robotics",
     title: "Weave Robotics.",
     date: "August 11, 2026",
     dateISO: "2026-08-11",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt:
       "Weave Robotics builds Isaac, a practical home robot that folds laundry and takes on the daily reset.",
     image: "/updates/covers/weave-robotics.jpg",
@@ -172,7 +205,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "July 28, 2026",
     dateISO: "2026-07-28",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Supabase is the open-source Postgres development platform for building apps with database, auth, APIs, realtime, storage, functions, and vectors.",
     image: "/updates/covers/supabase.jpg",
     sections: [
@@ -204,7 +237,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "July 28, 2026",
     dateISO: "2026-07-28",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Valstad builds AI-enabled robotic fabrication systems for distributed ship production and repair.",
     image: "/updates/covers/valstad.jpg",
     sections: [
@@ -236,7 +269,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "July 31, 2026",
     dateISO: "2026-07-31",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt:
       "Sunflower Labs builds autonomous drone security systems that combine perimeter sensors, docking stations, and autonomous Bee drones.",
     image: "/updates/covers/sunflower-labs.jpg",
@@ -269,7 +302,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "August 1, 2026",
     dateISO: "2026-08-01",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt:
       "Atoms builds physical automation across food, mining, and transport, turning industrial work into specialized, gainfully employed robots.",
     image: "/updates/covers/atoms.jpg",
@@ -302,7 +335,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "July 10, 2026",
     dateISO: "2026-07-10",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Higgsfield builds AI video and image creation workflows for creators, marketing teams, and enterprise content teams.",
     image: "/updates/covers/higgsfield.jpg",
     sections: [
@@ -334,7 +367,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "July 9, 2026",
     dateISO: "2026-07-09",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Decart builds the infrastructure and real-time models behind live AI, from faster inference to interactive world models.",
     image: "/updates/covers/decart.jpg",
     sections: [
@@ -366,7 +399,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "June 26, 2026",
     dateISO: "2026-06-26",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Core Automation is building the world's most automated AI lab, starting by automating research itself.",
     image: "/updates/covers/core-automation.jpg",
     sections: [
@@ -398,7 +431,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "May 25, 2026",
     dateISO: "2026-05-25",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Anduril builds autonomous defense hardware and the Lattice software that runs it, selling finished products instead of cost-plus programs.",
     image: "/updates/covers/anduril.jpg",
     sections: [
@@ -430,7 +463,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "May 20, 2026",
     dateISO: "2026-05-20",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Archimedes is an autonomous counter-drone laser. It detects and tracks threats, then neutralizes them for the cost of electricity.",
     image: "/updates/covers/aurelius-systems.jpg",
     sections: [
@@ -462,7 +495,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "May 17, 2026",
     dateISO: "2026-05-17",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Salient Motion builds certified electromechanical actuation systems for aviation and defense from its own factory in Southern California.",
     image: "/updates/covers/salient-motion.jpg",
     sections: [
@@ -494,7 +527,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "May 15, 2026",
     dateISO: "2026-05-15",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Replit folds the editor, runtime, database, and deployment into one system, then hands the whole machine to an AI agent.",
     image: "/updates/covers/replit.jpg",
     sections: [
@@ -526,7 +559,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "July 9, 2026",
     dateISO: "2026-07-09",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Sourcerer is building an AI-native distributor that automates sourcing, supplier quotes, freight, and trade finance.",
     image: "/updates/covers/sourcerer.jpg",
     sections: [
@@ -558,7 +591,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "May 11, 2026",
     dateISO: "2026-05-11",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Applied Intuition builds the simulation, tooling, and operating layer that autonomous vehicles and machines actually run on.",
     image: "/updates/covers/applied-intuition.jpg",
     sections: [
@@ -590,7 +623,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "May 8, 2026",
     dateISO: "2026-05-08",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "General-purpose humanoid robots for the workforce, built around one body and one AI system, with a plan to make both at volume.",
     image: "/updates/covers/figure-ai.jpg",
     sections: [
@@ -622,7 +655,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "May 4, 2026",
     dateISO: "2026-05-04",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Apptronik builds Apollo, a general-purpose humanoid robot for warehouses and factories, designed for mass manufacture rather than the demo reel.",
     image: "/updates/covers/apptronik.jpg",
     sections: [
@@ -654,7 +687,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "May 2, 2026",
     dateISO: "2026-05-02",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Volantis builds a photonic motherboard that moves data between chips as light, attacking the interconnect bottleneck in AI compute.",
     image: "/updates/covers/volantis.jpg",
     sections: [
@@ -686,7 +719,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "April 27, 2026",
     dateISO: "2026-04-27",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Starcloud is building orbital data centers, GPU clusters powered by continuous sunlight and cooled by the vacuum of space.",
     image: "/updates/covers/starcloud.jpg",
     sections: [
@@ -718,7 +751,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "June 30, 2026",
     dateISO: "2026-06-30",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Reflect Orbital is building space-enabled infrastructure to redirect sunlight from orbit to precise locations on Earth.",
     image: "/updates/covers/reflect-orbital.jpg",
     sections: [
@@ -750,7 +783,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "April 24, 2026",
     dateISO: "2026-04-24",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Exowatt builds modular solar-thermal systems that store sunlight as heat and dispatch electricity around the clock for AI compute.",
     image: "/updates/covers/exowatt.jpg",
     sections: [
@@ -782,7 +815,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "July 8, 2026",
     dateISO: "2026-07-08",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Apollo Atomics builds compact pressurized-water reactors designed to turn nuclear power from a megaproject into a factory-built machine.",
     image: "/updates/covers/apollo-atomics.jpg",
     sections: [
@@ -814,7 +847,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "April 22, 2026",
     dateISO: "2026-04-22",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Factory-built nuclear plants for data centers, with the reactor treated as a manufacturing problem instead of a construction project.",
     image: "/updates/covers/aalo-atomics.jpg",
     sections: [
@@ -846,7 +879,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "April 18, 2026",
     dateISO: "2026-04-18",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Quaise uses fusion-lab gyrotrons to vaporize rock miles down, turning superhot geothermal into clean baseload power almost anywhere.",
     image: "/updates/covers/quaise-energy.jpg",
     sections: [
@@ -878,7 +911,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "April 15, 2026",
     dateISO: "2026-04-15",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Unspun builds Vega, an automated 3D weaving system that turns yarn directly into garments, cutting lead times from months to days.",
     image: "/updates/covers/unspun.jpg",
     sections: [
@@ -910,7 +943,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "July 9, 2026",
     dateISO: "2026-07-09",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "MAV Unlimited builds volumetric 3D printers that cure whole engineering-grade parts in minutes instead of printing layer by layer for hours.",
     image: "/updates/covers/mav-unlimited.jpg",
     sections: [
@@ -942,7 +975,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "April 11, 2026",
     dateISO: "2026-04-11",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Lance builds AI agents that answer hotel guests and then finish the work inside the hotel's own software.",
     image: "/updates/covers/lance.jpg",
     sections: [
@@ -974,7 +1007,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "April 9, 2026",
     dateISO: "2026-04-09",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Samply gives music producers one place to store, stream, and get feedback on their audio. Files stay lossless and private, and every version is kept.",
     image: "/updates/covers/samply.jpg",
     sections: [
@@ -1006,7 +1039,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "April 4, 2026",
     dateISO: "2026-04-04",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Hark is building personal intelligence, developing foundation models, AI-native hardware, and its own compute as one stack.",
     image: "/updates/covers/hark.jpg",
     sections: [
@@ -1038,7 +1071,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "April 1, 2026",
     dateISO: "2026-04-01",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Campus is an accredited online college putting live, professor-taught degrees within reach of a Pell Grant.",
     image: "/updates/covers/campus.jpg",
     sections: [
@@ -1070,7 +1103,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "March 30, 2026",
     dateISO: "2026-03-30",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Autonomous scouting robots that photograph every vine, flagging disease early and forecasting yield for specialty-crop growers.",
     image: "/updates/covers/bud-break-innovations.jpg",
     sections: [
@@ -1102,7 +1135,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "March 26, 2026",
     dateISO: "2026-03-26",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "A general-purpose industrial robot combining strength, dexterity, and physical AI, from a small team out of Apple, Tesla, Cruise, and Boeing.",
     image: "/updates/covers/maven-robotics.jpg",
     sections: [
@@ -1133,7 +1166,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "March 23, 2026",
     dateISO: "2026-03-23",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "A new actuator architecture for robotic motion and control, built for the next wave of robotics and embodied AI.",
     image: "/updates/covers/eccentric-machines.jpg",
     sections: [
@@ -1165,7 +1198,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "March 19, 2026",
     dateISO: "2026-03-19",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Array Labs flies clusters of small radar satellites that measure Earth's surface in native 3D, through clouds and darkness.",
     image: "/updates/covers/array-labs.jpg",
     sections: [
@@ -1197,7 +1230,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "March 17, 2026",
     dateISO: "2026-03-17",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Value-based specialty care in Los Angeles, from bundled-price orthopedics and an owned surgery center to whole-body diagnostics.",
     image: "/updates/covers/commons-clinic.jpg",
     sections: [
@@ -1229,7 +1262,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "March 15, 2026",
     dateISO: "2026-03-15",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Plena Health is the AI operating system for specialty medical practices, automating the back-office work that keeps clinics running.",
     image: "/updates/covers/plena-health.jpg",
     sections: [
@@ -1261,7 +1294,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "March 12, 2026",
     dateISO: "2026-03-12",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Corgi is rebuilding business insurance for startups as one full-stack machine, with underwriting, policy design, and claims under one roof.",
     image: "/updates/covers/corgi.jpg",
     sections: [
@@ -1293,7 +1326,7 @@ export const COMPANY_ARTICLES: Article[] = [
     date: "March 9, 2026",
     dateISO: "2026-03-09",
     category: "Portfolio",
-    author: "All Together",
+    author: "Machine Spirit Capital",
     excerpt: "Aformic builds autonomous mobile robots and the QURSOR fleet software that move pallets, carts, and racks across factory floors.",
     image: "/updates/covers/aformic.jpg",
     sections: [

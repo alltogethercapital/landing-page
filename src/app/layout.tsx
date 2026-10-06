@@ -1,74 +1,79 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import type { CSSProperties, ReactNode } from "react";
+import { SiteInteractionSounds } from "@/components/site-interaction-sounds";
 import { SiteSearch } from "@/components/site-search";
-import { SiteShaderLab } from "@/components/site-shader-lab";
 import { SitePreloader } from "@/components/site-preloader";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { buildSearchIndex } from "@/lib/search";
 import "./globals.css";
 
-const newsreader = localFont({
-  variable: "--font-newsreader",
+const rosart = localFont({
+  variable: "--font-rosart",
   display: "swap",
-  fallback: ["Times New Roman", "Georgia", "serif"],
+  fallback: ["Georgia", "Times New Roman", "serif"],
   src: [
     {
-      path: "../../public/fonts/Newsreader-Regular.ttf",
+      path: "./fonts/sequoia/Rosart-Regular-HsHjFyXa.woff",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Newsreader-SemiBold.ttf",
+      path: "./fonts/sequoia/Rosart-Italic-H5xVVjl2.woff",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./fonts/sequoia/Rosart-SemiBold-7isf5RfA.woff",
+      weight: "600",
+      style: "normal",
+    },
+  ],
+});
+
+const unica77 = localFont({
+  variable: "--font-unica",
+  display: "swap",
+  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
+  src: [
+    {
+      path: "./fonts/sequoia/Unica77LLWeb-Regular-dxUtRmHM.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/sequoia/Unica77LLWeb-Italic-x0vfYgaH.woff2",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./fonts/sequoia/Unica77LLWeb-Bold-YVLHSOyT.woff2",
       weight: "700",
       style: "normal",
     },
   ],
 });
 
-const martinaPlantijn = localFont({
-  variable: "--font-martina-plantijn",
+const pitchSans = localFont({
+  variable: "--font-pitch-sans",
   display: "swap",
-  fallback: ["Georgia", "Times New Roman", "serif"],
+  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
   src: [
     {
-      path: "./fonts/paradigm/martina-plantijn-light.woff2",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "./fonts/paradigm/martina-plantijn-light-italic.woff2",
-      weight: "300",
-      style: "italic",
-    },
-    {
-      path: "./fonts/paradigm/martina-plantijn-regular.woff2",
+      path: "./fonts/sequoia/PitchSansApp-Regular.07f66690.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/paradigm/martina-plantijn-italic.woff2",
-      weight: "400",
-      style: "italic",
-    },
-    {
-      path: "./fonts/paradigm/martina-plantijn-medium.woff2",
-      weight: "600",
+      path: "./fonts/sequoia/PitchSansApp-Medium.4e29e2bf.woff2",
+      weight: "500",
       style: "normal",
     },
     {
-      path: "./fonts/paradigm/martina-plantijn-medium-italic.woff2",
-      weight: "600",
-      style: "italic",
-    },
-    {
-      path: "./fonts/paradigm/martina-plantijn-bold.woff2",
-      weight: "800",
+      path: "./fonts/sequoia/PitchSansApp-Bold.e62747bf.woff2",
+      weight: "700",
       style: "normal",
-    },
-    {
-      path: "./fonts/paradigm/martina-plantijn-bold-italic.woff2",
-      weight: "800",
-      style: "italic",
     },
   ],
 });
@@ -121,39 +126,39 @@ const atlasTypewriter = localFont({
   ],
 });
 
-const brandDisplay = localFont({
-  variable: "--font-brand-display",
-  display: "swap",
-  fallback: ["Arial", "Helvetica", "sans-serif"],
-  src: [
-    {
-      path: "./fonts/sequoia/Unica77LLWeb-Regular.1492eabb.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/sequoia/Unica77LLWeb-Bold.3928012f.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-});
-
 // metadataBase is required so Next.js can resolve the opengraph-image
 // route to an absolute URL in the rendered og:image meta tag.
 const SITE_URL = "https://machinespirit.com";
-const SITE_TITLE = "The Future Is Built Together — Machine Spirit Capital";
+const SITE_TITLE = "Home | Machine Spirit Capital";
 const SITE_DESCRIPTION =
-  "Machine Spirit Capital backs the founders creating and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.";
+  "Machine Spirit Capital backs the founders rebuilding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.";
 
 const hiddenScrollbarStyle: CSSProperties = {
   msOverflowStyle: "none",
   scrollbarWidth: "none",
 };
 
+const themeInitializer = `
+  (function () {
+    try {
+      var savedTheme = window.localStorage.getItem("machine-spirit-theme");
+      var theme = savedTheme === "light" || savedTheme === "dark"
+        ? savedTheme
+        : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      var root = document.documentElement;
+      root.classList.toggle("dark", theme === "dark");
+      root.dataset.theme = theme;
+      root.style.colorScheme = theme;
+    } catch (_) {}
+  })();
+`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: SITE_TITLE,
+  title: {
+    default: SITE_TITLE,
+    template: "%s | Machine Spirit Capital",
+  },
   description: SITE_DESCRIPTION,
   openGraph: {
     title: SITE_TITLE,
@@ -177,14 +182,29 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${newsreader.variable} ${martinaPlantijn.variable} ${atlasTypewriter.variable} ${brandDisplay.variable} h-full antialiased`}
+      className={`${rosart.variable} ${unica77.variable} ${pitchSans.variable} ${atlasTypewriter.variable} h-full antialiased`}
       style={hiddenScrollbarStyle}
+      suppressHydrationWarning
     >
+      <head>
+        <meta name="color-scheme" content="light dark" />
+        <meta name="theme-color" content="#f1efe9" />
+        <link
+          id="machine-spirit-favicon"
+          rel="icon"
+          href="/brand/machine-spirit-favicon-light.png"
+          type="image/png"
+        />
+      </head>
       <body className="min-h-full" style={hiddenScrollbarStyle}>
-        {process.env.NODE_ENV === "development" && <SiteShaderLab />}
+        <Script id="machine-spirit-theme" strategy="beforeInteractive">
+          {themeInitializer}
+        </Script>
+        <SiteInteractionSounds />
         <SitePreloader />
         <SiteSearch index={buildSearchIndex()} />
         {children}
+        <ThemeToggle />
       </body>
     </html>
   );

@@ -25,18 +25,32 @@ export function BrandDot({ className }: { className?: string }) {
   );
 }
 
-// The Assembly symbol is the shared, text-free site identity.
+// Compact wordmark used across desktop, mobile, search, and the LP portal.
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span className={cn("cog-wordmark", className)}>
-      <Image
-        src="/brand/all-together-assembly-mark.png"
-        alt="Machine Spirit Capital"
-        width={48}
-        height={48}
-        quality={90}
-        className="cog-wordmark-logo"
-      />
+      <span className="cog-wordmark-symbol" aria-hidden="true">
+        <Image
+          src="/brand/machine-spirit-wing-mark.png"
+          alt=""
+          width={22}
+          height={11}
+          unoptimized
+          className="cog-wordmark-logo cog-wordmark-logo--light"
+        />
+        <Image
+          src="/brand/machine-spirit-wing-mark-ivory.png"
+          alt=""
+          width={22}
+          height={11}
+          unoptimized
+          className="cog-wordmark-logo cog-wordmark-logo--dark"
+        />
+      </span>
+      <span className="cog-wordmark-text">
+        <span className="cog-wordmark-line">MACHINE SPIRIT</span>
+        <span className="cog-wordmark-line">CAPITAL</span>
+      </span>
     </span>
   );
 }

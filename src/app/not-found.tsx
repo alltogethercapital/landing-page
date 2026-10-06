@@ -22,7 +22,7 @@ export default function NotFound() {
           <ArrowLink href="/">
             Back home
           </ArrowLink>
-          <ArrowLink href="/companies" className="bg-transparent text-black">
+          <ArrowLink href="/companies" className="bg-transparent">
             Our companies
           </ArrowLink>
         </div>

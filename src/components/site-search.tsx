@@ -194,12 +194,14 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
     }
   };
 
+  if (isPortalRoute || pathname === "/lp-login") return null;
+
   return (
     <>
       <button
         ref={triggerRef}
         type="button"
-        className={`cog-search-trigger${isPortalRoute ? " cog-search-trigger--portal" : ""}`}
+        className="cog-search-trigger"
         aria-label="Open search"
         aria-haspopup="dialog"
         aria-expanded={open}
