@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Machine Spirit — 100 Wing Studies</title>
+<style>
+:root{color-scheme:light;--bg:#f2f0ec;--paper:#f7f6f5;--ink:#141412;--muted:#77736c;--line:#d8d4cc}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif}.shell{display:grid;grid-template-columns:minmax(360px,42vw) 1fr;min-height:100vh}.stage{position:sticky;top:0;height:100vh;padding:42px;border-right:1px solid var(--line);display:flex;flex-direction:column}.eyebrow,.number,.meta{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}.preview{margin:auto;width:min(100%,560px);aspect-ratio:1;background:var(--paper);display:grid;place-items:center}.preview img{width:82%;height:82%;object-fit:contain}.wordmark{text-align:center;font-size:26px;letter-spacing:.2em;text-transform:uppercase;margin-top:24px}.meta{text-align:center;margin-top:12px}.controls{display:flex;justify-content:space-between;gap:10px}.controls button{width:48px;height:48px;border:1px solid var(--line);background:var(--paper);font-size:22px;cursor:pointer}.gallery{padding:42px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;align-content:start}.card{position:relative;min-height:210px;border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:22px 14px 16px;cursor:pointer;text-align:center}.card:hover,.card.active{border-color:var(--ink)}.card img{width:100%;height:130px;object-fit:contain}.card .number{position:absolute;top:12px;left:12px}.card-name{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}@media(max-width:800px){.shell{display:block}.stage{position:relative;height:auto;min-height:74vh;border-right:0;border-bottom:1px solid var(--line);padding:24px}.gallery{padding:18px;grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <section class="stage">
+    <p class="eyebrow">100 wing studies</p>
+    <div class="preview"><img id="preview" alt="Selected Machine Spirit logo concept" /></div>
+    <div class="wordmark">Machine Spirit</div>
+    <div class="meta" id="name"></div>
+    <div class="controls"><button id="prev" aria-label="Previous concept">←</button><button id="next" aria-label="Next concept">→</button></div>
+  </section>
+  <section class="gallery"><button class="card" data-index="0" aria-label="View Core Wing A">
+  <span class="number">001</span>
+  <img src="svg/001-core-wing-a.svg" alt="" />
+  <span class="card-name">Core Wing A</span>
+</button><button class="card" data-index="1" aria-label="View Core Wing B">
+  <span class="number">002</span>
+  <img src="svg/002-core-wing-b.svg" alt="" />
+  <span class="card-name">Core Wing B</span>
+</button><button class="card" data-index="2" aria-label="View Core Wing C">
+  <span class="number">003</span>
+  <img src="svg/003-core-wing-c.svg" alt="" />
+  <span class="card-name">Core Wing C</span>
+</button><button class="card" data-index="3" aria-label="View Core Wing D">
+  <span class="number">004</span>
+  <img src="svg/004-core-wing-d.svg" alt="" />
+  <span class="card-name">Core Wing D</span>
+</button><button class="card" data-index="4" aria-label="View Core Wing E">
+  <span class="number">005</span>
+  <img src="svg/005-core-wing-e.svg" alt="" />
+  <span class="card-name">Core Wing E</span>
+</button><button class="card" data-index="5" aria-label="View Core Wing F">
+  <span class="number">006</span>
+  <img src="svg/006-core-wing-f.svg" alt="" />
+  <span class="card-name">Core Wing F</span>
+</button><button class="card" data-index="6" aria-label="View Core Wing G">
+  <span class="number">007</span>
+  <img src="svg/007-core-wing-g.svg" alt="" />
+  <span class="card-name">Core Wing G</span>
+</button><button class="card" data-index="7" aria-label="View Core Wing H">
+  <span class="number">008</span>
+  <img src="svg/008-core-wing-h.svg" alt="" />
+  <span class="card-name">Core Wing H</span>
+</button><button class="card" data-index="8" aria-label="View Core Wing I">
+  <span class="number">009</span>
+  <img src="svg/009-core-wing-i.svg" alt="" />
+  <span class="card-name">Core Wing I</span>
+</button><button class="card" data-index="9" aria-label="View Core Wing J">
+  <span class="number">010</span>
+  <img src="svg/010-core-wing-j.svg" alt="" />
+  <span class="card-name">Core Wing J</span>
+</button><button class="card" data-index="10" aria-label="View Signal Wing A">
+  <span class="number">011</span>
+  <img src="svg/011-signal-wing-a.svg" alt="" />
+  <span class="card-name">Signal Wing A</span>
+</button><button class="card" data-index="11" aria-label="View Signal Wing B">
+  <span class="number">012</span>
+  <img src="svg/012-signal-wing-b.svg" alt="" />
+  <span class="card-name">Signal Wing B</span>
+</button><button class="card" data-index="12" aria-label="View Signal Wing C">
+  <span class="number">013</span>
+  <img src="svg/013-signal-wing-c.svg" alt="" />
+  <span class="card-name">Signal Wing C</span>
+</button><button class="card" data-index="13" aria-label="View Signal Wing D">
+  <span class="number">014</span>
+  <img src="svg/014-signal-wing-d.svg" alt="" />
+  <span class="card-name">Signal Wing D</span>
+</button><button class="card" data-index="14" aria-label="View Signal Wing E">
+  <span class="number">015</span>
+  <img src="svg/015-signal-wing-e.svg" alt="" />
+  <span class="card-name">Signal Wing E</span>
+</button><button class="card" data-index="15" aria-label="View Signal Wing F">
+  <span class="number">016</span>
+  <img src="svg/016-signal-wing-f.svg" alt="" />
+  <span class="card-name">Signal Wing F</span>
+</button><button class="card" data-index="16" aria-label="View Signal Wing G">
+  <span class="number">017</span>
+  <img src="svg/017-signal-wing-g.svg" alt="" />
+  <span class="card-name">Signal Wing G</span>
+</button><button class="card" data-index="17" aria-label="View Signal Wing H">
+  <span class="number">018</span>
+  <img src="svg/018-signal-wing-h.svg" alt="" />
+  <span class="card-name">Signal Wing H</span>
+</button><button class="card" data-index="18" aria-label="View Signal Wing I">
+  <span class="number">019</span>
+  <img src="svg/019-signal-wing-i.svg" alt="" />
+  <span class="card-name">Signal Wing I</span>
+</button><button class="card" data-index="19" aria-label="View Signal Wing J">
+  <span class="number">020</span>
+  <img src="svg/020-signal-wing-j.svg" alt="" />
+  <span class="card-name">Signal Wing J</span>
+</button><button class="card" data-index="20" aria-label="View Spirit Core A">
+  <span class="number">021</span>
+  <img src="svg/021-spirit-core-a.svg" alt="" />
+  <span class="card-name">Spirit Core A</span>
+</button><button class="card" data-index="21" aria-label="View Spirit Core B">
+  <span class="number">022</span>
+  <img src="svg/022-spirit-core-b.svg" alt="" />
+  <span class="card-name">Spirit Core B</span>
+</button><button class="card" data-index="22" aria-label="View Spirit Core C">
+  <span class="number">023</span>
+  <img src="svg/023-spirit-core-c.svg" alt="" />
+  <span class="card-name">Spirit Core C</span>
+</button><button class="card" data-index="23" aria-label="View Spirit Core D">
+  <span class="number">024</span>
+  <img src="svg/024-spirit-core-d.svg" alt="" />
+  <span class="card-name">Spirit Core D</span>
+</button><button class="card" data-index="24" aria-label="View Spirit Core E">
+  <span class="number">025</span>
+  <img src="svg/025-spirit-core-e.svg" alt="" />
+  <span class="card-name">Spirit Core E</span>
+</button><button class="card" data-index="25" aria-label="View Spirit Core F">
+  <span class="number">026</span>
+  <img src="svg/026-spirit-core-f.svg" alt="" />
+  <span class="card-name">Spirit Core F</span>
+</button><button class="card" data-index="26" aria-label="View Spirit Core G">
+  <span class="number">027</span>
+  <img src="svg/027-spirit-core-g.svg" alt="" />
+  <span class="card-name">Spirit Core G</span>
+</button><button class="card" data-index="27" aria-label="View Spirit Core H">
+  <span class="number">028</span>
+  <img src="svg/028-spirit-core-h.svg" alt="" />
+  <span class="card-name">Spirit Core H</span>
+</button><button class="card" data-index="28" aria-label="View Spirit Core I">
+  <span class="number">029</span>
+  <img src="svg/029-spirit-core-i.svg" alt="" />
+  <span class="card-name">Spirit Core I</span>
+</button><button class="card" data-index="29" aria-label="View Spirit Core J">
+  <span class="number">030</span>
+  <img src="svg/030-spirit-core-j.svg" alt="" />
+  <span class="card-name">Spirit Core J</span>
+</button><button class="card" data-index="30" aria-label="View Ascendant A">
+  <span class="number">031</span>
+  <img src="svg/031-ascendant-a.svg" alt="" />
+  <span class="card-name">Ascendant A</span>
+</button><button class="card" data-index="31" aria-label="View Ascendant B">
+  <span class="number">032</span>
+  <img src="svg/032-ascendant-b.svg" alt="" />
+  <span class="card-name">Ascendant B</span>
+</button><button class="card" data-index="32" aria-label="View Ascendant C">
+  <span class="number">033</span>
+  <img src="svg/033-ascendant-c.svg" alt="" />
+  <span class="card-name">Ascendant C</span>
+</button><button class="card" data-index="33" aria-label="View Ascendant D">
+  <span class="number">034</span>
+  <img src="svg/034-ascendant-d.svg" alt="" />
+  <span class="card-name">Ascendant D</span>
+</button><button class="card" data-index="34" aria-label="View Ascendant E">
+  <span class="number">035</span>
+  <img src="svg/035-ascendant-e.svg" alt="" />
+  <span class="card-name">Ascendant E</span>
+</button><button class="card" data-index="35" aria-label="View Ascendant F">
+  <span class="number">036</span>
+  <img src="svg/036-ascendant-f.svg" alt="" />
+  <span class="card-name">Ascendant F</span>
+</button><button class="card" data-index="36" aria-label="View Ascendant G">
+  <span class="number">037</span>
+  <img src="svg/037-ascendant-g.svg" alt="" />
+  <span class="card-name">Ascendant G</span>
+</button><button class="card" data-index="37" aria-label="View Ascendant H">
+  <span class="number">038</span>
+  <img src="svg/038-ascendant-h.svg" alt="" />
+  <span class="card-name">Ascendant H</span>
+</button><button class="card" data-index="38" aria-label="View Ascendant I">
+  <span class="number">039</span>
+  <img src="svg/039-ascendant-i.svg" alt="" />
+  <span class="card-name">Ascendant I</span>
+</button><button class="card" data-index="39" aria-label="View Ascendant J">
+  <span class="number">040</span>
+  <img src="svg/040-ascendant-j.svg" alt="" />
+  <span class="card-name">Ascendant J</span>
+</button><button class="card" data-index="40" aria-label="View Forge Wing A">
+  <span class="number">041</span>
+  <img src="svg/041-forge-wing-a.svg" alt="" />
+  <span class="card-name">Forge Wing A</span>
+</button><button class="card" data-index="41" aria-label="View Forge Wing B">
+  <span class="number">042</span>
+  <img src="svg/042-forge-wing-b.svg" alt="" />
+  <span class="card-name">Forge Wing B</span>
+</button><button class="card" data-index="42" aria-label="View Forge Wing C">
+  <span class="number">043</span>
+  <img src="svg/043-forge-wing-c.svg" alt="" />
+  <span class="card-name">Forge Wing C</span>
+</button><button class="card" data-index="43" aria-label="View Forge Wing D">
+  <span class="number">044</span>
+  <img src="svg/044-forge-wing-d.svg" alt="" />
+  <span class="card-name">Forge Wing D</span>
+</button><button class="card" data-index="44" aria-label="View Forge Wing E">
+  <span class="number">045</span>
+  <img src="svg/045-forge-wing-e.svg" alt="" />
+  <span class="card-name">Forge Wing E</span>
+</button><button class="card" data-index="45" aria-label="View Forge Wing F">
+  <span class="number">046</span>
+  <img src="svg/046-forge-wing-f.svg" alt="" />
+  <span class="card-name">Forge Wing F</span>
+</button><button class="card" data-index="46" aria-label="View Forge Wing G">
+  <span class="number">047</span>
+  <img src="svg/047-forge-wing-g.svg" alt="" />
+  <span class="card-name">Forge Wing G</span>
+</button><button class="card" data-index="47" aria-label="View Forge Wing H">
+  <span class="number">048</span>
+  <img src="svg/048-forge-wing-h.svg" alt="" />
+  <span class="card-name">Forge Wing H</span>
+</button><button class="card" data-index="48" aria-label="View Forge Wing I">
+  <span class="number">049</span>
+  <img src="svg/049-forge-wing-i.svg" alt="" />
+  <span class="card-name">Forge Wing I</span>
+</button><button class="card" data-index="49" aria-label="View Forge Wing J">
+  <span class="number">050</span>
+  <img src="svg/050-forge-wing-j.svg" alt="" />
+  <span class="card-name">Forge Wing J</span>
+</button><button class="card" data-index="50" aria-label="View Aerial A">
+  <span class="number">051</span>
+  <img src="svg/051-aerial-a.svg" alt="" />
+  <span class="card-name">Aerial A</span>
+</button><button class="card" data-index="51" aria-label="View Aerial B">
+  <span class="number">052</span>
+  <img src="svg/052-aerial-b.svg" alt="" />
+  <span class="card-name">Aerial B</span>
+</button><button class="card" data-index="52" aria-label="View Aerial C">
+  <span class="number">053</span>
+  <img src="svg/053-aerial-c.svg" alt="" />
+  <span class="card-name">Aerial C</span>
+</button><button class="card" data-index="53" aria-label="View Aerial D">
+  <span class="number">054</span>
+  <img src="svg/054-aerial-d.svg" alt="" />
+  <span class="card-name">Aerial D</span>
+</button><button class="card" data-index="54" aria-label="View Aerial E">
+  <span class="number">055</span>
+  <img src="svg/055-aerial-e.svg" alt="" />
+  <span class="card-name">Aerial E</span>
+</button><button class="card" data-index="55" aria-label="View Aerial F">
+  <span class="number">056</span>
+  <img src="svg/056-aerial-f.svg" alt="" />
+  <span class="card-name">Aerial F</span>
+</button><button class="card" data-index="56" aria-label="View Aerial G">
+  <span class="number">057</span>
+  <img src="svg/057-aerial-g.svg" alt="" />
+  <span class="card-name">Aerial G</span>
+</button><button class="card" data-index="57" aria-label="View Aerial H">
+  <span class="number">058</span>
+  <img src="svg/058-aerial-h.svg" alt="" />
+  <span class="card-name">Aerial H</span>
+</button><button class="card" data-index="58" aria-label="View Aerial I">
+  <span class="number">059</span>
+  <img src="svg/059-aerial-i.svg" alt="" />
+  <span class="card-name">Aerial I</span>
+</button><button class="card" data-index="59" aria-label="View Aerial J">
+  <span class="number">060</span>
+  <img src="svg/060-aerial-j.svg" alt="" />
+  <span class="card-name">Aerial J</span>
+</button><button class="card" data-index="60" aria-label="View Relay A">
+  <span class="number">061</span>
+  <img src="svg/061-relay-a.svg" alt="" />
+  <span class="card-name">Relay A</span>
+</button><button class="card" data-index="61" aria-label="View Relay B">
+  <span class="number">062</span>
+  <img src="svg/062-relay-b.svg" alt="" />
+  <span class="card-name">Relay B</span>
+</button><button class="card" data-index="62" aria-label="View Relay C">
+  <span class="number">063</span>
+  <img src="svg/063-relay-c.svg" alt="" />
+  <span class="card-name">Relay C</span>
+</button><button class="card" data-index="63" aria-label="View Relay D">
+  <span class="number">064</span>
+  <img src="svg/064-relay-d.svg" alt="" />
+  <span class="card-name">Relay D</span>
+</button><button class="card" data-index="64" aria-label="View Relay E">
+  <span class="number">065</span>
+  <img src="svg/065-relay-e.svg" alt="" />
+  <span class="card-name">Relay E</span>
+</button><button class="card" data-index="65" aria-label="View Relay F">
+  <span class="number">066</span>
+  <img src="svg/066-relay-f.svg" alt="" />
+  <span class="card-name">Relay F</span>
+</button><button class="card" data-index="66" aria-label="View Relay G">
+  <span class="number">067</span>
+  <img src="svg/067-relay-g.svg" alt="" />
+  <span class="card-name">Relay G</span>
+</button><button class="card" data-index="67" aria-label="View Relay H">
+  <span class="number">068</span>
+  <img src="svg/068-relay-h.svg" alt="" />
+  <span class="card-name">Relay H</span>
+</button><button class="card" data-index="68" aria-label="View Relay I">
+  <span class="number">069</span>
+  <img src="svg/069-relay-i.svg" alt="" />
+  <span class="card-name">Relay I</span>
+</button><button class="card" data-index="69" aria-label="View Relay J">
+  <span class="number">070</span>
+  <img src="svg/070-relay-j.svg" alt="" />
+  <span class="card-name">Relay J</span>
+</button><button class="card" data-index="70" aria-label="View Veil Wing A">
+  <span class="number">071</span>
+  <img src="svg/071-veil-wing-a.svg" alt="" />
+  <span class="card-name">Veil Wing A</span>
+</button><button class="card" data-index="71" aria-label="View Veil Wing B">
+  <span class="number">072</span>
+  <img src="svg/072-veil-wing-b.svg" alt="" />
+  <span class="card-name">Veil Wing B</span>
+</button><button class="card" data-index="72" aria-label="View Veil Wing C">
+  <span class="number">073</span>
+  <img src="svg/073-veil-wing-c.svg" alt="" />
+  <span class="card-name">Veil Wing C</span>
+</button><button class="card" data-index="73" aria-label="View Veil Wing D">
+  <span class="number">074</span>
+  <img src="svg/074-veil-wing-d.svg" alt="" />
+  <span class="card-name">Veil Wing D</span>
+</button><button class="card" data-index="74" aria-label="View Veil Wing E">
+  <span class="number">075</span>
+  <img src="svg/075-veil-wing-e.svg" alt="" />
+  <span class="card-name">Veil Wing E</span>
+</button><button class="card" data-index="75" aria-label="View Veil Wing F">
+  <span class="number">076</span>
+  <img src="svg/076-veil-wing-f.svg" alt="" />
+  <span class="card-name">Veil Wing F</span>
+</button><button class="card" data-index="76" aria-label="View Veil Wing G">
+  <span class="number">077</span>
+  <img src="svg/077-veil-wing-g.svg" alt="" />
+  <span class="card-name">Veil Wing G</span>
+</button><button class="card" data-index="77" aria-label="View Veil Wing H">
+  <span class="number">078</span>
+  <img src="svg/078-veil-wing-h.svg" alt="" />
+  <span class="card-name">Veil Wing H</span>
+</button><button class="card" data-index="78" aria-label="View Veil Wing I">
+  <span class="number">079</span>
+  <img src="svg/079-veil-wing-i.svg" alt="" />
+  <span class="card-name">Veil Wing I</span>
+</button><button class="card" data-index="79" aria-label="View Veil Wing J">
+  <span class="number">080</span>
+  <img src="svg/080-veil-wing-j.svg" alt="" />
+  <span class="card-name">Veil Wing J</span>
+</button><button class="card" data-index="80" aria-label="View Talon A">
+  <span class="number">081</span>
+  <img src="svg/081-talon-a.svg" alt="" />
+  <span class="card-name">Talon A</span>
+</button><button class="card" data-index="81" aria-label="View Talon B">
+  <span class="number">082</span>
+  <img src="svg/082-talon-b.svg" alt="" />
+  <span class="card-name">Talon B</span>
+</button><button class="card" data-index="82" aria-label="View Talon C">
+  <span class="number">083</span>
+  <img src="svg/083-talon-c.svg" alt="" />
+  <span class="card-name">Talon C</span>
+</button><button class="card" data-index="83" aria-label="View Talon D">
+  <span class="number">084</span>
+  <img src="svg/084-talon-d.svg" alt="" />
+  <span class="card-name">Talon D</span>
+</button><button class="card" data-index="84" aria-label="View Talon E">
+  <span class="number">085</span>
+  <img src="svg/085-talon-e.svg" alt="" />
+  <span class="card-name">Talon E</span>
+</button><button class="card" data-index="85" aria-label="View Talon F">
+  <span class="number">086</span>
+  <img src="svg/086-talon-f.svg" alt="" />
+  <span class="card-name">Talon F</span>
+</button><button class="card" data-index="86" aria-label="View Talon G">
+  <span class="number">087</span>
+  <img src="svg/087-talon-g.svg" alt="" />
+  <span class="card-name">Talon G</span>
+</button><button class="card" data-index="87" aria-label="View Talon H">
+  <span class="number">088</span>
+  <img src="svg/088-talon-h.svg" alt="" />
+  <span class="card-name">Talon H</span>
+</button><button class="card" data-index="88" aria-label="View Talon I">
+  <span class="number">089</span>
+  <img src="svg/089-talon-i.svg" alt="" />
+  <span class="card-name">Talon I</span>
+</button><button class="card" data-index="89" aria-label="View Talon J">
+  <span class="number">090</span>
+  <img src="svg/090-talon-j.svg" alt="" />
+  <span class="card-name">Talon J</span>
+</button><button class="card" data-index="90" aria-label="View Synthesis A">
+  <span class="number">091</span>
+  <img src="svg/091-synthesis-a.svg" alt="" />
+  <span class="card-name">Synthesis A</span>
+</button><button class="card" data-index="91" aria-label="View Synthesis B">
+  <span class="number">092</span>
+  <img src="svg/092-synthesis-b.svg" alt="" />
+  <span class="card-name">Synthesis B</span>
+</button><button class="card" data-index="92" aria-label="View Synthesis C">
+  <span class="number">093</span>
+  <img src="svg/093-synthesis-c.svg" alt="" />
+  <span class="card-name">Synthesis C</span>
+</button><button class="card" data-index="93" aria-label="View Synthesis D">
+  <span class="number">094</span>
+  <img src="svg/094-synthesis-d.svg" alt="" />
+  <span class="card-name">Synthesis D</span>
+</button><button class="card" data-index="94" aria-label="View Synthesis E">
+  <span class="number">095</span>
+  <img src="svg/095-synthesis-e.svg" alt="" />
+  <span class="card-name">Synthesis E</span>
+</button><button class="card" data-index="95" aria-label="View Synthesis F">
+  <span class="number">096</span>
+  <img src="svg/096-synthesis-f.svg" alt="" />
+  <span class="card-name">Synthesis F</span>
+</button><button class="card" data-index="96" aria-label="View Synthesis G">
+  <span class="number">097</span>
+  <img src="svg/097-synthesis-g.svg" alt="" />
+  <span class="card-name">Synthesis G</span>
+</button><button class="card" data-index="97" aria-label="View Synthesis H">
+  <span class="number">098</span>
+  <img src="svg/098-synthesis-h.svg" alt="" />
+  <span class="card-name">Synthesis H</span>
+</button><button class="card" data-index="98" aria-label="View Synthesis I">
+  <span class="number">099</span>
+  <img src="svg/099-synthesis-i.svg" alt="" />
+  <span class="card-name">Synthesis I</span>
+</button><button class="card" data-index="99" aria-label="View Synthesis J">
+  <span class="number">100</span>
+  <img src="svg/100-synthesis-j.svg" alt="" />
+  <span class="card-name">Synthesis J</span>
+</button></section>
+</main>
+<script>
+const concepts=[{"title":"Core Wing A","slug":"001-core-wing-a"},{"title":"Core Wing B","slug":"002-core-wing-b"},{"title":"Core Wing C","slug":"003-core-wing-c"},{"title":"Core Wing D","slug":"004-core-wing-d"},{"title":"Core Wing E","slug":"005-core-wing-e"},{"title":"Core Wing F","slug":"006-core-wing-f"},{"title":"Core Wing G","slug":"007-core-wing-g"},{"title":"Core Wing H","slug":"008-core-wing-h"},{"title":"Core Wing I","slug":"009-core-wing-i"},{"title":"Core Wing J","slug":"010-core-wing-j"},{"title":"Signal Wing A","slug":"011-signal-wing-a"},{"title":"Signal Wing B","slug":"012-signal-wing-b"},{"title":"Signal Wing C","slug":"013-signal-wing-c"},{"title":"Signal Wing D","slug":"014-signal-wing-d"},{"title":"Signal Wing E","slug":"015-signal-wing-e"},{"title":"Signal Wing F","slug":"016-signal-wing-f"},{"title":"Signal Wing G","slug":"017-signal-wing-g"},{"title":"Signal Wing H","slug":"018-signal-wing-h"},{"title":"Signal Wing I","slug":"019-signal-wing-i"},{"title":"Signal Wing J","slug":"020-signal-wing-j"},{"title":"Spirit Core A","slug":"021-spirit-core-a"},{"title":"Spirit Core B","slug":"022-spirit-core-b"},{"title":"Spirit Core C","slug":"023-spirit-core-c"},{"title":"Spirit Core D","slug":"024-spirit-core-d"},{"title":"Spirit Core E","slug":"025-spirit-core-e"},{"title":"Spirit Core F","slug":"026-spirit-core-f"},{"title":"Spirit Core G","slug":"027-spirit-core-g"},{"title":"Spirit Core H","slug":"028-spirit-core-h"},{"title":"Spirit Core I","slug":"029-spirit-core-i"},{"title":"Spirit Core J","slug":"030-spirit-core-j"},{"title":"Ascendant A","slug":"031-ascendant-a"},{"title":"Ascendant B","slug":"032-ascendant-b"},{"title":"Ascendant C","slug":"033-ascendant-c"},{"title":"Ascendant D","slug":"034-ascendant-d"},{"title":"Ascendant E","slug":"035-ascendant-e"},{"title":"Ascendant F","slug":"036-ascendant-f"},{"title":"Ascendant G","slug":"037-ascendant-g"},{"title":"Ascendant H","slug":"038-ascendant-h"},{"title":"Ascendant I","slug":"039-ascendant-i"},{"title":"Ascendant J","slug":"040-ascendant-j"},{"title":"Forge Wing A","slug":"041-forge-wing-a"},{"title":"Forge Wing B","slug":"042-forge-wing-b"},{"title":"Forge Wing C","slug":"043-forge-wing-c"},{"title":"Forge Wing D","slug":"044-forge-wing-d"},{"title":"Forge Wing E","slug":"045-forge-wing-e"},{"title":"Forge Wing F","slug":"046-forge-wing-f"},{"title":"Forge Wing G","slug":"047-forge-wing-g"},{"title":"Forge Wing H","slug":"048-forge-wing-h"},{"title":"Forge Wing I","slug":"049-forge-wing-i"},{"title":"Forge Wing J","slug":"050-forge-wing-j"},{"title":"Aerial A","slug":"051-aerial-a"},{"title":"Aerial B","slug":"052-aerial-b"},{"title":"Aerial C","slug":"053-aerial-c"},{"title":"Aerial D","slug":"054-aerial-d"},{"title":"Aerial E","slug":"055-aerial-e"},{"title":"Aerial F","slug":"056-aerial-f"},{"title":"Aerial G","slug":"057-aerial-g"},{"title":"Aerial H","slug":"058-aerial-h"},{"title":"Aerial I","slug":"059-aerial-i"},{"title":"Aerial J","slug":"060-aerial-j"},{"title":"Relay A","slug":"061-relay-a"},{"title":"Relay B","slug":"062-relay-b"},{"title":"Relay C","slug":"063-relay-c"},{"title":"Relay D","slug":"064-relay-d"},{"title":"Relay E","slug":"065-relay-e"},{"title":"Relay F","slug":"066-relay-f"},{"title":"Relay G","slug":"067-relay-g"},{"title":"Relay H","slug":"068-relay-h"},{"title":"Relay I","slug":"069-relay-i"},{"title":"Relay J","slug":"070-relay-j"},{"title":"Veil Wing A","slug":"071-veil-wing-a"},{"title":"Veil Wing B","slug":"072-veil-wing-b"},{"title":"Veil Wing C","slug":"073-veil-wing-c"},{"title":"Veil Wing D","slug":"074-veil-wing-d"},{"title":"Veil Wing E","slug":"075-veil-wing-e"},{"title":"Veil Wing F","slug":"076-veil-wing-f"},{"title":"Veil Wing G","slug":"077-veil-wing-g"},{"title":"Veil Wing H","slug":"078-veil-wing-h"},{"title":"Veil Wing I","slug":"079-veil-wing-i"},{"title":"Veil Wing J","slug":"080-veil-wing-j"},{"title":"Talon A","slug":"081-talon-a"},{"title":"Talon B","slug":"082-talon-b"},{"title":"Talon C","slug":"083-talon-c"},{"title":"Talon D","slug":"084-talon-d"},{"title":"Talon E","slug":"085-talon-e"},{"title":"Talon F","slug":"086-talon-f"},{"title":"Talon G","slug":"087-talon-g"},{"title":"Talon H","slug":"088-talon-h"},{"title":"Talon I","slug":"089-talon-i"},{"title":"Talon J","slug":"090-talon-j"},{"title":"Synthesis A","slug":"091-synthesis-a"},{"title":"Synthesis B","slug":"092-synthesis-b"},{"title":"Synthesis C","slug":"093-synthesis-c"},{"title":"Synthesis D","slug":"094-synthesis-d"},{"title":"Synthesis E","slug":"095-synthesis-e"},{"title":"Synthesis F","slug":"096-synthesis-f"},{"title":"Synthesis G","slug":"097-synthesis-g"},{"title":"Synthesis H","slug":"098-synthesis-h"},{"title":"Synthesis I","slug":"099-synthesis-i"},{"title":"Synthesis J","slug":"100-synthesis-j"}];let current=0;const preview=document.querySelector('#preview');const name=document.querySelector('#name');const cards=[...document.querySelectorAll('.card')];function select(index){current=(index+concepts.length)%concepts.length;preview.src='svg/'+concepts[current].slug+'.svg';name.textContent=String(current+1).padStart(3,'0')+' / '+concepts[current].title;cards.forEach((card,i)=>card.classList.toggle('active',i===current));cards[current].scrollIntoView({block:'nearest'})}cards.forEach((card,i)=>card.addEventListener('click',()=>select(i)));document.querySelector('#prev').addEventListener('click',()=>select(current-1));document.querySelector('#next').addEventListener('click',()=>select(current+1));addEventListener('keydown',(event)=>{if(event.key==='ArrowLeft')select(current-1);if(event.key==='ArrowRight')select(current+1)});select(0);
+</script>
+</body>
+</html>
