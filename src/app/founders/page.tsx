@@ -13,7 +13,6 @@ import {
   FOUNDERS,
   companyForFounder,
   founderAnchor,
-  initialsFor,
   type Founder,
 } from "@/lib/founders";
 
@@ -24,6 +23,7 @@ export const metadata: Metadata = {
 };
 
 function whiteHeadshotSrc(headshot: string) {
+  if (!headshot.startsWith("/founders/cutouts/")) return headshot;
   return headshot
     .replace("/founders/cutouts/", "/founders/white-webp/")
     .replace(/\.png$/, ".webp");
@@ -33,6 +33,7 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
   const company = companyForFounder(founder);
   const profile = founder.linkedin ?? founder.x;
   const profileLabel = founder.linkedin ? "LinkedIn" : "X";
+  const fullPortrait = founder.headshot.startsWith("/founders/portraits/");
 
   return (
     <article id={founderAnchor(founder)} className="cog-person-card">
@@ -43,22 +44,16 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
         aria-label={profile ? `${founder.name} on ${profileLabel}` : founder.name}
         className="cog-person-media"
       >
-        {founder.headshot ? (
-          <>
-            <Image
-              src={whiteHeadshotSrc(founder.headshot)}
-              alt={founder.name}
-              fill
-              sizes="(max-width: 899px) calc((100vw - 48px) / 2), 303px"
-              unoptimized
-              loading={eager ? "eager" : "lazy"}
-              className="object-contain object-bottom"
-            />
-            <AsciiReveal src={whiteHeadshotSrc(founder.headshot)} />
-          </>
-        ) : (
-          <span className="cog-person-initials">{initialsFor(founder.name)}</span>
-        )}
+        <Image
+          src={whiteHeadshotSrc(founder.headshot)}
+          alt={founder.name}
+          fill
+          sizes="(max-width: 899px) calc((100vw - 48px) / 2), 303px"
+          unoptimized
+          loading={eager ? "eager" : "lazy"}
+          className={fullPortrait ? "object-cover object-center" : "object-contain object-bottom"}
+        />
+        <AsciiReveal src={whiteHeadshotSrc(founder.headshot)} fit={fullPortrait ? "cover" : "contain"} />
       </a>
 
       <div className="cog-person-copy">

@@ -24,7 +24,7 @@ type Cell = {
   resolveAt: number;
 };
 
-export function AsciiReveal({ src }: { src: string }) {
+export function AsciiReveal({ src, fit = "contain" }: { src: string; fit?: "contain" | "cover" }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -52,22 +52,21 @@ export function AsciiReveal({ src }: { src: string }) {
       const cellH = cellW / 0.6;
       const rows = Math.max(2, Math.ceil(canvas.height / cellH));
 
-      // Sample the photo at one pixel per cell, laid out exactly like the
-      // photo it becomes: object-contain, bottom-anchored, white around.
+      // Match the final photo's crop so the reveal does not jump on dissolve.
       const sample = document.createElement("canvas");
       sample.width = cols;
       sample.height = rows;
       const sctx = sample.getContext("2d", { willReadFrequently: true });
       if (!sctx) return null;
 
-      const scale = Math.min(
+      const scale = (fit === "cover" ? Math.max : Math.min)(
         canvas.width / img.naturalWidth,
         canvas.height / img.naturalHeight,
       );
       const destW = img.naturalWidth * scale;
       const destH = img.naturalHeight * scale;
       const destX = (canvas.width - destW) / 2;
-      const destY = canvas.height - destH;
+      const destY = fit === "cover" ? (canvas.height - destH) / 2 : canvas.height - destH;
 
       sctx.fillStyle = "#fff";
       sctx.fillRect(0, 0, cols, rows);
@@ -208,7 +207,7 @@ export function AsciiReveal({ src }: { src: string }) {
       cancelAnimationFrame(raf);
       window.clearTimeout(fadeTimer);
     };
-  }, [src]);
+  }, [src, fit]);
 
   return <canvas ref={canvasRef} className="ascii-reveal" aria-hidden="true" />;
 }
