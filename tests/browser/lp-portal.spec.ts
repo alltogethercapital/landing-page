@@ -31,7 +31,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.getByRole("button", { name: "Graph view" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Table view" })).toHaveCount(0);
   await expect(page.getByText("43 companies · 1 not-yet-allocated balance", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("$845,133", { exact: true })).toBeVisible();
+  await expect(page.getByText("$845,126", { exact: true })).toBeVisible();
   const summaryGrid = page.locator(".lp-summary-grid");
   await expect(summaryGrid.getByText("$821,014.25", { exact: true })).toHaveCount(0);
   await expect(summaryGrid.getByText("$901,760.05", { exact: true })).toHaveCount(0);
@@ -61,7 +61,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(summaryGrid.getByText("Finalizing allocation", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("Pending allocation", { exact: true })).toHaveCount(0);
   await expect(summaryGrid.getByText("$112,000", { exact: true })).toBeVisible();
-  await expect(page.getByText("$925,815", { exact: true })).toBeVisible();
+  await expect(page.getByText("$925,809", { exact: true })).toBeVisible();
   await expect(page.getByText("Gross value multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.10×", { exact: true })).toBeVisible();
@@ -149,7 +149,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.locator("#lp-figure-concentration-and-structure")).toHaveClass(/sr-only/);
   await expect(page.locator(".lp-figure-section-head")).toHaveCount(0);
   await expect(page.locator(".lp-summary-grid")).toBeVisible();
-  await expect(page.locator(".lp-summary-grid").getByText("$925,815", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("$925,809", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-summary-grid").getByText("1.10×", { exact: true })).toBeVisible();
   const analysisSummaryBox = await page.locator(".lp-summary-grid").boundingBox();
   const analysisTabsBox = await portfolioSections.boundingBox();
@@ -279,10 +279,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(pendingPerformanceRow).toContainText("No performance");
   await expect(pendingPerformanceRow).toContainText("In AUM, NAV, and total math");
   const performanceTotal = page.locator(".lp-performance-total-row");
-  await expect(performanceTotal).toContainText("$845,132.74");
+  await expect(performanceTotal).toContainText("$845,126.33");
   await expect(performanceTotal).toContainText("1.10×");
   await expect(performanceTotal).toContainText("+$80,682.29");
-  await expect(performanceTotal).toContainText("$925,815.03");
+  await expect(performanceTotal).toContainText("$925,808.62");
   await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-performance-desktop.png", fullPage: true });
 
@@ -455,6 +455,13 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.getByText(/final allocation was reduced from \$10,000\.00 to \$9,914\.97/i)).toBeVisible();
   await expect(page.getByText(/no separate refund or cash movement is recorded without transaction evidence/i)).toBeVisible();
 
+  await page.goto("/lp/investments/53-rasyn");
+  await expect(page.getByRole("heading", { name: "Rasyn" })).toBeVisible();
+  await expect(page.getByText("$9,993.59", { exact: true })).toHaveCount(2);
+  await expect(page.getByText(/final allocation was reduced from \$10,000\.00 to \$9,993\.59/i)).toBeVisible();
+  await expect(page.getByText(/original \$10,000\.00 outbound investment.*remains in the bank ledger/i)).toBeVisible();
+  await expect(page.getByText(/no separate refund or AngelList account-balance credit is recorded without transaction evidence/i)).toBeVisible();
+
   await page.goto("/lp/investments/09-h256-series-3");
   await expect(page.getByRole("heading", { name: "H256 LLC Series 3" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Vehicle allocation" })).toBeVisible();
@@ -475,6 +482,20 @@ test("protects, authenticates, shows the investment graph, and opens an investme
 
   await expect(page.getByRole("button", { name: "Sign out" })).toHaveCount(0);
   await expect(page.getByLabel("Account options")).toHaveCount(0);
+});
+
+test("shows the reconciled Rasyn allocation and cash-evidence boundary", async ({ page }) => {
+  await page.goto("/lp-login");
+  await page.getByLabel("Access password").fill(password);
+  await page.getByRole("button", { name: /Sign in/ }).click();
+  await expect(page).toHaveURL(/\/lp$/);
+
+  await page.goto("/lp/investments/53-rasyn");
+  await expect(page.getByRole("heading", { name: "Rasyn" })).toBeVisible();
+  await expect(page.getByText("$9,993.59", { exact: true })).toHaveCount(2);
+  await expect(page.getByText(/final allocation was reduced from \$10,000\.00 to \$9,993\.59/i)).toBeVisible();
+  await expect(page.getByText(/original \$10,000\.00 outbound investment.*remains in the bank ledger/i)).toBeVisible();
+  await expect(page.getByText(/no separate refund or AngelList account-balance credit is recorded without transaction evidence/i)).toBeVisible();
 });
 
 test("renders the login, portfolio, and detail views at every supported layout", async ({ browser }) => {
