@@ -23,8 +23,8 @@ export default async function LpLoginPage({
     <CognitionPage className="lp-login-page">
       <SiteNav />
       <CognitionSection
-        label="Limited partner access"
         title="Investor portal."
+        hideTitle
         className="lp-login-section"
       >
         <p className="cog-body-copy lp-login-intro">

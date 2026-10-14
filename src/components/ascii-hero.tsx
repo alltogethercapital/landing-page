@@ -6,9 +6,7 @@ import { ASCII_HERO_CLIPS } from "@/lib/ascii-hero-assets";
 // Video rendered as colored ASCII glyphs, in the spirit of generalintuition.com.
 // One WebGL draw per frame: the current video frame (TEXTURE0) is sampled once
 // per cell, luminance picks a glyph from a prerendered atlas (TEXTURE1), and the
-// glyph is tinted with the underlying video color. Pointer movement leaves a
-// short trail that animates nearby glyph density and brightness without drawing
-// a separate mark over the video.
+// glyph is tinted with the underlying video color.
 
 // Dense → sparse. 69 glyphs; luminance 0 picks "$", luminance 1 picks the space —
 // the same convention the reference effect ships with.
@@ -17,8 +15,6 @@ const GLYPH_RAMP =
 const ATLAS_COLS = 9;
 const ATLAS_ROWS = 8;
 const ATLAS_TILE = 64; // px per glyph tile in the atlas canvas
-const MAX_POINTER_ECHOES = 6;
-const POINTER_ECHO_LIFE_S = 0.48;
 const CLIP_FADE_LEAD_S = 0.5; // start fading out this long before a clip ends
 const PIXEL_BUDGET = 8_000_000; // cap on canvas device pixels (5K displays)
 
@@ -46,14 +42,9 @@ uniform sampler2D uVideo;
 uniform sampler2D uAtlas;
 uniform vec2 uGrid;       // columns, rows
 uniform vec2 uCellPx;     // device px per cell
-uniform vec2 uCanvasPx;   // device px canvas size
 uniform vec2 uCropMin;    // cover-fit crop window into the video texture
 uniform vec2 uCropMax;
 uniform float uFade;      // clip transition fade, 0..1
-uniform int uPointerCount;
-uniform vec2 uPointerPts[${MAX_POINTER_ECHOES}];
-uniform float uPointerFade[${MAX_POINTER_ECHOES}];
-uniform float uPointerRadiusPx;
 
 const float GAMMA = 1.6;
 const float TILE_OPACITY = 0.58;
@@ -65,25 +56,6 @@ const float ATLAS_PAD = ${(2 / ATLAS_TILE).toFixed(5)};
 
 float lumOf(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
 
-float pointerInfluenceAt(vec2 uv) {
-  float influence = 0.0;
-  for (int i = 0; i < ${MAX_POINTER_ECHOES}; i++) {
-    if (i < uPointerCount) {
-      // Work in device pixels so every echo stays compact and circular at each
-      // aspect ratio. The eased shoulder reads as moving glyphs, not a disc.
-      vec2 dp = (uv - uPointerPts[i]) * uCanvasPx;
-      float falloff = 1.0 - smoothstep(
-        uPointerRadiusPx * 0.18,
-        uPointerRadiusPx,
-        length(dp)
-      );
-      falloff = falloff * falloff * (3.0 - 2.0 * falloff);
-      influence = min(1.0, influence + falloff * uPointerFade[i]);
-    }
-  }
-  return influence;
-}
-
 void main() {
   vec2 cell = floor(vUV * uGrid);
   vec2 cellUV = fract(vUV * uGrid);
@@ -91,17 +63,8 @@ void main() {
 
   vec3 rgb = texture2D(uVideo, mix(uCropMin, uCropMax, center)).rgb;
   float lum = pow(clamp(lumOf(rgb), 0.0, 1.0), GAMMA);
-  float pointerInfluence = pointerInfluenceAt(center);
 
   float idx = floor(lum * (GLYPH_COUNT - 1.0) + 0.5);
-  // Shift individual cells toward the sparse end of the ramp. The small
-  // noise-weighted variation makes the characters flicker organically instead
-  // of revealing a uniformly processed circle.
-  float cellNoise = fract(sin(dot(cell, vec2(12.9898, 78.233))) * 43758.5453);
-  float glyphShift = floor(
-    pointerInfluence * (3.0 + step(0.58, cellNoise) * 2.0) + 0.5
-  );
-  idx = clamp(idx + glyphShift, 0.0, GLYPH_COUNT - 1.0);
 
   // Atlas tiles are square; the display cell is narrow (w/h ≈ 0.6). Draw the
   // glyph in a centered box that preserves the character's true aspect.
@@ -116,7 +79,6 @@ void main() {
   vec2 tile = vec2(mod(idx, ATLAS_GRID.x), floor(idx / ATLAS_GRID.x));
   float alpha = texture2D(uAtlas, (tile + gUV) / ATLAS_GRID).r;
   alpha = smoothstep(0.05, 0.9, alpha) * mask;
-  alpha = min(1.0, alpha * (1.0 + pointerInfluence * 0.18));
 
   // Dimmed video tile under a brighter hue-locked glyph.
   vec3 base = rgb * TILE_OPACITY;
@@ -125,7 +87,6 @@ void main() {
   float litL = max(0.0001, lumOf(lit));
   lit = clamp(base * (litL / baseL), 0.0, 1.0);
   vec3 col = mix(base, lit, alpha);
-  col = clamp(col * (1.0 + pointerInfluence * 0.12), 0.0, 1.0);
 
   // Vividness: pull the final color away from its own gray.
   col = clamp(mix(vec3(lumOf(col)), col, VIVID), 0.0, 1.0);
@@ -181,14 +142,11 @@ function compileProgram(gl: WebGLRenderingContext): WebGLProgram | null {
   return program;
 }
 
-// Cell size drives how much detail survives: the grid is a uniform on a single
-// full-canvas draw, so a finer grid resolves more of the frame at no extra
-// fragment cost. Kept just coarse enough that glyphs still read as characters.
 function cellSizeCss(viewportW: number): number {
-  if (viewportW <= 480) return 3.5;
-  if (viewportW <= 768) return 4;
-  if (viewportW <= 1024) return 4.25;
-  return 4.5;
+  if (viewportW <= 480) return 4.5;
+  if (viewportW <= 768) return 5;
+  if (viewportW <= 1024) return 5.5;
+  return 6;
 }
 
 export function AsciiHero() {
@@ -244,14 +202,9 @@ export function AsciiHero() {
     const u = (name: string) => gl.getUniformLocation(program, name);
     const uGrid = u("uGrid");
     const uCellPx = u("uCellPx");
-    const uCanvasPx = u("uCanvasPx");
     const uCropMin = u("uCropMin");
     const uCropMax = u("uCropMax");
     const uFade = u("uFade");
-    const uPointerCount = u("uPointerCount");
-    const uPointerPts = u("uPointerPts");
-    const uPointerFade = u("uPointerFade");
-    const uPointerRadiusPx = u("uPointerRadiusPx");
 
     const makeTexture = (unit: number) => {
       const tex = gl.createTexture();
@@ -290,20 +243,10 @@ export function AsciiHero() {
       inView: true,
       destroyed: false,
       contextLost: false,
-      pointerPts: new Float32Array(MAX_POINTER_ECHOES * 2),
-      pointerStart: new Float32Array(MAX_POINTER_ECHOES),
-      pointerFade: new Float32Array(MAX_POINTER_ECHOES),
-      pointerCount: 0,
-      pointerCursor: 0,
-      lastPointerSample: 0,
-      cellDeviceW: 16,
       clip: 0,
       errorStreak: 0,
       unlockArmed: false,
     };
-
-    const epoch = performance.now();
-    const nowS = () => (performance.now() - epoch) / 1000;
 
     const applySize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -326,11 +269,8 @@ export function AsciiHero() {
       const cellH = cellW / 0.6;
       const cols = Math.min(360, Math.max(24, Math.floor(w / cellW)));
       const rows = Math.max(8, Math.floor(h / cellH));
-      state.cellDeviceW = w / cols;
-
       gl.uniform2f(uGrid, cols, rows);
       gl.uniform2f(uCellPx, w / cols, h / rows);
-      gl.uniform2f(uCanvasPx, w, h);
       applyCrop(w, h);
       // Resizing the backing store clears it — repaint in the same frame.
       if (reallocated) drawFrame();
@@ -385,25 +325,7 @@ export function AsciiHero() {
 
     const drawFrame = () => {
       if (state.contextLost) return;
-      // Keep absolute timestamps on the CPU: fp16 mediump fragment shaders do
-      // not have enough range for them.
-      const now = nowS();
-      let pointerEchoesAlive = 0;
-      for (let i = 0; i < state.pointerCount; i++) {
-        const fade = 1 -
-          (now - state.pointerStart[i]) / POINTER_ECHO_LIFE_S;
-        state.pointerFade[i] = Math.min(1, Math.max(0, fade));
-        if (state.pointerFade[i] > 0) pointerEchoesAlive++;
-      }
-      if (state.pointerCount > 0 && pointerEchoesAlive === 0) {
-        state.pointerCount = 0;
-        state.pointerCursor = 0;
-      }
       gl.uniform1f(uFade, state.fade);
-      gl.uniform1i(uPointerCount, state.pointerCount);
-      gl.uniform2fv(uPointerPts, state.pointerPts);
-      gl.uniform1fv(uPointerFade, state.pointerFade);
-      gl.uniform1f(uPointerRadiusPx, state.cellDeviceW * 7);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
@@ -447,11 +369,11 @@ export function AsciiHero() {
     // --- Autoplay unlock (activation-granting events only) ------------------
     const UNLOCK_EVENTS = ["pointerup", "touchend", "keydown"] as const;
     const unlock = () => {
-      if (state.destroyed || state.contextLost) return;
+      if (!shouldRun() || reducedMotion) return;
       video.play().then(disarmUnlock).catch(() => undefined);
     };
     const armUnlock = () => {
-      if (state.unlockArmed) return;
+      if (state.destroyed || state.contextLost || reducedMotion || state.unlockArmed) return;
       state.unlockArmed = true;
       UNLOCK_EVENTS.forEach((t) => window.addEventListener(t, unlock));
     };
@@ -468,13 +390,11 @@ export function AsciiHero() {
       if (document.hidden || !state.inView) return;
       video.muted = true;
       video.play().catch(() => {
-        video.muted = true;
-        video.play().catch(() => {
-          // Autoplay fully blocked (e.g. iOS Low Power Mode): show the poster
-          // through the shader and retry on a real user activation.
-          uploadPoster(ASCII_HERO_CLIPS[state.clip].poster);
-          armUnlock();
-        });
+        if (state.destroyed || state.contextLost || reducedMotion) return;
+        // Show the poster when autoplay is blocked and retry only while visible
+        // on a real user activation.
+        uploadPoster(ASCII_HERO_CLIPS[state.clip].poster);
+        armUnlock();
       });
     };
 
@@ -546,28 +466,6 @@ export function AsciiHero() {
     video.addEventListener("error", onError);
     video.addEventListener("pause", onPause);
 
-    // --- Pointer character trail --------------------------------------------
-    const onPointerMove = (event: PointerEvent) => {
-      if (event.pointerType !== "mouse" || reducedMotion) return;
-      const now = performance.now();
-      if (now - state.lastPointerSample < 24) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width;
-      const y = (event.clientY - rect.top) / rect.height;
-      if (x < 0 || x > 1 || y < 0 || y > 1) return;
-      state.lastPointerSample = now;
-      const slot = state.pointerCursor % MAX_POINTER_ECHOES;
-      state.pointerPts[slot * 2] = x;
-      state.pointerPts[slot * 2 + 1] = 1 - y; // shader UV origin is bottom-left
-      state.pointerStart[slot] = nowS();
-      state.pointerCursor++;
-      state.pointerCount = Math.min(
-        state.pointerCount + 1,
-        MAX_POINTER_ECHOES,
-      );
-    };
-    section.addEventListener("pointermove", onPointerMove, { passive: true });
-
     // --- Visibility ---------------------------------------------------------
     const syncPlayback = () => {
       if (state.destroyed || state.contextLost || reducedMotion) return;
@@ -624,7 +522,6 @@ export function AsciiHero() {
       io.disconnect();
       ro.disconnect();
       document.removeEventListener("visibilitychange", syncPlayback);
-      section.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("webglcontextlost", onContextLost);
       video.removeEventListener("loadedmetadata", onLoadedMetadata);
       video.removeEventListener("loadeddata", onLoadedData);

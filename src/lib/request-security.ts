@@ -19,9 +19,10 @@ export function isSameOriginRequest(request: NextRequest) {
     const requestHost = forwardedHost || firstHeaderValue(request.headers.get("host"));
     if (!requestHost) return origin === request.nextUrl.origin;
 
-    const [requestHostname, requestPort = ""] = requestHost.toLowerCase().split(":");
+    const requestUrl = new URL(`${originUrl.protocol}//${requestHost}`);
+    const requestHostname = requestUrl.hostname.toLowerCase();
     const originPort = originUrl.port || (originUrl.protocol === "https:" ? "443" : "80");
-    const normalizedRequestPort = requestPort || (originUrl.protocol === "https:" ? "443" : "80");
+    const normalizedRequestPort = requestUrl.port || (originUrl.protocol === "https:" ? "443" : "80");
     const hostnameMatches = originUrl.hostname.toLowerCase() === requestHostname;
     const localAliasMatches =
       process.env.NODE_ENV !== "production" &&

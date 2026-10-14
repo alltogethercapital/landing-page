@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -9,22 +8,24 @@ import {
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { ARTICLES } from "@/lib/articles";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "Updates",
-  description:
-    "Writing from Machine Spirit Capital: letters, theses, and updates on the hard frontier.",
-};
+export const metadata = pageMetadata(
+  "Updates — Machine Spirit Capital",
+  "Writing from Machine Spirit Capital on the companies and technologies shaping the machine age.",
+  "/updates",
+);
 
 export default function NotesPage() {
   return (
     <CognitionPage>
       <SiteNav />
 
-      <CognitionSection label="Updates" title="Updates.">
+      <CognitionSection label="Updates" title="Updates." hideTitle>
         <p className="cog-body-copy">
-          Letters, theses, and updates on the hard frontier. We write when we
-          have something to say.
+          Letters, theses, and updates from the hard frontier, on the companies
+          and technologies shaping the machine age. We write when we have
+          something to say.
         </p>
       </CognitionSection>
 

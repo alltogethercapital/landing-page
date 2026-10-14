@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import {
   ArrowLink,
@@ -6,18 +5,19 @@ import {
   CognitionSection,
   CognitionStrip,
 } from "@/components/cognition-layout";
-import { AsciiReveal } from "@/components/ascii-reveal";
+import { AsciiReveal, PortraitRevealSession } from "@/components/ascii-reveal";
 import { ArrowUpRight, LinkedInIcon, MailIcon } from "@/components/icons";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { CONTACT_MAILTO } from "@/lib/site";
 import { slugify } from "@/lib/portfolio";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "Our team",
-  description:
-    "Machine Spirit Capital is led by founding partners Robert Neir and Hisham El-Husseini.",
-};
+export const metadata = pageMetadata(
+  "Our team — Machine Spirit Capital",
+  "Machine Spirit Capital is led by founding partners Robert Neir and Hisham El-Husseini.",
+  "/team",
+);
 
 type Member = {
   name: string;
@@ -32,21 +32,21 @@ const MEMBERS: Member[] = [
   {
     name: "Robert Neir",
     role: "Founding Partner",
-    img: "/leadership/webp/robert-team-studio.webp",
+    img: "/leadership/transparent/robert-team-studio.webp",
     linkedin: "https://www.linkedin.com/in/robertmneir/",
     email: "robertneir@machinespirit.com",
   },
   {
     name: "Hisham El-Husseini",
     role: "Founding Partner",
-    img: "/leadership/webp/hisham-team-studio.webp",
+    img: "/leadership/transparent/hisham-team-studio.webp",
     linkedin: "https://www.linkedin.com/in/hisham-el-husseini/",
     email: "hisham@machinespirit.com",
   },
   {
     name: "NEO",
     role: "Head of Robotics",
-    img: "/leadership/webp/neo-team-studio.webp",
+    img: "/leadership/transparent/neo-team-studio.webp",
     website: { label: "1x.tech", href: "https://www.1x.tech/" },
   },
 ];
@@ -65,16 +65,17 @@ function MemberCard({ member, eager = false }: { member: Member; eager?: boolean
         aria-label={`${member.name} on ${profileLabel}`}
         className="cog-person-media"
       >
-        <Image
-          src={member.img}
-          alt={member.name}
-          fill
-          sizes="(max-width: 899px) calc((100vw - 48px) / 2), 303px"
-          unoptimized
-          loading={eager ? "eager" : "lazy"}
-          className="object-contain object-bottom"
-        />
-        <AsciiReveal src={member.img} />
+        <AsciiReveal src={member.img}>
+          <Image
+            src={member.img}
+            alt={member.name}
+            fill
+            sizes="(max-width: 899px) calc((100vw - 48px) / 2), 303px"
+            unoptimized
+            loading={eager ? "eager" : "lazy"}
+            className="object-contain object-bottom"
+          />
+        </AsciiReveal>
       </a>
 
       <div className="cog-person-copy">
@@ -91,7 +92,7 @@ function MemberCard({ member, eager = false }: { member: Member; eager?: boolean
               aria-label={`${member.name} on ${profileLabel}`}
               className="cog-arrow-icon"
             >
-              <ArrowUpRight className="size-4" />
+              <ArrowUpRight />
             </a>
           )}
         </div>
@@ -104,13 +105,13 @@ function MemberCard({ member, eager = false }: { member: Member; eager?: boolean
           )}
           {member.linkedin && (
             <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
-              <LinkedInIcon className="size-3.5" />
+              <LinkedInIcon />
               LinkedIn
             </a>
           )}
           {member.email && (
             <a href={`mailto:${member.email}`}>
-              <MailIcon className="size-3.5" />
+              <MailIcon />
               Email
             </a>
           )}
@@ -125,7 +126,7 @@ export default function TeamPage() {
     <CognitionPage>
       <SiteNav />
 
-      <CognitionSection label="Our team" title="Our team.">
+      <CognitionSection label="Our team" title="Our team." hideTitle>
         <p className="cog-body-copy">
           Machine Spirit Capital is led by founding partners Robert Neir and
           Hisham El-Husseini.
@@ -136,11 +137,13 @@ export default function TeamPage() {
       </CognitionSection>
 
       <CognitionStrip className="cog-strip--inset">
-        <div className="cog-person-grid cog-person-grid--short">
-          {MEMBERS.map((member) => (
-            <MemberCard key={member.name} member={member} eager />
-          ))}
-        </div>
+        <PortraitRevealSession page="/team">
+          <div className="cog-person-grid cog-person-grid--short">
+            {MEMBERS.map((member) => (
+              <MemberCard key={member.name} member={member} eager />
+            ))}
+          </div>
+        </PortraitRevealSession>
       </CognitionStrip>
 
       <SiteFooter />

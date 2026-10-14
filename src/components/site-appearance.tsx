@@ -1,0 +1,137 @@
+"use client";
+
+import { useEffect, useRef, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
+import { SITE_THEME_STORAGE_KEY } from "@/lib/site-theme";
+import { UIIcon } from "@/components/icons";
+
+type SiteTheme = "light" | "dark";
+const STORAGE_KEY = SITE_THEME_STORAGE_KEY;
+const CHANGE_EVENT = "machine-spirit-theme-change";
+let sessionTheme: SiteTheme | null = null;
+
+const GRAIN_PRESET = { id: "coarse", pixels: 4, opacity: 0.04 } as const;
+const NOISE_TILE_SIZE = 512;
+let noiseTile: string | null = null;
+
+function getNoiseTile() {
+  if (noiseTile) return noiseTile;
+  const tile = document.createElement("canvas");
+  tile.width = tile.height = NOISE_TILE_SIZE;
+  const context = tile.getContext("2d", { alpha: true });
+  if (!context) return null;
+  const image = context.createImageData(NOISE_TILE_SIZE, NOISE_TILE_SIZE);
+  for (let i = 0; i < image.data.length; i += 4) {
+    const shade = Math.floor(224 * Math.floor(Math.random() * 256) / 255);
+    image.data[i] = image.data[i + 1] = image.data[i + 2] = shade;
+    image.data[i + 3] = Math.random() < 0.35 ? 255 : Math.floor(80 + Math.random() * 160);
+  }
+  context.putImageData(image, 0, 0);
+  noiseTile = tile.toDataURL("image/png");
+  return noiseTile;
+}
+
+function getTheme(): SiteTheme {
+  const requested = new URLSearchParams(window.location.search).get("theme");
+  if (requested === "light" || requested === "dark") return requested;
+  if (sessionTheme) return sessionTheme;
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    if (stored === "light" || stored === "dark") return stored;
+  } catch {
+    // Light remains the default when storage is disabled.
+  }
+  return "light";
+}
+
+function subscribe(onChange: () => void) {
+  const onStorage = (event: StorageEvent) => {
+    if (event.key !== STORAGE_KEY && event.key !== null) return;
+    sessionTheme = null;
+    onChange();
+  };
+  window.addEventListener(CHANGE_EVENT, onChange);
+  window.addEventListener("storage", onStorage);
+  window.addEventListener("popstate", onChange);
+  return () => {
+    window.removeEventListener(CHANGE_EVENT, onChange);
+    window.removeEventListener("storage", onStorage);
+    window.removeEventListener("popstate", onChange);
+  };
+}
+
+function getServerTheme(): SiteTheme {
+  return "light";
+}
+
+/** A shared noise tile keeps even the finest grain bounded on large displays. */
+export function SiteGrain({ className = "" }: { className?: string }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const preset = GRAIN_PRESET;
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const texture = getNoiseTile();
+    if (!canvas || !texture) return;
+
+    const draw = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Preserve the original's device-pixel scale without a viewport-size bitmap.
+      canvas.style.backgroundSize = `${NOISE_TILE_SIZE * preset.pixels / dpr}px`;
+    };
+
+    canvas.width = canvas.height = 1;
+    canvas.style.backgroundImage = `url("${texture}")`;
+    draw();
+    window.addEventListener("resize", draw);
+    return () => window.removeEventListener("resize", draw);
+  }, [preset]);
+
+  return (
+    <div className={`site-grain ${className}`} data-grain={preset.id} aria-hidden="true">
+      <canvas ref={canvasRef} style={{ opacity: preset.opacity }} />
+    </div>
+  );
+}
+
+export function SiteAppearance() {
+  const pathname = usePathname();
+  const isPortalRoute = pathname === "/lp" || pathname.startsWith("/lp/");
+  const theme = useSyncExternalStore(subscribe, getTheme, getServerTheme);
+  useEffect(() => {
+    const selectedTheme = getTheme();
+    sessionTheme = selectedTheme;
+    document.documentElement.dataset.siteTheme = selectedTheme;
+  }, [pathname, theme]);
+
+  function toggleTheme() {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    sessionTheme = nextTheme;
+    document.documentElement.dataset.siteTheme = nextTheme;
+    try {
+      window.localStorage.setItem(STORAGE_KEY, nextTheme);
+    } catch {
+      // The selected appearance still works for this browsing session.
+    }
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("theme")) {
+      url.searchParams.set("theme", nextTheme);
+      window.history.replaceState(window.history.state, "", url);
+    }
+    window.dispatchEvent(new Event(CHANGE_EVENT));
+  }
+
+  return (
+    <>
+      <SiteGrain className="site-grain--background" />
+      <button
+        type="button"
+        className={`site-theme-toggle${isPortalRoute ? " site-theme-toggle--portal" : ""}`}
+        aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+        onClick={toggleTheme}
+      >
+        <UIIcon name={theme === "light" ? "moon" : "sun"} animateOnHover />
+      </button>
+    </>
+  );
+}

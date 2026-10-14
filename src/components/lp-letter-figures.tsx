@@ -1,3 +1,4 @@
+import { requireLpSession } from "@/lib/lp-auth";
 import {
   LETTER_ACCESS_CHANNEL_SPLIT,
   LETTER_ALLOCATION,
@@ -380,7 +381,8 @@ function ValuationEvidence() {
 
 /* ---------------------------------------------------------------------------- */
 
-export function LpPortfolioInsights() {
+export async function LpPortfolioInsights() {
+  await requireLpSession();
   return (
     <div className="lp-figure-suite">
       <PortfolioAtAGlance />
@@ -389,7 +391,8 @@ export function LpPortfolioInsights() {
   );
 }
 
-export function LpPortfolioPerformance() {
+export async function LpPortfolioPerformance() {
+  await requireLpSession();
   return (
     <div className="lp-figure-suite">
       <ValuationEvidence />

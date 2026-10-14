@@ -1,7 +1,9 @@
 import "server-only";
 
 import { createHmac, createHash, timingSafeEqual } from "node:crypto";
+import { cache } from "react";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const LP_SESSION_COOKIE = "at_lp_session";
 const SESSION_VERSION = 1;
@@ -79,10 +81,14 @@ export function verifyLpSessionToken(token: string | undefined, now = Date.now()
   }
 }
 
-export async function hasValidLpSession() {
+export const hasValidLpSession = cache(async () => {
   const cookieStore = await cookies();
   return verifyLpSessionToken(cookieStore.get(LP_SESSION_COOKIE)?.value);
-}
+});
+
+export const requireLpSession = cache(async () => {
+  if (!(await hasValidLpSession())) redirect("/lp-login");
+});
 
 export const lpSessionCookieOptions = {
   httpOnly: true,

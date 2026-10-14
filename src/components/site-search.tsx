@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   useCallback,
@@ -11,34 +11,20 @@ import {
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
-import { LogoMark } from "@/components/cognition-layout";
+import { UIIcon } from "@/components/icons";
 import type { SearchResult, SearchResultSection } from "@/lib/search";
 
-const RESULT_LIMIT = 6;
-const SECTION_ORDER: SearchResultSection[] = ["Companies", "Founders", "Updates"];
-
-function SearchGlyph({ close = false }: { close?: boolean }) {
-  if (close) {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M5 5l14 14M19 5L5 19" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="10.5" cy="10.5" r="6.5" />
-      <path d="m15.4 15.4 4.1 4.1" />
-    </svg>
-  );
-}
+const FILTERS = ["All", "Companies", "Founders", "Updates"] as const;
+type SearchFilter = "All" | SearchResultSection;
 
 function normalize(value: string) {
   return value
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleLowerCase();
+    .toLocaleLowerCase()
+    .replace(/[.'’]/g, "")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim();
 }
 
 function scoreResult(result: SearchResult, query: string) {
@@ -46,6 +32,7 @@ function scoreResult(result: SearchResult, query: string) {
   const subtitle = normalize(result.subtitle);
   const haystack = normalize(result.searchText);
   const normalizedQuery = normalize(query.trim());
+  if (!normalizedQuery) return 0;
   const terms = normalizedQuery.split(/\s+/).filter(Boolean);
 
   if (!terms.every((term) => haystack.includes(term))) return null;
@@ -56,69 +43,72 @@ function scoreResult(result: SearchResult, query: string) {
   return 4;
 }
 
-type ResultGroup = {
-  section: SearchResultSection;
-  results: SearchResult[];
-  total: number;
-};
-
 export function SiteSearch({ index }: { index: SearchResult[] }) {
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<SearchFilter>("All");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const openFrameRef = useRef(0);
+  const restoreFocusRef = useRef(true);
 
-  const groups = useMemo<ResultGroup[]>(() => {
-    if (query.trim().length < 2) return [];
-
-    return SECTION_ORDER.map((section) => {
-      const scored = index
-        .filter((item) => item.section === section)
-        .map((item, sourceIndex) => ({
-          item,
-          sourceIndex,
-          score: scoreResult(item, query),
-        }))
-        .filter(
-          (entry): entry is typeof entry & { score: number } => entry.score !== null,
-        )
-        .sort((a, b) => a.score - b.score || a.sourceIndex - b.sourceIndex);
-
-      return {
-        section,
-        total: scored.length,
-        results: scored.slice(0, RESULT_LIMIT).map((entry) => entry.item),
-      };
-    }).filter((group) => group.total > 0);
-  }, [index, query]);
-
-  const visibleResults = useMemo(
-    () => groups.flatMap((group) => group.results),
-    [groups],
-  );
-  const totalMatches = groups.reduce((total, group) => total + group.total, 0);
+  const visibleResults = useMemo(() => index
+    .filter((item) => filter === "All" || item.section === filter)
+    .map((item, sourceIndex) => ({ item, sourceIndex, score: scoreResult(item, query) }))
+    .filter((entry): entry is typeof entry & { score: number } => entry.score !== null)
+    .sort((a, b) => a.score - b.score || a.sourceIndex - b.sourceIndex)
+    .map((entry) => entry.item), [filter, index, query]);
   const activeResult = visibleResults[activeIndex];
   const isPortalRoute = pathname === "/lp" || pathname.startsWith("/lp/");
 
-  const closeSearch = useCallback(() => {
+  const closeSearch = useCallback((restoreFocus = true) => {
+    window.cancelAnimationFrame(openFrameRef.current);
+    restoreFocusRef.current = restoreFocus;
     setOpen(false);
     setQuery("");
+    setFilter("All");
+    setFiltersOpen(false);
     setActiveIndex(0);
   }, []);
 
   const openSearch = useCallback(() => {
-    setOpen(true);
+    window.cancelAnimationFrame(openFrameRef.current);
+    window.dispatchEvent(
+      new CustomEvent("machine-spirit-overlay-open", { detail: "search" }),
+    );
+    // Let the previous overlay release its focus and scroll lock first.
+    openFrameRef.current = window.requestAnimationFrame(() => {
+      restoreFocusRef.current = true;
+      setOpen(true);
+    });
   }, []);
+
+  useEffect(() => {
+    const handleOverlayOpen = (event: Event) => {
+      if ((event as CustomEvent<string>).detail !== "search") closeSearch(false);
+    };
+    const handleHistoryNavigation = () => closeSearch(false);
+    window.addEventListener("machine-spirit-overlay-open", handleOverlayOpen);
+    window.addEventListener("popstate", handleHistoryNavigation);
+    return () => {
+      window.cancelAnimationFrame(openFrameRef.current);
+      window.removeEventListener("machine-spirit-overlay-open", handleOverlayOpen);
+      window.removeEventListener("popstate", handleHistoryNavigation);
+    };
+  }, [closeSearch]);
 
   useEffect(() => {
     if (!open) return;
 
     const previousOverflow = document.body.style.overflow;
     const previouslyFocused = document.activeElement;
+    const trigger = triggerRef.current;
     const backgroundElements = Array.from(document.body.children)
       .filter((element): element is HTMLElement => element instanceof HTMLElement)
       .filter((element) => element !== modalRef.current)
@@ -133,7 +123,7 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
       element.inert = true;
       element.setAttribute("aria-hidden", "true");
     });
-    window.requestAnimationFrame(() => inputRef.current?.focus());
+    const focusFrame = window.requestAnimationFrame(() => inputRef.current?.focus());
 
     const handleDocumentKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -147,7 +137,7 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
         modalRef.current.querySelectorAll<HTMLElement>(
           'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
         ),
-      );
+      ).filter((element) => element.tabIndex >= 0);
       const first = focusable[0];
       const last = focusable.at(-1);
       if (!first || !last) return;
@@ -163,6 +153,7 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
 
     document.addEventListener("keydown", handleDocumentKeyDown);
     return () => {
+      window.cancelAnimationFrame(focusFrame);
       document.removeEventListener("keydown", handleDocumentKeyDown);
       document.body.style.overflow = previousOverflow;
       backgroundElements.forEach(({ element, inert, ariaHidden }) => {
@@ -170,174 +161,170 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
         if (ariaHidden === null) element.removeAttribute("aria-hidden");
         else element.setAttribute("aria-hidden", ariaHidden);
       });
-      if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+      if (restoreFocusRef.current) {
+        if (previouslyFocused instanceof HTMLElement && previouslyFocused.isConnected) {
+          previouslyFocused.focus();
+        } else {
+          trigger?.focus();
+        }
+      }
     };
   }, [closeSearch, open]);
 
   const handleInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
     if (visibleResults.length === 0) return;
 
-    if (event.key === "ArrowDown") {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
-      setActiveIndex((current) => (current + 1) % visibleResults.length);
-    } else if (event.key === "ArrowUp") {
-      event.preventDefault();
-      setActiveIndex(
-        (current) => (current - 1 + visibleResults.length) % visibleResults.length,
-      );
+      const direction = event.key === "ArrowDown" ? 1 : -1;
+      const nextIndex = (activeIndex + direction + visibleResults.length) % visibleResults.length;
+      setActiveIndex(nextIndex);
+      document.getElementById(`search-${visibleResults[nextIndex].id}`)?.scrollIntoView({
+        block: "nearest",
+        behavior: "instant",
+      });
     } else if (event.key === "Enter") {
       event.preventDefault();
       const destination = visibleResults[activeIndex];
       if (!destination) return;
-      closeSearch();
+      closeSearch(false);
       router.push(destination.href);
     }
   };
-
-  if (isPortalRoute || pathname === "/lp-login") return null;
 
   return (
     <>
       <button
         ref={triggerRef}
         type="button"
-        className="cog-search-trigger"
+        className={`cog-search-trigger${isPortalRoute ? " cog-search-trigger--portal" : ""}`}
         aria-label="Open search"
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={openSearch}
       >
-        <SearchGlyph />
+        <UIIcon name={open ? "close" : "search"} animateOnHover />
       </button>
 
       {open && (
         <div
           ref={modalRef}
           className="cog-search-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Search Machine Spirit Capital"
+          role="presentation"
+          onPointerDown={(event) => {
+            if (event.target === event.currentTarget) closeSearch();
+          }}
         >
-          <div className="cog-search-shell">
+          <div
+            className="cog-search-shell"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="site-search-title"
+          >
             <header className="cog-search-header">
-              <Link href="/" aria-label="Machine Spirit Capital home" onClick={closeSearch}>
-                <LogoMark />
-              </Link>
+              <h2 id="site-search-title">Search</h2>
               <button
                 type="button"
                 className="cog-search-close"
                 aria-label="Close search"
-                onClick={closeSearch}
+                onClick={() => closeSearch()}
               >
-                <span>Close</span>
-                <SearchGlyph close />
+                <UIIcon name="close" animateOnHover />
               </button>
             </header>
 
-            <div className="cog-search-main">
+            <div className="cog-search-controls">
               <label className="cog-search-field" htmlFor="site-search-input">
-                <span className="sr-only">Search Machine Spirit Capital</span>
+                <UIIcon name="search" />
+                <span className="sr-only">Search companies, founders, and updates</span>
                 <input
                   ref={inputRef}
                   id="site-search-input"
                   type="search"
                   value={query}
-                  placeholder="Search Machine Spirit Capital"
+                  placeholder="Search"
                   autoComplete="off"
                   spellCheck={false}
                   role="combobox"
                   aria-autocomplete="list"
-                  aria-expanded={query.trim().length >= 2}
+                  aria-expanded="true"
                   aria-controls="site-search-results"
                   aria-activedescendant={activeResult ? `search-${activeResult.id}` : undefined}
                   onChange={(event) => {
                     setQuery(event.target.value);
                     setActiveIndex(0);
+                    if (resultsRef.current) resultsRef.current.scrollTop = 0;
                   }}
                   onKeyDown={handleInputKeyDown}
                 />
-                <SearchGlyph />
               </label>
-
-              <div className="cog-search-status" aria-live="polite">
-                {query.trim().length < 2
-                  ? "Search companies, founders, and updates. Type at least two characters."
-                  : totalMatches > 0
-                    ? `${totalMatches} result${totalMatches === 1 ? "" : "s"} for “${query.trim()}”`
-                    : `No results for “${query.trim()}”`}
-              </div>
-
-              <div id="site-search-results" className="cog-search-results">
-                {groups.map((group, groupIndex) => {
-                  const groupStart = groups
-                    .slice(0, groupIndex)
-                    .reduce((total, precedingGroup) => total + precedingGroup.results.length, 0);
-
-                  return (
-                    <section key={group.section} className="cog-search-group">
-                      <h2>
-                        <span>{group.section}</span>
-                        <span aria-hidden="true" />
-                        <small>{group.total}</small>
-                      </h2>
-                      <div role="listbox" aria-label={`${group.section} results`}>
-                        {group.results.map((result, indexInGroup) => {
-                          const itemIndex = groupStart + indexInGroup;
-                          const active = itemIndex === activeIndex;
-
-                          return (
-                            <Link
-                              key={result.id}
-                              id={`search-${result.id}`}
-                              href={result.href}
-                              role="option"
-                              aria-selected={active}
-                              className={`cog-search-result${active ? " is-active" : ""}`}
-                              onPointerEnter={() => setActiveIndex(itemIndex)}
-                              onFocus={() => setActiveIndex(itemIndex)}
-                              onClick={closeSearch}
-                            >
-                              <span className="cog-search-result-copy">
-                                <strong>{result.title}</strong>
-                                <span>{result.subtitle}</span>
-                                {result.description && <small>{result.description}</small>}
-                              </span>
-                              <span className="cog-search-result-arrow" aria-hidden="true">
-                                ↗
-                              </span>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                      {group.total > RESULT_LIMIT && (
-                        <p className="cog-search-more">
-                          Showing the best {RESULT_LIMIT} of {group.total}
-                        </p>
-                      )}
-                    </section>
-                  );
-                })}
-              </div>
-
-              {activeResult?.image && (
-                <div className="cog-search-preview" aria-hidden="true">
-                  <Image
-                    src={activeResult.image}
-                    alt=""
-                    fill
-                    sizes="260px"
-                    unoptimized
-                    className="object-cover"
-                  />
-                </div>
-              )}
+              <button
+                type="button"
+                className={`cog-search-filter-toggle${filter !== "All" ? " has-filter" : ""}`}
+                aria-expanded={filtersOpen}
+                aria-controls="site-search-filters"
+                onClick={() => setFiltersOpen(!filtersOpen)}
+              >
+                <span>Filters</span>
+                <UIIcon name={filtersOpen ? "close" : "chevron-right"} />
+              </button>
             </div>
 
-            <footer className="cog-search-footer" aria-hidden="true">
-              <span>↑↓ Select</span>
-              <span>↵ Open</span>
-              <span>Esc Close</span>
-            </footer>
+            {filtersOpen && (
+              <div id="site-search-filters" className="cog-search-filters" role="group" aria-label="Filter search results">
+                {FILTERS.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    aria-pressed={filter === option}
+                    onClick={() => {
+                      setFilter(option);
+                      setActiveIndex(0);
+                      if (resultsRef.current) resultsRef.current.scrollTop = 0;
+                    }}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div className="cog-search-status" role="status" aria-live="polite" aria-atomic="true">
+              {visibleResults.length} result{visibleResults.length === 1 ? "" : "s"}
+              {filter !== "All" && !filtersOpen && <span className="cog-search-filter-label"> · {filter}</span>}
+            </div>
+
+            <div
+              ref={resultsRef}
+              id="site-search-results"
+              className="cog-search-results"
+              role="listbox"
+              aria-label="Search results"
+            >
+              {visibleResults.map((result, itemIndex) => (
+                <Link
+                  key={result.id}
+                  id={`search-${result.id}`}
+                  href={result.href}
+                  role="option"
+                  aria-label={`${result.title}, ${result.subtitle}, ${result.section}`}
+                  aria-selected={itemIndex === activeIndex}
+                  tabIndex={-1}
+                  className={`cog-search-result${itemIndex === activeIndex ? " is-active" : ""}`}
+                  onPointerEnter={() => setActiveIndex(itemIndex)}
+                  onFocus={() => setActiveIndex(itemIndex)}
+                  onClick={() => closeSearch(false)}
+                >
+                  <span className="cog-search-result-logo" aria-hidden="true">
+                    <Image src={result.logoSrc} alt="" width={48} height={28} unoptimized />
+                  </span>
+                  <span className="cog-search-result-title">{result.title}</span>
+                  {filter === "All" && <span className="cog-search-result-type">{result.section}</span>}
+                  <UIIcon name="arrow-up-right" className="cog-search-result-arrow" />
+                </Link>
+              ))}
+              {visibleResults.length === 0 && <p className="cog-search-empty">No matches. Try another name or filter.</p>}
+            </div>
           </div>
         </div>
       )}

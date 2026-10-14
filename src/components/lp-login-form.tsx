@@ -1,3 +1,5 @@
+import { UIIcon } from "@/components/icons";
+
 type LoginError = "invalid" | "rate" | "request" | "config";
 
 const ERROR_MESSAGES: Record<LoginError, string> = {
@@ -8,7 +10,7 @@ const ERROR_MESSAGES: Record<LoginError, string> = {
 };
 
 export function LpLoginForm({ error }: { error?: string }) {
-  const message = error && error in ERROR_MESSAGES ? ERROR_MESSAGES[error as LoginError] : "";
+  const message = error && Object.hasOwn(ERROR_MESSAGES, error) ? ERROR_MESSAGES[error as LoginError] : "";
 
   return (
     <form className="lp-login-form" action="/api/lp/session" method="post">
@@ -21,14 +23,13 @@ export function LpLoginForm({ error }: { error?: string }) {
           autoComplete="current-password"
           autoFocus
           required
-          minLength={12}
           maxLength={256}
           aria-invalid={Boolean(message)}
           aria-describedby={message ? "lp-login-error" : undefined}
         />
         <button type="submit">
           Sign in
-          <span aria-hidden="true">→</span>
+          <UIIcon name="arrow-right" />
         </button>
       </div>
       {message ? (

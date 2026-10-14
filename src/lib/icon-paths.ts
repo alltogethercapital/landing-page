@@ -1,0 +1,34 @@
+/** Shared 24×24 stroke geometry for the site and standalone gallery. */
+export const UI_ICON_PATHS = {
+  info: "M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0M12 11v6M12 7h.01",
+  search: "M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0M15.4 15.4l4.1 4.1",
+  close: "M6 6l12 12M18 6 6 18",
+  menu: "M4 6h16M4 12h16M4 18h16",
+  sun: "M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4",
+  moon: "M20.1 15.4A8.5 8.5 0 0 1 8.6 3.9 8.5 8.5 0 1 0 20.1 15.4Z",
+  "chevron-left": "M14 6l-6 6 6 6",
+  "chevron-right": "M10 6l6 6-6 6",
+  refresh: "M3 10a9 9 0 1 1 2.9 9.2M3 4v6h6",
+  "arrow-left": "M20 12H4M10 6l-6 6 6 6",
+  "arrow-right": "M4 12h16M14 6l6 6-6 6",
+  "arrow-up": "M12 20V4M6 10l6-6 6 6",
+  "arrow-down": "M12 4v16M6 14l6 6 6-6",
+  "arrow-up-right": "M6 18 18 6M6 6h12v12",
+  "arrow-up-down": "M7 20V4M3 8l4-4 4 4M17 4v16M13 16l4 4 4-4",
+  "corner-down-left": "M20 4v7a4 4 0 0 1-4 4H4M9 10l-5 5 5 5",
+  mail: "M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2ZM2 7l10 6 10-6",
+  linkedin: "M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2ZM7 10v7M7 7h.01M11 17v-7M11 13a3 3 0 0 1 6 0v4",
+  x: "M4 3h4l12 18h-4L4 3ZM20 3 4 21",
+  favorite: "M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z",
+  "favorite-filled": "M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3ZM9 12l2 2 4-4",
+} as const;
+
+export type UIIconName = keyof typeof UI_ICON_PATHS;
+
+/** Related silhouettes keep utility hover morphs small and recognizable. */
+export const UI_ICON_HOVER_PATHS: Partial<Record<UIIconName, string>> = {
+  search: "M18 10.5a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0M16.1 16.1l4.4 4.4",
+  close: "M4.5 4.5l15 15M19.5 4.5l-15 15",
+  moon: "M20.1 16.5A8.5 8.5 0 0 1 9 3.4 8.5 8.5 0 1 0 20.1 16.5Z",
+  sun: "M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0M15.83 2.76l-.77 1.85M8.94 19.39l-.77 1.85M2.76 8.17l1.85.77M19.39 15.06l1.85.77M8.16 2.73l.75 1.82M15.09 19.45l.75 1.82M21.27 8.16l-1.82.75M4.55 15.09l-1.82.75",
+};

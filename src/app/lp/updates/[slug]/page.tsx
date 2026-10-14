@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { UIIcon } from "@/components/icons";
+import { requireLpSession } from "@/lib/lp-auth";
 import {
   LP_AUGUST_2026_FUND_SNAPSHOT,
   LP_AUGUST_2026_PORTFOLIO_AS_OF,
@@ -13,11 +15,8 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return LP_INVESTOR_UPDATES.map(({ slug }) => ({ slug }));
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  await requireLpSession();
   const { slug } = await params;
   const update = LP_INVESTOR_UPDATES.find((entry) => entry.slug === slug);
   if (!update) {
@@ -208,6 +207,7 @@ function SeptemberUpdateCopy() {
 }
 
 export default async function LpInvestorUpdatePage({ params }: PageProps) {
+  await requireLpSession();
   const { slug } = await params;
   const update = LP_INVESTOR_UPDATES.find((entry) => entry.slug === slug);
   if (!update || !["august-2026", "september-2026"].includes(slug)) notFound();
@@ -216,7 +216,7 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
   return (
     <article className="lp-portal-shell lp-update-article">
       <Link href="/lp/updates" className="lp-update-back-link">
-        ← All investor updates
+        <UIIcon name="arrow-left" /> All investor updates
       </Link>
 
       <header className="lp-update-article-header">
@@ -225,7 +225,7 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
           <span aria-hidden="true">·</span>
           <time dateTime={update.publishedAt}>{update.published}</time>
         </div>
-        <h1>{update.title}</h1>
+        <h1 className="sr-only">{update.title}</h1>
         <p className="lp-update-article-subtitle">{update.subtitle}</p>
       </header>
 

@@ -8,7 +8,7 @@ export default function NotFound() {
     <CognitionPage>
       <SiteNav showLogo />
 
-      <CognitionSection label="404" title="This cell is empty.">
+      <CognitionSection label="404" title="This cell is empty." hideTitle={false}>
         <p className="cog-body-copy">
           Nothing renders here. The page you&apos;re looking for doesn&apos;t
           exist or has moved. Let&apos;s get you back to building.
@@ -22,7 +22,7 @@ export default function NotFound() {
           <ArrowLink href="/">
             Back home
           </ArrowLink>
-          <ArrowLink href="/companies" className="bg-transparent">
+          <ArrowLink href="/companies">
             Our companies
           </ArrowLink>
         </div>

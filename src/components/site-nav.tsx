@@ -7,26 +7,22 @@ import {
   useEffect,
   useRef,
   useState,
-  type FocusEvent,
-  type PointerEvent,
   type ReactNode,
 } from "react";
 import { LogoMark } from "@/components/cognition-layout";
+import { SiteGrain } from "@/components/site-appearance";
+import { UIIcon } from "@/components/icons";
 import { CONTACT_MAILTO, NAV } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 function isNavItemActive(pathname: string, href: string) {
   if (!href.startsWith("/")) return false;
   if (href === "/") return pathname === "/";
+  if (href === "/lp" && pathname === "/lp-login") return true;
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-const TRACKED_NAV_LINK_SELECTOR = "a.cog-nav-link, a.cog-mobile-menu-link";
-
-function getTrackedNavLink(target: EventTarget | null) {
-  if (!(target instanceof Element)) return null;
-  return target.closest<HTMLElement>(TRACKED_NAV_LINK_SELECTOR);
-}
+const OVERLAY_EVENT = "machine-spirit-overlay-open";
 
 function NavLink({
   href,
@@ -66,120 +62,128 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
   void showLogo;
 
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const desktopNavLinksRef = useRef<HTMLElement>(null);
-  const mobileNavLinksRef = useRef<HTMLElement>(null);
+  const [menu, setMenu] = useState({ pathname, open: false });
+  const open = menu.pathname === pathname && menu.open;
+  const mobileNavRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const openFrameRef = useRef<number | null>(null);
+  const restoreFocusRef = useRef(false);
 
-  const syncHoverPlate = useCallback((nav: HTMLElement | null, target?: HTMLElement | null) => {
-    if (!nav) return;
+  // Route changes close the menu without a delayed, stale overlay or scroll lock.
+  if (menu.pathname !== pathname) setMenu({ pathname, open: false });
 
-    const link = target ?? null;
+  const closeMenu = useCallback((restoreFocus = false) => {
+    if (openFrameRef.current !== null) {
+      window.cancelAnimationFrame(openFrameRef.current);
+      openFrameRef.current = null;
+    }
+    restoreFocusRef.current = restoreFocus;
+    setMenu((current) => ({ ...current, open: false }));
+  }, []);
 
-    if (!link || link.getAttribute("aria-current") === "page") {
-      nav.dataset.hoverReady = "false";
+  function toggleMenu() {
+    if (open || openFrameRef.current !== null) {
+      closeMenu(true);
       return;
     }
-
-    const navRect = nav.getBoundingClientRect();
-    const linkRect = link.getBoundingClientRect();
-    const linkStyles = window.getComputedStyle(link);
-    const lineHeight = Number.parseFloat(linkStyles.lineHeight);
-    const plateHeight = Number.isFinite(lineHeight)
-      ? Math.min(linkRect.height, lineHeight + 4)
-      : linkRect.height;
-    const plateTop = linkRect.top - navRect.top + (linkRect.height - plateHeight) / 2;
-
-    nav.style.setProperty("--nav-hover-left", `${linkRect.left - navRect.left}px`);
-    nav.style.setProperty("--nav-hover-top", `${plateTop}px`);
-    nav.style.setProperty("--nav-hover-width", `${linkRect.width + 7}px`);
-    nav.style.setProperty("--nav-hover-height", `${plateHeight}px`);
-    nav.dataset.hoverReady = "true";
-  }, []);
-
-  const resetHoverPlate = useCallback(
-    (nav: HTMLElement | null) => {
-      syncHoverPlate(nav);
-    },
-    [syncHoverPlate],
-  );
-
-  const handleNavPointerOver = useCallback(
-    (event: PointerEvent<HTMLElement>) => {
-      const link = getTrackedNavLink(event.target);
-      if (!link || !event.currentTarget.contains(link)) return;
-      syncHoverPlate(event.currentTarget, link);
-    },
-    [syncHoverPlate],
-  );
-
-  const handleNavPointerLeave = useCallback(
-    (event: PointerEvent<HTMLElement>) => {
-      resetHoverPlate(event.currentTarget);
-    },
-    [resetHoverPlate],
-  );
-
-  const handleNavFocus = useCallback(
-    (event: FocusEvent<HTMLElement>) => {
-      const link = getTrackedNavLink(event.target);
-      if (!link || !event.currentTarget.contains(link)) return;
-      syncHoverPlate(event.currentTarget, link);
-    },
-    [syncHoverPlate],
-  );
-
-  const handleNavBlur = useCallback(
-    (event: FocusEvent<HTMLElement>) => {
-      const nextTarget = event.relatedTarget;
-      if (nextTarget instanceof Node && event.currentTarget.contains(nextTarget)) return;
-      resetHoverPlate(event.currentTarget);
-    },
-    [resetHoverPlate],
-  );
+    window.dispatchEvent(new CustomEvent(OVERLAY_EVENT, { detail: "menu" }));
+    // Let another overlay release its focus and scroll lock before taking ownership.
+    openFrameRef.current = window.requestAnimationFrame(() => {
+      openFrameRef.current = null;
+      restoreFocusRef.current = false;
+      setMenu({ pathname, open: true });
+    });
+  }
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    const onOverlayOpen = (event: Event) => {
+      if ((event as CustomEvent<string>).detail !== "menu") closeMenu();
+    };
+    const desktop = window.matchMedia("(min-width: 900px)");
+    const onViewportChange = () => {
+      if (desktop.matches) closeMenu();
+    };
+    window.addEventListener(OVERLAY_EVENT, onOverlayOpen);
+    desktop.addEventListener("change", onViewportChange);
     return () => {
-      document.body.style.overflow = "";
+      window.removeEventListener(OVERLAY_EVENT, onOverlayOpen);
+      desktop.removeEventListener("change", onViewportChange);
+      if (openFrameRef.current !== null) {
+        window.cancelAnimationFrame(openFrameRef.current);
+      }
     };
-  }, [open]);
+  }, [closeMenu]);
 
   useEffect(() => {
+    const dialog = mobileNavRef.current;
+    if (!open || !dialog) return;
+
+    const menuButton = menuButtonRef.current;
+    const previousOverflow = document.body.style.overflow;
+    const backgroundElements: { element: HTMLElement; inert: boolean }[] = [];
+    // This dialog sits inside the page. Disable siblings at every ancestor level,
+    // rather than making its own parent (and the menu) inert.
+    let branch: HTMLElement = dialog;
+    while (branch.parentElement) {
+      const parent = branch.parentElement;
+      for (const sibling of parent.children) {
+        if (sibling instanceof HTMLElement && sibling !== branch) {
+          backgroundElements.push({ element: sibling, inert: sibling.inert });
+          sibling.inert = true;
+        }
+      }
+      if (parent === document.body) break;
+      branch = parent;
+    }
+    document.body.style.overflow = "hidden";
+    const focusFrame = window.requestAnimationFrame(() => {
+      dialog.querySelector<HTMLElement>(".cog-mobile-menu-link")?.focus();
+    });
+
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeMenu(true);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusable = Array.from(
+        dialog.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+      );
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (!first || !last) return;
+      const focusOutside = !dialog.contains(document.activeElement);
+      if (event.shiftKey && (document.activeElement === first || focusOutside)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || focusOutside)) {
+        event.preventDefault();
+        first.focus();
+      }
     };
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
-
-  useEffect(() => {
-    const syncAll = () => {
-      syncHoverPlate(desktopNavLinksRef.current);
-      syncHoverPlate(mobileNavLinksRef.current);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      backgroundElements.forEach(({ element, inert }) => {
+        element.inert = inert;
+      });
+      if (restoreFocusRef.current && menuButton?.isConnected) menuButton.focus();
+      restoreFocusRef.current = false;
     };
-
-    syncAll();
-    window.addEventListener("resize", syncAll);
-    return () => window.removeEventListener("resize", syncAll);
-  }, [open, pathname, syncHoverPlate]);
+  }, [closeMenu, open]);
 
   return (
     <>
       <aside className="cog-desktop-nav" aria-label="Primary">
-        <Link href="/" aria-label="Machine Spirit Capital home" className="cog-nav-logo">
+        <Link href="/" aria-label="Machine Spirit home" className="cog-nav-logo">
           <LogoMark />
         </Link>
 
-        <nav
-          className="cog-nav-links"
-          ref={desktopNavLinksRef}
-          onPointerOver={handleNavPointerOver}
-          onPointerLeave={handleNavPointerLeave}
-          onFocus={handleNavFocus}
-          onBlur={handleNavBlur}
-        >
-          <span className="cog-nav-hover-plate" aria-hidden="true" />
+        <nav className="cog-nav-links" aria-label="Primary">
           {NAV.map((item) => {
             const active = isNavItemActive(pathname, item.href);
             return (
@@ -200,61 +204,65 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
         </NavLink>
       </aside>
 
-      <header className="cog-mobile-header">
-        <Link
-          href="/"
-          aria-label="Machine Spirit Capital home"
-          className="cog-mobile-logo"
-          onClick={() => setOpen(false)}
-        >
-          <LogoMark />
-        </Link>
-        <button
-          type="button"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          onClick={() => setOpen((value) => !value)}
-          className="cog-mobile-menu-button"
-        >
-          {open ? "Close" : "Menu"}
-        </button>
-      </header>
-
-      {open && (
-        <div className="cog-mobile-menu" role="dialog" aria-modal="true" aria-label="Site menu">
-          <nav
-            className="cog-mobile-menu-links"
-            ref={mobileNavLinksRef}
-            onPointerOver={handleNavPointerOver}
-            onPointerLeave={handleNavPointerLeave}
-            onFocus={handleNavFocus}
-            onBlur={handleNavBlur}
+      <div
+        ref={mobileNavRef}
+        className="cog-mobile-nav"
+        role={open ? "dialog" : undefined}
+        aria-modal={open ? true : undefined}
+        aria-label={open ? "Site menu" : undefined}
+      >
+        <header className="cog-mobile-header">
+          <Link
+            href="/"
+            aria-label="Machine Spirit home"
+            className="cog-mobile-logo"
+            onClick={() => closeMenu()}
           >
-            <span className="cog-nav-hover-plate" aria-hidden="true" />
-            {NAV.map((item) => {
-              const active = isNavItemActive(pathname, item.href);
-              return (
+            <LogoMark />
+          </Link>
+          <button
+            ref={menuButtonRef}
+            type="button"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls={open ? "site-mobile-menu" : undefined}
+            aria-haspopup="dialog"
+            onClick={toggleMenu}
+            className="cog-mobile-menu-button"
+          >
+            <UIIcon name={open ? "close" : "menu"} />
+          </button>
+        </header>
+
+        {open && (
+          <div id="site-mobile-menu" className="cog-mobile-menu">
+            <SiteGrain className="site-grain--surface" />
+            <nav className="cog-mobile-menu-links" aria-label="Primary">
+              {NAV.map((item) => {
+                const active = isNavItemActive(pathname, item.href);
+                return (
+                  <NavLink
+                    key={item.label}
+                    href={item.href}
+                    ariaCurrent={active ? "page" : undefined}
+                    onClick={() => closeMenu()}
+                    className={cn("cog-mobile-menu-link", active && "is-active")}
+                  >
+                    {item.label}
+                  </NavLink>
+                );
+              })}
                 <NavLink
-                  key={item.label}
-                  href={item.href}
-                  ariaCurrent={active ? "page" : undefined}
-                  onClick={() => setOpen(false)}
-                  className={cn("cog-mobile-menu-link", active && "is-active")}
+                  href={CONTACT_MAILTO}
+                  onClick={() => closeMenu()}
+                  className="cog-mobile-menu-link cog-mobile-menu-contact"
                 >
-                  {item.label}
+                  Email us
                 </NavLink>
-              );
-            })}
-            <NavLink
-              href={CONTACT_MAILTO}
-              onClick={() => setOpen(false)}
-              className="cog-mobile-menu-link cog-mobile-menu-contact"
-            >
-              Email us
-            </NavLink>
-          </nav>
-        </div>
-      )}
+            </nav>
+          </div>
+        )}
+      </div>
     </>
   );
 }

@@ -13,6 +13,7 @@ import {
   getLpInvestmentLanguage,
 } from "@/lib/lp-investment-language";
 import { PORTFOLIO } from "@/lib/portfolio";
+import { requireLpSession } from "@/lib/lp-auth";
 
 export type LpInvestmentProjectionDto = {
   projectedValue: number;
@@ -205,10 +206,12 @@ function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
   };
 }
 export const getLpPortfolio = cache(async () => {
+  await requireLpSession();
   return LP_INVESTMENTS.map(toDto);
 });
 
 export const getLpInvestment = cache(async (id: string) => {
+  await requireLpSession();
   const investment = LP_INVESTMENTS.find((record) => record.id === id);
   return investment ? toDto(investment) : null;
 });

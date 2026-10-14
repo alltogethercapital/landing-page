@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import {
+  ArrowLink,
   CognitionPage,
   CognitionSection,
   CognitionStrip,
@@ -9,12 +9,13 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { ArrowUpRight } from "@/components/icons";
 import { PORTFOLIO, slugify, type Company } from "@/lib/portfolio";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "Our companies",
-  description:
-    "Our companies, across AI, defense, energy, robotics, semiconductors, and space.",
-};
+export const metadata = pageMetadata(
+  "Our companies — Machine Spirit Capital",
+  "Companies creating and stewarding the technologies that will define the machine age.",
+  "/companies",
+);
 
 function CompanyArticle({ company }: { company: Company }) {
   const logo = company.cardLogo ?? company.logo;
@@ -29,7 +30,7 @@ function CompanyArticle({ company }: { company: Company }) {
         aria-label={`Visit ${company.name}`}
       >
         <span className="cog-company-card-arrow" aria-hidden="true">
-          <ArrowUpRight className="size-4" />
+          <ArrowUpRight />
         </span>
         <span className="cog-company-card-content">
           <span className="cog-company-logo-wrap">
@@ -44,7 +45,7 @@ function CompanyArticle({ company }: { company: Company }) {
                   loading="eager"
                   className="cog-company-logo-lockup-mark"
                 />
-                <span>{company.logoLabel}</span>
+                <span className="cog-company-logo-lockup-label">{company.logoLabel}</span>
               </span>
             ) : logo ? (
               <Image
@@ -74,10 +75,15 @@ export default function CompaniesPage() {
     <CognitionPage>
       <SiteNav />
 
-      <CognitionSection label="Our companies" title="Our companies.">
+      <CognitionSection label="Our companies" title="Our companies." hideTitle>
         <p className="cog-body-copy">
-          Across AI, defense, energy, robotics, semiconductors, and space.
+          Companies creating and stewarding the technologies that will define
+          the machine age, across AI, defense, energy, robotics,
+          semiconductors, and space.
         </p>
+        <ArrowLink href="/founders" className="mt-8">
+          Meet the entrepreneurs
+        </ArrowLink>
       </CognitionSection>
 
       <CognitionStrip className="cog-strip--inset cog-strip--portfolio">

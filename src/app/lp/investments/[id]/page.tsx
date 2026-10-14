@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { UIIcon } from "@/components/icons";
 import { getCompanyContext, getLpInvestment, getLpSnapshot } from "@/lib/lp-data";
 
 type PageProps = {
@@ -47,14 +48,14 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
 
   return (
     <div className="lp-portal-shell lp-detail-shell">
-      <Link href="/lp" className="lp-back-link">← Portfolio</Link>
+      <Link href="/lp" className="lp-back-link"><UIIcon name="arrow-left" /> Portfolio</Link>
 
       <header className="lp-detail-hero">
         <div className={`lp-detail-logo${investment.logoTreatment === "inverse" ? " lp-logo--inverse" : ""}`}>
           <Image src={investment.logo} alt="" width={280} height={100} unoptimized />
         </div>
         <div className="lp-detail-heading">
-          <h1>{investment.company}</h1>
+          <h1 className="sr-only">{investment.company}</h1>
           <p>{investment.description || context?.description || "Portfolio investment."}</p>
           <p className="lp-detail-meta">
             {investment.investmentAccess} · {investment.ownershipType}
@@ -69,7 +70,7 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
               className="lp-company-website"
               aria-label={`Visit ${investment.company} website`}
             >
-              Company website <span aria-hidden="true">↗</span>
+              Company website <UIIcon name="arrow-up-right" />
             </a>
           )}
         </div>
@@ -157,7 +158,7 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
         <p className="lp-projection-source">
           Estimate based on: {projection.source}
           {projection.sourceUrl && (
-            <> · <a href={projection.sourceUrl} target="_blank" rel="noreferrer">View source ↗</a></>
+            <> · <a href={projection.sourceUrl} target="_blank" rel="noreferrer">View source <UIIcon name="arrow-up-right" /></a></>
           )}
           . This is an unaudited estimate, not the fund&apos;s official net asset value.
         </p>

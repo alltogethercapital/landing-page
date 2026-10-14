@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { UIIcon } from "@/components/icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export type UpdateCarouselArticle = {
@@ -61,7 +61,9 @@ export function UpdatesCarousel({
 
     track.scrollBy({
       left: direction * track.clientWidth,
-      behavior: "smooth",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
     });
   };
 
@@ -77,7 +79,7 @@ export function UpdatesCarousel({
             disabled={!canScrollPrevious}
             onClick={() => move(-1)}
           >
-            <ChevronLeft className="size-4" strokeWidth={2.2} />
+            <UIIcon name="chevron-left" />
           </button>
           <button
             type="button"
@@ -86,7 +88,7 @@ export function UpdatesCarousel({
             disabled={!canScrollNext}
             onClick={() => move(1)}
           >
-            <ChevronRight className="size-4" strokeWidth={2.2} />
+            <UIIcon name="chevron-right" />
           </button>
         </div>
       </div>

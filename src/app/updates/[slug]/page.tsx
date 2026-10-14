@@ -5,6 +5,7 @@ import { CognitionPage, CognitionSection } from "@/components/cognition-layout";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { ARTICLES, articleBySlug } from "@/lib/articles";
+import { pageMetadata } from "@/lib/page-metadata";
 
 export function generateStaticParams() {
   return ARTICLES.map((article) => ({ slug: article.slug }));
@@ -17,11 +18,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const article = articleBySlug(slug);
-  if (!article) return { title: "Page Not Found" };
-  return {
-    title: article.title,
-    description: article.excerpt,
-  };
+  if (!article) return { title: "Not found — Machine Spirit Capital" };
+  return pageMetadata(
+    `${article.title} — Machine Spirit Capital`,
+    article.excerpt,
+    `/updates/${article.slug}`,
+  );
 }
 
 export default async function NotePage({

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { UIIcon } from "@/components/icons";
+import { requireLpSession } from "@/lib/lp-auth";
 import { LP_INVESTOR_UPDATES } from "@/data/lp-investor-updates";
 
 export const metadata: Metadata = {
@@ -8,7 +10,8 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false, nocache: true },
 };
 
-export default function LpInvestorUpdatesPage() {
+export default async function LpInvestorUpdatesPage() {
+  await requireLpSession();
   const updates = [...LP_INVESTOR_UPDATES].sort((left, right) =>
     right.publishedAt.localeCompare(left.publishedAt),
   );
@@ -16,8 +19,7 @@ export default function LpInvestorUpdatesPage() {
   return (
     <section className="lp-portal-shell lp-updates-index">
       <header className="lp-updates-index-header">
-        <span>Private investor communications</span>
-        <h1>Investor Updates</h1>
+        <h1 className="sr-only">Investor Updates</h1>
         <p>
           Notes on the portfolio, our investment thinking, and what we are learning. We publish at least
           twice per year, with shorter updates when something material changes.
@@ -39,7 +41,7 @@ export default function LpInvestorUpdatesPage() {
                 <strong>{update.title}</strong>
                 <span className="lp-update-list-subtitle">{update.subtitle}</span>
               </span>
-              <span className="lp-update-list-arrow" aria-hidden="true">↗</span>
+              <span className="lp-update-list-arrow" aria-hidden="true"><UIIcon name="arrow-up-right" /></span>
             </Link>
           </li>
         ))}

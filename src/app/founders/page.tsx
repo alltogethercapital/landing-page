@@ -1,59 +1,65 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import {
+  ArrowLink,
   CognitionPage,
   CognitionSection,
   CognitionStrip,
 } from "@/components/cognition-layout";
-import { AsciiReveal } from "@/components/ascii-reveal";
+import { AsciiReveal, PortraitRevealSession } from "@/components/ascii-reveal";
 import { ArrowUpRight, LinkedInIcon, XIcon } from "@/components/icons";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
+import { founderPortraitSrc } from "@/lib/portrait-assets";
+import { pageMetadata } from "@/lib/page-metadata";
 import {
   FOUNDERS,
   companyForFounder,
   founderAnchor,
+  initialsFor,
   type Founder,
 } from "@/lib/founders";
 
-export const metadata: Metadata = {
-  title: "Our entrepreneurs",
-  description:
-    "The entrepreneurs we back, building the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
-};
-
-function whiteHeadshotSrc(headshot: string) {
-  if (!headshot.startsWith("/founders/cutouts/")) return headshot;
-  return headshot
-    .replace("/founders/cutouts/", "/founders/white-webp/")
-    .replace(/\.png$/, ".webp");
-}
+export const metadata = pageMetadata(
+  "Our entrepreneurs — Machine Spirit Capital",
+  "The entrepreneurs building and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
+  "/founders",
+);
 
 function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boolean }) {
   const company = companyForFounder(founder);
   const profile = founder.linkedin ?? founder.x;
   const profileLabel = founder.linkedin ? "LinkedIn" : "X";
-  const fullPortrait = founder.headshot.startsWith("/founders/portraits/");
+  const destination = profile ?? company?.href ?? "/companies";
+  const external = destination.startsWith("https://");
+  const fullPortrait = founder.headshot?.startsWith("/founders/portraits/") ?? false;
 
   return (
     <article id={founderAnchor(founder)} className="cog-person-card">
       <a
-        href={profile ?? company?.href ?? "#"}
-        target={profile ? "_blank" : undefined}
-        rel={profile ? "noopener noreferrer" : undefined}
+        href={destination}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
         aria-label={profile ? `${founder.name} on ${profileLabel}` : founder.name}
         className="cog-person-media"
       >
-        <Image
-          src={whiteHeadshotSrc(founder.headshot)}
-          alt={founder.name}
-          fill
-          sizes="(max-width: 899px) calc((100vw - 48px) / 2), 303px"
-          unoptimized
-          loading={eager ? "eager" : "lazy"}
-          className={fullPortrait ? "object-cover object-center" : "object-contain object-bottom"}
-        />
-        <AsciiReveal src={whiteHeadshotSrc(founder.headshot)} fit={fullPortrait ? "cover" : "contain"} />
+        {founder.headshot ? (
+          <AsciiReveal
+            src={founderPortraitSrc(founder.headshot)}
+            fit={fullPortrait ? "cover" : "contain"}
+          >
+            <Image
+              src={founderPortraitSrc(founder.headshot)}
+              alt={founder.name}
+              fill
+              sizes="(max-width: 899px) calc((100vw - 48px) / 2), 303px"
+              unoptimized
+              loading={eager ? "eager" : "lazy"}
+              className={fullPortrait ? "object-cover object-center" : "object-contain object-bottom"}
+            />
+          </AsciiReveal>
+        ) : (
+          <span className="cog-person-initials">{initialsFor(founder.name)}</span>
+        )}
       </a>
 
       <div className="cog-person-copy">
@@ -70,7 +76,7 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
               aria-label={`${founder.name} on ${profileLabel}`}
               className="cog-arrow-icon"
             >
-              <ArrowUpRight className="size-4" />
+              <ArrowUpRight />
             </a>
           )}
         </div>
@@ -83,13 +89,13 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
           )}
           {founder.linkedin && (
             <a href={founder.linkedin} target="_blank" rel="noopener noreferrer">
-              <LinkedInIcon className="size-3.5" />
+              <LinkedInIcon />
               LinkedIn
             </a>
           )}
           {founder.x && (
             <a href={founder.x} target="_blank" rel="noopener noreferrer">
-              <XIcon className="size-3" />X
+              <XIcon />X
             </a>
           )}
         </div>
@@ -103,23 +109,29 @@ export default function FoundersPage() {
     <CognitionPage>
       <SiteNav />
 
-      <CognitionSection label="Our entrepreneurs" title="Our entrepreneurs.">
+      <CognitionSection label="Our entrepreneurs" title="Our entrepreneurs." hideTitle>
         <p className="cog-body-copy">
-          The entrepreneurs we back, building the hard frontier across AI,
-          defense, energy, robotics, semiconductors, and space.
+          The entrepreneurs we back are building and stewarding the hard
+          frontier, turning new technology into durable systems that expand
+          human capability.
         </p>
+        <ArrowLink href="/companies" className="mt-8">
+          See companies
+        </ArrowLink>
       </CognitionSection>
 
       <CognitionStrip className="cog-strip--inset">
-        <div className="cog-person-grid">
-          {FOUNDERS.map((founder, index) => (
-            <FounderCard
-              key={founderAnchor(founder)}
-              founder={founder}
-              eager={index < 4}
-            />
-          ))}
-        </div>
+        <PortraitRevealSession page="/founders">
+          <div className="cog-person-grid">
+            {FOUNDERS.map((founder, index) => (
+              <FounderCard
+                key={founderAnchor(founder)}
+                founder={founder}
+                eager={index < 4}
+              />
+            ))}
+          </div>
+        </PortraitRevealSession>
       </CognitionStrip>
 
       <SiteFooter />

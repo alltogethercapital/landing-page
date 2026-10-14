@@ -1,0 +1,1059 @@
+{
+  "brand": "Machine Spirit",
+  "initials": "MS",
+  "reference": "https://www.atomicmachines.com/",
+  "families": [
+    {
+      "id": "angular",
+      "name": "Angular",
+      "idea": "Heavy MS strokes, sharp diagonals, and an industrial silhouette."
+    },
+    {
+      "id": "interlocked",
+      "name": "Interlocked",
+      "idea": "M and S connected through a shared stroke or overlapping structure."
+    },
+    {
+      "id": "negative-space",
+      "name": "Negative space",
+      "idea": "MS machined out of a single solid form."
+    },
+    {
+      "id": "stacked",
+      "name": "Stacked",
+      "idea": "Compact M-over-S compositions for icons and small placements."
+    },
+    {
+      "id": "stencil",
+      "name": "Stencil",
+      "idea": "Cut channels and open seams give the initials a manufactured character."
+    },
+    {
+      "id": "rounded",
+      "name": "Rounded",
+      "idea": "Softer MS geometry, with continuous curves and generous counters."
+    },
+    {
+      "id": "ribbon",
+      "name": "Ribbon",
+      "idea": "Parallel lines and folded paths suggest motion through a machine."
+    },
+    {
+      "id": "modular",
+      "name": "Modular",
+      "idea": "MS assembled from grids, pixels, and repeatable components."
+    },
+    {
+      "id": "emblems",
+      "name": "Emblems",
+      "idea": "MS held inside compact geometric frames."
+    },
+    {
+      "id": "precision",
+      "name": "Precision",
+      "idea": "Lighter strokes and restrained intersections with an engineering feel."
+    }
+  ],
+  "logos": [
+    {
+      "id": 1,
+      "number": "001",
+      "name": "Foundry",
+      "family": "angular",
+      "familyName": "Angular",
+      "idea": "Heavy MS strokes, sharp diagonals, and an industrial silhouette.",
+      "file": "machine-spirit-ms-001.svg",
+      "recommended": false
+    },
+    {
+      "id": 2,
+      "number": "002",
+      "name": "Vector",
+      "family": "angular",
+      "familyName": "Angular",
+      "idea": "Heavy MS strokes, sharp diagonals, and an industrial silhouette.",
+      "file": "machine-spirit-ms-002.svg",
+      "recommended": true
+    },
+    {
+      "id": 3,
+      "number": "003",
+      "name": "Gantry",
+      "family": "angular",
+      "familyName": "Angular",
+      "idea": "Heavy MS strokes, sharp diagonals, and an industrial silhouette.",
+      "file": "machine-spirit-ms-003.svg",
+      "recommended": false
+    },
+    {
+      "id": 4,
+      "number": "004",
+      "name": "Rise",
+      "family": "angular",
+      "familyName": "Angular",
+      "idea": "Heavy MS strokes, sharp diagonals, and an industrial silhouette.",
+      "file": "machine-spirit-ms-004.svg",
+      "recommended": false
+    },
+    {
+      "id": 5,
+      "number": "005",
+      "name": "Torque",
+      "family": "angular",
+      "familyName": "Angular",
+      "idea": "Heavy MS strokes, sharp diagonals, and an industrial silhouette.",
+      "file": "machine-spirit-ms-005.svg",
+      "recommended": false
+    },
+    {
+      "id": 6,
+      "number": "006",
+      "name": "Miter",
+      "family": "angular",
+      "familyName": "Angular",
+      "idea": "Heavy MS strokes, sharp diagonals, and an industrial silhouette.",
+      "file": "machine-spirit-ms-006.svg",
+      "recommended": false
+    },
+    {
+      "id": 7,
+      "number": "007",
+      "name": "Relay",
+      "family": "angular",
+      "familyName": "Angular",
+      "idea": "Heavy MS strokes, sharp diagonals, and an industrial silhouette.",
+      "file": "machine-spirit-ms-007.svg",
+      "recommended": false
+    },
+    {
+      "id": 8,
+      "number": "008",
+      "name": "Truss",
+      "family": "angular",
+      "familyName": "Angular",
+      "idea": "Heavy MS strokes, sharp diagonals, and an industrial silhouette.",
+      "file": "machine-spirit-ms-008.svg",
+      "recommended": false
+    },
+    {
+      "id": 9,
+      "number": "009",
+      "name": "Incline",
+      "family": "angular",
+      "familyName": "Angular",
+      "idea": "Heavy MS strokes, sharp diagonals, and an industrial silhouette.",
+      "file": "machine-spirit-ms-009.svg",
+      "recommended": false
+    },
+    {
+      "id": 10,
+      "number": "010",
+      "name": "Wedge",
+      "family": "angular",
+      "familyName": "Angular",
+      "idea": "Heavy MS strokes, sharp diagonals, and an industrial silhouette.",
+      "file": "machine-spirit-ms-010.svg",
+      "recommended": false
+    },
+    {
+      "id": 11,
+      "number": "011",
+      "name": "Union",
+      "family": "interlocked",
+      "familyName": "Interlocked",
+      "idea": "M and S connected through a shared stroke or overlapping structure.",
+      "file": "machine-spirit-ms-011.svg",
+      "recommended": false
+    },
+    {
+      "id": 12,
+      "number": "012",
+      "name": "Keystone",
+      "family": "interlocked",
+      "familyName": "Interlocked",
+      "idea": "M and S connected through a shared stroke or overlapping structure.",
+      "file": "machine-spirit-ms-012.svg",
+      "recommended": false
+    },
+    {
+      "id": 13,
+      "number": "013",
+      "name": "Shared rail",
+      "family": "interlocked",
+      "familyName": "Interlocked",
+      "idea": "M and S connected through a shared stroke or overlapping structure.",
+      "file": "machine-spirit-ms-013.svg",
+      "recommended": false
+    },
+    {
+      "id": 14,
+      "number": "014",
+      "name": "Weld",
+      "family": "interlocked",
+      "familyName": "Interlocked",
+      "idea": "M and S connected through a shared stroke or overlapping structure.",
+      "file": "machine-spirit-ms-014.svg",
+      "recommended": false
+    },
+    {
+      "id": 15,
+      "number": "015",
+      "name": "Splice",
+      "family": "interlocked",
+      "familyName": "Interlocked",
+      "idea": "M and S connected through a shared stroke or overlapping structure.",
+      "file": "machine-spirit-ms-015.svg",
+      "recommended": false
+    },
+    {
+      "id": 16,
+      "number": "016",
+      "name": "Coupling",
+      "family": "interlocked",
+      "familyName": "Interlocked",
+      "idea": "M and S connected through a shared stroke or overlapping structure.",
+      "file": "machine-spirit-ms-016.svg",
+      "recommended": false
+    },
+    {
+      "id": 17,
+      "number": "017",
+      "name": "Handshake",
+      "family": "interlocked",
+      "familyName": "Interlocked",
+      "idea": "M and S connected through a shared stroke or overlapping structure.",
+      "file": "machine-spirit-ms-017.svg",
+      "recommended": false
+    },
+    {
+      "id": 18,
+      "number": "018",
+      "name": "Crosslink",
+      "family": "interlocked",
+      "familyName": "Interlocked",
+      "idea": "M and S connected through a shared stroke or overlapping structure.",
+      "file": "machine-spirit-ms-018.svg",
+      "recommended": true
+    },
+    {
+      "id": 19,
+      "number": "019",
+      "name": "Throughline",
+      "family": "interlocked",
+      "familyName": "Interlocked",
+      "idea": "M and S connected through a shared stroke or overlapping structure.",
+      "file": "machine-spirit-ms-019.svg",
+      "recommended": false
+    },
+    {
+      "id": 20,
+      "number": "020",
+      "name": "Confluence",
+      "family": "interlocked",
+      "familyName": "Interlocked",
+      "idea": "M and S connected through a shared stroke or overlapping structure.",
+      "file": "machine-spirit-ms-020.svg",
+      "recommended": false
+    },
+    {
+      "id": 21,
+      "number": "021",
+      "name": "Machined block",
+      "family": "negative-space",
+      "familyName": "Negative space",
+      "idea": "MS machined out of a single solid form.",
+      "file": "machine-spirit-ms-021.svg",
+      "recommended": false
+    },
+    {
+      "id": 22,
+      "number": "022",
+      "name": "Die cut",
+      "family": "negative-space",
+      "familyName": "Negative space",
+      "idea": "MS machined out of a single solid form.",
+      "file": "machine-spirit-ms-022.svg",
+      "recommended": false
+    },
+    {
+      "id": 23,
+      "number": "023",
+      "name": "Billet",
+      "family": "negative-space",
+      "familyName": "Negative space",
+      "idea": "MS machined out of a single solid form.",
+      "file": "machine-spirit-ms-023.svg",
+      "recommended": false
+    },
+    {
+      "id": 24,
+      "number": "024",
+      "name": "Chassis",
+      "family": "negative-space",
+      "familyName": "Negative space",
+      "idea": "MS machined out of a single solid form.",
+      "file": "machine-spirit-ms-024.svg",
+      "recommended": false
+    },
+    {
+      "id": 25,
+      "number": "025",
+      "name": "Alloy",
+      "family": "negative-space",
+      "familyName": "Negative space",
+      "idea": "MS machined out of a single solid form.",
+      "file": "machine-spirit-ms-025.svg",
+      "recommended": false
+    },
+    {
+      "id": 26,
+      "number": "026",
+      "name": "Press",
+      "family": "negative-space",
+      "familyName": "Negative space",
+      "idea": "MS machined out of a single solid form.",
+      "file": "machine-spirit-ms-026.svg",
+      "recommended": false
+    },
+    {
+      "id": 27,
+      "number": "027",
+      "name": "Crucible",
+      "family": "negative-space",
+      "familyName": "Negative space",
+      "idea": "MS machined out of a single solid form.",
+      "file": "machine-spirit-ms-027.svg",
+      "recommended": false
+    },
+    {
+      "id": 28,
+      "number": "028",
+      "name": "Cast",
+      "family": "negative-space",
+      "familyName": "Negative space",
+      "idea": "MS machined out of a single solid form.",
+      "file": "machine-spirit-ms-028.svg",
+      "recommended": false
+    },
+    {
+      "id": 29,
+      "number": "029",
+      "name": "Slug",
+      "family": "negative-space",
+      "familyName": "Negative space",
+      "idea": "MS machined out of a single solid form.",
+      "file": "machine-spirit-ms-029.svg",
+      "recommended": false
+    },
+    {
+      "id": 30,
+      "number": "030",
+      "name": "Core",
+      "family": "negative-space",
+      "familyName": "Negative space",
+      "idea": "MS machined out of a single solid form.",
+      "file": "machine-spirit-ms-030.svg",
+      "recommended": false
+    },
+    {
+      "id": 31,
+      "number": "031",
+      "name": "Totem",
+      "family": "stacked",
+      "familyName": "Stacked",
+      "idea": "Compact M-over-S compositions for icons and small placements.",
+      "file": "machine-spirit-ms-031.svg",
+      "recommended": true
+    },
+    {
+      "id": 32,
+      "number": "032",
+      "name": "Stack",
+      "family": "stacked",
+      "familyName": "Stacked",
+      "idea": "Compact M-over-S compositions for icons and small placements.",
+      "file": "machine-spirit-ms-032.svg",
+      "recommended": false
+    },
+    {
+      "id": 33,
+      "number": "033",
+      "name": "Spine",
+      "family": "stacked",
+      "familyName": "Stacked",
+      "idea": "Compact M-over-S compositions for icons and small placements.",
+      "file": "machine-spirit-ms-033.svg",
+      "recommended": false
+    },
+    {
+      "id": 34,
+      "number": "034",
+      "name": "Pillar",
+      "family": "stacked",
+      "familyName": "Stacked",
+      "idea": "Compact M-over-S compositions for icons and small placements.",
+      "file": "machine-spirit-ms-034.svg",
+      "recommended": false
+    },
+    {
+      "id": 35,
+      "number": "035",
+      "name": "Temple",
+      "family": "stacked",
+      "familyName": "Stacked",
+      "idea": "Compact M-over-S compositions for icons and small placements.",
+      "file": "machine-spirit-ms-035.svg",
+      "recommended": false
+    },
+    {
+      "id": 36,
+      "number": "036",
+      "name": "Signal tower",
+      "family": "stacked",
+      "familyName": "Stacked",
+      "idea": "Compact M-over-S compositions for icons and small placements.",
+      "file": "machine-spirit-ms-036.svg",
+      "recommended": false
+    },
+    {
+      "id": 37,
+      "number": "037",
+      "name": "Elevator",
+      "family": "stacked",
+      "familyName": "Stacked",
+      "idea": "Compact M-over-S compositions for icons and small placements.",
+      "file": "machine-spirit-ms-037.svg",
+      "recommended": false
+    },
+    {
+      "id": 38,
+      "number": "038",
+      "name": "Anchor",
+      "family": "stacked",
+      "familyName": "Stacked",
+      "idea": "Compact M-over-S compositions for icons and small placements.",
+      "file": "machine-spirit-ms-038.svg",
+      "recommended": false
+    },
+    {
+      "id": 39,
+      "number": "039",
+      "name": "Monolith",
+      "family": "stacked",
+      "familyName": "Stacked",
+      "idea": "Compact M-over-S compositions for icons and small placements.",
+      "file": "machine-spirit-ms-039.svg",
+      "recommended": false
+    },
+    {
+      "id": 40,
+      "number": "040",
+      "name": "Axis",
+      "family": "stacked",
+      "familyName": "Stacked",
+      "idea": "Compact M-over-S compositions for icons and small placements.",
+      "file": "machine-spirit-ms-040.svg",
+      "recommended": false
+    },
+    {
+      "id": 41,
+      "number": "041",
+      "name": "Laser cut",
+      "family": "stencil",
+      "familyName": "Stencil",
+      "idea": "Cut channels and open seams give the initials a manufactured character.",
+      "file": "machine-spirit-ms-041.svg",
+      "recommended": false
+    },
+    {
+      "id": 42,
+      "number": "042",
+      "name": "Air gap",
+      "family": "stencil",
+      "familyName": "Stencil",
+      "idea": "Cut channels and open seams give the initials a manufactured character.",
+      "file": "machine-spirit-ms-042.svg",
+      "recommended": false
+    },
+    {
+      "id": 43,
+      "number": "043",
+      "name": "Split phase",
+      "family": "stencil",
+      "familyName": "Stencil",
+      "idea": "Cut channels and open seams give the initials a manufactured character.",
+      "file": "machine-spirit-ms-043.svg",
+      "recommended": false
+    },
+    {
+      "id": 44,
+      "number": "044",
+      "name": "Gate",
+      "family": "stencil",
+      "familyName": "Stencil",
+      "idea": "Cut channels and open seams give the initials a manufactured character.",
+      "file": "machine-spirit-ms-044.svg",
+      "recommended": false
+    },
+    {
+      "id": 45,
+      "number": "045",
+      "name": "Isolate",
+      "family": "stencil",
+      "familyName": "Stencil",
+      "idea": "Cut channels and open seams give the initials a manufactured character.",
+      "file": "machine-spirit-ms-045.svg",
+      "recommended": false
+    },
+    {
+      "id": 46,
+      "number": "046",
+      "name": "Stencil",
+      "family": "stencil",
+      "familyName": "Stencil",
+      "idea": "Cut channels and open seams give the initials a manufactured character.",
+      "file": "machine-spirit-ms-046.svg",
+      "recommended": false
+    },
+    {
+      "id": 47,
+      "number": "047",
+      "name": "Interrupt",
+      "family": "stencil",
+      "familyName": "Stencil",
+      "idea": "Cut channels and open seams give the initials a manufactured character.",
+      "file": "machine-spirit-ms-047.svg",
+      "recommended": false
+    },
+    {
+      "id": 48,
+      "number": "048",
+      "name": "Vent",
+      "family": "stencil",
+      "familyName": "Stencil",
+      "idea": "Cut channels and open seams give the initials a manufactured character.",
+      "file": "machine-spirit-ms-048.svg",
+      "recommended": false
+    },
+    {
+      "id": 49,
+      "number": "049",
+      "name": "Channel",
+      "family": "stencil",
+      "familyName": "Stencil",
+      "idea": "Cut channels and open seams give the initials a manufactured character.",
+      "file": "machine-spirit-ms-049.svg",
+      "recommended": false
+    },
+    {
+      "id": 50,
+      "number": "050",
+      "name": "Breakline",
+      "family": "stencil",
+      "familyName": "Stencil",
+      "idea": "Cut channels and open seams give the initials a manufactured character.",
+      "file": "machine-spirit-ms-050.svg",
+      "recommended": false
+    },
+    {
+      "id": 51,
+      "number": "051",
+      "name": "Flux",
+      "family": "rounded",
+      "familyName": "Rounded",
+      "idea": "Softer MS geometry, with continuous curves and generous counters.",
+      "file": "machine-spirit-ms-051.svg",
+      "recommended": false
+    },
+    {
+      "id": 52,
+      "number": "052",
+      "name": "Continuum",
+      "family": "rounded",
+      "familyName": "Rounded",
+      "idea": "Softer MS geometry, with continuous curves and generous counters.",
+      "file": "machine-spirit-ms-052.svg",
+      "recommended": false
+    },
+    {
+      "id": 53,
+      "number": "053",
+      "name": "Current",
+      "family": "rounded",
+      "familyName": "Rounded",
+      "idea": "Softer MS geometry, with continuous curves and generous counters.",
+      "file": "machine-spirit-ms-053.svg",
+      "recommended": true
+    },
+    {
+      "id": 54,
+      "number": "054",
+      "name": "Loop",
+      "family": "rounded",
+      "familyName": "Rounded",
+      "idea": "Softer MS geometry, with continuous curves and generous counters.",
+      "file": "machine-spirit-ms-054.svg",
+      "recommended": false
+    },
+    {
+      "id": 55,
+      "number": "055",
+      "name": "Soft machine",
+      "family": "rounded",
+      "familyName": "Rounded",
+      "idea": "Softer MS geometry, with continuous curves and generous counters.",
+      "file": "machine-spirit-ms-055.svg",
+      "recommended": false
+    },
+    {
+      "id": 56,
+      "number": "056",
+      "name": "Flow",
+      "family": "rounded",
+      "familyName": "Rounded",
+      "idea": "Softer MS geometry, with continuous curves and generous counters.",
+      "file": "machine-spirit-ms-056.svg",
+      "recommended": false
+    },
+    {
+      "id": 57,
+      "number": "057",
+      "name": "Pulse",
+      "family": "rounded",
+      "familyName": "Rounded",
+      "idea": "Softer MS geometry, with continuous curves and generous counters.",
+      "file": "machine-spirit-ms-057.svg",
+      "recommended": false
+    },
+    {
+      "id": 58,
+      "number": "058",
+      "name": "Circulate",
+      "family": "rounded",
+      "familyName": "Rounded",
+      "idea": "Softer MS geometry, with continuous curves and generous counters.",
+      "file": "machine-spirit-ms-058.svg",
+      "recommended": false
+    },
+    {
+      "id": 59,
+      "number": "059",
+      "name": "Orbit",
+      "family": "rounded",
+      "familyName": "Rounded",
+      "idea": "Softer MS geometry, with continuous curves and generous counters.",
+      "file": "machine-spirit-ms-059.svg",
+      "recommended": false
+    },
+    {
+      "id": 60,
+      "number": "060",
+      "name": "Stream",
+      "family": "rounded",
+      "familyName": "Rounded",
+      "idea": "Softer MS geometry, with continuous curves and generous counters.",
+      "file": "machine-spirit-ms-060.svg",
+      "recommended": false
+    },
+    {
+      "id": 61,
+      "number": "061",
+      "name": "Filament",
+      "family": "ribbon",
+      "familyName": "Ribbon",
+      "idea": "Parallel lines and folded paths suggest motion through a machine.",
+      "file": "machine-spirit-ms-061.svg",
+      "recommended": false
+    },
+    {
+      "id": 62,
+      "number": "062",
+      "name": "Coil",
+      "family": "ribbon",
+      "familyName": "Ribbon",
+      "idea": "Parallel lines and folded paths suggest motion through a machine.",
+      "file": "machine-spirit-ms-062.svg",
+      "recommended": false
+    },
+    {
+      "id": 63,
+      "number": "063",
+      "name": "Parallel",
+      "family": "ribbon",
+      "familyName": "Ribbon",
+      "idea": "Parallel lines and folded paths suggest motion through a machine.",
+      "file": "machine-spirit-ms-063.svg",
+      "recommended": false
+    },
+    {
+      "id": 64,
+      "number": "064",
+      "name": "Winding",
+      "family": "ribbon",
+      "familyName": "Ribbon",
+      "idea": "Parallel lines and folded paths suggest motion through a machine.",
+      "file": "machine-spirit-ms-064.svg",
+      "recommended": false
+    },
+    {
+      "id": 65,
+      "number": "065",
+      "name": "Loom",
+      "family": "ribbon",
+      "familyName": "Ribbon",
+      "idea": "Parallel lines and folded paths suggest motion through a machine.",
+      "file": "machine-spirit-ms-065.svg",
+      "recommended": false
+    },
+    {
+      "id": 66,
+      "number": "066",
+      "name": "Fold",
+      "family": "ribbon",
+      "familyName": "Ribbon",
+      "idea": "Parallel lines and folded paths suggest motion through a machine.",
+      "file": "machine-spirit-ms-066.svg",
+      "recommended": false
+    },
+    {
+      "id": 67,
+      "number": "067",
+      "name": "Strand",
+      "family": "ribbon",
+      "familyName": "Ribbon",
+      "idea": "Parallel lines and folded paths suggest motion through a machine.",
+      "file": "machine-spirit-ms-067.svg",
+      "recommended": false
+    },
+    {
+      "id": 68,
+      "number": "068",
+      "name": "Weave",
+      "family": "ribbon",
+      "familyName": "Ribbon",
+      "idea": "Parallel lines and folded paths suggest motion through a machine.",
+      "file": "machine-spirit-ms-068.svg",
+      "recommended": false
+    },
+    {
+      "id": 69,
+      "number": "069",
+      "name": "Trace",
+      "family": "ribbon",
+      "familyName": "Ribbon",
+      "idea": "Parallel lines and folded paths suggest motion through a machine.",
+      "file": "machine-spirit-ms-069.svg",
+      "recommended": false
+    },
+    {
+      "id": 70,
+      "number": "070",
+      "name": "Ribbon",
+      "family": "ribbon",
+      "familyName": "Ribbon",
+      "idea": "Parallel lines and folded paths suggest motion through a machine.",
+      "file": "machine-spirit-ms-070.svg",
+      "recommended": false
+    },
+    {
+      "id": 71,
+      "number": "071",
+      "name": "Matrix",
+      "family": "modular",
+      "familyName": "Modular",
+      "idea": "MS assembled from grids, pixels, and repeatable components.",
+      "file": "machine-spirit-ms-071.svg",
+      "recommended": false
+    },
+    {
+      "id": 72,
+      "number": "072",
+      "name": "Module",
+      "family": "modular",
+      "familyName": "Modular",
+      "idea": "MS assembled from grids, pixels, and repeatable components.",
+      "file": "machine-spirit-ms-072.svg",
+      "recommended": false
+    },
+    {
+      "id": 73,
+      "number": "073",
+      "name": "Pixel",
+      "family": "modular",
+      "familyName": "Modular",
+      "idea": "MS assembled from grids, pixels, and repeatable components.",
+      "file": "machine-spirit-ms-073.svg",
+      "recommended": false
+    },
+    {
+      "id": 74,
+      "number": "074",
+      "name": "Lattice",
+      "family": "modular",
+      "familyName": "Modular",
+      "idea": "MS assembled from grids, pixels, and repeatable components.",
+      "file": "machine-spirit-ms-074.svg",
+      "recommended": false
+    },
+    {
+      "id": 75,
+      "number": "075",
+      "name": "Logic",
+      "family": "modular",
+      "familyName": "Modular",
+      "idea": "MS assembled from grids, pixels, and repeatable components.",
+      "file": "machine-spirit-ms-075.svg",
+      "recommended": false
+    },
+    {
+      "id": 76,
+      "number": "076",
+      "name": "Bitstream",
+      "family": "modular",
+      "familyName": "Modular",
+      "idea": "MS assembled from grids, pixels, and repeatable components.",
+      "file": "machine-spirit-ms-076.svg",
+      "recommended": false
+    },
+    {
+      "id": 77,
+      "number": "077",
+      "name": "Array",
+      "family": "modular",
+      "familyName": "Modular",
+      "idea": "MS assembled from grids, pixels, and repeatable components.",
+      "file": "machine-spirit-ms-077.svg",
+      "recommended": false
+    },
+    {
+      "id": 78,
+      "number": "078",
+      "name": "Fabric",
+      "family": "modular",
+      "familyName": "Modular",
+      "idea": "MS assembled from grids, pixels, and repeatable components.",
+      "file": "machine-spirit-ms-078.svg",
+      "recommended": false
+    },
+    {
+      "id": 79,
+      "number": "079",
+      "name": "Grid",
+      "family": "modular",
+      "familyName": "Modular",
+      "idea": "MS assembled from grids, pixels, and repeatable components.",
+      "file": "machine-spirit-ms-079.svg",
+      "recommended": false
+    },
+    {
+      "id": 80,
+      "number": "080",
+      "name": "Voxel",
+      "family": "modular",
+      "familyName": "Modular",
+      "idea": "MS assembled from grids, pixels, and repeatable components.",
+      "file": "machine-spirit-ms-080.svg",
+      "recommended": false
+    },
+    {
+      "id": 81,
+      "number": "081",
+      "name": "Capsule",
+      "family": "emblems",
+      "familyName": "Emblems",
+      "idea": "MS held inside compact geometric frames.",
+      "file": "machine-spirit-ms-081.svg",
+      "recommended": false
+    },
+    {
+      "id": 82,
+      "number": "082",
+      "name": "Hex core",
+      "family": "emblems",
+      "familyName": "Emblems",
+      "idea": "MS held inside compact geometric frames.",
+      "file": "machine-spirit-ms-082.svg",
+      "recommended": false
+    },
+    {
+      "id": 83,
+      "number": "083",
+      "name": "Seal",
+      "family": "emblems",
+      "familyName": "Emblems",
+      "idea": "MS held inside compact geometric frames.",
+      "file": "machine-spirit-ms-083.svg",
+      "recommended": false
+    },
+    {
+      "id": 84,
+      "number": "084",
+      "name": "Diamond",
+      "family": "emblems",
+      "familyName": "Emblems",
+      "idea": "MS held inside compact geometric frames.",
+      "file": "machine-spirit-ms-084.svg",
+      "recommended": false
+    },
+    {
+      "id": 85,
+      "number": "085",
+      "name": "Shield",
+      "family": "emblems",
+      "familyName": "Emblems",
+      "idea": "MS held inside compact geometric frames.",
+      "file": "machine-spirit-ms-085.svg",
+      "recommended": false
+    },
+    {
+      "id": 86,
+      "number": "086",
+      "name": "Roundel",
+      "family": "emblems",
+      "familyName": "Emblems",
+      "idea": "MS held inside compact geometric frames.",
+      "file": "machine-spirit-ms-086.svg",
+      "recommended": false
+    },
+    {
+      "id": 87,
+      "number": "087",
+      "name": "Portal",
+      "family": "emblems",
+      "familyName": "Emblems",
+      "idea": "MS held inside compact geometric frames.",
+      "file": "machine-spirit-ms-087.svg",
+      "recommended": false
+    },
+    {
+      "id": 88,
+      "number": "088",
+      "name": "Octant",
+      "family": "emblems",
+      "familyName": "Emblems",
+      "idea": "MS held inside compact geometric frames.",
+      "file": "machine-spirit-ms-088.svg",
+      "recommended": true
+    },
+    {
+      "id": 89,
+      "number": "089",
+      "name": "Crest",
+      "family": "emblems",
+      "familyName": "Emblems",
+      "idea": "MS held inside compact geometric frames.",
+      "file": "machine-spirit-ms-089.svg",
+      "recommended": false
+    },
+    {
+      "id": 90,
+      "number": "090",
+      "name": "Medallion",
+      "family": "emblems",
+      "familyName": "Emblems",
+      "idea": "MS held inside compact geometric frames.",
+      "file": "machine-spirit-ms-090.svg",
+      "recommended": false
+    },
+    {
+      "id": 91,
+      "number": "091",
+      "name": "Blueprint",
+      "family": "precision",
+      "familyName": "Precision",
+      "idea": "Lighter strokes and restrained intersections with an engineering feel.",
+      "file": "machine-spirit-ms-091.svg",
+      "recommended": false
+    },
+    {
+      "id": 92,
+      "number": "092",
+      "name": "Caliper",
+      "family": "precision",
+      "familyName": "Precision",
+      "idea": "Lighter strokes and restrained intersections with an engineering feel.",
+      "file": "machine-spirit-ms-092.svg",
+      "recommended": false
+    },
+    {
+      "id": 93,
+      "number": "093",
+      "name": "Datum",
+      "family": "precision",
+      "familyName": "Precision",
+      "idea": "Lighter strokes and restrained intersections with an engineering feel.",
+      "file": "machine-spirit-ms-093.svg",
+      "recommended": false
+    },
+    {
+      "id": 94,
+      "number": "094",
+      "name": "Circuit",
+      "family": "precision",
+      "familyName": "Precision",
+      "idea": "Lighter strokes and restrained intersections with an engineering feel.",
+      "file": "machine-spirit-ms-094.svg",
+      "recommended": false
+    },
+    {
+      "id": 95,
+      "number": "095",
+      "name": "Schematic",
+      "family": "precision",
+      "familyName": "Precision",
+      "idea": "Lighter strokes and restrained intersections with an engineering feel.",
+      "file": "machine-spirit-ms-095.svg",
+      "recommended": false
+    },
+    {
+      "id": 96,
+      "number": "096",
+      "name": "Frame",
+      "family": "precision",
+      "familyName": "Precision",
+      "idea": "Lighter strokes and restrained intersections with an engineering feel.",
+      "file": "machine-spirit-ms-096.svg",
+      "recommended": false
+    },
+    {
+      "id": 97,
+      "number": "097",
+      "name": "Measure",
+      "family": "precision",
+      "familyName": "Precision",
+      "idea": "Lighter strokes and restrained intersections with an engineering feel.",
+      "file": "machine-spirit-ms-097.svg",
+      "recommended": false
+    },
+    {
+      "id": 98,
+      "number": "098",
+      "name": "Etch",
+      "family": "precision",
+      "familyName": "Precision",
+      "idea": "Lighter strokes and restrained intersections with an engineering feel.",
+      "file": "machine-spirit-ms-098.svg",
+      "recommended": false
+    },
+    {
+      "id": 99,
+      "number": "099",
+      "name": "Instrument",
+      "family": "precision",
+      "familyName": "Precision",
+      "idea": "Lighter strokes and restrained intersections with an engineering feel.",
+      "file": "machine-spirit-ms-099.svg",
+      "recommended": false
+    },
+    {
+      "id": 100,
+      "number": "100",
+      "name": "Signature",
+      "family": "precision",
+      "familyName": "Precision",
+      "idea": "Lighter strokes and restrained intersections with an engineering feel.",
+      "file": "machine-spirit-ms-100.svg",
+      "recommended": false
+    }
+  ]
+}

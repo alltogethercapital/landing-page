@@ -1,6 +1,6 @@
 import { ARTICLES } from "./articles";
 import { FOUNDERS, founderAnchor } from "./founders";
-import { PORTFOLIO, slugify } from "./portfolio";
+import { PORTFOLIO, slugify, type Company } from "./portfolio";
 
 export type SearchResultSection = "Companies" | "Founders" | "Updates";
 
@@ -10,8 +10,8 @@ export type SearchResult = {
   title: string;
   subtitle: string;
   description?: string;
+  logoSrc: string;
   href: string;
-  image?: string;
   searchText: string;
 };
 
@@ -19,15 +19,22 @@ function searchableText(parts: Array<string | undefined>) {
   return parts.filter(Boolean).join(" ");
 }
 
+function companyLogo(company: Company | undefined) {
+  return company?.cardLogo ?? company?.logo ?? "/brand/machine-spirit-live-symbol.png";
+}
+
 export function buildSearchIndex(): SearchResult[] {
+  const companiesByName = new Map(PORTFOLIO.map((company) => [company.name, company]));
+  const companiesBySlug = new Map(PORTFOLIO.map((company) => [slugify(company.name), company]));
+
   const companies: SearchResult[] = PORTFOLIO.map((company) => ({
     id: `company-${slugify(company.name)}`,
     section: "Companies",
     title: company.name,
     subtitle: company.sectors.join(" · "),
     description: company.blurb,
+    logoSrc: companyLogo(company),
     href: `/companies#${slugify(company.name)}`,
-    image: company.cardImage ?? company.image,
     searchText: searchableText([
       company.name,
       company.sectors.join(" "),
@@ -40,8 +47,8 @@ export function buildSearchIndex(): SearchResult[] {
     section: "Founders",
     title: founder.name,
     subtitle: founder.companyName,
+    logoSrc: companyLogo(companiesByName.get(founder.companyName)),
     href: `/founders#${founderAnchor(founder)}`,
-    image: founder.headshot,
     searchText: searchableText([founder.name, founder.companyName]),
   }));
 
@@ -51,8 +58,8 @@ export function buildSearchIndex(): SearchResult[] {
     title: article.title,
     subtitle: `${article.category} · ${article.date}`,
     description: article.excerpt,
+    logoSrc: companyLogo(companiesBySlug.get(article.slug)),
     href: `/updates/${article.slug}`,
-    image: article.image,
     searchText: searchableText([
       article.title,
       article.category,

@@ -1,82 +1,13 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Script from "next/script";
-import type { CSSProperties, ReactNode } from "react";
-import { SiteInteractionSounds } from "@/components/site-interaction-sounds";
+import { Suspense, type CSSProperties, type ReactNode } from "react";
 import { SiteSearch } from "@/components/site-search";
-import { SitePreloader } from "@/components/site-preloader";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteAppearance } from "@/components/site-appearance";
+import { WordmarkPreview } from "@/components/wordmark-preview";
 import { buildSearchIndex } from "@/lib/search";
+import { SITE_THEME_SCRIPT } from "@/lib/site-theme";
 import "./globals.css";
-
-const rosart = localFont({
-  variable: "--font-rosart",
-  display: "swap",
-  fallback: ["Georgia", "Times New Roman", "serif"],
-  src: [
-    {
-      path: "./fonts/sequoia/Rosart-Regular-HsHjFyXa.woff",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/sequoia/Rosart-Italic-H5xVVjl2.woff",
-      weight: "400",
-      style: "italic",
-    },
-    {
-      path: "./fonts/sequoia/Rosart-SemiBold-7isf5RfA.woff",
-      weight: "600",
-      style: "normal",
-    },
-  ],
-});
-
-const unica77 = localFont({
-  variable: "--font-unica",
-  display: "swap",
-  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
-  src: [
-    {
-      path: "./fonts/sequoia/Unica77LLWeb-Regular-dxUtRmHM.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/sequoia/Unica77LLWeb-Italic-x0vfYgaH.woff2",
-      weight: "400",
-      style: "italic",
-    },
-    {
-      path: "./fonts/sequoia/Unica77LLWeb-Bold-YVLHSOyT.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-});
-
-const pitchSans = localFont({
-  variable: "--font-pitch-sans",
-  display: "swap",
-  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
-  src: [
-    {
-      path: "./fonts/sequoia/PitchSansApp-Regular.07f66690.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/sequoia/PitchSansApp-Medium.4e29e2bf.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "./fonts/sequoia/PitchSansApp-Bold.e62747bf.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-});
+import "./lp-release.css";
 
 const atlasTypewriter = localFont({
   variable: "--font-atlas-typewriter",
@@ -126,39 +57,30 @@ const atlasTypewriter = localFont({
   ],
 });
 
+const spaceGrotesk = localFont({
+  src: "./fonts/space-grotesk/SpaceGrotesk-Variable.ttf",
+  variable: "--font-space-grotesk",
+  weight: "300 700",
+  style: "normal",
+  display: "swap",
+  fallback: ["Arial", "Helvetica", "sans-serif"],
+});
+
 // metadataBase is required so Next.js can resolve the opengraph-image
 // route to an absolute URL in the rendered og:image meta tag.
 const SITE_URL = "https://machinespirit.com";
-const SITE_TITLE = "Home | Machine Spirit Capital";
+const SITE_TITLE = "The Future Is Built Together — Machine Spirit Capital";
 const SITE_DESCRIPTION =
-  "Machine Spirit Capital backs the founders rebuilding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.";
+  "Machine Spirit Capital backs the founders creating and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.";
 
 const hiddenScrollbarStyle: CSSProperties = {
   msOverflowStyle: "none",
   scrollbarWidth: "none",
 };
 
-const themeInitializer = `
-  (function () {
-    try {
-      var savedTheme = window.localStorage.getItem("machine-spirit-theme");
-      var theme = savedTheme === "light" || savedTheme === "dark"
-        ? savedTheme
-        : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-      var root = document.documentElement;
-      root.classList.toggle("dark", theme === "dark");
-      root.dataset.theme = theme;
-      root.style.colorScheme = theme;
-    } catch (_) {}
-  })();
-`;
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: SITE_TITLE,
-    template: "%s | Machine Spirit Capital",
-  },
+  title: SITE_TITLE,
   description: SITE_DESCRIPTION,
   openGraph: {
     title: SITE_TITLE,
@@ -182,29 +104,24 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${rosart.variable} ${unica77.variable} ${pitchSans.variable} ${atlasTypewriter.variable} h-full antialiased`}
-      style={hiddenScrollbarStyle}
+      data-site-theme="light"
       suppressHydrationWarning
+      className={`${atlasTypewriter.variable} h-full antialiased`}
+      style={hiddenScrollbarStyle}
     >
       <head>
-        <meta name="color-scheme" content="light dark" />
-        <meta name="theme-color" content="#f7f6f5" />
-        <link
-          id="machine-spirit-favicon"
-          rel="icon"
-          href="/brand/machine-spirit-favicon-light.png"
-          type="image/png"
-        />
+        <script id="site-theme" dangerouslySetInnerHTML={{ __html: SITE_THEME_SCRIPT }} />
       </head>
-      <body className="min-h-full" style={hiddenScrollbarStyle}>
-        <Script id="machine-spirit-theme" strategy="beforeInteractive">
-          {themeInitializer}
-        </Script>
-        <SiteInteractionSounds />
-        <SitePreloader />
+      <body
+        className={`${spaceGrotesk.variable} min-h-full`}
+        style={hiddenScrollbarStyle}
+      >
+        <SiteAppearance />
+        <Suspense fallback={null}>
+          <WordmarkPreview />
+        </Suspense>
         <SiteSearch index={buildSearchIndex()} />
         {children}
-        <ThemeToggle />
       </body>
     </html>
   );

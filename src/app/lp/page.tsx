@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { UIIcon } from "@/components/icons";
 import {
   LpPortfolioInsights,
   LpPortfolioPerformance,
@@ -50,7 +51,7 @@ function MetricLabel({
         aria-label={`About ${label}`}
         aria-describedby={tooltipId}
       >
-        <span className="lp-summary-info" aria-hidden="true">i</span>
+        <span className="lp-summary-info" aria-hidden="true"><UIIcon name="info" /></span>
         <span className="lp-summary-tooltip" id={tooltipId} role="tooltip">
           {description}
         </span>

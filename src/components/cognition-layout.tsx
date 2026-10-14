@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "@/components/icons";
+import { WordmarkLettering } from "@/components/wordmark-preview";
 import { cn } from "@/lib/utils";
 
 export function BrandDot({ className }: { className?: string }) {
@@ -25,30 +26,29 @@ export function BrandDot({ className }: { className?: string }) {
   );
 }
 
-// Compact wordmark used across desktop, mobile, search, and the LP portal.
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <span className={cn("cog-wordmark", className)}>
+    <span className={cn("cog-wordmark", "cog-wordmark--live", className)}>
       <span className="cog-wordmark-symbol" aria-hidden="true">
         <Image
-          src="/brand/machine-spirit-wing-mark.png"
+          src="/brand/machine-spirit-live-symbol.png"
           alt=""
-          width={22}
-          height={11}
+          width={1024}
+          height={499}
           unoptimized
           className="cog-wordmark-logo cog-wordmark-logo--light"
         />
         <Image
-          src="/brand/machine-spirit-wing-mark-ivory.png"
+          src="/brand/machine-spirit-live-symbol-ivory.png"
           alt=""
-          width={22}
-          height={11}
+          width={1024}
+          height={499}
           unoptimized
           className="cog-wordmark-logo cog-wordmark-logo--dark"
         />
       </span>
-      <span className="cog-wordmark-text">
-        <span className="cog-wordmark-line">MACHINE SPIRIT</span>
+      <span className="cog-wordmark-name">
+        <WordmarkLettering />
       </span>
     </span>
   );
@@ -71,6 +71,7 @@ export function CognitionSection({
   className,
   bodyClassName,
   wide = false,
+  hideTitle = true,
 }: {
   label?: string;
   title?: ReactNode;
@@ -78,12 +79,15 @@ export function CognitionSection({
   className?: string;
   bodyClassName?: string;
   wide?: boolean;
+  hideTitle?: boolean;
 }) {
   return (
-    <section className={cn("cog-section", wide && "cog-section--wide", className)}>
+    <section
+      className={cn("cog-section", wide && "cog-section--wide", hideTitle && "cog-section--untitled", className)}
+    >
       <div className={cn("cog-section-body", bodyClassName)}>
-        {label && <p className="cog-kicker">{label}</p>}
-        {title && <h1 className="cog-title">{title}</h1>}
+        {label && !hideTitle && <p className="cog-kicker">{label}</p>}
+        {title && <h1 className={hideTitle ? "sr-only" : "cog-title"}>{title}</h1>}
         {children}
       </div>
     </section>
@@ -114,7 +118,7 @@ export function ArrowLink({
   const content = (
     <>
       <span>{children}</span>
-      <ArrowUpRight className="size-4" />
+      <ArrowUpRight />
     </>
   );
 
