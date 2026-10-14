@@ -1,6 +1,7 @@
-/* Three quiet desktop rules: sidebar, content left, content right. */
+/* Wide desktop keeps the three-rule composition; smaller screens use fewer rules. */
 :root {
   --site-rail-color: color-mix(in srgb, var(--cog-ink) 12%, transparent);
+  --site-tablet-gutter: 40px;
 }
 
 :is(.cog-page, .lp-portal-page) {
@@ -22,7 +23,6 @@
   background-size: 1px 100%;
 }
 
-/* The wing and lettering sit entirely to the right of the sidebar rule. */
 @media (min-width: 900px) {
   .cog-desktop-nav,
   .lp-portal-nav { left: 112px; }
@@ -41,16 +41,30 @@
   }
 
   .lp-portal-page { --lp-rail-end: var(--site-content-rail); }
-
   .lp-portal-shell {
     padding-left: 47px;
     padding-right: calc(var(--site-content-end) + 32px);
   }
 }
 
+/* Compact desktop keeps one sidebar separator and opens up the reading area. */
+@media (min-width: 900px) and (max-width: 1199px) {
+  :is(.cog-page, .lp-portal-page)::before {
+    background-image: linear-gradient(var(--site-rail-color), var(--site-rail-color));
+    background-position: var(--site-content-rail) 0;
+  }
+  .cog-section,
+  .cog-strip,
+  .cog-footer,
+  .lp-portal-shell { padding-right: 48px; }
+}
+
 @media (min-width: 900px) and (max-width: 1180px) {
   .cog-footer-body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cog-footer-body > div:first-child { grid-column: 1 / -1; }
+  .cog-person-grid,
+  .cog-article-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cog-updates-track .cog-article-card { flex-basis: calc((100% - 16px) / 2); }
 }
 
 @media (min-width: 1521px) {
@@ -60,47 +74,52 @@
   }
 }
 
-/* The portal retains its compact sidebar on tablet. */
-@media (min-width: 720px) and (max-width: 899px) {
-  .lp-portal-page {
-    --site-sidebar-rail: 24px;
-    --site-content-rail: 288px;
-    --site-content-end: 24px;
-    --lp-rail-end: var(--site-content-rail);
-  }
-  .lp-portal-nav { left: 96px; }
-  .lp-portal-shell { padding-inline: 24px; }
-}
-
-/* Mobile has a top navigation, with the two content rules outside its gutters. */
-@media (max-width: 899px) {
+/* Portrait tablets have a top navigation and ample space inside two faint rules. */
+@media (min-width: 600px) and (max-width: 899px) {
   .cog-page {
-    --site-content-rail: 8px;
-    --site-content-end: 8px;
+    --mobile-gutter: var(--site-tablet-gutter);
+    --site-rail-color: color-mix(in srgb, var(--cog-ink) 8%, transparent);
   }
   .cog-page::before {
     background-image:
       linear-gradient(var(--site-rail-color), var(--site-rail-color)),
       linear-gradient(var(--site-rail-color), var(--site-rail-color));
-    background-position:
-      var(--site-content-rail) 0,
-      calc(100% - var(--site-content-end)) 0;
+    background-position: 16px 0, calc(100% - 16px) 0;
+  }
+  .cog-search-trigger:not(.cog-search-trigger--portal) {
+    right: calc(var(--site-tablet-gutter) + 44px);
+  }
+  .site-theme-toggle:not(.site-theme-toggle--portal) {
+    right: calc(var(--site-tablet-gutter) + 88px);
   }
 }
 
-@media (max-width: 719px) {
+/* The compact portal sidebar needs more room for data, rather than more rules. */
+@media (min-width: 720px) and (max-width: 899px) {
+  .lp-portal-page { --lp-rail-end: 232px; }
+  .lp-portal-page::before { display: none; }
+  .lp-portal-nav { left: 80px; }
+  .lp-portal-shell { padding-inline: 32px; }
+}
+
+@media (min-width: 600px) and (max-width: 719px) {
   .lp-portal-page {
-    --site-content-rail: 8px;
-    --site-content-end: 8px;
+    --mobile-gutter: var(--site-tablet-gutter);
+    --site-rail-color: color-mix(in srgb, var(--cog-ink) 8%, transparent);
   }
   .lp-portal-page::before {
     background-image:
       linear-gradient(var(--site-rail-color), var(--site-rail-color)),
       linear-gradient(var(--site-rail-color), var(--site-rail-color));
-    background-position:
-      var(--site-content-rail) 0,
-      calc(100% - var(--site-content-end)) 0;
+    background-position: 16px 0, calc(100% - 16px) 0;
   }
+  .cog-search-trigger--portal { right: var(--site-tablet-gutter); }
+  .site-theme-toggle--portal { right: calc(var(--site-tablet-gutter) + 48px); }
+}
+
+/* Phones and short landscape windows stay completely free of decorative rules. */
+@media (max-width: 599px), (max-width: 1199px) and (max-height: 500px) {
+  :is(.cog-page, .lp-portal-page)::before { display: none; }
 }
 
 /* Spacing and soft hover fills replace all other persistent rules and boxes. */
@@ -139,13 +158,8 @@
   outline-offset: 4px;
 }
 
+
 @media (max-width: 899px) {
   .lp-table-wrap,
   .lp-figure-table-wrap { width: 100%; margin-right: 0; }
-}
-
-@media (min-width: 900px) and (max-width: 1180px) {
-  .cog-person-grid,
-  .cog-article-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cog-updates-track .cog-article-card { flex-basis: calc((100% - 16px) / 2); }
 }
