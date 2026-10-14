@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Suspense, type CSSProperties, type ReactNode } from "react";
+import { type CSSProperties, type ReactNode } from "react";
 import { SiteSearch } from "@/components/site-search";
 import { SiteAppearance } from "@/components/site-appearance";
-import { WordmarkPreview } from "@/components/wordmark-preview";
 import { buildSearchIndex } from "@/lib/search";
 import { SITE_THEME_SCRIPT } from "@/lib/site-theme";
 import "./globals.css";
@@ -117,9 +116,6 @@ export default function RootLayout({
         style={hiddenScrollbarStyle}
       >
         <SiteAppearance />
-        <Suspense fallback={null}>
-          <WordmarkPreview />
-        </Suspense>
         <SiteSearch index={buildSearchIndex()} />
         {children}
       </body>

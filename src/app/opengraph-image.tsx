@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { GLYPH_RAMP } from "@/lib/glyphs";
+import { DEFAULT_WORDMARK, WORDMARK_OPTIONS } from "@/lib/wordmark-options";
 
 // Share preview uses the same live wing, wordmark, and dark monochrome identity.
 
@@ -32,7 +33,7 @@ export default async function OpenGraphImage() {
     readFile(
       join(process.cwd(), "public/brand/machine-spirit-live-symbol-ivory.png"),
     ),
-    readFile(join(process.cwd(), "public/brand/machine-spirit-wordmark-og.png")),
+    readFile(join(process.cwd(), "public", WORDMARK_OPTIONS[DEFAULT_WORDMARK - 1].src.slice(1))),
   ]);
   const productCovers = [aformicCover, arrayLabsCover, mavenCover, volantisCover].map(
     (image) => `data:image/jpeg;base64,${image.toString("base64")}`,
@@ -103,8 +104,8 @@ export default async function OpenGraphImage() {
             alt="MACHINE SPIRIT"
             src={wordmarkSrc}
             width={260}
-            height={24}
-            style={{ width: 260, height: 24, objectFit: "contain" }}
+            height={35}
+            style={{ width: 260, height: 35, objectFit: "contain", filter: "invert(1)" }}
           />
           <div
             style={{

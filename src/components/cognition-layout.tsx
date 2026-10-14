@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "@/components/icons";
-import { WordmarkLettering } from "@/components/wordmark-preview";
+import { WordmarkLettering } from "@/components/wordmark-lettering";
 import { cn } from "@/lib/utils";
 
 export function BrandDot({ className }: { className?: string }) {

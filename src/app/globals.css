@@ -246,52 +246,7 @@ html[data-site-theme] .site-grain--surface {
   90% { transform: translate(-10%, 10%); }
 }
 
-/* Lettering auditions use quiet controls without changing the header layout. */
-.site-wordmark-picker {
-  position: fixed;
-  right: 20px;
-  bottom: max(20px, env(safe-area-inset-bottom));
-  z-index: 60;
-  display: grid;
-  width: 260px;
-  max-width: calc(100vw - 40px);
-  grid-template-columns: 44px minmax(0, 1fr) 44px;
-  align-items: center;
-  background: color-mix(in srgb, var(--cog-bg) 96%, transparent);
-  color: var(--cog-muted);
-  backdrop-filter: blur(8px);
-  font-family: var(--cog-text);
-}
 
-.site-wordmark-picker button {
-  display: grid;
-  width: 44px;
-  height: 44px;
-  place-items: center;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-}
-
-.site-wordmark-picker button:hover { color: var(--cog-ink); }
-.site-wordmark-picker-readout {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 3px;
-  font-size: 13px;
-  line-height: 1;
-}
-.site-wordmark-picker-readout small { font-size: 10px; }
-.site-wordmark-picker-readout > span {
-  overflow: hidden;
-  color: var(--cog-ink);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-body:has([role="dialog"]) .site-wordmark-picker { visibility: hidden; }
 
 html[data-site-theme] body,
 html[data-site-theme] .cog-page,
@@ -378,11 +333,7 @@ html[data-site-theme="dark"] {
 }
 
 @media (max-width: 899px) {
-  .site-wordmark-picker {
-    right: 12px;
-    bottom: max(12px, env(safe-area-inset-bottom));
-    max-width: calc(100vw - 24px);
-  }
+
 
 }
 

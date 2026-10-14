@@ -13,7 +13,7 @@ export const WORDMARK_OPTIONS = [
 ] as const;
 
 export type WordmarkId = (typeof WORDMARK_OPTIONS)[number]["id"];
-export const DEFAULT_WORDMARK: WordmarkId = 1;
+export const DEFAULT_WORDMARK: WordmarkId = 2;
 export const WORDMARK_WIDTH = 2400;
 export const WORDMARK_HEIGHT = 320;
 
