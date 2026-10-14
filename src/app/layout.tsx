@@ -3,11 +3,13 @@ import localFont from "next/font/local";
 import { type CSSProperties, type ReactNode } from "react";
 import { SiteSearch } from "@/components/site-search";
 import { SiteAppearance } from "@/components/site-appearance";
+import { TypePreview } from "@/components/type-preview";
 import { buildSearchIndex } from "@/lib/search";
 import { SITE_THEME_SCRIPT } from "@/lib/site-theme";
 import "./globals.css";
 import "./lp-release.css";
 import "./site-rails.css";
+import "./type-preview.css";
 
 const atlasTypewriter = localFont({
   variable: "--font-atlas-typewriter",
@@ -119,6 +121,7 @@ export default function RootLayout({
         <SiteAppearance />
         <SiteSearch index={buildSearchIndex()} />
         {children}
+        <TypePreview />
       </body>
     </html>
   );

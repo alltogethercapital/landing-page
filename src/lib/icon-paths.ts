@@ -8,6 +8,7 @@ export const UI_ICON_PATHS = {
   moon: "M20.5 14a8.5 8.5 0 0 1-10.5-10.5A8.5 8.5 0 1 0 20.5 14Z",
   "chevron-left": "M14 6l-6 6 6 6",
   "chevron-right": "M10 6l6 6-6 6",
+  "chevron-down": "M6 10l6 6 6-6",
   refresh: "M3 10a9 9 0 1 1 2.9 9.2M3 4v6h6",
   "arrow-left": "M20 12H4M10 6l-6 6 6 6",
   "arrow-right": "M4 12h16M14 6l6 6-6 6",
