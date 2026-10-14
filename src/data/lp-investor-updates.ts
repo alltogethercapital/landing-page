@@ -38,8 +38,8 @@ export const LP_AUGUST_2026_PORTFOLIO_AS_OF = "August 18, 2026";
 // one owner-directed Anduril scenario are applied; all other positions remain
 // at cost. H256's allocation being finalized is included at cost in both totals.
 export const LP_AUGUST_2026_FUND_SNAPSHOT = {
-  investedCost: 660_217.77,
-  projectedGrossValue: 740_900.06,
+  investedCost: 651_762.01,
+  projectedGrossValue: 731_754.03,
   projectedGrossMultiple: 1.12,
   positions: 44,
   companies: 43,
@@ -52,13 +52,14 @@ export const LP_SEPTEMBER_2026_PORTFOLIO_AS_OF = "September 16, 2026";
 // corrections. The change from the August letter comprises $169,908.56 across fifteen new
 // positions plus a $15,000 correction to Positron's recorded cost. Supabase's final
 // allocation is $18.48 below its originally recorded cost; that pre-August correction
-// is reflected in both historical snapshots. Rasyn's final allocation is $6.41 and
-// Ultrasonium's is $85.03 below initially recorded cost. New and corrected cost remains at cost.
+// is reflected in both historical snapshots. Apptronik's final allocation is $8,455.76
+// below its prior allocation and its directional mark changes proportionally. Rasyn's final
+// allocation is $6.41 and Ultrasonium's is $85.03 below initially recorded cost.
 export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
-  investedCost: 845_126.33,
-  projectedGrossValue: 925_808.62,
+  investedCost: 836_670.57,
+  projectedGrossValue: 916_662.59,
   projectedGrossMultiple: 1.10,
-  grossValueChange: 80_682.29,
+  grossValueChange: 79_992.02,
   positions: 59,
   companies: 58,
   newPositionsSinceAugust: 15,

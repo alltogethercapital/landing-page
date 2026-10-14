@@ -156,10 +156,12 @@ function SeptemberUpdateCopy() {
       </p>
 
       <p>
-        <strong>Restated September 22, 2026.</strong> AngelList confirmed that the Apptronik SPV was
-        oversubscribed and reduced our allocation from $30,000.00 to $29,222.00. We reduced recorded cost by
-        $778.00 and updated the directional value estimate proportionally. The excess was credited to our
-        AngelList Investor Account, not returned to our bank. The owner also revised the Pocket commitment from
+        <strong>Restated October 13, 2026.</strong> AngelList previously confirmed that the Apptronik SPV was
+        oversubscribed, reducing our $30,000.00 allocation to $29,222.00 and crediting $778.00 to our AngelList
+        Investor Account. The owner has now confirmed the final allocation is $20,766.24. We reduced recorded
+        cost by another $8,455.76 and updated the directional value estimate proportionally. The original
+        $30,000.00 outflow and evidenced $778.00 platform credit remain recorded; no additional refund or platform
+        credit is recorded without transaction evidence. The owner also revised the Pocket commitment from
         $25,000.00 to $15,000.00; Pocket&apos;s cash route and completed transfer remain unevidenced, so no bank
         movement was added or changed. The figures in this update now reflect both corrections.
       </p>
@@ -307,10 +309,12 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
         </p>
 
         <p>
-          <strong>Restated September 22, 2026.</strong> AngelList later confirmed that the Apptronik SPV was
-          oversubscribed and reduced our allocation from $30,000.00 to $29,222.00. The figures above now reflect
-          the $778.00 reduction and the proportional change to the directional value estimate. The excess was
-          credited to our AngelList Investor Account, not returned to our bank.
+          <strong>Restated October 13, 2026.</strong> AngelList previously confirmed that the Apptronik SPV was
+          oversubscribed, reducing our $30,000.00 allocation to $29,222.00 and crediting $778.00 to our AngelList
+          Investor Account. The owner has now confirmed the final allocation is $20,766.24. The figures above
+          reflect the additional $8,455.76 reduction and the proportional change to the directional value
+          estimate. The original $30,000.00 outflow and evidenced $778.00 platform credit remain recorded; no
+          additional refund or platform credit is recorded without transaction evidence.
         </p>
 
         <p>

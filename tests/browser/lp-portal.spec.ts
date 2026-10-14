@@ -31,7 +31,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.getByRole("button", { name: "Graph view" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Table view" })).toHaveCount(0);
   await expect(page.getByText("43 companies · 1 not-yet-allocated balance", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("$845,126", { exact: true })).toBeVisible();
+  await expect(page.getByText("$836,671", { exact: true })).toBeVisible();
   const summaryGrid = page.locator(".lp-summary-grid");
   await expect(summaryGrid.getByText("$821,014.25", { exact: true })).toHaveCount(0);
   await expect(summaryGrid.getByText("$901,760.05", { exact: true })).toHaveCount(0);
@@ -61,7 +61,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(summaryGrid.getByText("Finalizing allocation", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("Pending allocation", { exact: true })).toHaveCount(0);
   await expect(summaryGrid.getByText("$112,000", { exact: true })).toBeVisible();
-  await expect(page.getByText("$925,809", { exact: true })).toBeVisible();
+  await expect(page.getByText("$916,663", { exact: true })).toBeVisible();
   await expect(page.getByText("Gross value multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.10×", { exact: true })).toBeVisible();
@@ -149,7 +149,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.locator("#lp-figure-concentration-and-structure")).toHaveClass(/sr-only/);
   await expect(page.locator(".lp-figure-section-head")).toHaveCount(0);
   await expect(page.locator(".lp-summary-grid")).toBeVisible();
-  await expect(page.locator(".lp-summary-grid").getByText("$925,809", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("$916,663", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-summary-grid").getByText("1.10×", { exact: true })).toBeVisible();
   const analysisSummaryBox = await page.locator(".lp-summary-grid").boundingBox();
   const analysisTabsBox = await portfolioSections.boundingBox();
@@ -279,10 +279,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(pendingPerformanceRow).toContainText("No performance");
   await expect(pendingPerformanceRow).toContainText("In AUM, NAV, and total math");
   const performanceTotal = page.locator(".lp-performance-total-row");
-  await expect(performanceTotal).toContainText("$845,126.33");
+  await expect(performanceTotal).toContainText("$836,670.57");
   await expect(performanceTotal).toContainText("1.10×");
-  await expect(performanceTotal).toContainText("+$80,682.29");
-  await expect(performanceTotal).toContainText("$925,808.62");
+  await expect(performanceTotal).toContainText("+$79,992.02");
+  await expect(performanceTotal).toContainText("$916,662.59");
   await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-performance-desktop.png", fullPage: true });
 
@@ -312,8 +312,8 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   const updateCopy = page.locator(".lp-update-article-copy");
   // Published investor updates retain their dated snapshot instead of moving
   // with subsequent additions to the live portfolio.
-  await expect(updateCopy).toContainText("$660,217.77");
-  await expect(updateCopy).toContainText("$740,900.06");
+  await expect(updateCopy).toContainText("$651,762.01");
+  await expect(updateCopy).toContainText("$731,754.03");
   await expect(updateCopy).toContainText("1.12×");
   await expect(updateCopy).not.toContainText("$671,014.25");
   await expect(updateCopy).not.toContainText("$751,760.05");
@@ -328,7 +328,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(updateParagraphs.nth(4)).toContainText("We call this the post-labor economy");
   await expect(updateParagraphs.nth(5)).toContainText("Every investment therefore has to answer a direct question");
   await expect(updateParagraphs.nth(6)).toContainText("The portfolio reflects that test");
-  await expect(updateParagraphs.nth(12)).toContainText("Restated September 22, 2026");
+  await expect(updateParagraphs.nth(12)).toContainText("Restated October 13, 2026");
   await expect(updateParagraphs.nth(13)).toContainText("We do not know exactly which companies will define this transition");
   await expect(updateParagraphs.nth(13)).toContainText("That is how we will invest from here and how we will report to you");
   await expect(updateCopy).toContainText("at least twice per year");
@@ -351,11 +351,15 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   const updateCopyText = await page.locator(".lp-update-article-copy").innerText();
   const financialReferences = updateCopyText.match(/\$(?:\d{1,3}(?:,\d{3})*|\d+)(?:\.\d+)?|[\d.]+%|[\d.]+×/g) ?? [];
   expect(financialReferences).toEqual([
-    "$660,217.77",
-    "$740,900.06",
+    "$651,762.01",
+    "$731,754.03",
     "1.12×",
     "$30,000.00",
     "$29,222.00",
+    "$778.00",
+    "$20,766.24",
+    "$8,455.76",
+    "$30,000.00",
     "$778.00",
   ]);
   const updateWordCount = updateCopyText.trim().split(/\s+/).length;
@@ -434,9 +438,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
 
   await page.goto("/lp/investments/12-apptronik");
   await expect(page.getByRole("heading", { name: "Apptronik" })).toBeVisible();
-  await expect(page.getByText("$29,222", { exact: true })).toBeVisible();
-  await expect(page.getByText(/reduced the original \$30,000 allocation to \$29,222/i)).toBeVisible();
-  await expect(page.getByText(/credited to the AngelList Investor Account/i)).toBeVisible();
+  await expect(page.getByText("$20,766.24", { exact: true })).toBeVisible();
+  await expect(page.getByText(/final allocation is \$20,766\.24/i)).toBeVisible();
+  await expect(page.getByText(/original \$30,000\.00 outbound investment remains in the bank ledger/i)).toBeVisible();
+  await expect(page.getByText(/additional \$8,455\.76 reduction is not recorded as a refund or platform credit/i)).toBeVisible();
 
   await page.goto("/lp/investments/59-pocket");
   await expect(page.getByRole("heading", { name: "Pocket" })).toBeVisible();
@@ -496,6 +501,28 @@ test("shows the reconciled Rasyn allocation and cash-evidence boundary", async (
   await expect(page.getByText(/final allocation was reduced from \$10,000\.00 to \$9,993\.59/i)).toBeVisible();
   await expect(page.getByText(/original \$10,000\.00 outbound investment.*remains in the bank ledger/i)).toBeVisible();
   await expect(page.getByText(/no separate refund or AngelList account-balance credit is recorded without transaction evidence/i)).toBeVisible();
+});
+
+test("shows the final Apptronik allocation and restated August snapshot", async ({ page }) => {
+  await page.goto("/lp-login");
+  await page.getByLabel("Access password").fill(password);
+  await page.getByRole("button", { name: /Sign in/ }).click();
+  await expect(page).toHaveURL(/\/lp$/);
+
+  await page.goto("/lp/investments/12-apptronik");
+  await expect(page.getByRole("heading", { name: "Apptronik" })).toBeVisible();
+  await expect(page.getByText("$20,766.24", { exact: true })).toBeVisible();
+  await expect(page.getByText(/final allocation is \$20,766\.24/i)).toBeVisible();
+  await expect(page.getByText(/original \$30,000\.00 outbound investment remains in the bank ledger/i)).toBeVisible();
+  await expect(page.getByText(/additional \$8,455\.76 reduction is not recorded as a refund or platform credit/i)).toBeVisible();
+
+  await page.goto("/lp/updates/august-2026");
+  const updateCopy = page.locator(".lp-update-article-copy");
+  await expect(updateCopy).toContainText("$651,762.01");
+  await expect(updateCopy).toContainText("$731,754.03");
+  await expect(updateCopy).toContainText("Restated October 13, 2026");
+  await expect(updateCopy).toContainText("final allocation is $20,766.24");
+  await expect(updateCopy).toContainText("no additional refund or platform credit is recorded without transaction evidence");
 });
 
 test("renders the login, portfolio, and detail views at every supported layout", async ({ browser }) => {
@@ -666,8 +693,8 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page).toHaveURL(/\/lp\/updates\/august-2026$/);
     await expect(page.getByRole("heading", { name: "Beyond the Anthropocene" })).toBeVisible();
     await expect(page.getByText("Betting Together on the Post-Labor AI Economy", { exact: true })).toBeVisible();
-    await expect(page.locator(".lp-update-article-copy")).toContainText("$660,217.77");
-    await expect(page.locator(".lp-update-article-copy")).toContainText("$740,900.06");
+    await expect(page.locator(".lp-update-article-copy")).toContainText("$651,762.01");
+    await expect(page.locator(".lp-update-article-copy")).toContainText("$731,754.03");
     await expect(page.locator(".lp-update-article-copy")).toContainText("1.12×");
     await expect(page.locator(".lp-update-article-copy")).not.toContainText("1.02×");
     await expect(page.locator(".lp-update-article-copy")).toContainText("at least twice per year");
