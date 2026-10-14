@@ -156,14 +156,17 @@ function SeptemberUpdateCopy() {
       </p>
 
       <p>
-        <strong>Restated October 13, 2026.</strong> AngelList previously confirmed that the Apptronik SPV was
+        <strong>Restated October 14, 2026.</strong> AngelList previously confirmed that the Apptronik SPV was
         oversubscribed, reducing our $30,000.00 allocation to $29,222.00 and crediting $778.00 to our AngelList
         Investor Account. The owner has now confirmed the final allocation is $20,766.24. We reduced recorded
         cost by another $8,455.76 and updated the directional value estimate proportionally. The original
         $30,000.00 outflow and evidenced $778.00 platform credit remain recorded; no additional refund or platform
         credit is recorded without transaction evidence. The owner also revised the Pocket commitment from
         $25,000.00 to $15,000.00; Pocket&apos;s cash route and completed transfer remain unevidenced, so no bank
-        movement was added or changed. The figures in this update now reflect both corrections.
+        movement was added or changed. The owner subsequently revised the final Rasyn allocation from
+        $9,993.59 to $9,994.00; the original $10,000.00 outflow remains in the bank ledger, and no separate
+        $6.00 refund or AngelList account-balance credit is recorded without transaction evidence. The figures
+        in this update now reflect all three corrections.
       </p>
 
       <p>

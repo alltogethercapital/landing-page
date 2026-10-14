@@ -279,10 +279,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(pendingPerformanceRow).toContainText("No performance");
   await expect(pendingPerformanceRow).toContainText("In AUM, NAV, and total math");
   const performanceTotal = page.locator(".lp-performance-total-row");
-  await expect(performanceTotal).toContainText("$836,670.57");
+  await expect(performanceTotal).toContainText("$836,670.98");
   await expect(performanceTotal).toContainText("1.10×");
   await expect(performanceTotal).toContainText("+$79,992.02");
-  await expect(performanceTotal).toContainText("$916,662.59");
+  await expect(performanceTotal).toContainText("$916,663.00");
   await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-performance-desktop.png", fullPage: true });
 
@@ -462,8 +462,8 @@ test("protects, authenticates, shows the investment graph, and opens an investme
 
   await page.goto("/lp/investments/53-rasyn");
   await expect(page.getByRole("heading", { name: "Rasyn" })).toBeVisible();
-  await expect(page.getByText("$9,993.59", { exact: true })).toHaveCount(2);
-  await expect(page.getByText(/final allocation was reduced from \$10,000\.00 to \$9,993\.59/i)).toBeVisible();
+  await expect(page.getByText("$9,994", { exact: true })).toHaveCount(2);
+  await expect(page.getByText(/final allocation is \$9,994\.00/i)).toBeVisible();
   await expect(page.getByText(/original \$10,000\.00 outbound investment.*remains in the bank ledger/i)).toBeVisible();
   await expect(page.getByText(/no separate refund or AngelList account-balance credit is recorded without transaction evidence/i)).toBeVisible();
 
@@ -497,9 +497,10 @@ test("shows the reconciled Rasyn allocation and cash-evidence boundary", async (
 
   await page.goto("/lp/investments/53-rasyn");
   await expect(page.getByRole("heading", { name: "Rasyn" })).toBeVisible();
-  await expect(page.getByText("$9,993.59", { exact: true })).toHaveCount(2);
-  await expect(page.getByText(/final allocation was reduced from \$10,000\.00 to \$9,993\.59/i)).toBeVisible();
+  await expect(page.getByText("$9,994", { exact: true })).toHaveCount(2);
+  await expect(page.getByText(/final allocation is \$9,994\.00/i)).toBeVisible();
   await expect(page.getByText(/original \$10,000\.00 outbound investment.*remains in the bank ledger/i)).toBeVisible();
+  await expect(page.getByText(/\$6\.00 difference is an allocation reduction/i)).toBeVisible();
   await expect(page.getByText(/no separate refund or AngelList account-balance credit is recorded without transaction evidence/i)).toBeVisible();
 });
 
