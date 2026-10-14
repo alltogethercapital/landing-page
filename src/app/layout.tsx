@@ -7,6 +7,7 @@ import { buildSearchIndex } from "@/lib/search";
 import { SITE_THEME_SCRIPT } from "@/lib/site-theme";
 import "./globals.css";
 import "./lp-release.css";
+import "./site-rails.css";
 
 const atlasTypewriter = localFont({
   variable: "--font-atlas-typewriter",

@@ -1,0 +1,151 @@
+/* Three quiet desktop rules: sidebar, content left, content right. */
+:root {
+  --site-rail-color: color-mix(in srgb, var(--cog-ink) 12%, transparent);
+}
+
+:is(.cog-page, .lp-portal-page) {
+  --site-sidebar-rail: 32px;
+  --site-content-rail: 320px;
+  --site-content-end: 154px;
+}
+
+:is(.cog-page, .lp-portal-page)::before {
+  background-image:
+    linear-gradient(var(--site-rail-color), var(--site-rail-color)),
+    linear-gradient(var(--site-rail-color), var(--site-rail-color)),
+    linear-gradient(var(--site-rail-color), var(--site-rail-color));
+  background-position:
+    var(--site-sidebar-rail) 0,
+    var(--site-content-rail) 0,
+    calc(100% - var(--site-content-end)) 0;
+  background-repeat: no-repeat;
+  background-size: 1px 100%;
+}
+
+/* The wing and lettering sit entirely to the right of the sidebar rule. */
+@media (min-width: 900px) {
+  .cog-desktop-nav,
+  .lp-portal-nav { left: 112px; }
+
+  .ascii-hero {
+    margin-left: var(--site-content-rail);
+    margin-right: var(--site-content-end);
+  }
+
+  .cog-section,
+  .cog-strip { padding-right: calc(var(--site-content-end) + 32px); }
+
+  .cog-footer {
+    padding-left: 367px;
+    padding-right: calc(var(--site-content-end) + 32px);
+  }
+
+  .lp-portal-page { --lp-rail-end: var(--site-content-rail); }
+
+  .lp-portal-shell {
+    padding-left: 47px;
+    padding-right: calc(var(--site-content-end) + 32px);
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1180px) {
+  .cog-footer-body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cog-footer-body > div:first-child { grid-column: 1 / -1; }
+}
+
+@media (min-width: 1521px) {
+  .cog-page .cog-desktop-nav,
+  .lp-portal-page .lp-portal-nav {
+    left: calc((100vw - var(--site-max)) / 2 + 112px);
+  }
+}
+
+/* The portal retains its compact sidebar on tablet. */
+@media (min-width: 720px) and (max-width: 899px) {
+  .lp-portal-page {
+    --site-sidebar-rail: 24px;
+    --site-content-rail: 288px;
+    --site-content-end: 24px;
+    --lp-rail-end: var(--site-content-rail);
+  }
+  .lp-portal-nav { left: 96px; }
+  .lp-portal-shell { padding-inline: 24px; }
+}
+
+/* Mobile has a top navigation, with the two content rules outside its gutters. */
+@media (max-width: 899px) {
+  .cog-page {
+    --site-content-rail: 8px;
+    --site-content-end: 8px;
+  }
+  .cog-page::before {
+    background-image:
+      linear-gradient(var(--site-rail-color), var(--site-rail-color)),
+      linear-gradient(var(--site-rail-color), var(--site-rail-color));
+    background-position:
+      var(--site-content-rail) 0,
+      calc(100% - var(--site-content-end)) 0;
+  }
+}
+
+@media (max-width: 719px) {
+  .lp-portal-page {
+    --site-content-rail: 8px;
+    --site-content-end: 8px;
+  }
+  .lp-portal-page::before {
+    background-image:
+      linear-gradient(var(--site-rail-color), var(--site-rail-color)),
+      linear-gradient(var(--site-rail-color), var(--site-rail-color));
+    background-position:
+      var(--site-content-rail) 0,
+      calc(100% - var(--site-content-end)) 0;
+  }
+}
+
+/* Spacing and soft hover fills replace all other persistent rules and boxes. */
+:is(.cog-page, .lp-portal-page, .cog-search-shell),
+:is(.cog-page, .lp-portal-page, .cog-search-shell) *,
+:is(.cog-page, .lp-portal-page, .cog-search-shell) *::before,
+:is(.cog-page, .lp-portal-page, .cog-search-shell) *::after {
+  border-width: 0 !important;
+}
+
+:is(.cog-page, .lp-portal-page, .cog-search-shell) a {
+  text-decoration-line: none !important;
+}
+
+.cog-nav-link.is-active::before,
+.lp-portal-nav nav a.is-active::before,
+.lp-portfolio-tabs a::after { content: none; }
+
+.lp-portal-nav nav a.is-active { font-weight: 600; }
+.lp-portfolio-tabs a[aria-current="page"] { font-weight: 500; }
+.lp-figure-table--marks .lp-performance-pending-row th { box-shadow: none; }
+.lp-figure-grid,
+.lp-figure-axis,
+.lp-figure-diagonal { display: none; }
+
+/* Borderless fields retain clear interaction and keyboard focus states. */
+.cog-search-field,
+.cog-search-filter-toggle,
+.lp-login-input-row,
+.lp-table-controls input,
+.lp-table-controls select { background: var(--cog-hover); }
+
+:is(.cog-page, .lp-portal-page, .cog-search-shell)
+:is(a, button, input, select):focus-visible {
+  outline: 1px solid var(--cog-ink);
+  outline-offset: 4px;
+}
+
+@media (max-width: 899px) {
+  .lp-table-wrap,
+  .lp-figure-table-wrap { width: 100%; margin-right: 0; }
+}
+
+@media (min-width: 900px) and (max-width: 1180px) {
+  .cog-person-grid,
+  .cog-article-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cog-updates-track .cog-article-card { flex-basis: calc((100% - 16px) / 2); }
+}
