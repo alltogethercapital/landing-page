@@ -31,7 +31,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.getByRole("button", { name: "Graph view" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Table view" })).toHaveCount(0);
   await expect(page.getByText("43 companies · 1 not-yet-allocated balance", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("$836,671", { exact: true })).toBeVisible();
+  await expect(page.getByText("$836,646", { exact: true })).toBeVisible();
   const summaryGrid = page.locator(".lp-summary-grid");
   await expect(summaryGrid.getByText("$821,014.25", { exact: true })).toHaveCount(0);
   await expect(summaryGrid.getByText("$901,760.05", { exact: true })).toHaveCount(0);
@@ -61,7 +61,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(summaryGrid.getByText("Finalizing allocation", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("Pending allocation", { exact: true })).toHaveCount(0);
   await expect(summaryGrid.getByText("$112,000", { exact: true })).toBeVisible();
-  await expect(page.getByText("$916,663", { exact: true })).toBeVisible();
+  await expect(page.getByText("$916,638", { exact: true })).toBeVisible();
   await expect(page.getByText("Gross value multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.10×", { exact: true })).toBeVisible();
@@ -149,7 +149,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.locator("#lp-figure-concentration-and-structure")).toHaveClass(/sr-only/);
   await expect(page.locator(".lp-figure-section-head")).toHaveCount(0);
   await expect(page.locator(".lp-summary-grid")).toBeVisible();
-  await expect(page.locator(".lp-summary-grid").getByText("$916,663", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("$916,638", { exact: true })).toBeVisible();
   await expect(page.locator(".lp-summary-grid").getByText("1.10×", { exact: true })).toBeVisible();
   const analysisSummaryBox = await page.locator(".lp-summary-grid").boundingBox();
   const analysisTabsBox = await portfolioSections.boundingBox();
@@ -279,10 +279,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(pendingPerformanceRow).toContainText("No performance");
   await expect(pendingPerformanceRow).toContainText("In AUM, NAV, and total math");
   const performanceTotal = page.locator(".lp-performance-total-row");
-  await expect(performanceTotal).toContainText("$836,670.98");
+  await expect(performanceTotal).toContainText("$836,645.91");
   await expect(performanceTotal).toContainText("1.10×");
   await expect(performanceTotal).toContainText("+$79,992.02");
-  await expect(performanceTotal).toContainText("$916,663.00");
+  await expect(performanceTotal).toContainText("$916,637.93");
   await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-performance-desktop.png", fullPage: true });
 
@@ -418,9 +418,15 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.locator(".lp-portal-footer > span")).toHaveCount(1);
   await page.screenshot({ path: "output/playwright/lp-portal/detail-desktop.png", fullPage: true });
 
-  await page.locator(".lp-back-link").click();
-  await page.waitForLoadState("networkidle");
-  await page.locator(".lp-company-allocation-view").getByRole("link", { name: "Positron", exact: true }).click();
+  await page.goto("/lp/investments/47-blue-origin-series-a");
+  await expect(page).toHaveURL(/47-blue-origin-series-a$/);
+  await expect(page.getByRole("heading", { name: "Blue Origin" })).toBeVisible();
+  await expect(page.getByText("$24,974.93", { exact: true })).toHaveCount(2);
+  await expect(page.getByText(/final allocation is \$24,974\.93/i)).toBeVisible();
+  await expect(page.getByText(/actual \$25,000\.00 outbound transfer to AngelList/i)).toBeVisible();
+  await expect(page.getByText(/no separate refund or AngelList account credit/i)).toBeVisible();
+
+  await page.goto("/lp/investments/44-positron");
   await expect(page).toHaveURL(/44-positron$/);
   await expect(page.getByRole("link", { name: "Visit Positron website" })).toHaveAttribute("href", "https://www.positron.ai/");
   await expect(page.getByText("$20,000", { exact: true })).toHaveCount(2);
@@ -502,6 +508,21 @@ test("shows the reconciled Rasyn allocation and cash-evidence boundary", async (
   await expect(page.getByText(/original \$10,000\.00 outbound investment.*remains in the bank ledger/i)).toBeVisible();
   await expect(page.getByText(/\$6\.00 difference is an allocation reduction/i)).toBeVisible();
   await expect(page.getByText(/no separate refund or AngelList account-balance credit is recorded without transaction evidence/i)).toBeVisible();
+});
+
+test("shows the reconciled second Blue Origin allocation and cash-evidence boundary", async ({ page }) => {
+  await page.goto("/lp-login");
+  await page.getByLabel("Access password").fill(password);
+  await page.getByRole("button", { name: /Sign in/ }).click();
+  await expect(page).toHaveURL(/\/lp$/);
+
+  await page.goto("/lp/investments/47-blue-origin-series-a");
+  await expect(page.getByRole("heading", { name: "Blue Origin" })).toBeVisible();
+  await expect(page.getByText("$24,974.93", { exact: true })).toHaveCount(2);
+  await expect(page.getByText(/final allocation is \$24,974\.93/i)).toBeVisible();
+  await expect(page.getByText(/actual \$25,000\.00 outbound transfer to AngelList/i)).toBeVisible();
+  await expect(page.getByText(/\$25\.07 difference is an allocation reduction/i)).toBeVisible();
+  await expect(page.getByText(/no separate refund or AngelList account credit is recorded without transaction evidence/i)).toBeVisible();
 });
 
 test("shows the final Apptronik allocation and restated August snapshot", async ({ page }) => {

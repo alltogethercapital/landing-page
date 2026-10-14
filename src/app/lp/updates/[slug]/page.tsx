@@ -165,8 +165,10 @@ function SeptemberUpdateCopy() {
         $25,000.00 to $15,000.00; Pocket&apos;s cash route and completed transfer remain unevidenced, so no bank
         movement was added or changed. The owner subsequently revised the final Rasyn allocation from
         $9,993.59 to $9,994.00; the original $10,000.00 outflow remains in the bank ledger, and no separate
-        $6.00 refund or AngelList account-balance credit is recorded without transaction evidence. The figures
-        in this update now reflect all three corrections.
+        $6.00 refund or AngelList account-balance credit is recorded without transaction evidence. The owner
+        also revised the second Blue Origin allocation from $25,000.00 to $24,974.93. The actual $25,000.00
+        AngelList outflow remains in the bank ledger, and no separate $25.07 refund or AngelList account credit
+        is recorded without transaction evidence. The figures in this update now reflect all four corrections.
       </p>
 
       <p>
