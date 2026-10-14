@@ -11,8 +11,8 @@ import {
 } from "react";
 import { LogoMark } from "@/components/cognition-layout";
 import { SiteGrain } from "@/components/site-appearance";
-import { UIIcon } from "@/components/icons";
-import { CONTACT_MAILTO, NAV } from "@/lib/site";
+import { MailIcon, UIIcon, XIcon } from "@/components/icons";
+import { CONTACT_MAILTO, NAV, X_PROFILE_URL } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 function isNavItemActive(pathname: string, href: string) {
@@ -23,6 +23,27 @@ function isNavItemActive(pathname: string, href: string) {
 }
 
 const OVERLAY_EVENT = "machine-spirit-overlay-open";
+
+function ContactLinks({ onClick }: { onClick?: () => void }) {
+  return (
+    <div className="cog-nav-contacts">
+      <a href={CONTACT_MAILTO} className="cog-nav-contact-link" onClick={onClick}>
+        <MailIcon animateOnHover />
+        <span>Email us</span>
+      </a>
+      <a
+        href={X_PROFILE_URL}
+        className="cog-nav-contact-link cog-nav-contact-link--icon"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Machine Spirit on X"
+        onClick={onClick}
+      >
+        <XIcon animateOnHover />
+      </a>
+    </div>
+  );
+}
 
 function NavLink({
   href,
@@ -199,9 +220,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
           })}
         </nav>
 
-        <NavLink className="cog-nav-button" href={CONTACT_MAILTO}>
-          Email us
-        </NavLink>
+        <ContactLinks />
       </aside>
 
       <div
@@ -252,13 +271,7 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
                   </NavLink>
                 );
               })}
-                <NavLink
-                  href={CONTACT_MAILTO}
-                  onClick={() => closeMenu()}
-                  className="cog-mobile-menu-link cog-mobile-menu-contact"
-                >
-                  Email us
-                </NavLink>
+              <ContactLinks onClick={() => closeMenu()} />
             </nav>
           </div>
         )}

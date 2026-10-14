@@ -4,14 +4,14 @@ import { MorphIcon } from "morphicons/react";
 import { useEffect, useRef, useState } from "react";
 import { UI_ICON_HOVER_PATHS, UI_ICON_PATHS, type UIIconName } from "@/lib/icon-paths";
 
-type IconProps = { className?: string; animateOnHover?: boolean };
+type IconProps = { className?: string; animateOnHover?: boolean; active?: boolean };
 
 /** One renderer, size and stroke for every interface icon. */
-export function UIIcon({ name, className = "", animateOnHover = false }: IconProps & { name: UIIconName }) {
+export function UIIcon({ name, className = "", animateOnHover = false, active = false }: IconProps & { name: UIIconName }) {
   if (animateOnHover && UI_ICON_HOVER_PATHS[name]) {
-    return <HoverUIIcon name={name} className={className} />;
+    return <HoverUIIcon name={name} className={className} active={active} />;
   }
-  return <IconGlyph name={name} className={className} />;
+  return <IconGlyph name={name} className={className} engaged={active} />;
 }
 
 function IconGlyph({ name, className, engaged = false }: { name: UIIconName; className: string; engaged?: boolean }) {
@@ -20,7 +20,7 @@ function IconGlyph({ name, className, engaged = false }: { name: UIIconName; cla
       icon={engaged ? UI_ICON_HOVER_PATHS[name] ?? UI_ICON_PATHS[name] : UI_ICON_PATHS[name]}
       size={20}
       strokeWidth={1.5}
-      spring="smooth"
+      spring="snappy"
       reducedMotion="user"
       className={`morphicon ${className}`}
       data-icon={name}
@@ -31,7 +31,7 @@ function IconGlyph({ name, className, engaged = false }: { name: UIIconName; cla
   );
 }
 
-function HoverUIIcon({ name, className }: { name: UIIconName; className: string }) {
+function HoverUIIcon({ name, className, active }: { name: UIIconName; className: string; active: boolean }) {
   const containerRef = useRef<HTMLSpanElement>(null);
   const [engaged, setEngaged] = useState(false);
 
@@ -78,7 +78,7 @@ function HoverUIIcon({ name, className }: { name: UIIconName; className: string 
 
   return (
     <span ref={containerRef} style={{ display: "contents" }}>
-      <IconGlyph name={name} className={className} engaged={engaged} />
+      <IconGlyph name={name} className={className} engaged={active || engaged} />
     </span>
   );
 }

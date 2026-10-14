@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "@/components/icons";
-import { LEGAL, NAV, SOCIALS } from "@/lib/site";
+import { ArrowUpRight, MailIcon, XIcon } from "@/components/icons";
+import { LEGAL, NAV, SOCIALS, X_PROFILE_URL } from "@/lib/site";
 
 function FooterLink({
   href,
@@ -26,9 +26,11 @@ function FooterLink({
       target={href.startsWith("mailto:") ? undefined : "_blank"}
       rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
       className={className}
+      aria-label={href === X_PROFILE_URL ? "Machine Spirit on X" : undefined}
     >
-      {children}
-      {!href.startsWith("mailto:") && <ArrowUpRight />}
+      {href.startsWith("mailto:") && <MailIcon animateOnHover />}
+      {href === X_PROFILE_URL ? <XIcon animateOnHover /> : children}
+      {!href.startsWith("mailto:") && href !== X_PROFILE_URL && <ArrowUpRight />}
     </a>
   );
 }

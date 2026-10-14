@@ -203,7 +203,7 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
         aria-expanded={open}
         onClick={openSearch}
       >
-        <UIIcon name={open ? "close" : "search"} animateOnHover />
+        <UIIcon name="search" animateOnHover active={open} />
       </button>
 
       {open && (

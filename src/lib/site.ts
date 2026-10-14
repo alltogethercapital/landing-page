@@ -1,9 +1,10 @@
 import type { ComponentType } from "react";
-import { LinkedInIcon, MailIcon } from "@/components/icons";
+import { LinkedInIcon, MailIcon, XIcon } from "@/components/icons";
 
 export const CONTACT_RECIPIENT = "robertneir@machinespirit.com";
 export const CONTACT_CC = "hisham@machinespirit.com";
 export const CONTACT_RECIPIENTS = [CONTACT_RECIPIENT, CONTACT_CC];
+export const X_PROFILE_URL = "https://x.com/machinespiritcp";
 export const CONTACT_MAILTO = `mailto:${CONTACT_RECIPIENT}?cc=${encodeURIComponent(
   CONTACT_CC,
 )}`;
@@ -20,6 +21,7 @@ export const SOCIALS: SocialLink[] = [
     href: "https://www.linkedin.com/company/all-together-capital/",
     Icon: LinkedInIcon,
   },
+  { label: "X", href: X_PROFILE_URL, Icon: XIcon },
   { label: "Email", href: CONTACT_MAILTO, Icon: MailIcon },
 ];
 

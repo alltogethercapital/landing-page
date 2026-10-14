@@ -1059,6 +1059,35 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   font-size: 14px;
 }
 
+.cog-nav-contacts {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.cog-nav-contact-link {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 8px;
+  color: var(--cog-muted);
+  font-family: var(--cog-support);
+  font-size: 14px;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.cog-nav-contact-link--icon {
+  width: 36px;
+  justify-content: center;
+}
+
+.cog-nav-contact-link:hover {
+  color: var(--cog-ink);
+}
+
 .cog-button {
   border-color: var(--cog-line);
   background: transparent;
@@ -2118,17 +2147,8 @@ html[data-site-theme="dark"] .cog-wordmark-name {
     word-spacing: 0.04em;
   }
 
-  .cog-mobile-menu-link.cog-mobile-menu-contact {
-    min-height: auto;
-    margin-top: 20px;
-    border-top: 1px solid var(--cog-line);
-    padding: 14px 0 0;
-    color: var(--cog-muted);
-    font-family: var(--cog-support);
-    font-size: 16px;
-    letter-spacing: 0;
-    line-height: 1.3;
-  }
+  .cog-mobile-menu .cog-nav-contact-link { min-height: 44px; }
+  .cog-mobile-menu .cog-nav-contact-link--icon { width: 44px; }
 
   .ascii-hero {
     margin: calc(var(--mobile-header-height) + 14px) var(--mobile-gutter) 0;
