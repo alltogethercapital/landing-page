@@ -1869,8 +1869,8 @@ html[data-site-theme="dark"] .cog-wordmark-name {
 
 .cog-footer-body {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(120px, 1fr));
-  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) repeat(3, max-content);
+  gap: 32px;
 }
 
 .cog-footer-heading {
@@ -1882,23 +1882,38 @@ html[data-site-theme="dark"] .cog-wordmark-name {
 }
 
 .cog-footer-copy {
-  max-width: 310px;
-  margin: 12px 0 18px;
+  max-width: 260px;
+  margin: 0 0 12px;
   color: var(--cog-muted);
-  font-family: var(--cog-prose);
-  font-size: 18px;
-  line-height: 1.5;
+  font-family: var(--cog-support);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
-.cog-footer-copy-line {
+.cog-footer-location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cog-footer-flag {
   display: block;
+  width: 26.6px;
+  height: 14px;
+  flex: none;
+  border-radius: 0;
+}
+
+.cog-footer .cog-footer-meta {
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .cog-footer-column {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 5px;
+  gap: 4px;
 }
 
 .cog-footer-link {
@@ -1906,9 +1921,11 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   align-items: center;
   gap: 5px;
   font-family: var(--cog-text);
-  font-size: 17px;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
+  padding-block: 1px;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .cog-footer-bottom {
@@ -1918,8 +1935,8 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   margin-top: 54px;
   color: var(--cog-muted);
   font-family: var(--cog-support);
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 @media (min-width: 1021px) and (max-width: 1180px) {
@@ -2339,6 +2356,17 @@ html[data-site-theme="dark"] .cog-wordmark-name {
     margin-bottom: 14px;
   }
 
+}
+
+@media (min-width: 600px) and (max-width: 1039px) {
+  .cog-footer-body {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px 24px;
+  }
+
+  .cog-footer-identity {
+    grid-column: 1 / -1;
+  }
 }
 
 /* Investor portal — the site's editorial system, tightened around private data. */

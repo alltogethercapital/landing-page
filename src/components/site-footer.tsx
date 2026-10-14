@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "@/components/icons";
 import { LEGAL, NAV, SOCIALS } from "@/lib/site";
@@ -36,12 +37,21 @@ export function SiteFooter() {
   return (
     <footer className="cog-footer">
       <div className="cog-footer-body">
-        <div>
+        <div className="cog-footer-identity">
           <p className="cog-footer-copy">
-            <span className="cog-footer-copy-line">The future is built together.</span>
-            <span className="cog-footer-copy-line">The future is built now.</span>
+            Official website of Machine Spirit
           </p>
-          <p className="cog-footer-meta">Seattle, WA</p>
+          <div className="cog-footer-location">
+            <Image
+              src="/brand/us-flag.svg"
+              alt="United States flag"
+              width={38}
+              height={20}
+              unoptimized
+              className="cog-footer-flag"
+            />
+            <p className="cog-footer-meta">Seattle, WA</p>
+          </div>
         </div>
 
         <nav className="cog-footer-column" aria-label="Footer navigation">
