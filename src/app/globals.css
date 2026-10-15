@@ -8,9 +8,9 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --font-sans: var(--font-space-grotesk);
-  --font-display: var(--font-space-grotesk);
-  --font-serif: var(--font-space-grotesk);
+  --font-sans: var(--font-source-sans);
+  --font-display: var(--font-orbitron);
+  --font-serif: var(--font-source-sans);
   --font-mono: var(--font-atlas-typewriter);
 
   --color-sidebar-ring: var(--sidebar-ring);
@@ -183,16 +183,13 @@ body::-webkit-scrollbar {
 }
 
 body {
-  --cog-text: var(--font-space-grotesk), "Helvetica Neue", Arial, sans-serif;
-  --cog-support: var(--cog-text);
-  --cog-prose: var(--cog-text);
+  --cog-text: var(--font-orbitron), Arial, sans-serif;
+  --cog-nav: var(--font-chakra-petch), Arial, sans-serif;
+  --cog-support: var(--font-source-sans), Arial, sans-serif;
+  --cog-prose: var(--cog-support);
+  font-family: var(--cog-support);
   background: var(--cog-bg);
   color: var(--cog-ink);
-}
-
-html[data-site-theme] body {
-  --cog-text: var(--font-space-grotesk), "Helvetica Neue", Arial, sans-serif;
-  --cog-support: var(--font-space-grotesk), "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Neutral grain floats gently over charcoal or off-white paper. */

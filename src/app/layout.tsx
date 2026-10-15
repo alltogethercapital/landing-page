@@ -3,13 +3,12 @@ import localFont from "next/font/local";
 import { type CSSProperties, type ReactNode } from "react";
 import { SiteSearch } from "@/components/site-search";
 import { SiteAppearance } from "@/components/site-appearance";
-import { TypePreview } from "@/components/type-preview";
 import { buildSearchIndex } from "@/lib/search";
 import { SITE_THEME_SCRIPT } from "@/lib/site-theme";
 import "./globals.css";
 import "./lp-release.css";
 import "./site-rails.css";
-import "./type-preview.css";
+import "./site-typography.css";
 
 const atlasTypewriter = localFont({
   variable: "--font-atlas-typewriter",
@@ -59,13 +58,31 @@ const atlasTypewriter = localFont({
   ],
 });
 
-const spaceGrotesk = localFont({
-  src: "./fonts/space-grotesk/SpaceGrotesk-Variable.ttf",
-  variable: "--font-space-grotesk",
-  weight: "300 700",
+const orbitron = localFont({
+  src: "../../public/fonts/type-lab/orbitron.woff2",
+  variable: "--font-orbitron",
+  weight: "400 900",
   style: "normal",
   display: "swap",
-  fallback: ["Arial", "Helvetica", "sans-serif"],
+  fallback: ["Arial", "sans-serif"],
+});
+
+const chakraPetch = localFont({
+  src: "../../public/fonts/type-lab/chakra-petch.woff2",
+  variable: "--font-chakra-petch",
+  weight: "400",
+  style: "normal",
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
+});
+
+const sourceSans = localFont({
+  src: "../../public/fonts/type-lab/source-sans-3.woff2",
+  variable: "--font-source-sans",
+  weight: "200 900",
+  style: "normal",
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
 });
 
 // metadataBase is required so Next.js can resolve the opengraph-image
@@ -115,13 +132,12 @@ export default function RootLayout({
         <script id="site-theme" dangerouslySetInnerHTML={{ __html: SITE_THEME_SCRIPT }} />
       </head>
       <body
-        className={`${spaceGrotesk.variable} min-h-full`}
+        className={`${orbitron.variable} ${chakraPetch.variable} ${sourceSans.variable} min-h-full`}
         style={hiddenScrollbarStyle}
       >
         <SiteAppearance />
         <SiteSearch index={buildSearchIndex()} />
         {children}
-        <TypePreview />
       </body>
     </html>
   );

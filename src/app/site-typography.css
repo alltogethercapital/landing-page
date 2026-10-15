@@ -1,0 +1,41 @@
+/* Approved typography: Orbitron headings, Chakra Petch navigation, Source Sans 3 text. */
+html :is(.cog-page, .cog-search-shell, .lp-portal-page, .lp-login-page) {
+  font-family: var(--cog-support);
+}
+
+html :is(h1, h2, h3, h4, h5, h6, .cog-title, .cog-strip-heading, .cog-article-title, .cog-person-title, .cog-company-card-title, .cog-company-logo-lockup-label, .cog-logo-word, .cog-logo-cell-lockup, .cog-search-title) {
+  font-family: var(--cog-text);
+}
+
+html :is(.cog-nav-link, .cog-mobile-menu-link, .cog-nav-contact-link, .lp-portal-nav nav a, .lp-portal-home, .lp-portfolio-tabs a) {
+  font-family: var(--cog-nav);
+}
+
+html :is(.cog-footer-link, .cog-person-links, .cog-button, .cog-search-field input, .cog-search-filter-toggle, .cog-search-filters button) {
+  font-family: var(--cog-support);
+}
+
+/* The wider heading face needs room beside icon-only portfolio marks. */
+@media (min-width: 900px) {
+  html .cog-logo-mosaic {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 899px) {
+  html .cog-mobile-menu-link { font-size: clamp(24px, 5vw, 36px); }
+  html .cog-hero-section :is(.cog-title-line, .cog-title-keep) { white-space: normal; }
+}
+
+@media (max-width: 599px) {
+  html .cog-logo-cell-lockup { font-size: 10px; }
+  html .cog-footer-body {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 24px 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  html .cog-title-keep { white-space: normal; }
+  html .cog-footer-link { font-size: 13px; }
+}
