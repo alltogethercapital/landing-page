@@ -28,6 +28,7 @@ html :is(.cog-footer-link, .cog-person-links, .cog-button, .cog-search-field inp
 }
 
 @media (max-width: 599px) {
+  html .cog-logo-mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   html .cog-logo-cell-lockup { font-size: 10px; }
   html .cog-footer-body {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);

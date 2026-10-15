@@ -92,7 +92,7 @@ export const PORTFOLIO: Company[] = [
     image: "/work/cards/longshot-space.jpg",
     cardImage: "/work/cards/longshot-space.jpg",
   },
-  { name: "Positron", href: "https://www.positron.ai/", sectors: ["AI", "Semiconductors", "Infrastructure"], blurb: "Purpose-built, memory-first systems for efficient generative AI inference.", cardLogo: "/logos/cards/positron.svg" },
+  { name: "Positron", href: "https://www.positron.ai/", sectors: ["AI", "Semiconductors", "Infrastructure"], blurb: "Purpose-built, memory-first systems for efficient generative AI inference.", cardLogo: "/logos/cards/positron.svg?v=20261014" },
   {
     name: "Weave Robotics",
     href: "https://www.weaverobotics.com/",
@@ -161,8 +161,8 @@ export const PORTFOLIO: Company[] = [
     cardImage: "/work/cards/decart.jpg",
   },
   { name: "Matforge", href: "https://discoveredmaterials.com/", sectors: ["AI", "Semiconductors", "Materials"], blurb: "Now Discovered Materials, building AI scientists for semiconductor materials discovery.", cardLogo: "/logos/cards/matforge.svg" },
-  { name: "Raspire", href: "https://raspire.com/", sectors: ["Security", "AI", "Software"], blurb: "AI-powered runtime security for mobile applications with no source-code changes.", cardLogo: "/logos/cards/raspire.svg", logoLabel: "Raspire" },
-  { name: "Rendezvous Robotics", href: "https://www.rdvrobotics.com/", sectors: ["Space", "Robotics", "Defense"], blurb: "Modular spacecraft that autonomously assemble and reconfigure in orbit.", cardLogo: "/logos/cards/rendezvous-robotics.svg", logoLabel: "Rendezvous Robotics" },
+  { name: "Raspire", href: "https://raspire.com/", sectors: ["Security", "AI", "Software"], blurb: "AI-powered runtime security for mobile applications with no source-code changes.", cardLogo: "/logos/cards/raspire.svg?v=20261014", logoLabel: "Raspire" },
+  { name: "Rendezvous Robotics", href: "https://www.rdvrobotics.com/", sectors: ["Space", "Robotics", "Defense"], blurb: "Modular spacecraft that autonomously assemble and reconfigure in orbit.", cardLogo: "/logos/cards/rendezvous-robotics.svg?v=20261014", logoLabel: "Rendezvous Robotics" },
   { name: "Compresr", href: "https://www.compresr.com/", sectors: ["AI", "Infrastructure", "Software"], blurb: "Question-aware context compression for faster, more accurate, lower-cost AI systems.", cardLogo: "/logos/cards/compresr.svg", logoLabel: "Compresr" },
   {
     name: "Core Automation",

@@ -19,7 +19,6 @@ export const metadata = pageMetadata(
   "/",
 );
 
-const logoCompanies = PORTFOLIO.filter((company) => company.cardLogo ?? company.logo).slice(0, 24);
 const homepageUpdates = ARTICLES.map(
   ({ slug, title, date, dateISO, category, image }) => ({
     slug,
@@ -75,9 +74,8 @@ export default function Home() {
 
       <CognitionSection wide className="cog-logo-section">
         <div className="cog-logo-mosaic" aria-label="Machine Spirit Capital companies">
-          {logoCompanies.map((company) => {
+          {PORTFOLIO.map((company) => {
             const logo = company.cardLogo ?? company.logo;
-            if (!logo) return null;
             return (
               <a
                 key={company.name}
@@ -87,12 +85,12 @@ export default function Home() {
                 className="cog-logo-cell"
                 aria-label={company.name}
               >
-                {company.logoLabel ? (
+                {logo && company.logoLabel ? (
                   <span className="cog-logo-cell-lockup">
                     <Image src={logo} alt="" width={28} height={28} unoptimized />
                     <span>{company.logoLabel}</span>
                   </span>
-                ) : (
+                ) : logo ? (
                   <Image
                     src={logo}
                     alt={company.name}
@@ -101,6 +99,8 @@ export default function Home() {
                     unoptimized
                     className="object-contain"
                   />
+                ) : (
+                  <span className="cog-logo-word">{company.name}</span>
                 )}
               </a>
             );
