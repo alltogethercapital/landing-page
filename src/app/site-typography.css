@@ -15,6 +15,15 @@ html :is(.cog-footer-link, .cog-person-links, .cog-button, .cog-search-field inp
   font-family: var(--cog-support);
 }
 
+/* Scale the single-line headline to its actual reading column. */
+html .cog-hero-section .cog-section-body { container-type: inline-size; }
+html .cog-hero-section .cog-title {
+  font-size: min(40px, 6cqi);
+  line-height: 1.2;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+
 /* The wider heading face needs room beside icon-only portfolio marks. */
 @media (min-width: 900px) {
   html .cog-logo-mosaic {
@@ -24,7 +33,6 @@ html :is(.cog-footer-link, .cog-person-links, .cog-button, .cog-search-field inp
 
 @media (max-width: 899px) {
   html .cog-mobile-menu-link { font-size: clamp(24px, 5vw, 36px); }
-  html .cog-hero-section :is(.cog-title-line, .cog-title-keep) { white-space: normal; }
 }
 
 @media (max-width: 599px) {
@@ -37,6 +45,5 @@ html :is(.cog-footer-link, .cog-person-links, .cog-button, .cog-search-field inp
 }
 
 @media (max-width: 420px) {
-  html .cog-title-keep { white-space: normal; }
   html .cog-footer-link { font-size: 13px; }
 }

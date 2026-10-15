@@ -14,7 +14,7 @@ import { PORTFOLIO } from "@/lib/portfolio";
 import { pageMetadata } from "@/lib/page-metadata";
 
 export const metadata = pageMetadata(
-  "The Future Is Built Together — Machine Spirit Capital",
+  "Building the AI Machine Spirit — Machine Spirit Capital",
   "Machine Spirit Capital backs the founders creating and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
   "/",
 );
@@ -39,18 +39,7 @@ export default function Home() {
 
       <CognitionSection
         hideTitle={false}
-        title={
-          <>
-            <span className="cog-title-line">
-              <span className="cog-title-keep">The future is built</span>{" "}
-              <span>together.</span>
-            </span>
-            <span className="cog-title-line">
-              <span className="cog-title-keep">The future is built</span>{" "}
-              <span>now.</span>
-            </span>
-          </>
-        }
+        title="Building the AI Machine Spirit"
         className="cog-hero-section"
       >
         <div className="cog-copy-stack">
