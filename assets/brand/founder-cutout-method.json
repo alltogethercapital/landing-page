@@ -1,0 +1,172 @@
+{
+  "date": "2026-10-14",
+  "mode": "Built-in image_gen edit; transparent_background:true; one original photograph per edit",
+  "sourceReferences": "assets/brand/founder-portrait-sources.json",
+  "prompt": "Background-extraction. Remove only the environment and furniture behind the person to real alpha transparency. Preserve the exact person, face, expression, hair, clothing, pose, accessories, crop, subject scale, and pixel-relative silhouette placement. No recreation, retouching, relighting, padding, reframing, or invented body. Clean natural hair-edge alpha. No background, checkerboard, shadow, text, or effects.",
+  "identityPreservation": "Generated RGB is discarded. Each published cutout uses the original photograph RGB and only the edited alpha. Visible RGB pixels and original dimensions are checked during build.",
+  "refinements": "Square padding for non-square sources is removed after mask resizing. Dimitris mask is vertically registered; Xu is registered and tightened; selected pale edges are tightened. Gabriel and Mingi extraction retries remove furniture. Source photographs are unchanged.",
+  "excluded": [
+    {
+      "name": "Ayush Chauhan",
+      "reason": "Only a generic avatar could be verified; hidden until a real transparent portrait is approved."
+    }
+  ],
+  "assets": [
+    {
+      "source": "/founders/portraits/advaith-sridhar.webp",
+      "published": "/founders/transparent-v2/advaith-sridhar.webp"
+    },
+    {
+      "source": "/founders/portraits/ahmad-ibrahim.webp",
+      "published": "/founders/transparent-v2/ahmad-ibrahim.webp"
+    },
+    {
+      "source": "/founders/portraits/aidan-pratt.webp",
+      "published": "/founders/transparent-v2/aidan-pratt.webp"
+    },
+    {
+      "source": "/founders/portraits/akash-ramdas.webp",
+      "published": "/founders/transparent-v2/akash-ramdas.webp"
+    },
+    {
+      "source": "/founders/portraits/akshay-narisetti.webp",
+      "published": "/founders/transparent-v2/akshay-narisetti.webp"
+    },
+    {
+      "source": "/founders/portraits/alex-lonsberry.webp",
+      "published": "/founders/transparent-v2/alex-lonsberry.webp"
+    },
+    {
+      "source": "/founders/portraits/alexander-urbanski.webp",
+      "published": "/founders/transparent-v2/alexander-urbanski.webp"
+    },
+    {
+      "source": "/founders/portraits/amie-leighton.webp",
+      "published": "/founders/transparent-v2/amie-leighton.webp"
+    },
+    {
+      "source": "/founders/portraits/an-zhu-liu.webp",
+      "published": "/founders/transparent-v2/an-zhu-liu.webp"
+    },
+    {
+      "source": "/founders/portraits/andy-lonsberry.webp",
+      "published": "/founders/transparent-v2/andy-lonsberry.webp"
+    },
+    {
+      "source": "/founders/portraits/ansh-tiwari.webp",
+      "published": "/founders/transparent-v2/ansh-tiwari.webp"
+    },
+    {
+      "source": "/founders/portraits/ariel-ekblaw.webp",
+      "published": "/founders/transparent-v2/ariel-ekblaw.webp"
+    },
+    {
+      "source": "/founders/portraits/berke-argin.webp",
+      "published": "/founders/transparent-v2/berke-argin.webp"
+    },
+    {
+      "source": "/founders/portraits/christopher-carter.webp",
+      "published": "/founders/transparent-v2/christopher-carter.webp"
+    },
+    {
+      "source": "/founders/portraits/daood-hashmi.webp",
+      "published": "/founders/transparent-v2/daood-hashmi.webp"
+    },
+    {
+      "source": "/founders/portraits/dimitris-koutentakis.webp",
+      "published": "/founders/transparent-v2/dimitris-koutentakis.webp"
+    },
+    {
+      "source": "/founders/portraits/emile-germonpre.webp",
+      "published": "/founders/transparent-v2/emile-germonpre.webp"
+    },
+    {
+      "source": "/founders/portraits/gabriel-dymowski.webp",
+      "published": "/founders/transparent-v2/gabriel-dymowski.webp"
+    },
+    {
+      "source": "/founders/portraits/hassan-mostafa.webp",
+      "published": "/founders/transparent-v2/hassan-mostafa.webp"
+    },
+    {
+      "source": "/founders/portraits/hunter-brown.webp",
+      "published": "/founders/transparent-v2/hunter-brown.webp"
+    },
+    {
+      "source": "/founders/portraits/ian-brooke.webp",
+      "published": "/founders/transparent-v2/ian-brooke.webp"
+    },
+    {
+      "source": "/founders/portraits/ivan-zakazov.webp",
+      "published": "/founders/transparent-v2/ivan-zakazov.webp"
+    },
+    {
+      "source": "/founders/portraits/jack-qiu.webp",
+      "published": "/founders/transparent-v2/jack-qiu.webp"
+    },
+    {
+      "source": "/founders/portraits/jeffrey-lin.webp",
+      "published": "/founders/transparent-v2/jeffrey-lin.webp"
+    },
+    {
+      "source": "/founders/portraits/joe-landon.webp",
+      "published": "/founders/transparent-v2/joe-landon.webp"
+    },
+    {
+      "source": "/founders/portraits/kamel-charaf.webp",
+      "published": "/founders/transparent-v2/kamel-charaf.webp"
+    },
+    {
+      "source": "/founders/portraits/kareem-selim.webp",
+      "published": "/founders/transparent-v2/kareem-selim.webp"
+    },
+    {
+      "source": "/founders/portraits/lucas-volini.webp",
+      "published": "/founders/transparent-v2/lucas-volini.webp"
+    },
+    {
+      "source": "/founders/portraits/min-jin.webp",
+      "published": "/founders/transparent-v2/min-jin.webp"
+    },
+    {
+      "source": "/founders/portraits/mingi-kwon.webp",
+      "published": "/founders/transparent-v2/mingi-kwon.webp"
+    },
+    {
+      "source": "/founders/portraits/nikhil-reddy.webp",
+      "published": "/founders/transparent-v2/nikhil-reddy.webp"
+    },
+    {
+      "source": "/founders/portraits/obaida-albaroudi.webp",
+      "published": "/founders/transparent-v2/obaida-albaroudi.webp"
+    },
+    {
+      "source": "/founders/portraits/oussama-gabouj.webp",
+      "published": "/founders/transparent-v2/oussama-gabouj.webp"
+    },
+    {
+      "source": "/founders/portraits/phil-c-frank.webp",
+      "published": "/founders/transparent-v2/phil-c-frank.webp"
+    },
+    {
+      "source": "/founders/portraits/saroosh-khan.webp",
+      "published": "/founders/transparent-v2/saroosh-khan.webp"
+    },
+    {
+      "source": "/founders/portraits/thomas-sohmers.webp",
+      "published": "/founders/transparent-v2/thomas-sohmers.webp"
+    },
+    {
+      "source": "/founders/portraits/xu-zheng.webp",
+      "published": "/founders/transparent-v2/xu-zheng.webp"
+    },
+    {
+      "source": "/founders/portraits/yousef-abdelfattah.webp",
+      "published": "/founders/transparent-v2/yousef-abdelfattah.webp"
+    },
+    {
+      "source": "/founders/portraits/zaky-hassan.webp",
+      "published": "/founders/transparent-v2/zaky-hassan.webp"
+    }
+  ]
+}

@@ -1,21 +1,9 @@
-// Existing cutouts retain their original pixels. Older opaque sources use
-// separate background-extracted siblings across the page, search, and preload.
-const EXTRACTED_PORTRAITS = new Set([
-  "aaron-pempel", "ahmed-al-mudarris", "alex-mashrabov", "alex-pachikov",
-  "anmol-gulati", "ant-wilson", "assil-halimi", "ben-nowack",
-  "chris-eheim", "dean-leitersdorf", "drew-walker", "dustin-walper",
-  "evan-wineland", "eyad-abdalla", "jeff-bezos", "jerry-tworek",
-  "joanne-jang", "julia-villagra", "kaan-dogrusoz", "mahi-de-silva",
-  "moshe-shalev", "nick-de-palezieux", "orian-leitersdorf", "paul-copplestone",
-  "peter-cetale", "robert-shepherd", "rohan-anil", "tade-oyerinde",
-  "tj-wallin", "travis-kalanick", "tristan-semmelhack", "yerzat-dulat",
-]);
+import verifiedPortraits from "./verified-founder-portraits.json";
 
-export function founderPortraitSrc(headshot: string) {
-  // Newer catalog portraits already have their own checked local assets.
-  if (headshot.startsWith("/founders/portraits/")) return headshot;
-  const slug = headshot.split("/").at(-1)?.replace(/\.(png|webp|jpe?g)$/, "") ?? "";
-  return EXTRACTED_PORTRAITS.has(slug)
-    ? `/founders/transparent/${slug}.webp`
-    : `/founders/cutouts-webp/${slug}.webp`;
+// Only reviewed personal photos with checked transparent assets are publishable.
+// Unlisted source images deliberately have no fallback to an opaque photo/avatar.
+export function founderPortraitSrc(source: string): string | undefined {
+  return Object.prototype.hasOwnProperty.call(verifiedPortraits, source)
+    ? verifiedPortraits[source as keyof typeof verifiedPortraits]
+    : undefined;
 }

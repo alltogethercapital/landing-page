@@ -9,13 +9,11 @@ import { AsciiReveal, PortraitRevealSession } from "@/components/ascii-reveal";
 import { ArrowUpRight, LinkedInIcon, XIcon } from "@/components/icons";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
-import { founderPortraitSrc } from "@/lib/portrait-assets";
 import { pageMetadata } from "@/lib/page-metadata";
 import {
   FOUNDERS,
   companyForFounder,
   founderAnchor,
-  initialsFor,
   type Founder,
 } from "@/lib/founders";
 
@@ -31,7 +29,6 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
   const profileLabel = founder.linkedin ? "LinkedIn" : "X";
   const destination = profile ?? company?.href ?? "/companies";
   const external = destination.startsWith("https://");
-  const fullPortrait = founder.headshot?.startsWith("/founders/portraits/") ?? false;
 
   return (
     <article id={founderAnchor(founder)} className="cog-person-card">
@@ -42,24 +39,17 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
         aria-label={profile ? `${founder.name} on ${profileLabel}` : founder.name}
         className="cog-person-media"
       >
-        {founder.headshot ? (
-          <AsciiReveal
-            src={founderPortraitSrc(founder.headshot)}
-            fit={fullPortrait ? "cover" : "contain"}
-          >
-            <Image
-              src={founderPortraitSrc(founder.headshot)}
-              alt={founder.name}
-              fill
-              sizes="(max-width: 899px) calc((100vw - 48px) / 2), 303px"
-              unoptimized
-              loading={eager ? "eager" : "lazy"}
-              className={fullPortrait ? "object-cover object-center" : "object-contain object-bottom"}
-            />
-          </AsciiReveal>
-        ) : (
-          <span className="cog-person-initials">{initialsFor(founder.name)}</span>
-        )}
+        <AsciiReveal src={founder.headshot} fit="contain">
+          <Image
+            src={founder.headshot}
+            alt={founder.name}
+            fill
+            sizes="(max-width: 899px) calc((100vw - 48px) / 2), 303px"
+            unoptimized
+            loading={eager ? "eager" : "lazy"}
+            className="object-contain object-bottom"
+          />
+        </AsciiReveal>
       </a>
 
       <div className="cog-person-copy">

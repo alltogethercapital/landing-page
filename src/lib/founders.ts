@@ -1,4 +1,5 @@
 import { PORTFOLIO, slugify, type Company } from "./portfolio";
+import { founderPortraitSrc } from "./portrait-assets";
 
 export type Founder = {
   name: string; // founder's name
@@ -10,7 +11,7 @@ export type Founder = {
 
 // Founder names, profiles, and portraits are grounded in public company,
 // investor, publication, LinkedIn, or founder-owned social sources.
-export const FOUNDERS: Founder[] = [
+const FOUNDER_CATALOG: Founder[] = [
   { name: "Akshay Narisetti", headshot: "/founders/portraits/akshay-narisetti.webp", companyName: "Pocket", linkedin: "https://www.linkedin.com/in/akshaynarisetti" },
   { name: "Gabriel Dymowski", headshot: "/founders/portraits/gabriel-dymowski.webp", companyName: "Pocket", linkedin: "https://www.linkedin.com/in/gabrieldymowski" },
   { name: "Jack Qiu", headshot: "/founders/portraits/jack-qiu.webp", companyName: "Ultrasonium" },
@@ -478,6 +479,13 @@ export const FOUNDERS: Founder[] = [
   // Eccentric Machines — founder not public (company is in stealth); no card until confirmed.
 ];
 
+// The page, search results, and company links share the same publishable list.
+// Keep unapproved entries in the catalog until a real transparent photo is ready.
+export const FOUNDERS: Founder[] = FOUNDER_CATALOG.flatMap((founder) => {
+  const headshot = founderPortraitSrc(founder.headshot);
+  return headshot ? [{ ...founder, headshot }] : [];
+});
+
 export function companyForFounder(f: Founder): Company | undefined {
   return PORTFOLIO.find((c) => c.name === f.companyName);
 }
@@ -491,11 +499,4 @@ export function founderForCompany(companyName: string): Founder | undefined {
 // deep-link to their (first) founder's card via this same scheme.
 export function founderAnchor(f: Founder): string {
   return slugify(`${f.name} ${f.companyName}`);
-}
-
-export function initialsFor(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "?";
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
