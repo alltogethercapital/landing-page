@@ -303,16 +303,6 @@ html[data-site-theme="dark"] {
   color: var(--cog-ink);
 }
 
-.site-theme-toggle svg {
-  width: 17px;
-  height: 17px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.5;
-}
-
 .cog-mobile-menu > :not(.site-grain) {
   position: relative;
   z-index: 1;
@@ -397,12 +387,6 @@ html[data-site-theme="dark"] {
 .site-shader-lab-button:hover {
   background: var(--cog-ink);
   color: var(--cog-bg);
-}
-
-.site-shader-lab-button svg {
-  width: 17px;
-  height: 17px;
-  stroke-width: 1.7;
 }
 
 .site-shader-lab-readout {
@@ -774,12 +758,6 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   color: var(--cog-bg);
 }
 
-.cog-logo-lab-button svg {
-  width: 17px;
-  height: 17px;
-  stroke-width: 1.7;
-}
-
 .cog-logo-lab-readout {
   display: grid;
   min-width: 0;
@@ -1059,26 +1037,21 @@ html[data-site-theme="dark"] .cog-wordmark-name {
 .cog-nav-contacts {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 4px;
   margin-top: 28px;
+  margin-left: -12px;
 }
 
 .cog-nav-contact-link {
   display: inline-flex;
-  min-height: 36px;
+  width: 44px;
+  height: 44px;
+  flex: none;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   color: var(--cog-muted);
-  font-family: var(--cog-support);
-  font-size: 14px;
-  line-height: 1.4;
   text-decoration: none;
   transition: color 160ms ease;
-}
-
-.cog-nav-contact-link--icon {
-  width: 36px;
-  justify-content: center;
 }
 
 .cog-nav-contact-link:hover {
@@ -2084,11 +2057,6 @@ html[data-site-theme="dark"] .cog-wordmark-name {
     z-index: 90;
   }
 
-  .cog-search-trigger svg {
-    width: 21px;
-    height: 21px;
-  }
-
   .cog-mobile-nav[aria-modal="true"] .cog-mobile-header {
     position: fixed;
   }
@@ -2143,9 +2111,6 @@ html[data-site-theme="dark"] .cog-wordmark-name {
     letter-spacing: -0.025em;
     word-spacing: 0.04em;
   }
-
-  .cog-mobile-menu .cog-nav-contact-link { min-height: 44px; }
-  .cog-mobile-menu .cog-nav-contact-link--icon { width: 44px; }
 
   .ascii-hero {
     margin: calc(var(--mobile-header-height) + 14px) var(--mobile-gutter) 0;
@@ -2754,11 +2719,6 @@ html[data-site-theme="dark"] .cog-wordmark-name {
 .lp-table-controls svg {
   position: absolute;
   left: 2px;
-  width: 17px;
-  height: 17px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.3;
 }
 
 .lp-table-controls input {

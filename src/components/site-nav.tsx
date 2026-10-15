@@ -27,13 +27,17 @@ const OVERLAY_EVENT = "machine-spirit-overlay-open";
 function ContactLinks({ onClick }: { onClick?: () => void }) {
   return (
     <div className="cog-nav-contacts">
-      <a href={CONTACT_MAILTO} className="cog-nav-contact-link" onClick={onClick}>
+      <a
+        href={CONTACT_MAILTO}
+        className="cog-nav-contact-link"
+        aria-label="Email us"
+        onClick={onClick}
+      >
         <MailIcon animateOnHover />
-        <span>Email us</span>
       </a>
       <a
         href={X_PROFILE_URL}
-        className="cog-nav-contact-link cog-nav-contact-link--icon"
+        className="cog-nav-contact-link"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Machine Spirit on X"
