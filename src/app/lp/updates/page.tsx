@@ -3,9 +3,10 @@ import Link from "next/link";
 import { UIIcon } from "@/components/icons";
 import { requireLpSession } from "@/lib/lp-auth";
 import { LP_INVESTOR_UPDATES } from "@/data/lp-investor-updates";
+import { pageTitle } from "@/lib/page-metadata";
 
 export const metadata: Metadata = {
-  title: "Investor Updates",
+  title: pageTitle("Investor Updates"),
   description: "Private updates for Machine Spirit Capital investors.",
   robots: { index: false, follow: false, nocache: true },
 };

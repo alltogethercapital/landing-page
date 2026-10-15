@@ -4,9 +4,9 @@ import { ARTICLES } from "../../src/lib/articles";
 import { LEGAL_DOCS } from "../../src/lib/legal";
 
 const password = process.env.LP_TEST_PASSWORD || "StagingPortalPassphrase-2026";
-const suffix = " | All Together Capital";
+const suffix = " | Machine Spirit Cap";
 
-test("uses the page name and All Together Capital suffix on every page", async ({ page }) => {
+test("uses the page name and Machine Spirit Cap suffix on every page", async ({ page }) => {
   test.setTimeout(180_000);
 
   const publicPages = [

@@ -5,6 +5,7 @@ import { SiteSearch } from "@/components/site-search";
 import { SiteAppearance } from "@/components/site-appearance";
 import { buildSearchIndex } from "@/lib/search";
 import { SITE_THEME_SCRIPT } from "@/lib/site-theme";
+import { pageTitle } from "@/lib/page-metadata";
 import "./globals.css";
 import "./lp-release.css";
 import "./site-rails.css";
@@ -88,7 +89,7 @@ const sourceSans = localFont({
 // metadataBase is required so Next.js can resolve the opengraph-image
 // route to an absolute URL in the rendered og:image meta tag.
 const SITE_URL = "https://machinespirit.com";
-const SITE_TITLE = "The Future Is Built Together — Machine Spirit Capital";
+const SITE_TITLE = pageTitle("Home");
 const SITE_DESCRIPTION =
   "Machine Spirit Capital backs the founders creating and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.";
 

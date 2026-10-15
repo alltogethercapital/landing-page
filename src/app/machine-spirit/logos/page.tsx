@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { pageTitle } from "@/lib/page-metadata";
 
 export const metadata: Metadata = {
-  title: "Machine Spirit — 100 MS Monograms",
+  title: pageTitle("Logos"),
   robots: { index: false, follow: false },
 };
 

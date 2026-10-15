@@ -12,7 +12,7 @@ import { PORTFOLIO, slugify, type Company } from "@/lib/portfolio";
 import { pageMetadata } from "@/lib/page-metadata";
 
 export const metadata = pageMetadata(
-  "Our companies — Machine Spirit Capital",
+  "Our companies",
   "Companies creating and stewarding the technologies that will define the machine age.",
   "/companies",
 );

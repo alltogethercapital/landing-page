@@ -7,6 +7,7 @@ import {
 } from "@/components/lp-letter-figures";
 import { LpPortfolioTable } from "@/components/lp-portfolio-table";
 import { getLpPortfolio } from "@/lib/lp-data";
+import { pageTitle } from "@/lib/page-metadata";
 
 type LpPortfolioPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -20,7 +21,7 @@ export async function generateMetadata({ searchParams }: LpPortfolioPageProps): 
       ? "Insights"
       : "Portfolio";
   return {
-    title: section,
+    title: pageTitle(section),
     robots: { index: false, follow: false, nocache: true },
   };
 }

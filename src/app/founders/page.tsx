@@ -18,7 +18,7 @@ import {
 } from "@/lib/founders";
 
 export const metadata = pageMetadata(
-  "Our entrepreneurs — Machine Spirit Capital",
+  "Our entrepreneurs",
   "The entrepreneurs building and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
   "/founders",
 );

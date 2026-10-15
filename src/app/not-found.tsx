@@ -1,7 +1,11 @@
+import type { Metadata } from "next";
 import { ArrowLink, CognitionPage, CognitionSection } from "@/components/cognition-layout";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { GLYPH_RAMP } from "@/lib/glyphs";
+import { pageTitle } from "@/lib/page-metadata";
+
+export const metadata: Metadata = { title: pageTitle("Not Found") };
 
 export default function NotFound() {
   return (

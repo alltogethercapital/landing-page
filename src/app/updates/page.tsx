@@ -11,7 +11,7 @@ import { ARTICLES } from "@/lib/articles";
 import { pageMetadata } from "@/lib/page-metadata";
 
 export const metadata = pageMetadata(
-  "Updates — Machine Spirit Capital",
+  "Updates",
   "Writing from Machine Spirit Capital on the companies and technologies shaping the machine age.",
   "/updates",
 );

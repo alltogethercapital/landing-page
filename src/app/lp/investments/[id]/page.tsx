@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { UIIcon } from "@/components/icons";
 import { getCompanyContext, getLpInvestment, getLpSnapshot } from "@/lib/lp-data";
+import { pageTitle } from "@/lib/page-metadata";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const investment = await getLpInvestment(id);
 
   return {
-    title: investment?.company ?? "Investment Detail",
+    title: pageTitle(investment?.company ?? "Investment Detail"),
     robots: { index: false, follow: false, nocache: true },
   };
 }

@@ -14,7 +14,7 @@ import { PORTFOLIO } from "@/lib/portfolio";
 import { pageMetadata } from "@/lib/page-metadata";
 
 export const metadata = pageMetadata(
-  "Building the AI Machine Spirit — Machine Spirit Capital",
+  "Home",
   "Machine Spirit Capital backs the founders creating and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
   "/",
 );

@@ -14,7 +14,7 @@ import { slugify } from "@/lib/portfolio";
 import { pageMetadata } from "@/lib/page-metadata";
 
 export const metadata = pageMetadata(
-  "Our team — Machine Spirit Capital",
+  "Our team",
   "Machine Spirit Capital is led by founding partners Robert Neir and Hisham El-Husseini.",
   "/team",
 );

@@ -4,7 +4,7 @@ import { CognitionPage, CognitionSection } from "@/components/cognition-layout";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { LEGAL_DOCS } from "@/lib/legal";
-import { pageMetadata } from "@/lib/page-metadata";
+import { pageMetadata, pageTitle } from "@/lib/page-metadata";
 
 export const dynamicParams = false;
 
@@ -19,8 +19,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const doc = LEGAL_DOCS[slug];
-  if (!doc) return { title: "Not found — Machine Spirit Capital" };
-  return pageMetadata(`${doc.title} — Machine Spirit Capital`, doc.intro, `/legal/${slug}`);
+  if (!doc) return { title: pageTitle("Not Found") };
+  return pageMetadata(doc.title, doc.intro, `/legal/${slug}`);
 }
 
 export default async function LegalPage({

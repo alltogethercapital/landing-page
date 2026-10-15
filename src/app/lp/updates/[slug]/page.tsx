@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { UIIcon } from "@/components/icons";
 import { requireLpSession } from "@/lib/lp-auth";
+import { pageTitle } from "@/lib/page-metadata";
 import {
   LP_AUGUST_2026_FUND_SNAPSHOT,
   LP_AUGUST_2026_PORTFOLIO_AS_OF,
@@ -21,12 +22,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const update = LP_INVESTOR_UPDATES.find((entry) => entry.slug === slug);
   if (!update) {
     return {
-      title: "Page Not Found",
+      title: pageTitle("Not Found"),
       robots: { index: false, follow: false, nocache: true },
     };
   }
   return {
-    title: update.title,
+    title: pageTitle(update.title),
     description: update.excerpt,
     robots: { index: false, follow: false, nocache: true },
   };

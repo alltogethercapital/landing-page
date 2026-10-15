@@ -7,7 +7,12 @@ const SHARE_IMAGE = {
   alt: "Machine Spirit Capital, backing the founders rebuilding the hard frontier.",
 };
 
-export function pageMetadata(title: string, description: string, path: string): Metadata {
+export function pageTitle(name: string): string {
+  return `${name} | Machine Spirit Cap`;
+}
+
+export function pageMetadata(name: string, description: string, path: string): Metadata {
+  const title = pageTitle(name);
   return {
     title,
     description,

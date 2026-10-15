@@ -4,9 +4,10 @@ import { CognitionPage, CognitionSection } from "@/components/cognition-layout";
 import { LpLoginForm } from "@/components/lp-login-form";
 import { SiteNav } from "@/components/site-nav";
 import { hasValidLpSession } from "@/lib/lp-auth";
+import { pageTitle } from "@/lib/page-metadata";
 
 export const metadata: Metadata = {
-  title: "LP Login",
+  title: pageTitle("LP Login"),
   description: "Secure limited partner access for Machine Spirit Capital.",
   robots: { index: false, follow: false, nocache: true },
 };
