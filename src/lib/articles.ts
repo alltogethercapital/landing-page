@@ -17,6 +17,7 @@ export type Article = {
 };
 
 const NEW_INVESTMENT_ARTICLES: Article[] = [
+  ["chef-robotics", "Chef Robotics", "physical AI for food production", "flexible robotic systems that use AI to portion, assemble, and package meals in production environments", "a production platform that can learn across deployments while helping food manufacturers add capacity and consistency"],
   ["pocket", "Pocket", "AI for the conversations that happen away from a screen", "a compact device that captures in-person and phone conversations, then turns them into transcripts, summaries, action items, and searchable context", "a simple way to stay present while the details become useful work afterward"],
   ["ultrasonium", "Ultrasonium", "next-generation metals manufacturing", "a manufacturing platform for producing difficult, high-value metal parts faster and across a wider range of alloys", "a path from advanced designs to usable parts for aerospace, energy, robotics, and compute"],
   ["positron", "Positron", "purpose-built infrastructure for generative AI inference", "memory-first accelerator silicon and systems designed around the bandwidth and capacity demands of modern transformer workloads", "an inference platform built to improve performance, power efficiency, and total cost of ownership"],
@@ -37,14 +38,16 @@ const NEW_INVESTMENT_ARTICLES: Article[] = [
 ].map(([slug, title, excerpt, product, thesis]) => ({
   slug,
   title: `${title}.`,
-  date: slug === "pocket" ? "September 16, 2026" : slug === "atomarine" ? "September 16, 2026" : slug === "astro-mechanica" ? "September 14, 2026" : slug === "allia-health" ? "September 12, 2026" : slug === "ultrasonium" ? "September 9, 2026" : slug === "path-robotics" ? "September 8, 2026" : slug === "positron" ? "August 13, 2026" : slug === "matforge" ? "June 17, 2026" : slug === "raspire" ? "June 14, 2026" : slug === "rendezvous-robotics" || slug === "compresr" ? "June 11, 2026" : "September 7, 2026",
-  dateISO: slug === "pocket" ? "2026-09-16" : slug === "atomarine" ? "2026-09-16" : slug === "astro-mechanica" ? "2026-09-14" : slug === "allia-health" ? "2026-09-12" : slug === "ultrasonium" ? "2026-09-09" : slug === "path-robotics" ? "2026-09-08" : slug === "positron" ? "2026-08-13" : slug === "matforge" ? "2026-06-17" : slug === "raspire" ? "2026-06-14" : slug === "rendezvous-robotics" || slug === "compresr" ? "2026-06-11" : "2026-09-07",
+  date: slug === "chef-robotics" ? "October 16, 2026" : slug === "pocket" ? "September 16, 2026" : slug === "atomarine" ? "September 16, 2026" : slug === "astro-mechanica" ? "September 14, 2026" : slug === "allia-health" ? "September 12, 2026" : slug === "ultrasonium" ? "September 9, 2026" : slug === "path-robotics" ? "September 8, 2026" : slug === "positron" ? "August 13, 2026" : slug === "matforge" ? "June 17, 2026" : slug === "raspire" ? "June 14, 2026" : slug === "rendezvous-robotics" || slug === "compresr" ? "June 11, 2026" : "September 7, 2026",
+  dateISO: slug === "chef-robotics" ? "2026-10-16" : slug === "pocket" ? "2026-09-16" : slug === "atomarine" ? "2026-09-16" : slug === "astro-mechanica" ? "2026-09-14" : slug === "allia-health" ? "2026-09-12" : slug === "ultrasonium" ? "2026-09-09" : slug === "path-robotics" ? "2026-09-08" : slug === "positron" ? "2026-08-13" : slug === "matforge" ? "2026-06-17" : slug === "raspire" ? "2026-06-14" : slug === "rendezvous-robotics" || slug === "compresr" ? "2026-06-11" : "2026-09-07",
   category: "Portfolio",
   author: "Machine Spirit Capital",
   excerpt: `We invested in ${title}, building ${excerpt}.`,
   image: ["positron", "matforge", "raspire", "rendezvous-robotics", "compresr"].includes(slug)
     ? `/logos/cards/${slug}.svg`
-    : slug === "ultrasonium"
+    : slug === "chef-robotics"
+      ? "/updates/covers/chef-robotics.jpg"
+      : slug === "ultrasonium"
       ? "/logos/cards/ultrasonium.png"
       : `/updates/covers/${slug}.${slug === "molagri" || slug === "rasyn" ? "webp" : slug === "atomarine" || slug === "path-robotics" || slug === "allia-health" || slug === "astro-mechanica" ? "jpg" : "png"}`,
   sections: [

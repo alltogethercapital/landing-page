@@ -3,14 +3,16 @@ export type InvestmentPlatform =
   | "Capital Company"
   | "Direct"
   | "Echo"
-  | "Sydecar";
+  | "Sydecar"
+  | "Not specified";
 
 export type InvestmentInstrument =
   | "Convertible Notes"
   | "Equity"
   | "SAFE"
   | "Secondary"
-  | "SPV";
+  | "SPV"
+  | "Not specified";
 
 export type InvestmentSecurityType =
   | Exclude<InvestmentInstrument, "SPV">
@@ -22,6 +24,7 @@ const INVESTMENT_ACCESS_LABELS: Record<InvestmentPlatform, string> = {
   Direct: "Invested directly",
   Echo: "Invested with a group",
   Sydecar: "Invested with a group",
+  "Not specified": "Investment route not yet documented",
 };
 
 const OWNERSHIP_LABELS: Record<InvestmentInstrument, string> = {
@@ -30,6 +33,7 @@ const OWNERSHIP_LABELS: Record<InvestmentInstrument, string> = {
   SAFE: "Right to future shares",
   Secondary: "Existing company shares",
   SPV: "Investment held through a dedicated company",
+  "Not specified": "Security type not yet documented",
 };
 
 export function getLpInvestmentLanguage(

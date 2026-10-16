@@ -10,6 +10,16 @@ export type LpInvestorUpdateSummary = {
 
 export const LP_INVESTOR_UPDATES: LpInvestorUpdateSummary[] = [
   {
+    slug: "october-2026",
+    issue: 3,
+    title: "Intelligence Meets the Production Line",
+    subtitle: "Chef Robotics, Physical AI, and the Next Operating Layer",
+    published: "October 16, 2026",
+    publishedAt: "2026-10-16",
+    excerpt:
+      "Why physical AI becomes valuable when it owns a production loop, and how Chef Robotics extends that thesis into food manufacturing.",
+  },
+  {
     slug: "september-2026",
     issue: 2,
     title: "The Work Moves Into the World",
@@ -66,4 +76,20 @@ export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
   newPositionsSinceAugust: 15,
   newInvestedCostSinceAugust: 169_883.90,
   reconciliationAdjustmentSinceAugust: 15_000,
+} as const;
+
+export const LP_OCTOBER_2026_PORTFOLIO_AS_OF = "October 16, 2026";
+
+// Current snapshot after adding Chef Robotics at owner-confirmed recorded cost.
+// Chef Robotics remains at cost because company-specific investment terms,
+// execution evidence, and completed cash movement have not yet been supplied.
+export const LP_OCTOBER_2026_FUND_SNAPSHOT = {
+  investedCost: 855_236.66,
+  projectedGrossValue: 935_228.68,
+  projectedGrossMultiple: 1.09,
+  grossValueChange: 79_992.02,
+  positions: 60,
+  companies: 59,
+  newPositionsSinceSeptember: 1,
+  newInvestedCostSinceSeptember: 18_590.75,
 } as const;

@@ -61,7 +61,7 @@ const CATEGORY_BY_CHRONOLOGY: Record<number, LetterAllocationCategory> = {
   31: "applications", 32: "ai", 33: "energy", 34: "energy", 35: "ai",
   36: "ai", 37: "aerospace", 38: "ai", 39: "applications", 40: "aerospace",
   41: "applications", 42: "robotics", 43: "aerospace", 44: "ai", 45: "ai",
-  57: "aerospace", 58: "energy", 59: "ai",
+  57: "aerospace", 58: "energy", 59: "ai", 60: "robotics",
 };
 
 // Entry valuation as reported at the time of investment. These are entry prices,

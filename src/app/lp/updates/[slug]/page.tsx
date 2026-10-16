@@ -8,6 +8,8 @@ import {
   LP_AUGUST_2026_FUND_SNAPSHOT,
   LP_AUGUST_2026_PORTFOLIO_AS_OF,
   LP_INVESTOR_UPDATES,
+  LP_OCTOBER_2026_FUND_SNAPSHOT,
+  LP_OCTOBER_2026_PORTFOLIO_AS_OF,
   LP_SEPTEMBER_2026_FUND_SNAPSHOT,
   LP_SEPTEMBER_2026_PORTFOLIO_AS_OF,
 } from "@/data/lp-investor-updates";
@@ -40,6 +42,101 @@ function currency(value: number) {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value);
+}
+
+function OctoberUpdateCopy() {
+  const snapshot = LP_OCTOBER_2026_FUND_SNAPSHOT;
+
+  return (
+    <>
+      <p>To our investors,</p>
+
+      <p>
+        Our thesis is becoming more concrete: intelligence creates durable value when it owns a complete
+        operating loop. A useful system has to observe the work, make a decision, act in the physical or
+        digital world, learn from the result, and improve the next cycle. The most defensible companies do
+        not stop at a model or interface. They become part of how production actually runs.
+      </p>
+
+      <p>
+        That is especially important in physical AI. Models are improving quickly, but a production robot
+        still has to handle variation, integrate with an existing line, operate reliably, and produce an
+        economic outcome every shift. Hardware, deployment data, customer workflow, and service operations
+        compound together. The hard part is not showing that a robot can perform a task once. It is making
+        the system useful every day in an environment that was not designed for automation.
+      </p>
+
+      <p>
+        <strong>We invested in Chef Robotics.</strong> The company builds flexible AI-enabled robotic systems
+        for food production. Its robots are designed to portion, assemble, and package meals across changing
+        menus and ingredients, bringing automation to production work that has historically resisted rigid,
+        single-purpose machinery.
+      </p>
+
+      <p>
+        Food manufacturing is a compelling proving ground for physical AI. The market is large, labor is
+        difficult to recruit and retain, and the work combines repetition with real-world variability. A
+        system that can adapt across products and production lines can create value through throughput,
+        consistency, labor availability, and better use of existing facilities. Each deployment can also
+        generate the data needed to improve perception, manipulation, and operating performance.
+      </p>
+
+      <p>
+        Chef Robotics reports more than 150 million servings produced and deployments across North America
+        and Europe. Those are company-reported operating milestones, not our own measurements, but they are
+        relevant because they point to the transition from prototype to production. The company&apos;s 2025
+        financing also brought together equity and equipment financing, a structure suited to a business
+        where software intelligence and deployed hardware have to scale together.
+      </p>
+
+      <p>
+        The investment extends an existing portfolio theme rather than opening a new one. Apptronik, 1X,
+        Figure AI, Path Robotics, Aformic, Weave Robotics, and Chef Robotics approach different labor and
+        production problems, but the underwriting question is consistent: does the company control a
+        deployment loop that becomes more valuable and harder to replace as the intelligence improves?
+      </p>
+
+      <p>
+        The risks are equally concrete. Food production demands reliability, sanitation, safety, service,
+        and customer-specific integration. Hardware businesses can consume capital before deployments become
+        repeatable. The investment will be judged by production uptime, customer expansion, unit economics,
+        deployment speed, and whether the data advantage compounds across sites.
+      </p>
+
+      <p>
+        <strong>Portfolio checkpoint.</strong> As of {LP_OCTOBER_2026_PORTFOLIO_AS_OF}, the portfolio contained{" "}
+        {snapshot.positions} recorded positions across {snapshot.companies} companies. Recorded cost was{" "}
+        {currency(snapshot.investedCost)}. The current directional gross value estimate was{" "}
+        {currency(snapshot.projectedGrossValue)}, or a {snapshot.projectedGrossMultiple.toFixed(2)}× current
+        value multiple, representing {currency(snapshot.grossValueChange)} above recorded cost.
+      </p>
+
+      <p>
+        Since the September portfolio snapshot, we added one position at {currency(snapshot.newInvestedCostSinceSeptember)}
+        of recorded cost. Chef Robotics remains at cost in the estimate. The investment amount and date are
+        owner-confirmed; the round, entry valuation, instrument, investment route, executed acceptance, and
+        completed cash movement are not yet evidenced. The Schedule of Investments and portal show that
+        distinction explicitly, and no bank-ledger movement has been created without transaction evidence.
+      </p>
+
+      <p>
+        This estimate remains deliberately simple. It applies sourced company-level comparisons to a limited
+        set of positions, keeps the rest at cost, and includes one clearly labeled Anduril scenario
+        assumption. It is not audited NAV, does not forecast returns, and does not incorporate fees, carry,
+        taxes, future dilution, liquidity, or the detailed terms of each instrument.
+      </p>
+
+      <p>
+        We will continue to report at least twice per year and whenever something material changes. The bar
+        for new capital remains the same: control a durable part of the operating loop, prove that it works in
+        production, and build an advantage that compounds as intelligence becomes cheaper.
+      </p>
+
+      <p>Thank you for building this with us.</p>
+
+      <p className="lp-update-article-signature">Robert and Hisham</p>
+    </>
+  );
 }
 
 function SeptemberUpdateCopy() {
@@ -211,7 +308,7 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
   await requireLpSession();
   const { slug } = await params;
   const update = LP_INVESTOR_UPDATES.find((entry) => entry.slug === slug);
-  if (!update || !["august-2026", "september-2026"].includes(slug)) notFound();
+  if (!update || !["august-2026", "september-2026", "october-2026"].includes(slug)) notFound();
   const snapshot = LP_AUGUST_2026_FUND_SNAPSHOT;
 
   return (
@@ -231,7 +328,7 @@ export default async function LpInvestorUpdatePage({ params }: PageProps) {
       </header>
 
       <div className="lp-update-article-copy">
-        {slug === "september-2026" ? <SeptemberUpdateCopy /> : <>
+        {slug === "october-2026" ? <OctoberUpdateCopy /> : slug === "september-2026" ? <SeptemberUpdateCopy /> : <>
         <p>To our investors,</p>
 
         <p>
