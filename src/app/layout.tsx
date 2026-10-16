@@ -10,6 +10,7 @@ import "./globals.css";
 import "./lp-release.css";
 import "./site-rails.css";
 import "./site-typography.css";
+import "./landing.css";
 
 const atlasTypewriter = localFont({
   variable: "--font-atlas-typewriter",

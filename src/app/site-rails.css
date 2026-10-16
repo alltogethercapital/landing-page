@@ -11,6 +11,10 @@
 }
 
 :is(.cog-page, .lp-portal-page)::before {
+  /* Keep the fixed rule plane in the same coordinate space as the page. */
+  inset: 0;
+  width: auto;
+  transform: none;
   background-image:
     linear-gradient(var(--site-rail-color), var(--site-rail-color)),
     linear-gradient(var(--site-rail-color), var(--site-rail-color)),
@@ -25,7 +29,14 @@
 
 @media (min-width: 900px) {
   .cog-desktop-nav,
-  .lp-portal-nav { left: 112px; }
+  .lp-portal-nav {
+    left: 64px;
+    width: 224px;
+  }
+
+  /* The whole mark shares the links' left edge, with 32px clear of the rule. */
+  .cog-nav-logo,
+  .lp-portal-nav-logo { margin-left: 0; }
 
   .ascii-hero {
     margin-left: var(--site-content-rail);
@@ -66,9 +77,36 @@
 }
 
 @media (min-width: 1521px) {
+  :is(.cog-page, .lp-portal-page)::before {
+    /* The base inset must not reset left:50% while preserving this transform. */
+    inset: 0 auto 0 50%;
+    width: var(--site-max);
+    transform: translateX(-50%);
+  }
+
   .cog-page .cog-desktop-nav,
   .lp-portal-page .lp-portal-nav {
-    left: calc((100vw - var(--site-max)) / 2 + 112px);
+    left: calc((100vw - var(--site-max)) / 2 + 64px);
+  }
+}
+
+/* Fixed navigation remains reachable in short desktop and landscape windows. */
+@media (min-width: 900px) and (max-height: 599px) {
+  .cog-desktop-nav,
+  .lp-portal-nav { top: clamp(16px, calc(50svh - 140px), 148px); }
+}
+
+@media (min-width: 900px) and (max-height: 359px) {
+  .cog-desktop-nav,
+  .lp-portal-nav {
+    box-sizing: border-box;
+    width: 256px;
+    max-height: calc(100svh - 32px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-left: -16px;
+    padding: 8px 16px;
+    scrollbar-width: none;
   }
 }
 

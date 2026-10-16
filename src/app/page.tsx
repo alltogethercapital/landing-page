@@ -35,13 +35,16 @@ export default function Home() {
     <CognitionPage>
       <SiteNav />
 
-      <AsciiHero />
+      <section className="cog-landing" aria-labelledby="landing-title">
+        <AsciiHero />
+        <header className="cog-landing-headline">
+          <h1 id="landing-title" className="cog-landing-title">
+            Building the AI Machine Spirit
+          </h1>
+        </header>
+      </section>
 
-      <CognitionSection
-        hideTitle={false}
-        title="Building the AI Machine Spirit"
-        className="cog-hero-section"
-      >
+      <CognitionSection className="cog-hero-section cog-intro-section">
         <div className="cog-copy-stack">
           <p>
             Machine Spirit Capital backs the founders rebuilding the hard frontier
