@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CompanyLogo } from "@/components/company-logo";
 import {
   ArrowLink,
   CognitionPage,
@@ -34,32 +34,7 @@ function CompanyArticle({ company }: { company: Company }) {
         </span>
         <span className="cog-company-card-content">
           <span className="cog-company-logo-wrap">
-            {logo && company.logoLabel ? (
-              <span className="cog-company-logo-lockup">
-                <Image
-                  src={logo}
-                  alt=""
-                  width={56}
-                  height={56}
-                  unoptimized
-                  loading="eager"
-                  className="cog-company-logo-lockup-mark"
-                />
-                <span className="cog-company-logo-lockup-label">{company.logoLabel}</span>
-              </span>
-            ) : logo ? (
-              <Image
-                src={logo}
-                alt={company.name}
-                width={320}
-                height={120}
-                unoptimized
-                loading="eager"
-                className="cog-company-card-logo"
-              />
-            ) : (
-              <span className="cog-company-card-title">{company.name}</span>
-            )}
+            <CompanyLogo name={company.name} src={logo} label={company.logoLabel} size="card" decorative />
           </span>
           {company.blurb && (
             <span className="cog-company-card-description">{company.blurb}</span>

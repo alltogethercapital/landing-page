@@ -1,0 +1,170 @@
+/* Each brand keeps its proportions inside the same measured optical envelope. */
+html .cog-logo-mosaic {
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(144px, 1fr));
+  grid-auto-rows: 88px;
+  gap: 8px 16px;
+}
+
+html .cog-logo-cell {
+  container-type: inline-size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 1;
+}
+
+.company-logo {
+  --logo-scale: 1;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: var(--cog-ink);
+}
+
+.company-logo--mosaic {
+  width: calc(100% - 20px);
+}
+
+.company-logo-artwork {
+  position: relative;
+  display: block;
+  flex: 0 1 auto;
+  width: min(100%, calc(var(--logo-optical-width) * var(--logo-scale)));
+  overflow: hidden;
+}
+
+/* Override old fill-image padding and compact-result stretching at the source. */
+html .company-logo .company-logo-image {
+  position: absolute;
+  display: block;
+  min-width: 0;
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  margin: 0;
+  object-fit: fill;
+  filter: var(--cog-logo-filter);
+}
+
+/* Give transparent artwork the same ink strength without flattening app tiles. */
+html .company-logo .company-logo-image--transparent {
+  filter: grayscale(1) brightness(0.25);
+}
+
+html[data-site-theme="dark"] .company-logo .company-logo-image--transparent {
+  filter: grayscale(1) brightness(0.25) invert(1);
+}
+
+.company-logo--lockup {
+  gap: 8px;
+}
+
+.company-logo-mark {
+  display: flex;
+  width: 24px;
+  height: 28px;
+  flex: 0 0 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.company-logo-mark .company-logo-artwork {
+  width: min(100%, calc(var(--logo-optical-width) * var(--logo-scale)));
+}
+
+.company-logo-label {
+  min-width: 0;
+  max-width: 108px;
+  font-family: var(--cog-support);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  overflow-wrap: normal;
+  text-wrap: balance;
+}
+
+.company-logo--mosaic .company-logo-label {
+  font-size: clamp(15px, 12cqi, 20px);
+}
+
+.company-logo-datoric {
+  background: currentColor;
+  mask-image: url("/logos/normalized/datoric-symbol.png");
+  mask-mode: luminance;
+  mask-size: 177.7778% 177.7778%;
+  mask-position: center;
+  mask-repeat: no-repeat;
+}
+
+.company-logo--card {
+  --logo-scale: 1.35;
+  justify-content: flex-start;
+}
+
+.company-logo--card .company-logo-mark {
+  width: 32px;
+  height: 36px;
+  flex-basis: 32px;
+}
+
+.company-logo--card .company-logo-label {
+  max-width: 150px;
+  font-size: 24px;
+}
+
+.company-logo--compact {
+  --logo-scale: 1;
+}
+
+.company-logo--compact .company-logo-artwork { width: min(100%, var(--logo-compact-width)); }
+
+.company-logo--compact .company-logo-datoric {
+  width: 24px;
+  height: 24px;
+}
+
+/* Card descriptions retain a common start, with space reserved for the arrow. */
+.cog-company-card-content {
+  width: 100%;
+  grid-template-rows: 72px auto;
+}
+
+.cog-company-logo-wrap {
+  padding-right: 32px;
+}
+
+@media (max-width: 899px) {
+  html .cog-logo-mosaic {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 80px;
+    gap: 8px 16px;
+  }
+}
+
+@media (max-width: 599px) {
+  html .cog-logo-mosaic {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 76px;
+    gap: 4px 16px;
+  }
+
+  .cog-company-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .cog-company-card {
+    min-height: 200px;
+  }
+
+  .cog-company-card-content {
+    grid-template-rows: 64px auto;
+    row-gap: 20px;
+  }
+}

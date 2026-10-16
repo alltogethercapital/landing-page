@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { CompanyLogo } from "@/components/company-logo";
 import { usePathname, useRouter } from "next/navigation";
 import {
   useCallback,
@@ -316,7 +316,7 @@ export function SiteSearch({ index }: { index: SearchResult[] }) {
                   onClick={() => closeSearch(false)}
                 >
                   <span className="cog-search-result-logo" aria-hidden="true">
-                    <Image src={result.logoSrc} alt="" width={48} height={28} unoptimized />
+                    <CompanyLogo name={result.title} src={result.logoSrc} size="compact" decorative />
                   </span>
                   <span className="cog-search-result-title">{result.title}</span>
                   {filter === "All" && <span className="cog-search-result-type">{result.section}</span>}

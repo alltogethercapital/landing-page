@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { AsciiHero } from "@/components/ascii-hero";
+import { CompanyLogo } from "@/components/company-logo";
 import {
   ArrowLink,
   CognitionPage,
@@ -77,23 +77,7 @@ export default function Home() {
                 className="cog-logo-cell"
                 aria-label={company.name}
               >
-                {logo && company.logoLabel ? (
-                  <span className="cog-logo-cell-lockup">
-                    <Image src={logo} alt="" width={28} height={28} unoptimized />
-                    <span>{company.logoLabel}</span>
-                  </span>
-                ) : logo ? (
-                  <Image
-                    src={logo}
-                    alt={company.name}
-                    fill
-                    sizes="(max-width: 899px) calc((100vw - 64px) / 3), 152px"
-                    unoptimized
-                    className="object-contain"
-                  />
-                ) : (
-                  <span className="cog-logo-word">{company.name}</span>
-                )}
+                <CompanyLogo name={company.name} src={logo} label={company.logoLabel} decorative />
               </a>
             );
           })}
