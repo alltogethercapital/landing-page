@@ -12,7 +12,7 @@ export const CONTACT_MAILTO = `mailto:${CONTACT_RECIPIENT}?cc=${encodeURICompone
 export type SocialLink = {
   label: string;
   href: string;
-  Icon: ComponentType<{ className?: string }>;
+  Icon: ComponentType<{ className?: string; animateOnHover?: boolean }>;
 };
 
 export const SOCIALS: SocialLink[] = [

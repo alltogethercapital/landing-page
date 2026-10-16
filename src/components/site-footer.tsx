@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, MailIcon, XIcon } from "@/components/icons";
 import { LEGAL, NAV, SOCIALS, X_PROFILE_URL } from "@/lib/site";
 
 function FooterLink({
@@ -10,28 +9,10 @@ function FooterLink({
   href: string;
   children: React.ReactNode;
 }) {
-  const className = "cog-footer-link";
-
-  if (href.startsWith("/")) {
-    return (
-      <Link href={href} className={className}>
-        {children}
-      </Link>
-    );
-  }
-
   return (
-    <a
-      href={href}
-      target={href.startsWith("mailto:") ? undefined : "_blank"}
-      rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
-      className={className}
-      aria-label={href === X_PROFILE_URL ? "Machine Spirit on X" : undefined}
-    >
-      {href.startsWith("mailto:") && <MailIcon animateOnHover />}
-      {href === X_PROFILE_URL ? <XIcon animateOnHover /> : children}
-      {!href.startsWith("mailto:") && href !== X_PROFILE_URL && <ArrowUpRight />}
-    </a>
+    <Link href={href} className="cog-footer-link">
+      {children}
+    </Link>
   );
 }
 
@@ -74,13 +55,23 @@ export function SiteFooter() {
           ))}
         </nav>
 
-        <nav className="cog-footer-column" aria-label="Connect">
+        <nav className="cog-footer-column cog-footer-connect" aria-label="Connect">
           <p className="cog-footer-meta">Connect</p>
-          {SOCIALS.map((item) => (
-            <FooterLink key={item.label} href={item.href}>
-              {item.label}
-            </FooterLink>
-          ))}
+          <div className="cog-footer-socials">
+            {SOCIALS.map(({ label, href, Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith("mailto:") ? undefined : "_blank"}
+                rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                className="cog-footer-social-link"
+                aria-label={href === X_PROFILE_URL ? "Machine Spirit on X" : label}
+                title={label}
+              >
+                <Icon animateOnHover />
+              </a>
+            ))}
+          </div>
         </nav>
       </div>
 

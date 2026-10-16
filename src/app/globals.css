@@ -1324,6 +1324,33 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   white-space: nowrap;
 }
 
+.cog-footer-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: -12px;
+}
+
+.cog-footer-social-link {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  color: var(--cog-muted);
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.cog-footer-social-link:hover {
+  color: var(--cog-ink);
+}
+
+@media (max-width: 599px) {
+  .cog-footer-connect { grid-column: 1 / -1; }
+  .cog-footer-socials { flex-direction: row; }
+}
+
 .cog-search-result-type {
   flex: none;
   color: var(--cog-muted);
