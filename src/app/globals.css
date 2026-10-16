@@ -222,7 +222,7 @@ html[data-site-theme] .site-grain--surface {
   width: 200%;
   height: 200%;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.05;
   mix-blend-mode: normal;
   image-rendering: pixelated;
   will-change: transform;

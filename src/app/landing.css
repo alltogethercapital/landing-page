@@ -15,32 +15,6 @@
   background: var(--cog-bg);
 }
 
-.ascii-hero-playback {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  display: grid;
-  width: 44px;
-  height: 44px;
-  place-items: center;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: color-mix(in srgb, var(--cog-bg) 80%, transparent);
-  color: var(--cog-ink);
-  opacity: 0.6;
-  cursor: pointer;
-}
-
-.ascii-hero-playback:is(:hover, :focus-visible) {
-  opacity: 1;
-}
-
-.ascii-hero-playback:focus-visible {
-  outline: 1px solid var(--cog-ink);
-  outline-offset: -4px;
-}
-
 .cog-landing-headline {
   container-type: inline-size;
   padding: clamp(28px, 4.8svh, 52px) 47px max(32px, env(safe-area-inset-bottom));

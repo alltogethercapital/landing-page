@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { ASCII_HERO_CLIPS } from "@/lib/ascii-hero-assets";
 
-import { UIIcon } from "@/components/icons";
 import { HeroPointerField } from "@/lib/hero-pointer-field";
 import {
   ATLAS_COLS, ATLAS_ROWS, ATLAS_TILE, HERO_GLYPHS,
@@ -79,10 +78,7 @@ export function AsciiHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const fallbackRef = useRef<HTMLVideoElement>(null);
-  const pausedRef = useRef(false);
-  const playbackRef = useRef<((paused: boolean) => void) | null>(null);
   const [webglOk, setWebglOk] = useState(true);
-  const [paused, setPaused] = useState(false);
 
   // OS reduced-motion preference, tracked live.
   const reducedMotion = useSyncExternalStore(
@@ -198,7 +194,6 @@ export function AsciiHero() {
       clip: 0,
       errorStreak: 0,
       unlockArmed: false,
-      paused: pausedRef.current,
       dark: document.documentElement.dataset.siteTheme === "dark",
       columns: 1,
       rows: 1,
@@ -383,11 +378,11 @@ export function AsciiHero() {
     // --- Autoplay unlock (activation-granting events only) ------------------
     const UNLOCK_EVENTS = ["pointerup", "touchend", "keydown"] as const;
     const unlock = () => {
-      if (!shouldRun() || reducedMotion || state.paused) return;
+      if (!shouldRun() || reducedMotion) return;
       video.play().then(disarmUnlock).catch(() => undefined);
     };
     const armUnlock = () => {
-      if (state.destroyed || state.contextLost || reducedMotion || state.paused || state.unlockArmed) return;
+      if (state.destroyed || state.contextLost || reducedMotion || state.unlockArmed) return;
       state.unlockArmed = true;
       UNLOCK_EVENTS.forEach((t) => window.addEventListener(t, unlock));
     };
@@ -401,10 +396,10 @@ export function AsciiHero() {
     const playCurrent = () => {
       // Off-screen or hidden: the IO/visibility handlers resume playback when
       // the hero is actually watchable again.
-      if (document.hidden || !state.inView || state.paused) return;
+      if (document.hidden || !state.inView) return;
       video.muted = true;
       video.play().catch(() => {
-        if (state.destroyed || state.contextLost || reducedMotion || state.paused) return;
+        if (state.destroyed || state.contextLost || reducedMotion) return;
         // Show the poster when autoplay is blocked and retry only while visible
         // on a real user activation.
         uploadPoster(ASCII_HERO_CLIPS[state.clip].poster);
@@ -413,7 +408,7 @@ export function AsciiHero() {
     };
 
     const advanceClip = () => {
-      if (state.destroyed || state.contextLost || state.paused) return;
+      if (state.destroyed || state.contextLost) return;
       state.clip = (state.clip + 1) % ASCII_HERO_CLIPS.length;
       video.src = ASCII_HERO_CLIPS[state.clip].src;
       video.load();
@@ -439,11 +434,6 @@ export function AsciiHero() {
       }
     };
     const onPlaying = () => {
-      // A play promise can resolve after an explicit pause click.
-      if (state.paused) {
-        video.pause();
-        return;
-      }
       state.fadeTarget = 1;
       state.errorStreak = 0;
       disarmUnlock();
@@ -451,7 +441,7 @@ export function AsciiHero() {
     };
     const onTimeUpdate = () => {
       if (
-        !state.paused && video.duration > 0 &&
+        video.duration > 0 &&
         video.duration - video.currentTime < CLIP_FADE_LEAD_S
       ) {
         state.fadeTarget = 0;
@@ -461,7 +451,6 @@ export function AsciiHero() {
       advanceClip();
     };
     const onError = () => {
-      if (state.paused) return;
       state.errorStreak++;
       if (state.errorStreak >= ASCII_HERO_CLIPS.length) {
         // Every clip failed (blocked requests, broken deploy) — settle on the
@@ -472,8 +461,8 @@ export function AsciiHero() {
       advanceClip();
     };
     const onPause = () => {
-      // Keep playing unless we're intentionally stopped.
-      if (shouldRun() && !video.ended && !reducedMotion && !state.paused) {
+      // Resume only while visible and motion is allowed.
+      if (shouldRun() && !video.ended && !reducedMotion) {
         video.play().catch(() => undefined);
       }
     };
@@ -490,7 +479,7 @@ export function AsciiHero() {
     const syncPlayback = () => {
       if (state.destroyed || state.contextLost || reducedMotion) return;
       if (state.inView && !document.hidden) {
-        if (!state.paused) playCurrent();
+        playCurrent();
         ensureLoop();
       } else {
         video.pause();
@@ -535,27 +524,6 @@ export function AsciiHero() {
     const themeObserver = new MutationObserver(updateTheme);
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-site-theme"] });
 
-    const setPlayback = (paused: boolean) => {
-      state.paused = paused;
-      section.dataset.heroPlayback = paused ? "paused" : "playing";
-      if (state.contextLost) return;
-      if (paused) {
-        disarmUnlock();
-        video.pause();
-        // Pausing during a clip's closing fade must keep the frame visible.
-        state.fade = state.fadeTarget = 1;
-        if (video.readyState >= 2) uploadVideoFrame();
-        drawFrame();
-      } else if (!reducedMotion) {
-        if (video.ended) advanceClip();
-        else playCurrent();
-      }
-      // The film can be paused while the pointer wake remains responsive.
-      ensureLoop();
-    };
-    playbackRef.current = setPlayback;
-    section.dataset.heroPlayback = state.paused ? "paused" : "playing";
-
     const onContextLost = (event: Event) => {
       event.preventDefault();
       state.contextLost = true;
@@ -588,7 +556,6 @@ export function AsciiHero() {
       io.disconnect();
       ro.disconnect();
       themeObserver.disconnect();
-      if (playbackRef.current === setPlayback) playbackRef.current = null;
       section.removeEventListener("pointermove", onPointerMove);
       section.removeEventListener("pointerleave", onPointerLeave);
       section.removeEventListener("pointercancel", onPointerLeave);
@@ -625,14 +592,14 @@ export function AsciiHero() {
     if (!fallback || !section) return;
     let visible = true;
     const syncPlayback = () => {
-      if (reducedMotion || pausedRef.current || document.hidden || !visible) {
+      if (reducedMotion || document.hidden || !visible) {
         fallback.pause();
       } else {
         fallback.play().catch(() => undefined);
       }
     };
     const onPlaying = () => {
-      if (reducedMotion || pausedRef.current || document.hidden || !visible) fallback.pause();
+      if (reducedMotion || document.hidden || !visible) fallback.pause();
     };
     const observer = new IntersectionObserver((entries) => {
       visible = entries[0]?.isIntersecting ?? true;
@@ -650,16 +617,6 @@ export function AsciiHero() {
     };
   }, [webglOk, reducedMotion]);
 
-  function togglePlayback() {
-    const next = !pausedRef.current;
-    pausedRef.current = next;
-    setPaused(next);
-    playbackRef.current?.(next);
-    const fallback = fallbackRef.current;
-    if (next) fallback?.pause();
-    else if (!reducedMotion) fallback?.play().catch(() => undefined);
-  }
-
   return (
     <section ref={sectionRef} className="ascii-hero" aria-label="Machine Spirit Capital film reel">
       <canvas ref={canvasRef} className="ascii-hero-canvas" aria-hidden="true" />
@@ -671,7 +628,7 @@ export function AsciiHero() {
           poster={ASCII_HERO_CLIPS[0].poster}
           muted
           playsInline
-          autoPlay={!reducedMotion && !paused}
+          autoPlay={!reducedMotion}
           loop={!reducedMotion}
           aria-hidden="true"
           tabIndex={-1}
@@ -687,16 +644,6 @@ export function AsciiHero() {
         aria-hidden="true"
         tabIndex={-1}
       />
-      {!reducedMotion && (
-        <button
-          type="button"
-          className="ascii-hero-playback"
-          aria-label={paused ? "Play hero video" : "Pause hero video"}
-          onClick={togglePlayback}
-        >
-          <UIIcon name={paused ? "play" : "pause"} animateOnHover />
-        </button>
-      )}
     </section>
   );
 }

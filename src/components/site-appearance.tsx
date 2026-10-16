@@ -10,7 +10,7 @@ const STORAGE_KEY = SITE_THEME_STORAGE_KEY;
 const CHANGE_EVENT = "machine-spirit-theme-change";
 let sessionTheme: SiteTheme | null = null;
 
-const GRAIN_PRESET = { id: "coarse", pixels: 4, opacity: 0.04 } as const;
+const GRAIN_PRESET = { id: "coarse", pixels: 4, opacity: 0.05 } as const;
 const NOISE_TILE_SIZE = 512;
 let noiseTile: string | null = null;
 
