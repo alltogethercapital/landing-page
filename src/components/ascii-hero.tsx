@@ -1,23 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { ASCII_HERO_CLIPS } from "@/lib/ascii-hero-assets";
 
-// Video rendered as colored ASCII glyphs, in the spirit of generalintuition.com.
-// One WebGL draw per frame: the current video frame (TEXTURE0) is sampled once
-// per cell, luminance picks a glyph from a prerendered atlas (TEXTURE1), and the
-// glyph is tinted with the underlying video color.
+import { HeroStylePicker } from "@/components/hero-style-picker";
+import { HeroPointerField } from "@/lib/hero-pointer-field";
+import { HERO_STYLES, HERO_STYLE_EVENT, getHeroStyle, subscribeHeroStyle } from "@/lib/hero-styles";
+import {
+  ATLAS_COLS, ATLAS_ROWS, ATLAS_TILE, HERO_GLYPHS,
+  HERO_VERTEX_SHADER, HERO_FRAGMENT_SHADER, HERO_SCENE_SHADER,
+} from "@/lib/hero-shaders";
 
-// Dense → sparse. 69 glyphs; luminance 0 picks "$", luminance 1 picks the space —
-// the same convention the reference effect ships with.
-const GLYPH_RAMP =
-  "$@B%8&WM#*oahkbdpqwmZO0QLCJUYZXcvunxrj/ft\\|()1{}[]?_-+~<>i!lI;:\",^'. ";
-const ATLAS_COLS = 9;
-const ATLAS_ROWS = 8;
-const ATLAS_TILE = 64; // px per glyph tile in the atlas canvas
-const CLIP_FADE_LEAD_S = 0.5; // start fading out this long before a clip ends
-const PIXEL_BUDGET = 8_000_000; // cap on canvas device pixels (5K displays)
-
+const CLIP_FADE_LEAD_S = 0.5;
+const PIXEL_BUDGET = 8_000_000;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 function subscribeReducedMotion(onChange: () => void) {
@@ -26,74 +22,7 @@ function subscribeReducedMotion(onChange: () => void) {
   return () => mq.removeEventListener("change", onChange);
 }
 
-const VERT_SRC = `
-attribute vec2 aPos;
-varying vec2 vUV;
-void main() {
-  vUV = aPos * 0.5 + 0.5;
-  gl_Position = vec4(aPos, 0.0, 1.0);
-}
-`;
-
-const FRAG_SRC = `
-precision mediump float;
-varying vec2 vUV;
-uniform sampler2D uVideo;
-uniform sampler2D uAtlas;
-uniform vec2 uGrid;       // columns, rows
-uniform vec2 uCellPx;     // device px per cell
-uniform vec2 uCropMin;    // cover-fit crop window into the video texture
-uniform vec2 uCropMax;
-uniform float uFade;      // clip transition fade, 0..1
-
-const float GAMMA = 1.6;
-const float TILE_OPACITY = 0.58;
-const float CHAR_ASPECT = 0.85;
-const float VIVID = 1.28;
-const float GLYPH_COUNT = ${GLYPH_RAMP.length}.0;
-const vec2 ATLAS_GRID = vec2(${ATLAS_COLS}.0, ${ATLAS_ROWS}.0);
-const float ATLAS_PAD = ${(2 / ATLAS_TILE).toFixed(5)};
-
-float lumOf(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
-
-void main() {
-  vec2 cell = floor(vUV * uGrid);
-  vec2 cellUV = fract(vUV * uGrid);
-  vec2 center = (cell + 0.5) / uGrid;
-
-  vec3 rgb = texture2D(uVideo, mix(uCropMin, uCropMax, center)).rgb;
-  float lum = pow(clamp(lumOf(rgb), 0.0, 1.0), GAMMA);
-
-  float idx = floor(lum * (GLYPH_COUNT - 1.0) + 0.5);
-
-  // Atlas tiles are square; the display cell is narrow (w/h ≈ 0.6). Draw the
-  // glyph in a centered box that preserves the character's true aspect.
-  float boxW = (uCellPx.y * CHAR_ASPECT) / uCellPx.x;
-  vec2 boxMin = vec2((1.0 - boxW) * 0.5, 0.0);
-  vec2 inBox = (cellUV - boxMin) / vec2(boxW, 1.0);
-  float mask = step(0.0, inBox.x) * step(inBox.x, 1.0);
-
-  vec2 gUV = clamp(inBox, 0.0, 1.0);
-  gUV.y = 1.0 - gUV.y; // atlas canvas rows run top-down
-  gUV = ATLAS_PAD + gUV * (1.0 - 2.0 * ATLAS_PAD);
-  vec2 tile = vec2(mod(idx, ATLAS_GRID.x), floor(idx / ATLAS_GRID.x));
-  float alpha = texture2D(uAtlas, (tile + gUV) / ATLAS_GRID).r;
-  alpha = smoothstep(0.05, 0.9, alpha) * mask;
-
-  // Dimmed video tile under a brighter hue-locked glyph.
-  vec3 base = rgb * TILE_OPACITY;
-  vec3 lit = clamp(base + rgb, 0.0, 1.0);
-  float baseL = max(0.0001, lumOf(base));
-  float litL = max(0.0001, lumOf(lit));
-  lit = clamp(base * (litL / baseL), 0.0, 1.0);
-  vec3 col = mix(base, lit, alpha);
-
-  // Vividness: pull the final color away from its own gray.
-  col = clamp(mix(vec3(lumOf(col)), col, VIVID), 0.0, 1.0);
-
-  gl_FragColor = vec4(col * uFade, 1.0);
-}
-`;
+function noHeroPreview() { return null; }
 
 function buildGlyphAtlas(): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
@@ -106,31 +35,37 @@ function buildGlyphAtlas(): HTMLCanvasElement {
   ctx.font = `300 ${Math.floor(ATLAS_TILE * 0.78)}px ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  for (let i = 0; i < GLYPH_RAMP.length; i++) {
+  for (let i = 0; i < HERO_GLYPHS.length; i++) {
     const x = (i % ATLAS_COLS) * ATLAS_TILE + ATLAS_TILE / 2;
     const y = Math.floor(i / ATLAS_COLS) * ATLAS_TILE + ATLAS_TILE / 2;
-    ctx.fillText(GLYPH_RAMP[i], x, y);
+    ctx.fillText(HERO_GLYPHS[i], x, y);
   }
   return canvas;
 }
 
-function compileProgram(gl: WebGLRenderingContext): WebGLProgram | null {
+function compileProgram(gl: WebGLRenderingContext, fragment: string): WebGLProgram | null {
   const make = (type: number, src: string) => {
     const shader = gl.createShader(type)!;
     gl.shaderSource(shader, src);
     gl.compileShader(shader);
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
       console.error("ascii-hero shader:", gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
       return null;
     }
     return shader;
   };
-  const vs = make(gl.VERTEX_SHADER, VERT_SRC);
-  const fs = make(gl.FRAGMENT_SHADER, FRAG_SRC);
-  if (!vs || !fs) return null;
+  const vs = make(gl.VERTEX_SHADER, HERO_VERTEX_SHADER);
+  const fs = make(gl.FRAGMENT_SHADER, fragment);
+  if (!vs || !fs) {
+    if (vs) gl.deleteShader(vs);
+    if (fs) gl.deleteShader(fs);
+    return null;
+  }
   const program = gl.createProgram()!;
   gl.attachShader(program, vs);
   gl.attachShader(program, fs);
+  gl.bindAttribLocation(program, 0, "aPos");
   gl.linkProgram(program);
   gl.deleteShader(vs);
   gl.deleteShader(fs);
@@ -153,7 +88,13 @@ export function AsciiHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const rendererRef = useRef<{
+    setStyle: (style: number) => void;
+    setPaused: (paused: boolean) => void;
+  } | null>(null);
   const [webglOk, setWebglOk] = useState(true);
+  const [paused, setPaused] = useState(false);
+  const heroStyle = useSyncExternalStore(subscribeHeroStyle, getHeroStyle, noHeroPreview);
 
   // OS reduced-motion preference, tracked live.
   const reducedMotion = useSyncExternalStore(
@@ -180,8 +121,11 @@ export function AsciiHero() {
       return;
     }
 
-    const program = compileProgram(gl);
-    if (!program) {
+    const program = compileProgram(gl, HERO_FRAGMENT_SHADER);
+    const sceneProgram = compileProgram(gl, HERO_SCENE_SHADER);
+    if (!program || !sceneProgram) {
+      if (program) gl.deleteProgram(program);
+      if (sceneProgram) gl.deleteProgram(sceneProgram);
       setWebglOk(false);
       return;
     }
@@ -205,6 +149,19 @@ export function AsciiHero() {
     const uCropMin = u("uCropMin");
     const uCropMax = u("uCropMax");
     const uFade = u("uFade");
+    const uStyle = u("uStyle");
+    const uDark = u("uDark");
+    const uTime = u("uTime");
+    const uSize = u("uSize");
+    const sceneUniform = (name: string) => gl.getUniformLocation(sceneProgram, name);
+    const sceneU = {
+      video: sceneUniform("uVideo"),
+      grid: sceneUniform("uGrid"),
+      cropMin: sceneUniform("uCropMin"),
+      cropMax: sceneUniform("uCropMax"),
+      pull: sceneUniform("uPull"),
+      lean: sceneUniform("uLean"),
+    };
 
     const makeTexture = (unit: number) => {
       const tex = gl.createTexture();
@@ -229,6 +186,18 @@ export function AsciiHero() {
 
     gl.uniform1i(u("uVideo"), 0);
     gl.uniform1i(u("uAtlas"), 1);
+    const trailTex = makeTexture(2);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 255]));
+    const sceneTex = makeTexture(3);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    const sceneBuffer = gl.createFramebuffer();
+    const pointerField = new HeroPointerField();
+    gl.uniform1i(u("uTrail"), 2);
+    gl.uniform1i(u("uScene"), 3);
+    gl.useProgram(sceneProgram);
+    gl.uniform1i(sceneU.video, 0);
+    gl.useProgram(program);
 
     const state = {
       raf: 0,
@@ -246,7 +215,21 @@ export function AsciiHero() {
       clip: 0,
       errorStreak: 0,
       unlockArmed: false,
+      paused: false,
+      style: getHeroStyle() ?? -1,
+      dark: document.documentElement.dataset.siteTheme === "dark",
+      columns: 1,
+      rows: 1,
+      lastTime: performance.now(),
+      pointerX: 0,
+      pointerY: 0,
+      targetX: 0,
+      targetY: 0,
+      velocityX: 0,
+      velocityY: 0,
     };
+    gl.uniform1f(uStyle, state.style);
+    section.dataset.heroStyle = state.style < 0 ? "original" : String(state.style + 1);
 
     const applySize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -265,12 +248,30 @@ export function AsciiHero() {
       }
       gl.viewport(0, 0, w, h);
 
-      const cellW = Math.max(3, cellSizeCss(window.innerWidth) * dpr * scale);
+      const selectedCellSize = state.style >= 0 ? HERO_STYLES[state.style].cellSize : cellSizeCss(window.innerWidth);
+      const compactScale = state.style >= 0 && window.innerWidth <= 480 ? 0.85 : 1;
+      const cellW = Math.max(3, selectedCellSize * compactScale * dpr * scale);
       const cellH = cellW / 0.6;
       const cols = Math.min(360, Math.max(24, Math.floor(w / cellW)));
       const rows = Math.max(8, Math.floor(h / cellH));
+      gl.useProgram(program);
       gl.uniform2f(uGrid, cols, rows);
       gl.uniform2f(uCellPx, w / cols, h / rows);
+      gl.uniform2f(uSize, section.clientWidth, section.clientHeight);
+      if (state.columns !== cols || state.rows !== rows) {
+        state.columns = cols;
+        state.rows = rows;
+        gl.activeTexture(gl.TEXTURE3);
+        gl.bindTexture(gl.TEXTURE_2D, sceneTex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, cols, rows, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, sceneBuffer);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, sceneTex, 0);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      }
+      pointerField.resize(section.clientWidth, section.clientHeight, cols, rows);
+      gl.useProgram(sceneProgram);
+      gl.uniform2f(sceneU.grid, cols, rows);
+      gl.useProgram(program);
       applyCrop(w, h);
       // Resizing the backing store clears it — repaint in the same frame.
       if (reallocated) drawFrame();
@@ -295,6 +296,10 @@ export function AsciiHero() {
       }
       gl.uniform2f(uCropMin, minX, minY);
       gl.uniform2f(uCropMax, maxX, maxY);
+      gl.useProgram(sceneProgram);
+      gl.uniform2f(sceneU.cropMin, minX, minY);
+      gl.uniform2f(sceneU.cropMax, maxX, maxY);
+      gl.useProgram(program);
     };
 
     const uploadVideoFrame = () => {
@@ -323,16 +328,51 @@ export function AsciiHero() {
       img.src = src;
     };
 
-    const drawFrame = () => {
+    const drawFrame = (now = performance.now()) => {
       if (state.contextLost) return;
+      if (state.style >= 0) {
+        const trail = pointerField.paint(now);
+        if (trail.changed) {
+          gl.activeTexture(gl.TEXTURE2);
+          gl.bindTexture(gl.TEXTURE_2D, trailTex);
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, pointerField.canvas);
+          section.dataset.heroHover = trail.active ? "active" : "idle";
+        }
+        let remaining = Math.min(0.05, Math.max(0, (now - state.lastTime) / 1000));
+        while (remaining > 0) {
+          const step = Math.min(remaining, 1 / 60);
+          state.velocityX += ((state.targetX - state.pointerX) * 22 - state.velocityX * 6.57) * step;
+          state.velocityY += ((state.targetY - state.pointerY) * 22 - state.velocityY * 6.57) * step;
+          state.pointerX += state.velocityX * step;
+          state.pointerY += state.velocityY * step;
+          remaining -= step;
+        }
+        gl.useProgram(sceneProgram);
+        gl.uniform2f(sceneU.pull, state.pointerX * 0.05, state.pointerY * 0.05);
+        const aspect = section.clientWidth / Math.max(1, section.clientHeight);
+        const leanX = Math.max(-0.15, Math.min(0.15, state.pointerX * aspect * 0.3));
+        const leanY = Math.max(-0.15, Math.min(0.15, state.pointerY * 0.3));
+        gl.uniform2f(sceneU.lean, leanX, leanY);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, sceneBuffer);
+        gl.viewport(0, 0, state.columns, state.rows);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+      state.lastTime = now;
+      gl.useProgram(program);
       gl.uniform1f(uFade, state.fade);
+      gl.uniform1f(uStyle, state.style);
+      gl.uniform1f(uDark, state.dark ? 1 : 0);
+      gl.uniform1f(uTime, reducedMotion ? 0 : now / 1000);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
     const shouldRun = () =>
       !state.destroyed && !state.contextLost && state.inView && !document.hidden;
 
-    const tick = () => {
+    const tick = (now: number) => {
       if (!shouldRun()) {
         state.rafActive = false;
         return;
@@ -347,7 +387,7 @@ export function AsciiHero() {
       state.fade += (state.fadeTarget - state.fade) * 0.12;
       if (Math.abs(state.fadeTarget - state.fade) < 0.002) state.fade = state.fadeTarget;
 
-      drawFrame();
+      drawFrame(now);
     };
 
     const ensureLoop = () => {
@@ -369,7 +409,7 @@ export function AsciiHero() {
     // --- Autoplay unlock (activation-granting events only) ------------------
     const UNLOCK_EVENTS = ["pointerup", "touchend", "keydown"] as const;
     const unlock = () => {
-      if (!shouldRun() || reducedMotion) return;
+      if (!shouldRun() || reducedMotion || state.paused) return;
       video.play().then(disarmUnlock).catch(() => undefined);
     };
     const armUnlock = () => {
@@ -387,7 +427,7 @@ export function AsciiHero() {
     const playCurrent = () => {
       // Off-screen or hidden: the IO/visibility handlers resume playback when
       // the hero is actually watchable again.
-      if (document.hidden || !state.inView) return;
+      if (document.hidden || !state.inView || state.paused) return;
       video.muted = true;
       video.play().catch(() => {
         if (state.destroyed || state.contextLost || reducedMotion) return;
@@ -425,6 +465,10 @@ export function AsciiHero() {
       }
     };
     const onPlaying = () => {
+      if (state.paused) {
+        video.pause();
+        return;
+      }
       state.fadeTarget = 1;
       state.errorStreak = 0;
       disarmUnlock();
@@ -432,7 +476,7 @@ export function AsciiHero() {
     };
     const onTimeUpdate = () => {
       if (
-        video.duration > 0 &&
+        !state.paused && video.duration > 0 &&
         video.duration - video.currentTime < CLIP_FADE_LEAD_S
       ) {
         state.fadeTarget = 0;
@@ -453,7 +497,7 @@ export function AsciiHero() {
     };
     const onPause = () => {
       // Keep playing unless we're intentionally stopped.
-      if (shouldRun() && !video.ended && !reducedMotion) {
+      if (shouldRun() && !video.ended && !reducedMotion && !state.paused) {
         video.play().catch(() => undefined);
       }
     };
@@ -470,7 +514,7 @@ export function AsciiHero() {
     const syncPlayback = () => {
       if (state.destroyed || state.contextLost || reducedMotion) return;
       if (state.inView && !document.hidden) {
-        video.play().catch(() => undefined);
+        if (!state.paused) video.play().catch(() => undefined);
         ensureLoop();
       } else {
         video.pause();
@@ -489,6 +533,56 @@ export function AsciiHero() {
 
     const ro = new ResizeObserver(() => applySize());
     ro.observe(section);
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (reducedMotion || state.style < 0 || event.pointerType === "touch") return;
+      const rect = section.getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
+      const y = Math.max(0, Math.min(rect.height, event.clientY - rect.top));
+      state.targetX = x / rect.width - 0.5;
+      state.targetY = 0.5 - y / rect.height;
+      pointerField.add(x, y, performance.now());
+      ensureLoop();
+    };
+    const onPointerLeave = () => {
+      state.targetX = state.targetY = 0;
+      pointerField.leave();
+    };
+    section.addEventListener("pointermove", onPointerMove, { passive: true });
+    section.addEventListener("pointerleave", onPointerLeave);
+    section.addEventListener("pointercancel", onPointerLeave);
+
+    const updateTheme = () => {
+      state.dark = document.documentElement.dataset.siteTheme === "dark";
+      drawFrame();
+    };
+    const themeObserver = new MutationObserver(updateTheme);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-site-theme"] });
+
+    const renderer = {
+      setPaused(paused: boolean) {
+        state.paused = paused;
+        if (paused) {
+          video.pause();
+          state.fadeTarget = 1;
+        } else if (!reducedMotion) {
+          playCurrent();
+        }
+        ensureLoop();
+      },
+      setStyle(style: number) {
+        state.style = style;
+        state.pointerX = state.pointerY = state.targetX = state.targetY = 0;
+        state.velocityX = state.velocityY = 0;
+        pointerField.clear();
+        section.dataset.heroStyle = style < 0 ? "original" : String(style + 1);
+        gl.useProgram(program);
+        gl.uniform1f(uStyle, style);
+        applySize();
+        drawFrame();
+      },
+    };
+    rendererRef.current = renderer;
 
     const onContextLost = (event: Event) => {
       event.preventDefault();
@@ -521,6 +615,11 @@ export function AsciiHero() {
       }
       io.disconnect();
       ro.disconnect();
+      themeObserver.disconnect();
+      section.removeEventListener("pointermove", onPointerMove);
+      section.removeEventListener("pointerleave", onPointerLeave);
+      section.removeEventListener("pointercancel", onPointerLeave);
+      if (rendererRef.current === renderer) rendererRef.current = null;
       document.removeEventListener("visibilitychange", syncPlayback);
       canvas.removeEventListener("webglcontextlost", onContextLost);
       video.removeEventListener("loadedmetadata", onLoadedMetadata);
@@ -539,12 +638,32 @@ export function AsciiHero() {
       // poison the next setup. The context itself is reclaimed with the canvas.
       gl.deleteTexture(videoTex);
       gl.deleteTexture(atlasTex);
+      gl.deleteTexture(trailTex);
+      gl.deleteTexture(sceneTex);
+      gl.deleteFramebuffer(sceneBuffer);
       gl.deleteBuffer(buf);
       gl.deleteProgram(program);
+      gl.deleteProgram(sceneProgram);
     };
   }, [reducedMotion]);
 
+  useEffect(() => {
+    rendererRef.current?.setStyle(getHeroStyle() ?? -1);
+  }, [heroStyle]);
+
+  useEffect(() => {
+    rendererRef.current?.setPaused(heroStyle !== null && paused);
+  }, [heroStyle, paused, reducedMotion]);
+
+  function changeStyle(style: number) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("hero", String(style + 1));
+    window.history.replaceState(window.history.state, "", url);
+    window.dispatchEvent(new Event(HERO_STYLE_EVENT));
+  }
+
   return (
+    <>
     <section ref={sectionRef} className="ascii-hero" aria-label="Machine Spirit Capital film reel">
       <canvas ref={canvasRef} className="ascii-hero-canvas" aria-hidden="true" />
       {!webglOk && (
@@ -571,5 +690,15 @@ export function AsciiHero() {
         tabIndex={-1}
       />
     </section>
+    {heroStyle !== null && createPortal(
+      <HeroStylePicker
+        value={heroStyle}
+        onChange={changeStyle}
+        paused={paused}
+        onTogglePause={!reducedMotion && webglOk ? () => setPaused((value) => !value) : undefined}
+      />,
+      document.body,
+    )}
+    </>
   );
 }
