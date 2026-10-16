@@ -43,7 +43,7 @@
 
 .cog-landing-headline {
   container-type: inline-size;
-  padding: clamp(28px, 4.8svh, 52px) 47px;
+  padding: clamp(28px, 4.8svh, 52px) 47px max(32px, env(safe-area-inset-bottom));
 }
 
 .cog-landing-title {
@@ -56,7 +56,12 @@
 }
 
 .cog-landing + .cog-intro-section {
-  padding-top: clamp(56px, 8svh, 96px);
+  padding-top: 0;
+}
+
+/* One heading-to-copy gap across the fold, without additional section spacing. */
+.cog-intro-section .cog-copy-stack {
+  margin-top: 0;
 }
 
 @media (min-width: 900px) and (max-width: 1199px) {
@@ -75,9 +80,6 @@
     padding: clamp(28px, 5svh, 48px) 0 max(32px, env(safe-area-inset-bottom));
   }
 
-  .cog-landing + .cog-intro-section {
-    padding-top: 48px;
-  }
 }
 
 @media (max-height: 500px) {
