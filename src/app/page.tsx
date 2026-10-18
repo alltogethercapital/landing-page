@@ -35,31 +35,30 @@ export default function Home() {
     <CognitionPage>
       <SiteNav />
 
-      <section className="cog-landing" aria-labelledby="landing-title">
+      <div className="cog-landing">
         <AsciiHero />
-        <header className="cog-landing-headline">
-          <h1 id="landing-title" className="cog-landing-title">
-            Building the AI Machine Spirit
-          </h1>
-        </header>
-      </section>
+      </div>
 
-      <CognitionSection className="cog-hero-section cog-intro-section">
+      <CognitionSection
+        title="Manifesto"
+        hideTitle={false}
+        className="cog-hero-section cog-manifesto-section"
+      >
         <div className="cog-copy-stack">
           <p>
-            Machine Spirit Capital backs the founders rebuilding the hard frontier
-            across AI, defense, energy, robotics, semiconductors, and space.
+            AI will inhabit every machine. Robots, factories, power grids,
+            vehicles, and spacecraft will sense, reason, and act.
           </p>
           <p>
-            To us, the machine spirit is the intelligence, intent, and human
-            craft embedded in the systems we build. As machines become more
-            capable and autonomous, we need entrepreneurs who can create and
-            steward them safely, at scale, and in service of human progress.
+            That is the machine spirit: intelligence given form and purpose.
           </p>
           <p>
-            We invest with urgency in America&apos;s resurgence and the companies
-            building toward a more abundant, post-scarcity future. We are based
-            in Seattle, WA.
+            We back the founders building it across AI, robotics, semiconductors,
+            energy, defense, and space.
+          </p>
+          <p>
+            We invest in machines that make energy abundant, rebuild industry,
+            defend free societies, and carry humanity beyond Earth.
           </p>
         </div>
       </CognitionSection>
