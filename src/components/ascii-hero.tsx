@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { ASCII_HERO_CLIPS } from "@/lib/ascii-hero-assets";
 
-import { HeroPointerField } from "@/lib/hero-pointer-field";
 import {
   ATLAS_COLS, ATLAS_ROWS, ATLAS_TILE, HERO_GLYPHS,
   HERO_VERTEX_SHADER, HERO_FRAGMENT_SHADER, HERO_SCENE_SHADER,
@@ -132,15 +131,12 @@ export function AsciiHero() {
     const uCellPx = u("uCellPx");
     const uFade = u("uFade");
     const uDark = u("uDark");
-    const uTime = u("uTime");
     const sceneUniform = (name: string) => gl.getUniformLocation(sceneProgram, name);
     const sceneU = {
       video: sceneUniform("uVideo"),
       grid: sceneUniform("uGrid"),
       cropMin: sceneUniform("uCropMin"),
       cropMax: sceneUniform("uCropMax"),
-      pull: sceneUniform("uPull"),
-      lean: sceneUniform("uLean"),
     };
 
     const makeTexture = (unit: number) => {
@@ -165,14 +161,10 @@ export function AsciiHero() {
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, buildGlyphAtlas());
 
     gl.uniform1i(u("uAtlas"), 1);
-    const trailTex = makeTexture(2);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 255]));
     const sceneTex = makeTexture(3);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
     const sceneBuffer = gl.createFramebuffer();
-    const pointerField = new HeroPointerField();
-    gl.uniform1i(u("uTrail"), 2);
     gl.uniform1i(u("uScene"), 3);
     gl.useProgram(sceneProgram);
     gl.uniform1i(sceneU.video, 0);
@@ -197,13 +189,6 @@ export function AsciiHero() {
       dark: document.documentElement.dataset.siteTheme === "dark",
       columns: 1,
       rows: 1,
-      lastTime: performance.now(),
-      pointerX: 0,
-      pointerY: 0,
-      targetX: 0,
-      targetY: 0,
-      velocityX: 0,
-      velocityY: 0,
     };
     section.dataset.heroStyle = "raw-transmission";
 
@@ -242,7 +227,6 @@ export function AsciiHero() {
         gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, sceneTex, 0);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       }
-      pointerField.resize(section.clientWidth, section.clientHeight, cols, rows);
       gl.useProgram(sceneProgram);
       gl.uniform2f(sceneU.grid, cols, rows);
       gl.useProgram(program);
@@ -300,48 +284,24 @@ export function AsciiHero() {
       img.src = src;
     };
 
-    const drawFrame = (now = performance.now()) => {
+    const drawFrame = () => {
       if (state.contextLost) return;
-      const trail = pointerField.paint(now);
-      if (trail.changed) {
-        gl.activeTexture(gl.TEXTURE2);
-        gl.bindTexture(gl.TEXTURE_2D, trailTex);
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, pointerField.canvas);
-        section.dataset.heroHover = trail.active ? "active" : "idle";
-      }
-      let remaining = Math.min(0.05, Math.max(0, (now - state.lastTime) / 1000));
-      while (remaining > 0) {
-        const step = Math.min(remaining, 1 / 60);
-        state.velocityX += ((state.targetX - state.pointerX) * 22 - state.velocityX * 6.57) * step;
-        state.velocityY += ((state.targetY - state.pointerY) * 22 - state.velocityY * 6.57) * step;
-        state.pointerX += state.velocityX * step;
-        state.pointerY += state.velocityY * step;
-        remaining -= step;
-      }
       gl.useProgram(sceneProgram);
-      gl.uniform2f(sceneU.pull, state.pointerX * 0.05, state.pointerY * 0.05);
-      const aspect = section.clientWidth / Math.max(1, section.clientHeight);
-      const leanX = Math.max(-0.15, Math.min(0.15, state.pointerX * aspect * 0.3));
-      const leanY = Math.max(-0.15, Math.min(0.15, state.pointerY * 0.3));
-      gl.uniform2f(sceneU.lean, leanX, leanY);
       gl.bindFramebuffer(gl.FRAMEBUFFER, sceneBuffer);
       gl.viewport(0, 0, state.columns, state.rows);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       gl.viewport(0, 0, canvas.width, canvas.height);
-      state.lastTime = now;
       gl.useProgram(program);
       gl.uniform1f(uFade, state.fade);
       gl.uniform1f(uDark, state.dark ? 1 : 0);
-      gl.uniform1f(uTime, reducedMotion ? 0 : (now % 32000) / 1000);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
     const shouldRun = () =>
       !state.destroyed && !state.contextLost && state.inView && !document.hidden;
 
-    const tick = (now: number) => {
+    const tick = () => {
       if (!shouldRun()) {
         state.rafActive = false;
         return;
@@ -356,7 +316,7 @@ export function AsciiHero() {
       state.fade += (state.fadeTarget - state.fade) * 0.12;
       if (Math.abs(state.fadeTarget - state.fade) < 0.002) state.fade = state.fadeTarget;
 
-      drawFrame(now);
+      drawFrame();
     };
 
     const ensureLoop = () => {
@@ -499,24 +459,6 @@ export function AsciiHero() {
     const ro = new ResizeObserver(() => applySize());
     ro.observe(section);
 
-    const onPointerMove = (event: PointerEvent) => {
-      if (reducedMotion || event.pointerType === "touch") return;
-      const rect = section.getBoundingClientRect();
-      const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
-      const y = Math.max(0, Math.min(rect.height, event.clientY - rect.top));
-      state.targetX = x / rect.width - 0.5;
-      state.targetY = 0.5 - y / rect.height;
-      pointerField.add(x, y, performance.now());
-      ensureLoop();
-    };
-    const onPointerLeave = () => {
-      state.targetX = state.targetY = 0;
-      pointerField.leave();
-    };
-    section.addEventListener("pointermove", onPointerMove, { passive: true });
-    section.addEventListener("pointerleave", onPointerLeave);
-    section.addEventListener("pointercancel", onPointerLeave);
-
     const updateTheme = () => {
       state.dark = document.documentElement.dataset.siteTheme === "dark";
       drawFrame();
@@ -556,9 +498,6 @@ export function AsciiHero() {
       io.disconnect();
       ro.disconnect();
       themeObserver.disconnect();
-      section.removeEventListener("pointermove", onPointerMove);
-      section.removeEventListener("pointerleave", onPointerLeave);
-      section.removeEventListener("pointercancel", onPointerLeave);
       document.removeEventListener("visibilitychange", syncPlayback);
       canvas.removeEventListener("webglcontextlost", onContextLost);
       video.removeEventListener("loadedmetadata", onLoadedMetadata);
@@ -577,7 +516,6 @@ export function AsciiHero() {
       // poison the next setup. The context itself is reclaimed with the canvas.
       gl.deleteTexture(videoTex);
       gl.deleteTexture(atlasTex);
-      gl.deleteTexture(trailTex);
       gl.deleteTexture(sceneTex);
       gl.deleteFramebuffer(sceneBuffer);
       gl.deleteBuffer(buf);

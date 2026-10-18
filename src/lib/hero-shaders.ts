@@ -26,18 +26,13 @@ uniform sampler2D uVideo;
 uniform vec2 uGrid;
 uniform vec2 uCropMin;
 uniform vec2 uCropMax;
-uniform vec2 uPull;
-uniform vec2 uLean;
 
 float luma(vec3 rgb) {
   return dot(rgb, vec3(0.2126, 0.7152, 0.0722));
 }
 
 vec3 videoAt(vec2 point) {
-  vec2 relative = point - 0.5;
-  float perspective = max(0.72, 1.0 + dot(uLean, relative * 2.0));
-  vec2 projected = 0.5 + relative / perspective - uPull;
-  return texture2D(uVideo, mix(uCropMin, uCropMax, clamp(projected, 0.0, 1.0))).rgb;
+  return texture2D(uVideo, mix(uCropMin, uCropMax, clamp(point, 0.0, 1.0))).rgb;
 }
 
 void main() {
@@ -74,30 +69,22 @@ void main() {
 }
 `;
 
-// Raw Transmission is the permanent treatment. The original image path stays
-// untouched until a directional wake replaces its local glyphs with moving bits.
+// Raw Transmission is the permanent treatment, independent of cursor position.
 export const HERO_FRAGMENT_SHADER = `
 precision mediump float;
 varying vec2 vUV;
 uniform sampler2D uAtlas;
-uniform sampler2D uTrail;
 uniform sampler2D uScene;
 uniform vec2 uGrid;
 uniform vec2 uCellPx;
 uniform float uFade;
 uniform float uDark;
-uniform float uTime;
 
 const vec2 ATLAS_GRID = vec2(${ATLAS_COLS}.0, ${ATLAS_ROWS}.0);
 const float ATLAS_PAD = ${(2 / ATLAS_TILE).toFixed(5)};
 const float ORIGINAL_COUNT = ${ORIGINAL_GLYPH_RAMP.length}.0;
 
 float lumOf(vec3 rgb) { return dot(rgb, vec3(0.299, 0.587, 0.114)); }
-
-float cellNoise(vec2 cell) {
-  vec2 point = mod(cell, vec2(103.0, 97.0));
-  return fract((point.x * 0.7548777 + point.y * 0.5698403) * 1.317);
-}
 
 float glyphAt(float index, vec2 cellUV, float weight) {
   float boxWidth = (uCellPx.y * 0.85) / uCellPx.x;
@@ -131,28 +118,6 @@ void main() {
   vec3 base = mix(printedTile, luminousTile, uDark);
   base = mix(paper, base, mix(density, 1.0, 0.36));
   vec3 color = mix(base, ink, coverage * presence);
-
-  vec2 wakeCenter = (floor(vUV * uGrid * 0.5) + 0.5) * 2.0 / uGrid;
-  vec3 field = texture2D(uTrail, wakeCenter).rgb;
-  float wake = smoothstep(0.04, 0.7, field.r);
-  if (wake > 0.005) {
-    // The wake carries signed pointer direction; bits travel along that vector
-    // while the footprint itself drifts and tapers behind the moving hand.
-    vec2 flow = (field.gb - 0.5) * 2.0;
-    float clock = mod(uTime, 32.0);
-    vec2 stream = vUV * uGrid * 0.5 - flow * mod(clock, 2.0) * 4.5;
-    vec2 bitCell = floor(stream);
-    vec2 bitUV = fract(stream);
-    vec2 tick = vec2(mod(floor(clock * 11.0), 13.0), mod(floor(clock * 7.0), 11.0));
-    float bit = step(0.5, cellNoise(bitCell + tick));
-    // Two by two source cells form a larger, readable binary character. This
-    // replaces the fine ASCII rather than painting a colored light over it.
-    float digit = glyphAt(bit, bitUV, 0.75);
-    float lightBase = smoothstep(0.23, 0.4, lumOf(base));
-    vec3 binaryInk = mix(vec3(0.95, 0.98, 0.96), vec3(0.025, 0.04, 0.035), lightBase);
-    color = mix(color, base, wake * 0.96);
-    color = mix(color, binaryInk, digit * wake);
-  }
 
   gl_FragColor = vec4(mix(paper, clamp(color, 0.0, 1.0), uFade), 1.0);
 }
