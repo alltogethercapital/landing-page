@@ -139,7 +139,7 @@ const ARTICLE_ENTRIES: Article[] = [
     sections: [
       {
         body: [
-          "Machine Spirit Capital is a venture firm in Seattle. We back founders building the hard frontier: AI, defense, energy, robotics, semiconductors, and space.",
+          "Machine Spirit Capital is a venture firm in the United States. We back founders building the hard frontier: AI, defense, energy, robotics, semiconductors, and space.",
           "This is the firm's founding letter, so it should answer the obvious question. Why start another venture firm? There are thousands, and most of them say the same things in the same fonts about the same companies. The honest answer is that we wanted to spend our working lives close to a certain kind of company, the kind that flies, welds, enriches, fabricates, and launches. That generation of companies is being built right now.",
         ],
       },
@@ -161,7 +161,7 @@ const ARTICLE_ENTRIES: Article[] = [
         heading: "How we work",
         body: [
           "We are a small firm and intend to stay one. We invest early, concentrate, and work for the founders we back. That means introductions, recruiting, customers, and the unglamorous middle years when the frontier is mostly paperwork and welding. We write when we have something to say, not on a content calendar.",
-          "We live in Seattle, a city that built bombers, then operating systems, then the store that sells everything. It knows something about assembling the future from parts.",
+          "We live in the United States, a country that built bombers, then operating systems, then the store that sells everything. It knows something about assembling the future from parts.",
           "The future is built together. The future is built now.",
         ],
       },

@@ -33,7 +33,7 @@ export function SiteFooter() {
               unoptimized
               className="cog-footer-flag"
             />
-            <p className="cog-footer-meta">Seattle, WA</p>
+            <p className="cog-footer-meta">United States</p>
           </div>
         </div>
 
