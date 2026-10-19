@@ -130,7 +130,6 @@ export function AsciiHero() {
     const uGrid = u("uGrid");
     const uCellPx = u("uCellPx");
     const uFade = u("uFade");
-    const uDark = u("uDark");
     const sceneUniform = (name: string) => gl.getUniformLocation(sceneProgram, name);
     const sceneU = {
       video: sceneUniform("uVideo"),
@@ -186,7 +185,6 @@ export function AsciiHero() {
       clip: 0,
       errorStreak: 0,
       unlockArmed: false,
-      dark: document.documentElement.dataset.siteTheme === "dark",
       columns: 1,
       rows: 1,
     };
@@ -294,7 +292,6 @@ export function AsciiHero() {
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.useProgram(program);
       gl.uniform1f(uFade, state.fade);
-      gl.uniform1f(uDark, state.dark ? 1 : 0);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
@@ -459,13 +456,6 @@ export function AsciiHero() {
     const ro = new ResizeObserver(() => applySize());
     ro.observe(section);
 
-    const updateTheme = () => {
-      state.dark = document.documentElement.dataset.siteTheme === "dark";
-      drawFrame();
-    };
-    const themeObserver = new MutationObserver(updateTheme);
-    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-site-theme"] });
-
     const onContextLost = (event: Event) => {
       event.preventDefault();
       state.contextLost = true;
@@ -497,7 +487,6 @@ export function AsciiHero() {
       }
       io.disconnect();
       ro.disconnect();
-      themeObserver.disconnect();
       document.removeEventListener("visibilitychange", syncPlayback);
       canvas.removeEventListener("webglcontextlost", onContextLost);
       video.removeEventListener("loadedmetadata", onLoadedMetadata);

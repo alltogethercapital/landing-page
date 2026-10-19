@@ -69,7 +69,7 @@ void main() {
 }
 `;
 
-// Raw Transmission is the permanent treatment, independent of cursor position.
+// Raw Transmission keeps its cinematic contrast in both UI themes.
 export const HERO_FRAGMENT_SHADER = `
 precision mediump float;
 varying vec2 vUV;
@@ -78,7 +78,6 @@ uniform sampler2D uScene;
 uniform vec2 uGrid;
 uniform vec2 uCellPx;
 uniform float uFade;
-uniform float uDark;
 
 const vec2 ATLAS_GRID = vec2(${ATLAS_COLS}.0, ${ATLAS_ROWS}.0);
 const float ATLAS_PAD = ${(2 / ATLAS_TILE).toFixed(5)};
@@ -106,16 +105,13 @@ void main() {
   vec4 scene = texture2D(uScene, center);
   vec3 rgb = scene.rgb;
   float tone = pow(clamp(lumOf(rgb), 0.0, 1.0), 0.8);
-  float polarity = mix(1.0 - tone, tone, uDark);
-  float density = max(smoothstep(0.03, 0.98, polarity), scene.a * 0.65);
+  float density = max(smoothstep(0.03, 0.98, tone), scene.a * 0.65);
   float index = 2.0 + floor((1.0 - clamp(density, 0.0, 1.0)) * (ORIGINAL_COUNT - 1.0) + 0.5);
   float coverage = glyphAt(index, cellUV, 0.0);
   float presence = smoothstep(0.06, 0.24, density);
-  vec3 paper = mix(vec3(0.967, 0.963, 0.95), vec3(0.047, 0.052, 0.05), uDark);
-  vec3 ink = mix(rgb * 0.55, clamp(rgb * 1.8 + 0.08, 0.0, 1.0), uDark);
-  vec3 printedTile = paper * mix(vec3(1.0), rgb, 0.32);
-  vec3 luminousTile = mix(paper, rgb, 0.32);
-  vec3 base = mix(printedTile, luminousTile, uDark);
+  vec3 paper = vec3(0.047, 0.052, 0.05);
+  vec3 ink = clamp(rgb * 1.8 + 0.08, 0.0, 1.0);
+  vec3 base = mix(paper, rgb, 0.32);
   base = mix(paper, base, mix(density, 1.0, 0.36));
   vec3 color = mix(base, ink, coverage * presence);
 

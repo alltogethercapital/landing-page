@@ -10,7 +10,9 @@
     "sourceHeight": 310,
     "cornerRadius": 4
   },
-  "wordmark": "Approved Reference 2; white in both themes, with contact shadows in light mode",
+  "wordmark": "Approved Reference 2; tonal white in brand artwork, ink lettering in the light UI and white lettering in the dark UI",
+  "readingSurface": "Neutral off-white with near-black text and subdued animated grain; the pale-stone relief treatment remains in brand artwork",
+  "hero": "Raw Transmission retains its dark cinematic palette in both UI themes",
   "smallUse": "Flat three-row favicon and search fallback preserve clarity at tiny sizes",
   "typography": {
     "heading": "Orbitron",

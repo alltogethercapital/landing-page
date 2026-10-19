@@ -1,5 +1,5 @@
 /* Soft Relief in light mode; White Signal in dark mode. Keep the same lettering. */
-/* Reading surfaces use quieter static than the full-strength social artwork. */
+/* Reading surfaces and compact lettering prioritize clarity over tonal relief. */
 .cog-wordmark-symbol,
 .cog-wordmark-logo {
   width: 50px;
@@ -9,7 +9,11 @@
 
 .cog-wordmark-name {
   overflow: visible;
-  filter: invert(1) drop-shadow(0 0.7px 0.35px #34402e99) drop-shadow(0 1.4px 1.3px #34402e70);
+  filter: brightness(1);
+}
+
+.cog-wordmark-logo--light {
+  filter: drop-shadow(0 0.6px 0.5px #32372d70);
 }
 
 html[data-site-theme="dark"] .cog-wordmark-name {
