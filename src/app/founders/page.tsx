@@ -25,9 +25,8 @@ export const metadata = pageMetadata(
 
 function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boolean }) {
   const company = companyForFounder(founder);
-  const profile = founder.linkedin ?? founder.x;
-  const profileLabel = founder.linkedin ? "LinkedIn" : "X";
-  const destination = profile ?? company?.href ?? "/companies";
+  const destination = company?.href ?? "/companies";
+  const destinationLabel = company ? `Visit ${company.name} website` : "View our companies";
   const external = destination.startsWith("https://");
 
   return (
@@ -36,7 +35,7 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
         href={destination}
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
-        aria-label={profile ? `${founder.name} on ${profileLabel}` : founder.name}
+        aria-label={`${founder.name}: ${destinationLabel}`}
         className="cog-person-media"
       >
         <AsciiReveal src={founder.headshot} fit="contain">
@@ -64,29 +63,27 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
               ) : founder.companyName}
             </p>
           </div>
-          {profile && (
-            <a
-              href={profile}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${founder.name} on ${profileLabel}`}
-              className="cog-arrow-icon"
-            >
-              <ArrowUpRight />
-            </a>
-          )}
+          <a
+            href={destination}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noopener noreferrer" : undefined}
+            aria-label={`${founder.name}: ${destinationLabel}`}
+            className="cog-arrow-icon"
+          >
+            <ArrowUpRight />
+          </a>
         </div>
 
         {(founder.linkedin || founder.x) && (
           <div className="cog-person-links">
             {founder.linkedin && (
-              <a href={founder.linkedin} target="_blank" rel="noopener noreferrer">
+              <a href={founder.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${founder.name} on LinkedIn`}>
                 <LinkedInIcon />
                 LinkedIn
               </a>
             )}
             {founder.x && (
-              <a href={founder.x} target="_blank" rel="noopener noreferrer">
+              <a href={founder.x} target="_blank" rel="noopener noreferrer" aria-label={`${founder.name} on X`}>
                 <XIcon />X
               </a>
             )}
