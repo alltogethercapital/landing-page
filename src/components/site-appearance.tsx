@@ -52,7 +52,7 @@ export function setSiteTheme(nextTheme: SiteTheme) {
     // The selected appearance still works for this browsing session.
   }
   const url = new URL(window.location.href);
-  if (url.searchParams.has("theme") || url.searchParams.has("light")) {
+  if (url.searchParams.has("theme")) {
     url.searchParams.set("theme", nextTheme);
     window.history.replaceState(window.history.state, "", url);
   }

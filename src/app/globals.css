@@ -167,13 +167,13 @@ body::-webkit-scrollbar {
 /* One reading face throughout; Atlas is reserved for glyphs and machine data. */
 :root {
   color-scheme: light;
-  --cog-bg: #d2d7cd;
-  --cog-field: #d9ddd4;
-  --cog-edge: #bfc6b9;
+  --cog-bg: #e1e3de;
+  --cog-field: #f8f8f3;
+  --cog-edge: #c7cec2;
   --cog-static-fine: 0.07;
-  --cog-static-coarse: 0.035;
-  --cog-ink: #161d15;
-  --cog-muted: #343d2f;
+  --cog-static-coarse: 0.032;
+  --cog-ink: #1e251c;
+  --cog-muted: #384332;
   --cog-line: rgba(25, 25, 25, 0.17);
   --cog-hover: rgba(25, 25, 25, 0.045);
   --cog-logo-filter: grayscale(1) contrast(1.2);
@@ -297,16 +297,16 @@ html[data-site-theme] .lp-portal-page {
 
 html[data-site-theme="light"] {
   color-scheme: light;
-  --cog-bg: #d2d7cd;
-  --cog-field: #d9ddd4;
-  --cog-edge: #bfc6b9;
+  --cog-bg: #e1e3de;
+  --cog-field: #f8f8f3;
+  --cog-edge: #c7cec2;
   --cog-static-fine: 0.07;
-  --cog-static-coarse: 0.035;
-  --cog-ink: #161d15;
-  --cog-muted: #343d2f;
+  --cog-static-coarse: 0.032;
+  --cog-ink: #1e251c;
+  --cog-muted: #384332;
   --cog-line: rgba(25, 25, 25, 0.17);
   --cog-hover: rgba(25, 25, 25, 0.045);
-  --cog-dark: #161d15;
+  --cog-dark: #1e251c;
   --cog-accent: var(--cog-ink);
   --cog-logo-filter: grayscale(1) contrast(1.2);
 }
