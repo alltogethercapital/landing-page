@@ -1,8 +1,6 @@
 import Image from "next/image";
 import {
-  ArrowLink,
   CognitionPage,
-  CognitionSection,
   CognitionStrip,
 } from "@/components/cognition-layout";
 import { AsciiReveal, PortraitRevealSession } from "@/components/ascii-reveal";
@@ -126,17 +124,8 @@ export default function TeamPage() {
     <CognitionPage>
       <SiteNav />
 
-      <CognitionSection label="Our team" title="Our team." hideTitle>
-        <p className="cog-body-copy">
-          Machine Spirit Capital is led by founding partners Robert Neir and
-          Hisham El-Husseini.
-        </p>
-        <ArrowLink href={CONTACT_MAILTO} className="mt-8">
-          Email
-        </ArrowLink>
-      </CognitionSection>
-
-      <CognitionStrip className="cog-strip--inset">
+      <CognitionStrip className="cog-strip--inset cog-strip--page-start">
+        <h1 className="sr-only">Our team</h1>
         <PortraitRevealSession page="/team">
           <div className="cog-person-grid cog-person-grid--short">
             {MEMBERS.map((member) => (

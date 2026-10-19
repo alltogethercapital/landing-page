@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   CognitionPage,
-  CognitionSection,
   CognitionStrip,
 } from "@/components/cognition-layout";
 import { SiteFooter } from "@/components/site-footer";
@@ -21,15 +20,8 @@ export default function NotesPage() {
     <CognitionPage>
       <SiteNav />
 
-      <CognitionSection label="Updates" title="Updates." hideTitle>
-        <p className="cog-body-copy">
-          Letters, theses, and updates from the hard frontier, on the companies
-          and technologies shaping the machine age. We write when we have
-          something to say.
-        </p>
-      </CognitionSection>
-
-      <CognitionStrip className="cog-strip--inset">
+      <CognitionStrip className="cog-strip--inset cog-strip--page-start">
+        <h1 className="sr-only">Updates</h1>
         <div className="cog-article-grid">
           {ARTICLES.map((article, index) => (
             <Link

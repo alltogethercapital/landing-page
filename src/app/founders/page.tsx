@@ -1,8 +1,6 @@
 import Image from "next/image";
 import {
-  ArrowLink,
   CognitionPage,
-  CognitionSection,
   CognitionStrip,
 } from "@/components/cognition-layout";
 import { AsciiReveal, PortraitRevealSession } from "@/components/ascii-reveal";
@@ -99,18 +97,8 @@ export default function FoundersPage() {
     <CognitionPage>
       <SiteNav />
 
-      <CognitionSection label="Our entrepreneurs" title="Our entrepreneurs." hideTitle>
-        <p className="cog-body-copy">
-          The entrepreneurs we back are building and stewarding the hard
-          frontier, turning new technology into durable systems that expand
-          human capability.
-        </p>
-        <ArrowLink href="/companies" className="mt-8">
-          See companies
-        </ArrowLink>
-      </CognitionSection>
-
-      <CognitionStrip className="cog-strip--inset">
+      <CognitionStrip className="cog-strip--inset cog-strip--page-start">
+        <h1 className="sr-only">Our entrepreneurs</h1>
         <PortraitRevealSession page="/founders">
           <div className="cog-person-grid">
             {FOUNDERS.map((founder, index) => (

@@ -28,10 +28,6 @@ export default async function LpLoginPage({
         hideTitle
         className="lp-login-section"
       >
-        <p className="cog-body-copy lp-login-intro">
-          Sign in to view Machine Spirit Capital&apos;s private investment portfolio and
-          supporting records.
-        </p>
         <LpLoginForm error={error} />
       </CognitionSection>
     </CognitionPage>

@@ -2445,7 +2445,7 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   min-height: 100vh;
   align-content: start;
   align-items: start;
-  padding-top: 180px !important;
+  padding-top: 148px !important;
   padding-bottom: 64px;
 }
 
@@ -2453,13 +2453,9 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   width: min(100%, 590px);
 }
 
-.lp-login-intro {
-  max-width: 520px;
-}
-
 .lp-login-form {
   width: min(100%, 430px);
-  margin-top: 40px;
+  margin-top: 0;
 }
 
 .lp-login-form > label {
@@ -3500,11 +3496,10 @@ html[data-site-theme="light"] .lp-logo--inverse img {
 @media (max-width: 899px) {
   .lp-login-section {
     min-height: 100vh !important;
-    padding-top: calc(var(--mobile-header-height) + 74px) !important;
+    padding-top: calc(var(--mobile-header-height) + 26px) !important;
     padding-bottom: 56px;
   }
   .lp-login-section .cog-title { font-size: 42px; }
-  .lp-login-form { margin-top: 42px; }
   .lp-summary-grid > div { padding-block: 14px; }
   .lp-summary-grid dd { font-size: 24px; }
   .lp-disclosure { margin-top: 18px; }

@@ -1,8 +1,6 @@
 import { CompanyLogo } from "@/components/company-logo";
 import {
-  ArrowLink,
   CognitionPage,
-  CognitionSection,
   CognitionStrip,
 } from "@/components/cognition-layout";
 import { SiteFooter } from "@/components/site-footer";
@@ -50,18 +48,8 @@ export default function CompaniesPage() {
     <CognitionPage>
       <SiteNav />
 
-      <CognitionSection label="Our companies" title="Our companies." hideTitle>
-        <p className="cog-body-copy">
-          Companies creating and stewarding the technologies that will define
-          the machine age, across AI, defense, energy, robotics,
-          semiconductors, and space.
-        </p>
-        <ArrowLink href="/founders" className="mt-8">
-          Meet the entrepreneurs
-        </ArrowLink>
-      </CognitionSection>
-
-      <CognitionStrip className="cog-strip--inset cog-strip--portfolio">
+      <CognitionStrip className="cog-strip--inset cog-strip--portfolio cog-strip--page-start">
+        <h1 className="sr-only">Our companies</h1>
         <div className="cog-company-list">
           {PORTFOLIO.map((company) => (
             <CompanyArticle key={company.name} company={company} />
