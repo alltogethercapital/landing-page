@@ -79,7 +79,7 @@ function MemberCard({ member, eager = false }: { member: Member; eager?: boolean
       </a>
 
       <div className="cog-person-copy">
-        <div className="flex items-start justify-between gap-4">
+        <div className="cog-person-heading">
           <div>
             <h2 className="cog-person-title">{member.name}</h2>
             <p className="cog-article-meta">{member.role}</p>

@@ -15,6 +15,38 @@ html :is(.cog-footer-link, .cog-person-links, .cog-button, .cog-search-field inp
   font-family: var(--cog-support);
 }
 
+/* Display lettering needs breathing room; compact card text uses the reading face. */
+html :is(.cog-title, .cog-strip-heading, .cog-search-title) {
+  letter-spacing: 0;
+  word-spacing: normal;
+}
+
+html :is(.cog-person-title, .cog-article-title, .cog-company-card-title) {
+  font-family: var(--cog-support);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
+  word-spacing: normal;
+  text-wrap: pretty;
+}
+
+html .cog-person-links {
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.cog-person-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.cog-person-heading > div { min-width: 0; }
+.cog-person-company { color: inherit; text-decoration: none; }
+.cog-person-company:hover { color: var(--cog-ink); }
+
 /* Scale the single-line headline to its actual reading column. */
 html .cog-hero-section .cog-section-body { container-type: inline-size; }
 html .cog-hero-section .cog-title {

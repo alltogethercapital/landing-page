@@ -2367,10 +2367,6 @@ html[data-site-theme="dark"] .cog-wordmark-name {
     font-size: 14px;
   }
 
-  .cog-person-links a:first-child {
-    flex-basis: 100%;
-  }
-
   .cog-arrow-icon,
   .cog-carousel-button {
     width: 34px;

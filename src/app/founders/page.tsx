@@ -53,10 +53,16 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
       </a>
 
       <div className="cog-person-copy">
-        <div className="flex items-start justify-between gap-4">
+        <div className="cog-person-heading">
           <div>
             <h2 className="cog-person-title">{founder.name}</h2>
-            <p className="cog-article-meta">{founder.companyName}</p>
+            <p className="cog-article-meta">
+              {company ? (
+                <a className="cog-person-company" href={company.href} target="_blank" rel="noopener noreferrer">
+                  {founder.companyName}
+                </a>
+              ) : founder.companyName}
+            </p>
           </div>
           {profile && (
             <a
@@ -71,24 +77,21 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
           )}
         </div>
 
-        <div className="cog-person-links">
-          {company && (
-            <a href={company.href} target="_blank" rel="noopener noreferrer">
-              {company.name}
-            </a>
-          )}
-          {founder.linkedin && (
-            <a href={founder.linkedin} target="_blank" rel="noopener noreferrer">
-              <LinkedInIcon />
-              LinkedIn
-            </a>
-          )}
-          {founder.x && (
-            <a href={founder.x} target="_blank" rel="noopener noreferrer">
-              <XIcon />X
-            </a>
-          )}
-        </div>
+        {(founder.linkedin || founder.x) && (
+          <div className="cog-person-links">
+            {founder.linkedin && (
+              <a href={founder.linkedin} target="_blank" rel="noopener noreferrer">
+                <LinkedInIcon />
+                LinkedIn
+              </a>
+            )}
+            {founder.x && (
+              <a href={founder.x} target="_blank" rel="noopener noreferrer">
+                <XIcon />X
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </article>
   );

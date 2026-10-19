@@ -18,7 +18,7 @@
   "hero": "Raw Transmission retains its dark cinematic palette in both UI themes",
   "smallUse": "Flat three-row favicon and search fallback preserve clarity at tiny sizes",
   "typography": {
-    "heading": "Orbitron",
+    "heading": "Orbitron for section headings; Source Sans 3 for names and compact card titles",
     "navigation": "Chakra Petch",
     "body": "Source Sans 3"
   },
