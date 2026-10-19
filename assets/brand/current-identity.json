@@ -12,9 +12,9 @@
     "sourceHeight": 310,
     "cornerRadius": 4
   },
-  "wordmark": "Approved Reference 2; porcelain white with defined relief shadows in the light UI and white in the dark UI",
-  "readingSurface": "Approved pale-stone grey with two-scale machine static; white relief navigation, headings and controls, graphite paragraphs and fine labels",
-  "lightContrast": "Graphite copy retains at least 4.5:1 even over the darkest combined static and gradient values; white display lettering has a graphite edge and grounded relief shadow",
+  "wordmark": "Approved Reference 2; solid ink on light surfaces and white on dark surfaces; the wing retains its approved relief material",
+  "readingSurface": "Stone / Ink is the readable interim default: solid text and restrained static. Ten light-mode previews are available via ?light=1 through ?light=10",
+  "lightContrast": "All preview reading colours are checked against the darkest combined static and gradient values. No reading text uses outlines or text shadows",
   "hero": "Raw Transmission retains its dark cinematic palette in both UI themes",
   "smallUse": "Flat three-row favicon and search fallback preserve clarity at tiny sizes",
   "typography": {

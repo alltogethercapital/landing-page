@@ -43,6 +43,22 @@ function getServerTheme(): SiteTheme {
   return "light";
 }
 
+export function setSiteTheme(nextTheme: SiteTheme) {
+  sessionTheme = nextTheme;
+  document.documentElement.dataset.siteTheme = nextTheme;
+  try {
+    window.sessionStorage.setItem(STORAGE_KEY, nextTheme);
+  } catch {
+    // The selected appearance still works for this browsing session.
+  }
+  const url = new URL(window.location.href);
+  if (url.searchParams.has("theme") || url.searchParams.has("light")) {
+    url.searchParams.set("theme", nextTheme);
+    window.history.replaceState(window.history.state, "", url);
+  }
+  window.dispatchEvent(new Event(CHANGE_EVENT));
+}
+
 /** Shared static plates match the selected kit without a full-screen bitmap. */
 export function SiteGrain({ className = "" }: { className?: string }) {
   return (
@@ -64,20 +80,7 @@ export function SiteThemeToggle() {
   }, [pathname, theme]);
 
   function toggleTheme() {
-    const nextTheme = theme === "light" ? "dark" : "light";
-    sessionTheme = nextTheme;
-    document.documentElement.dataset.siteTheme = nextTheme;
-    try {
-      window.sessionStorage.setItem(STORAGE_KEY, nextTheme);
-    } catch {
-      // The selected appearance still works for this browsing session.
-    }
-    const url = new URL(window.location.href);
-    if (url.searchParams.has("theme")) {
-      url.searchParams.set("theme", nextTheme);
-      window.history.replaceState(window.history.state, "", url);
-    }
-    window.dispatchEvent(new Event(CHANGE_EVENT));
+    setSiteTheme(theme === "light" ? "dark" : "light");
   }
 
   return (

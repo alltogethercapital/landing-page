@@ -170,10 +170,10 @@ body::-webkit-scrollbar {
   --cog-bg: #d2d7cd;
   --cog-field: #d9ddd4;
   --cog-edge: #bfc6b9;
-  --cog-static-fine: 0.14;
-  --cog-static-coarse: 0.08;
-  --cog-ink: #20271e;
-  --cog-muted: #273023;
+  --cog-static-fine: 0.035;
+  --cog-static-coarse: 0.018;
+  --cog-ink: #1c231b;
+  --cog-muted: #3d4638;
   --cog-line: rgba(25, 25, 25, 0.17);
   --cog-hover: rgba(25, 25, 25, 0.045);
   --cog-logo-filter: grayscale(1) contrast(1.2);
@@ -276,13 +276,13 @@ html[data-site-theme="light"] {
   --cog-bg: #d2d7cd;
   --cog-field: #d9ddd4;
   --cog-edge: #bfc6b9;
-  --cog-static-fine: 0.14;
-  --cog-static-coarse: 0.08;
-  --cog-ink: #20271e;
-  --cog-muted: #273023;
+  --cog-static-fine: 0.035;
+  --cog-static-coarse: 0.018;
+  --cog-ink: #1c231b;
+  --cog-muted: #3d4638;
   --cog-line: rgba(25, 25, 25, 0.17);
   --cog-hover: rgba(25, 25, 25, 0.045);
-  --cog-dark: #20271e;
+  --cog-dark: #1c231b;
   --cog-accent: var(--cog-ink);
   --cog-logo-filter: grayscale(1) contrast(1.2);
 }

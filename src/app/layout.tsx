@@ -3,8 +3,10 @@ import localFont from "next/font/local";
 import { type CSSProperties, type ReactNode } from "react";
 import { SiteSearch } from "@/components/site-search";
 import { SiteAppearance } from "@/components/site-appearance";
+import { LightModePicker } from "@/components/light-mode-picker";
 import { buildSearchIndex } from "@/lib/search";
 import { SITE_THEME_SCRIPT } from "@/lib/site-theme";
+import { LIGHT_MODE_CSS } from "@/lib/light-mode-options";
 import { pageTitle } from "@/lib/page-metadata";
 import "./globals.css";
 import "./lp-release.css";
@@ -13,6 +15,7 @@ import "./site-typography.css";
 import "./landing.css";
 import "./company-logos.css";
 import "./site-identity.css";
+import "./light-mode-options.css";
 
 const atlasTypewriter = localFont({
   variable: "--font-atlas-typewriter",
@@ -128,11 +131,13 @@ export default function RootLayout({
     <html
       lang="en"
       data-site-theme="light"
+      data-light-option="1"
       suppressHydrationWarning
       className={`${atlasTypewriter.variable} h-full antialiased`}
       style={hiddenScrollbarStyle}
     >
       <head>
+        <style id="light-mode-palettes">{LIGHT_MODE_CSS}</style>
         <script id="site-theme" dangerouslySetInnerHTML={{ __html: SITE_THEME_SCRIPT }} />
       </head>
       <body
@@ -141,6 +146,7 @@ export default function RootLayout({
       >
         <SiteAppearance />
         <SiteSearch index={buildSearchIndex()} />
+        <LightModePicker />
         {children}
       </body>
     </html>
