@@ -3817,8 +3817,9 @@ svg.morphicon {
   fill: none !important;
   stroke: currentColor;
   stroke-width: 1.5 !important;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 3;
 }
 
 .lp-portfolio-table th a,

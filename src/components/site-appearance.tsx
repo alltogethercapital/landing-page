@@ -15,7 +15,7 @@ function getTheme(): SiteTheme {
   if (requested === "light" || requested === "dark") return requested;
   if (sessionTheme) return sessionTheme;
   try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
+    const stored = window.sessionStorage.getItem(STORAGE_KEY);
     if (stored === "light" || stored === "dark") return stored;
   } catch {
     // Light remains the default when storage is disabled.
@@ -53,7 +53,7 @@ export function SiteGrain({ className = "" }: { className?: string }) {
   );
 }
 
-export function SiteAppearance() {
+export function SiteThemeToggle() {
   const pathname = usePathname();
   const isPortalRoute = pathname === "/lp" || pathname.startsWith("/lp/");
   const theme = useSyncExternalStore(subscribe, getTheme, getServerTheme);
@@ -68,7 +68,7 @@ export function SiteAppearance() {
     sessionTheme = nextTheme;
     document.documentElement.dataset.siteTheme = nextTheme;
     try {
-      window.localStorage.setItem(STORAGE_KEY, nextTheme);
+      window.sessionStorage.setItem(STORAGE_KEY, nextTheme);
     } catch {
       // The selected appearance still works for this browsing session.
     }
@@ -81,16 +81,22 @@ export function SiteAppearance() {
   }
 
   return (
+    <button
+      type="button"
+      className={`site-theme-toggle${isPortalRoute ? " site-theme-toggle--portal" : ""}`}
+      aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+      onClick={toggleTheme}
+    >
+      <UIIcon name={theme === "light" ? "moon" : "sun"} animateOnHover />
+    </button>
+  );
+}
+
+export function SiteAppearance() {
+  return (
     <>
       <SiteGrain className="site-grain--background" />
-      <button
-        type="button"
-        className={`site-theme-toggle${isPortalRoute ? " site-theme-toggle--portal" : ""}`}
-        aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-        onClick={toggleTheme}
-      >
-        <UIIcon name={theme === "light" ? "moon" : "sun"} animateOnHover />
-      </button>
+      <SiteThemeToggle />
     </>
   );
 }

@@ -5,9 +5,10 @@ import { useEffect, useRef, useState } from "react";
 import { UI_ICON_HOVER_PATHS, UI_ICON_PATHS, type UIIconName } from "@/lib/icon-paths";
 
 type IconProps = { className?: string; animateOnHover?: boolean; active?: boolean };
+const ICON_SPRING = { stiffness: 460, damping: 43 } as const;
 
 /** One renderer, size and stroke for every interface icon. */
-export function UIIcon({ name, className = "", animateOnHover = false, active = false }: IconProps & { name: UIIconName }) {
+export function UIIcon({ name, className = "", animateOnHover = true, active = false }: IconProps & { name: UIIconName }) {
   if (animateOnHover && UI_ICON_HOVER_PATHS[name]) {
     return <HoverUIIcon name={name} className={className} active={active} />;
   }
@@ -20,7 +21,10 @@ function IconGlyph({ name, className, engaged = false }: { name: UIIconName; cla
       icon={engaged ? UI_ICON_HOVER_PATHS[name] ?? UI_ICON_PATHS[name] : UI_ICON_PATHS[name]}
       size={20}
       strokeWidth={1.5}
-      spring="snappy"
+      spring={ICON_SPRING}
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+      strokeMiterlimit={3}
       reducedMotion="user"
       className={`morphicon ${className}`}
       data-icon={name}

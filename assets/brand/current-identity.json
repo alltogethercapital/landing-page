@@ -1,6 +1,8 @@
 {
   "identity": "Machine Spirit / Soft Relief + White Signal",
   "defaultTheme": "light",
+  "themePersistence": "New sessions start light; explicit dark-mode choices last within the current tab session",
+  "interfaceIcons": "Custom Morphicons on a 24px grid, rendered at 20px with 1.5 strokes, square terminals, chamfered outlines and damped hover motion",
   "light": "04 Soft Relief: white relief on pale stone static",
   "dark": "01 White Signal: white relief on deep charcoal static",
   "geometry": {
