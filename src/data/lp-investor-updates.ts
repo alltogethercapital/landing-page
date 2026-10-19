@@ -59,22 +59,22 @@ export const LP_AUGUST_2026_FUND_SNAPSHOT = {
 export const LP_SEPTEMBER_2026_PORTFOLIO_AS_OF = "September 16, 2026";
 
 // Reconciled to the live Schedule of Investments after the recent amount
-// corrections. The change from the August letter comprises $169,883.90 across fifteen new
+// corrections. The change from the August letter comprises $169,883.97 across fifteen new
 // positions plus a $15,000 correction to Positron's recorded cost. Supabase's final
 // allocation is $18.48 below its originally recorded cost; that pre-August correction
 // is reflected in both historical snapshots. Apptronik's final allocation is $8,455.76
 // below its prior allocation and its directional mark changes proportionally. The second Blue
-// Origin allocation is $25.07 below the original $25,000 allocation. Rasyn's final allocation is
+// Origin allocation is $25.00 below the original $25,000 allocation. Rasyn's final allocation is
 // $6.00 and Ultrasonium's is $85.03 below initially recorded cost.
 export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
-  investedCost: 836_645.91,
-  projectedGrossValue: 916_637.93,
+  investedCost: 836_645.98,
+  projectedGrossValue: 916_638.00,
   projectedGrossMultiple: 1.10,
   grossValueChange: 79_992.02,
   positions: 59,
   companies: 58,
   newPositionsSinceAugust: 15,
-  newInvestedCostSinceAugust: 169_883.90,
+  newInvestedCostSinceAugust: 169_883.97,
   reconciliationAdjustmentSinceAugust: 15_000,
 } as const;
 
@@ -84,8 +84,8 @@ export const LP_OCTOBER_2026_PORTFOLIO_AS_OF = "October 16, 2026";
 // Chef Robotics remains at cost because company-specific investment terms,
 // execution evidence, and completed cash movement have not yet been supplied.
 export const LP_OCTOBER_2026_FUND_SNAPSHOT = {
-  investedCost: 855_236.66,
-  projectedGrossValue: 935_228.68,
+  investedCost: 855_236.73,
+  projectedGrossValue: 935_228.75,
   projectedGrossMultiple: 1.09,
   grossValueChange: 79_992.02,
   positions: 60,

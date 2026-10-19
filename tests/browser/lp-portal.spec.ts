@@ -279,10 +279,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(pendingPerformanceRow).toContainText("No performance");
   await expect(pendingPerformanceRow).toContainText("In AUM, NAV, and total math");
   const performanceTotal = page.locator(".lp-performance-total-row");
-  await expect(performanceTotal).toContainText("$836,645.91");
+  await expect(performanceTotal).toContainText("$836,645.98");
   await expect(performanceTotal).toContainText("1.10×");
   await expect(performanceTotal).toContainText("+$79,992.02");
-  await expect(performanceTotal).toContainText("$916,637.93");
+  await expect(performanceTotal).toContainText("$916,638.00");
   await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-performance-desktop.png", fullPage: true });
 
@@ -421,8 +421,8 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await page.goto("/lp/investments/47-blue-origin-series-a");
   await expect(page).toHaveURL(/47-blue-origin-series-a$/);
   await expect(page.getByRole("heading", { name: "Blue Origin" })).toBeVisible();
-  await expect(page.getByText("$24,974.93", { exact: true })).toHaveCount(2);
-  await expect(page.getByText(/final allocation is \$24,974\.93/i)).toBeVisible();
+  await expect(page.getByText("$24,975.00", { exact: true })).toHaveCount(2);
+  await expect(page.getByText(/final allocation is \$24,975\.00/i)).toBeVisible();
   await expect(page.getByText(/actual \$25,000\.00 outbound transfer to AngelList/i)).toBeVisible();
   await expect(page.getByText(/no separate refund or AngelList account credit/i)).toBeVisible();
 
@@ -518,10 +518,10 @@ test("shows the reconciled second Blue Origin allocation and cash-evidence bound
 
   await page.goto("/lp/investments/47-blue-origin-series-a");
   await expect(page.getByRole("heading", { name: "Blue Origin" })).toBeVisible();
-  await expect(page.getByText("$24,974.93", { exact: true })).toHaveCount(2);
-  await expect(page.getByText(/final allocation is \$24,974\.93/i)).toBeVisible();
+  await expect(page.getByText("$24,975.00", { exact: true })).toHaveCount(2);
+  await expect(page.getByText(/final allocation is \$24,975\.00/i)).toBeVisible();
   await expect(page.getByText(/actual \$25,000\.00 outbound transfer to AngelList/i)).toBeVisible();
-  await expect(page.getByText(/\$25\.07 difference is an allocation reduction/i)).toBeVisible();
+  await expect(page.getByText(/\$25\.00 difference is an allocation reduction/i)).toBeVisible();
   await expect(page.getByText(/no separate refund or AngelList account credit is recorded without transaction evidence/i)).toBeVisible();
 });
 

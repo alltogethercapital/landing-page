@@ -253,7 +253,7 @@ function SeptemberUpdateCopy() {
       </p>
 
       <p>
-        <strong>Restated October 14, 2026.</strong> AngelList previously confirmed that the Apptronik SPV was
+        <strong>Restated October 19, 2026.</strong> AngelList previously confirmed that the Apptronik SPV was
         oversubscribed, reducing our $30,000.00 allocation to $29,222.00 and crediting $778.00 to our AngelList
         Investor Account. The owner has now confirmed the final allocation is $20,766.24. We reduced recorded
         cost by another $8,455.76 and updated the directional value estimate proportionally. The original
@@ -263,8 +263,8 @@ function SeptemberUpdateCopy() {
         movement was added or changed. The owner subsequently revised the final Rasyn allocation from
         $9,993.59 to $9,994.00; the original $10,000.00 outflow remains in the bank ledger, and no separate
         $6.00 refund or AngelList account-balance credit is recorded without transaction evidence. The owner
-        also revised the second Blue Origin allocation from $25,000.00 to $24,974.93. The actual $25,000.00
-        AngelList outflow remains in the bank ledger, and no separate $25.07 refund or AngelList account credit
+        also revised the second Blue Origin allocation from $25,000.00 to $24,975.00. The actual $25,000.00
+        AngelList outflow remains in the bank ledger, and no separate $25.00 refund or AngelList account credit
         is recorded without transaction evidence. The figures in this update now reflect all four corrections.
       </p>
 

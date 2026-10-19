@@ -20,8 +20,8 @@ test("publishes the October investor update with the current portfolio snapshot"
   await expect(page.getByRole("heading", { name: "Intelligence Meets the Production Line" })).toBeVisible();
   const copy = page.locator(".lp-update-article-copy");
   await expect(copy).toContainText("60 recorded positions across 59 companies");
-  await expect(copy).toContainText("$855,236.66");
-  await expect(copy).toContainText("$935,228.68");
+  await expect(copy).toContainText("$855,236.73");
+  await expect(copy).toContainText("$935,228.75");
   await expect(copy).toContainText("1.09× current value multiple");
   await expect(copy).toContainText("$79,992.02 above recorded cost");
   await expect(copy).toContainText("$18,590.75");
