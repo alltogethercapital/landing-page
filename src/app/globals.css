@@ -167,13 +167,13 @@ body::-webkit-scrollbar {
 /* One reading face throughout; Atlas is reserved for glyphs and machine data. */
 :root {
   color-scheme: light;
-  --cog-bg: #f5f5f1;
-  --cog-field: #fafaf7;
-  --cog-edge: #ebece6;
-  --cog-static-fine: 0.045;
-  --cog-static-coarse: 0.035;
-  --cog-ink: #171b17;
-  --cog-muted: #50574f;
+  --cog-bg: #d2d7cd;
+  --cog-field: #d9ddd4;
+  --cog-edge: #bfc6b9;
+  --cog-static-fine: 0.14;
+  --cog-static-coarse: 0.08;
+  --cog-ink: #20271e;
+  --cog-muted: #273023;
   --cog-line: rgba(25, 25, 25, 0.17);
   --cog-hover: rgba(25, 25, 25, 0.045);
   --cog-logo-filter: grayscale(1) contrast(1.2);
@@ -196,7 +196,7 @@ body {
   color: var(--cog-ink);
 }
 
-/* Light reading surfaces stay neutral; the approved static remains ambient. */
+/* The pale stone field carries the approved two-scale machine static. */
 .site-grain {
   position: absolute;
   inset: 0;
@@ -273,16 +273,16 @@ html[data-site-theme] .lp-portal-page {
 
 html[data-site-theme="light"] {
   color-scheme: light;
-  --cog-bg: #f5f5f1;
-  --cog-field: #fafaf7;
-  --cog-edge: #ebece6;
-  --cog-static-fine: 0.045;
-  --cog-static-coarse: 0.035;
-  --cog-ink: #171b17;
-  --cog-muted: #50574f;
+  --cog-bg: #d2d7cd;
+  --cog-field: #d9ddd4;
+  --cog-edge: #bfc6b9;
+  --cog-static-fine: 0.14;
+  --cog-static-coarse: 0.08;
+  --cog-ink: #20271e;
+  --cog-muted: #273023;
   --cog-line: rgba(25, 25, 25, 0.17);
   --cog-hover: rgba(25, 25, 25, 0.045);
-  --cog-dark: #171b17;
+  --cog-dark: #20271e;
   --cog-accent: var(--cog-ink);
   --cog-logo-filter: grayscale(1) contrast(1.2);
 }

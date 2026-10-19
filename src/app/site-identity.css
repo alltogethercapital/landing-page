@@ -1,5 +1,5 @@
 /* Soft Relief in light mode; White Signal in dark mode. Keep the same lettering. */
-/* Reading surfaces and compact lettering prioritize clarity over tonal relief. */
+/* White relief establishes the identity; graphite carries reading and fine data. */
 .cog-wordmark-symbol,
 .cog-wordmark-logo {
   width: 50px;
@@ -10,6 +10,66 @@
 .cog-wordmark-name {
   overflow: visible;
   filter: brightness(1);
+}
+
+html[data-site-theme="light"] {
+  --cog-porcelain: #fffffa;
+  --cog-relief-edge: #5d6755;
+  --cog-type-relief: 0 1px 0 #77816e, 0 2px 2px rgb(30 40 24 / 24%);
+}
+
+/* The edge defines each letter against stone without a panel behind the text. */
+html[data-site-theme="light"] :is(
+  .cog-title,
+  .cog-strip-heading,
+  .cog-article-title,
+  .cog-person-title,
+  .cog-legal-section h2,
+  .cog-search-header h2,
+  .cog-nav-link,
+  .cog-mobile-menu-link,
+  .cog-button,
+  .lp-portal-nav nav a,
+  .lp-portfolio-tabs a
+) {
+  color: var(--cog-porcelain);
+  -webkit-text-stroke: 0.8px var(--cog-relief-edge);
+  paint-order: stroke fill;
+  text-shadow: var(--cog-type-relief);
+}
+
+html[data-site-theme="light"] :is(.cog-nav-link, .cog-mobile-menu-link) {
+  font-weight: 500;
+}
+
+html[data-site-theme="light"] :is(.cog-nav-link, .cog-mobile-menu-link).is-active {
+  font-weight: 600;
+}
+
+html[data-site-theme="light"] .cog-wordmark-name {
+  filter: invert(1) drop-shadow(0 0.75px 0.35px rgb(24 29 22 / 65%))
+    drop-shadow(0 1.8px 1.25px rgb(24 29 22 / 24%));
+}
+
+html[data-site-theme="light"] :is(
+  .cog-page,
+  .lp-portal-page,
+  .site-theme-toggle,
+  .cog-search-trigger
+) .morphicon {
+  color: var(--cog-porcelain);
+  filter: drop-shadow(0 0 0.65px var(--cog-relief-edge))
+    drop-shadow(0 1px 0.5px rgb(40 50 32 / 62%));
+}
+
+/* Keyboard focus stays distinct from the relief and the animated grain. */
+html[data-site-theme="light"] :is(a, button, select):focus-visible {
+  outline: 2px solid var(--cog-ink);
+  outline-offset: 4px;
+}
+
+html[data-site-theme="light"] .cog-search-field:focus-within {
+  border-color: var(--cog-ink);
 }
 
 .cog-wordmark-logo--light {
