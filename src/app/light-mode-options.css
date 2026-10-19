@@ -18,6 +18,7 @@ html[data-site-theme="light"]:is([data-light-option="9"], [data-light-option="10
 
 html[data-site-theme="light"][data-light-option="10"] body:has(.cog-page) .site-grain--background::after {
   position: fixed;
+  z-index: 0;
   inset: 0 calc(max(0px, (100vw - var(--site-max)) / 2) + 154px) 0 calc(max(0px, (100vw - var(--site-max)) / 2) + 320px);
   background: #f8f8f3;
   content: "";

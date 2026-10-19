@@ -170,10 +170,10 @@ body::-webkit-scrollbar {
   --cog-bg: #d2d7cd;
   --cog-field: #d9ddd4;
   --cog-edge: #bfc6b9;
-  --cog-static-fine: 0.035;
-  --cog-static-coarse: 0.018;
-  --cog-ink: #1c231b;
-  --cog-muted: #3d4638;
+  --cog-static-fine: 0.07;
+  --cog-static-coarse: 0.035;
+  --cog-ink: #161d15;
+  --cog-muted: #343d2f;
   --cog-line: rgba(25, 25, 25, 0.17);
   --cog-hover: rgba(25, 25, 25, 0.045);
   --cog-logo-filter: grayscale(1) contrast(1.2);
@@ -202,6 +202,7 @@ body {
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+  isolation: isolate;
 }
 
 .site-grain--background {
@@ -218,8 +219,25 @@ html[data-site-theme] .site-grain--surface {
   display: block;
 }
 
+.site-grain-atmosphere {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  inset: -24%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 54% 48% at 29% 38%, rgb(255 255 255 / 45%), transparent 74%),
+    radial-gradient(ellipse 62% 58% at 76% 64%, rgb(28 39 21 / 15%), transparent 76%);
+  opacity: 0.075;
+  will-change: transform, opacity;
+  animation: site-spirit-drift 56s ease-in-out infinite;
+}
+
+html[data-site-theme="light"] .site-grain-atmosphere { display: block; }
+
 .site-grain-layer {
   position: absolute;
+  z-index: 2;
   top: -50%;
   left: -50%;
   display: block;
@@ -258,6 +276,12 @@ html[data-site-theme] .site-grain--surface {
   90% { transform: translate(-10%, 10%); }
 }
 
+/* A low-contrast field moves independently of the uninterrupted stepped static. */
+@keyframes site-spirit-drift {
+  0%, 100% { transform: translate3d(-4%, -2%, 0) scale(1.025); opacity: 0.07; }
+  40% { transform: translate3d(4%, 2%, 0) scale(1.045); opacity: 0.085; }
+  72% { transform: translate3d(1%, -2.5%, 0) scale(1.03); opacity: 0.075; }
+}
 
 
 html[data-site-theme] body,
@@ -276,13 +300,13 @@ html[data-site-theme="light"] {
   --cog-bg: #d2d7cd;
   --cog-field: #d9ddd4;
   --cog-edge: #bfc6b9;
-  --cog-static-fine: 0.035;
-  --cog-static-coarse: 0.018;
-  --cog-ink: #1c231b;
-  --cog-muted: #3d4638;
+  --cog-static-fine: 0.07;
+  --cog-static-coarse: 0.035;
+  --cog-ink: #161d15;
+  --cog-muted: #343d2f;
   --cog-line: rgba(25, 25, 25, 0.17);
   --cog-hover: rgba(25, 25, 25, 0.045);
-  --cog-dark: #1c231b;
+  --cog-dark: #161d15;
   --cog-accent: var(--cog-ink);
   --cog-logo-filter: grayscale(1) contrast(1.2);
 }
@@ -336,7 +360,8 @@ html[data-site-theme="dark"] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-grain-layer {
+  .site-grain-layer,
+  .site-grain-atmosphere {
     animation: none;
     will-change: auto;
   }

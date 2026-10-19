@@ -63,6 +63,7 @@ export function setSiteTheme(nextTheme: SiteTheme) {
 export function SiteGrain({ className = "" }: { className?: string }) {
   return (
     <div className={`site-grain ${className}`} data-grain="coarse" aria-hidden="true">
+      <span className="site-grain-atmosphere" />
       <span className="site-grain-layer site-grain-layer--coarse" />
       <span className="site-grain-layer site-grain-layer--fine" />
     </div>
