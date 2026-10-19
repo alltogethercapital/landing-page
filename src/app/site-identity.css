@@ -13,7 +13,9 @@
 }
 
 .cog-wordmark-logo--light {
-  filter: drop-shadow(0 0.6px 0.5px #32372d70);
+  /* A crisp contact edge and soft lift keep the small white wings legible. */
+  filter: drop-shadow(0 0.75px 0.35px rgb(24 29 22 / 52%))
+    drop-shadow(0 1.8px 1.25px rgb(24 29 22 / 20%));
 }
 
 html[data-site-theme="dark"] .cog-wordmark-name {
