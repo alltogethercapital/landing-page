@@ -1,5 +1,5 @@
 /* Soft Relief in light mode; White Signal in dark mode. Keep the same lettering. */
-/* Solid lettering keeps the relief logo distinct from the reading interface. */
+/* The white wordmark shares the wings' contact shadow on the light field. */
 .cog-wordmark-symbol,
 .cog-wordmark-logo {
   width: 50px;
@@ -10,6 +10,12 @@
 .cog-wordmark-name {
   overflow: visible;
   filter: brightness(1);
+}
+
+html[data-site-theme="light"] .cog-wordmark-name {
+  filter: invert(1)
+    drop-shadow(0 0.65px 0.3px rgb(24 29 22 / 85%))
+    drop-shadow(0 1.6px 0.9px rgb(24 29 22 / 32%));
 }
 
 html[data-site-theme="light"] :is(.cog-title, .cog-strip-heading) {
