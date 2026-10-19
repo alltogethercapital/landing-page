@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "@/components/icons";
 import { WordmarkLettering } from "@/components/wordmark-lettering";
+import { BRAND_SYMBOL } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
 export function BrandDot({ className }: { className?: string }) {
@@ -31,18 +32,18 @@ export function LogoMark({ className }: { className?: string }) {
     <span className={cn("cog-wordmark", "cog-wordmark--live", className)}>
       <span className="cog-wordmark-symbol" aria-hidden="true">
         <Image
-          src="/brand/machine-spirit-live-symbol.png"
+          src={BRAND_SYMBOL.ink}
           alt=""
-          width={1024}
-          height={499}
+          width={BRAND_SYMBOL.width}
+          height={BRAND_SYMBOL.height}
           unoptimized
           className="cog-wordmark-logo cog-wordmark-logo--light"
         />
         <Image
-          src="/brand/machine-spirit-live-symbol-ivory.png"
+          src={BRAND_SYMBOL.ivory}
           alt=""
-          width={1024}
-          height={499}
+          width={BRAND_SYMBOL.width}
+          height={BRAND_SYMBOL.height}
           unoptimized
           className="cog-wordmark-logo cog-wordmark-logo--dark"
         />

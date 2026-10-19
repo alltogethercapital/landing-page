@@ -1,4 +1,5 @@
 import { ARTICLES } from "./articles";
+import { BRAND_SYMBOL } from "./brand";
 import { FOUNDERS, founderAnchor } from "./founders";
 import { PORTFOLIO, slugify, type Company } from "./portfolio";
 
@@ -20,7 +21,7 @@ function searchableText(parts: Array<string | undefined>) {
 }
 
 function companyLogo(company: Company | undefined) {
-  return company?.cardLogo ?? company?.logo ?? "/brand/machine-spirit-live-symbol.png";
+  return company?.cardLogo ?? company?.logo ?? BRAND_SYMBOL.ink;
 }
 
 export function buildSearchIndex(): SearchResult[] {

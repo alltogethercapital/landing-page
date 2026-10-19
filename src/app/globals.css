@@ -635,7 +635,8 @@ html[data-shader-tone="dark"] .cog-strip--portfolio::before {
   position: relative;
   display: inline-flex;
   width: 44px;
-  height: 22px;
+  height: auto;
+  aspect-ratio: 92 / 31;
   flex: none;
   align-items: center;
   justify-content: center;
@@ -789,7 +790,7 @@ html[data-site-theme="dark"] .cog-wordmark-name {
 
   .cog-wordmark-symbol {
     width: 34px;
-    height: 17px;
+    height: auto;
   }
 
   .cog-wordmark-logo {
