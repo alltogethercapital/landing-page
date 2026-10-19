@@ -16,7 +16,7 @@
   "readingSurface": "Fog is the approved light mode: a luminous centre over a pale grey-green field, solid graphite text and visible machine static",
   "lightContrast": "Fog reading colours retain at least 7.08:1 primary and 4.69:1 secondary contrast against the conservative darkest combined static, gradient, atmospheric shade and hover values. No reading text uses outlines or text shadows",
   "hero": "Raw Transmission retains its dark cinematic palette in both UI themes",
-  "smallUse": "Flat three-row favicon and search fallback preserve clarity at tiny sizes",
+  "smallUse": "White Soft Relief favicon on light stone; silhouette-weighted optical centering and size-specific graphite edges keep the three rows clear. Search fallback remains flat",
   "typography": {
     "heading": "Orbitron for section headings; Source Sans 3 for names and compact card titles",
     "navigation": "Chakra Petch",

@@ -1,4 +1,4 @@
-/** The approved three-row shape stays flat for tiny icons and search results. */
+/** The approved three-row shape stays flat in compact search results. */
 export const BRAND_SYMBOL = {
   ink: "/brand/identity/symbol-ink.svg",
   ivory: "/brand/identity/symbol-ivory.svg",
@@ -6,7 +6,7 @@ export const BRAND_SYMBOL = {
   height: 310,
 } as const;
 
-/** Tonal relief materials are reserved for the larger navigation lockup. */
+/** Approved relief masters supply the navigation lockup and favicon geometry. */
 export const BRAND_RELIEF = {
   light: "/brand/identity/relief-light.svg",
   dark: "/brand/identity/relief-dark.svg",
