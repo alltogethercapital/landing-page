@@ -1,0 +1,26 @@
+/* Soft Relief in light mode; White Signal in dark mode. Keep the same lettering. */
+/* Reading surfaces use quieter static than the full-strength social artwork. */
+.cog-wordmark-symbol,
+.cog-wordmark-logo {
+  width: 50px;
+}
+
+.cog-wordmark-symbol { aspect-ratio: 104 / 42; }
+
+.cog-wordmark-name {
+  overflow: visible;
+  filter: invert(1) drop-shadow(0 0.7px 0.35px #34402e99) drop-shadow(0 1.4px 1.3px #34402e70);
+}
+
+html[data-site-theme="dark"] .cog-wordmark-name {
+  filter: invert(1);
+}
+
+.site-grain--surface {
+  background: radial-gradient(ellipse at 50% 44%, var(--cog-field), var(--cog-bg) 50%, var(--cog-edge));
+}
+
+@media (max-width: 899px) {
+  .cog-wordmark-symbol,
+  .cog-wordmark-logo { width: 39px; }
+}

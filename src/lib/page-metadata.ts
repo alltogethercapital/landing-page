@@ -4,7 +4,7 @@ const SHARE_IMAGE = {
   url: "/opengraph-image.png",
   width: 1200,
   height: 630,
-  alt: "Machine Spirit Capital — the three-row Soft Relief wing and Machine Spirit wordmark on charcoal machine static.",
+  alt: "Machine Spirit Capital — white three-row Soft Relief wings and wordmark on pale machine static.",
 };
 
 export function pageTitle(name: string): string {

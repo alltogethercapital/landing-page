@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { SITE_THEME_STORAGE_KEY } from "@/lib/site-theme";
 import { UIIcon } from "@/components/icons";
@@ -9,27 +9,6 @@ type SiteTheme = "light" | "dark";
 const STORAGE_KEY = SITE_THEME_STORAGE_KEY;
 const CHANGE_EVENT = "machine-spirit-theme-change";
 let sessionTheme: SiteTheme | null = null;
-
-const GRAIN_PRESET = { id: "coarse", pixels: 4, opacity: 0.05 } as const;
-const NOISE_TILE_SIZE = 512;
-let noiseTile: string | null = null;
-
-function getNoiseTile() {
-  if (noiseTile) return noiseTile;
-  const tile = document.createElement("canvas");
-  tile.width = tile.height = NOISE_TILE_SIZE;
-  const context = tile.getContext("2d", { alpha: true });
-  if (!context) return null;
-  const image = context.createImageData(NOISE_TILE_SIZE, NOISE_TILE_SIZE);
-  for (let i = 0; i < image.data.length; i += 4) {
-    const shade = Math.floor(224 * Math.floor(Math.random() * 256) / 255);
-    image.data[i] = image.data[i + 1] = image.data[i + 2] = shade;
-    image.data[i + 3] = Math.random() < 0.35 ? 255 : Math.floor(80 + Math.random() * 160);
-  }
-  context.putImageData(image, 0, 0);
-  noiseTile = tile.toDataURL("image/png");
-  return noiseTile;
-}
 
 function getTheme(): SiteTheme {
   const requested = new URLSearchParams(window.location.search).get("theme");
@@ -64,32 +43,12 @@ function getServerTheme(): SiteTheme {
   return "light";
 }
 
-/** A shared noise tile keeps even the finest grain bounded on large displays. */
+/** Shared static plates match the selected kit without a full-screen bitmap. */
 export function SiteGrain({ className = "" }: { className?: string }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const preset = GRAIN_PRESET;
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const texture = getNoiseTile();
-    if (!canvas || !texture) return;
-
-    const draw = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      // Preserve the original's device-pixel scale without a viewport-size bitmap.
-      canvas.style.backgroundSize = `${NOISE_TILE_SIZE * preset.pixels / dpr}px`;
-    };
-
-    canvas.width = canvas.height = 1;
-    canvas.style.backgroundImage = `url("${texture}")`;
-    draw();
-    window.addEventListener("resize", draw);
-    return () => window.removeEventListener("resize", draw);
-  }, [preset]);
-
   return (
-    <div className={`site-grain ${className}`} data-grain={preset.id} aria-hidden="true">
-      <canvas ref={canvasRef} style={{ opacity: preset.opacity }} />
+    <div className={`site-grain ${className}`} data-grain="coarse" aria-hidden="true">
+      <span className="site-grain-layer site-grain-layer--coarse" />
+      <span className="site-grain-layer site-grain-layer--fine" />
     </div>
   );
 }

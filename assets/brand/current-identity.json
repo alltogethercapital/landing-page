@@ -1,0 +1,25 @@
+{
+  "identity": "Machine Spirit / Soft Relief + White Signal",
+  "defaultTheme": "light",
+  "light": "04 Soft Relief: white relief on pale stone static",
+  "dark": "01 White Signal: white relief on deep charcoal static",
+  "geometry": {
+    "rows": 3,
+    "pieces": 7,
+    "sourceWidth": 920,
+    "sourceHeight": 310,
+    "cornerRadius": 4
+  },
+  "wordmark": "Approved Reference 2; white in both themes, with contact shadows in light mode",
+  "smallUse": "Flat three-row favicon and search fallback preserve clarity at tiny sizes",
+  "typography": {
+    "heading": "Orbitron",
+    "navigation": "Chakra Petch",
+    "body": "Source Sans 3"
+  },
+  "noise": "Two-scale seeded digital static, animated with the original stepped movement",
+  "sourceOptions": [
+    "01 White Signal",
+    "04 Soft Relief"
+  ]
+}

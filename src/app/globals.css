@@ -167,9 +167,13 @@ body::-webkit-scrollbar {
 /* One reading face throughout; Atlas is reserved for glyphs and machine data. */
 :root {
   color-scheme: light;
-  --cog-bg: #f7f6f3;
-  --cog-ink: #191919;
-  --cog-muted: #595955;
+  --cog-bg: #d2d7cd;
+  --cog-field: #d9ddd4;
+  --cog-edge: #bfc6b9;
+  --cog-static-fine: 0.14;
+  --cog-static-coarse: 0.10;
+  --cog-ink: #192316;
+  --cog-muted: #3f4d37;
   --cog-line: rgba(25, 25, 25, 0.17);
   --cog-hover: rgba(25, 25, 25, 0.045);
   --cog-logo-filter: grayscale(1) contrast(1.2);
@@ -192,7 +196,7 @@ body {
   color: var(--cog-ink);
 }
 
-/* Neutral grain floats gently over charcoal or off-white paper. */
+/* The selected pale-stone and charcoal fields carry the same digital static. */
 .site-grain {
   position: absolute;
   inset: 0;
@@ -203,7 +207,7 @@ body {
 .site-grain--background {
   position: fixed;
   z-index: 0;
-  background: var(--cog-bg);
+  background: radial-gradient(ellipse at 50% 44%, var(--cog-field), var(--cog-bg) 50%, var(--cog-edge));
 }
 
 .site-grain--surface {
@@ -214,7 +218,7 @@ html[data-site-theme] .site-grain--surface {
   display: block;
 }
 
-.site-grain canvas {
+.site-grain-layer {
   position: absolute;
   top: -50%;
   left: -50%;
@@ -222,12 +226,23 @@ html[data-site-theme] .site-grain--surface {
   width: 200%;
   height: 200%;
   pointer-events: none;
-  opacity: 0.05;
   mix-blend-mode: normal;
   image-rendering: pixelated;
   will-change: transform;
   background-repeat: repeat;
   animation: site-grain-shift 1.25s steps(10) infinite;
+}
+
+.site-grain-layer--fine {
+  background-image: url("/brand/identity/static-fine.png");
+  background-size: 640px;
+  opacity: var(--cog-static-fine);
+}
+
+.site-grain-layer--coarse {
+  background-image: url("/brand/identity/static-coarse.png");
+  background-size: 819.2px;
+  opacity: var(--cog-static-coarse);
 }
 
 @keyframes site-grain-shift {
@@ -258,24 +273,32 @@ html[data-site-theme] .lp-portal-page {
 
 html[data-site-theme="light"] {
   color-scheme: light;
-  --cog-bg: #f7f6f3;
-  --cog-ink: #191919;
-  --cog-muted: #595955;
+  --cog-bg: #d2d7cd;
+  --cog-field: #d9ddd4;
+  --cog-edge: #bfc6b9;
+  --cog-static-fine: 0.14;
+  --cog-static-coarse: 0.10;
+  --cog-ink: #192316;
+  --cog-muted: #3f4d37;
   --cog-line: rgba(25, 25, 25, 0.17);
   --cog-hover: rgba(25, 25, 25, 0.045);
-  --cog-dark: #191919;
+  --cog-dark: #192316;
   --cog-accent: var(--cog-ink);
   --cog-logo-filter: grayscale(1) contrast(1.2);
 }
 
 html[data-site-theme="dark"] {
   color-scheme: dark;
-  --cog-bg: #121212;
-  --cog-ink: #f7f6f3;
-  --cog-muted: #bab9b4;
+  --cog-bg: #141714;
+  --cog-field: #20241f;
+  --cog-edge: #0d100d;
+  --cog-static-fine: 0.12;
+  --cog-static-coarse: 0.08;
+  --cog-ink: #fcfdf7;
+  --cog-muted: #eef1e8;
   --cog-line: rgba(247, 246, 243, 0.2);
   --cog-hover: rgba(247, 246, 243, 0.055);
-  --cog-dark: #f7f6f3;
+  --cog-dark: #fcfdf7;
   --cog-accent: var(--cog-ink);
   --cog-logo-filter: grayscale(1) invert(1) contrast(1.15);
 }
@@ -313,7 +336,7 @@ html[data-site-theme="dark"] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-grain canvas {
+  .site-grain-layer {
     animation: none;
     will-change: auto;
   }
