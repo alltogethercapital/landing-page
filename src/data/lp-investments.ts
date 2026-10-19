@@ -136,8 +136,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "56-allia-health", chronology: 56, company: "Allia Health", investedCost: 10000, investmentDate: "2026-09-12", round: "Seed", entryValuation: "$50M post-money", instrument: "SAFE", platform: "AngelList", driveFolderId: "1SrJGSEWLdIucl2xYAUP9iiJbYyoVXcfu", logo: "/logos/cards/allia-health.png", description: "Connected infrastructure for behavioral health practices.", reviewStatus: "pending", reviewNote: "Owner-confirmed position; supplied subscription package is generic and unsigned, and cash-movement evidence remains pending.", securityAllocation: [{ securityType: "SAFE", share: 1 }] },
   { id: "57-astro-mechanica", chronology: 57, company: "Astro Mechanica", investedCost: 25000, investmentDate: "2026-09-14", round: "Series B", entryValuation: "$500M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1U9X7aBMqYbNur4ZymkjfhX5o22S49wVb", logo: "/logos/cards/astro-mechanica.png", description: "Turboelectric propulsion and integrated aerospace systems.", reviewStatus: "pending", reviewNote: "Owner-confirmed position; supplied offering documents are generic and unsigned, and cash-movement evidence remains pending.", securityAllocation: [{ securityType: "Equity", share: 1 }] },
   { id: "58-atomarine", chronology: 58, company: "Atomarine", investedCost: 10000, investmentDate: "2026-09-16", round: "Seed", entryValuation: "$125M post-money cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "1nZD5UYXSxlF2E3rn9jO1wDly8sG9zRI2", logo: "/logos/cards/atomarine.png", description: "Floating data center campuses with standalone power and seawater cooling.", reviewStatus: "pending", reviewNote: "Owner-confirmed position; supplied offering documents are generic and unsigned, and cash-movement evidence remains pending.", securityAllocation: [{ securityType: "SAFE", share: 1 }] },
-  { id: "59-pocket", chronology: 59, company: "Pocket", investedCost: 15000, investmentDate: "2026-09-16", round: "Series A", entryValuation: "TBD (deal-room estimate up to $500M)", instrument: "Equity", platform: "AngelList", driveFolderId: "1YslMnAweDHAeMsxY00QspItA_1LAxd39", logo: "/logos/cards/pocket.png", description: "AI for real-world conversations, from capture through follow-through.", reviewStatus: "pending", reviewNote: "Owner revised the commitment from $25,000 to $15,000 on September 22, 2026; valuation is not final, the supplied offering documents are generic and unsigned, and cash-movement evidence remains pending.", securityAllocation: [{ securityType: "Equity", share: 1 }] },
-  { id: "60-chef-robotics", chronology: 60, company: "Chef Robotics", investedCost: 18590.75, investmentDate: "2026-10-16", round: "N/A", entryValuation: "Not evidenced", instrument: "Not specified", platform: "Not specified", driveFolderId: "1VEsHa4Vp_hMfcaQPVkrW1VKEcMuSBSvY", logo: "/logos/cards/chef-robotics.png", description: "Physical AI and robotic systems for food production.", reviewStatus: "pending", reviewNote: "Owner confirmed the $18,590.75 position and October 16, 2026 investment date. Round, entry valuation, instrument, investment route, executed acceptance, and completed cash movement remain unevidenced; no bank-ledger movement is recorded without transaction evidence.", securityAllocation: [{ securityType: "Not specified", share: 1 }] },
+  { id: "59-chef-robotics", chronology: 59, company: "Chef Robotics", investedCost: 18590.75, investmentDate: "2026-10-16", round: "N/A", entryValuation: "Not evidenced", instrument: "Not specified", platform: "Not specified", driveFolderId: "1VEsHa4Vp_hMfcaQPVkrW1VKEcMuSBSvY", logo: "/logos/cards/chef-robotics.png", description: "Physical AI and robotic systems for food production.", reviewStatus: "pending", reviewNote: "Owner confirmed the $18,590.75 position and October 16, 2026 investment date. Round, entry valuation, instrument, investment route, executed acceptance, and completed cash movement remain unevidenced; no bank-ledger movement is recorded without transaction evidence.", securityAllocation: [{ securityType: "Not specified", share: 1 }] },
 ];
 
 // Valuation inputs used for the LP-facing gross projection. Most inputs are
@@ -211,10 +210,10 @@ export const LP_PROJECTION_AS_OF = "2026-08-21";
 export const LP_SNAPSHOT = {
   source: "All Together Drive · Schedule of Investments",
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
-  sourceRange: "Sheet1!A2:J61",
+  sourceRange: "Sheet1!A2:J60",
   sourceModifiedAt: "2026-10-19",
   publishedAt: "2026-10-19",
-  recordCount: 60,
-  investedCostTotal: 855236.73,
+  recordCount: 59,
+  investedCostTotal: 840236.73,
   status: "Reconciled to SOI; pending records retain explicit evidence caveats",
 } as const;

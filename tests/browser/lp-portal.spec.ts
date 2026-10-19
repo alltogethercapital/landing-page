@@ -279,10 +279,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(pendingPerformanceRow).toContainText("No performance");
   await expect(pendingPerformanceRow).toContainText("In AUM, NAV, and total math");
   const performanceTotal = page.locator(".lp-performance-total-row");
-  await expect(performanceTotal).toContainText("$836,645.98");
+  await expect(performanceTotal).toContainText("$840,236.73");
   await expect(performanceTotal).toContainText("1.10×");
   await expect(performanceTotal).toContainText("+$79,992.02");
-  await expect(performanceTotal).toContainText("$916,638.00");
+  await expect(performanceTotal).toContainText("$920,228.75");
   await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-performance-desktop.png", fullPage: true });
 
@@ -448,12 +448,6 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.getByText(/final allocation is \$20,766\.24/i)).toBeVisible();
   await expect(page.getByText(/original \$30,000\.00 outbound investment remains in the bank ledger/i)).toBeVisible();
   await expect(page.getByText(/additional \$8,455\.76 reduction is not recorded as a refund or platform credit/i)).toBeVisible();
-
-  await page.goto("/lp/investments/59-pocket");
-  await expect(page.getByRole("heading", { name: "Pocket" })).toBeVisible();
-  await expect(page.getByText("$15,000", { exact: true })).toHaveCount(2);
-  await expect(page.getByText(/revised the commitment from \$25,000 to \$15,000/i)).toBeVisible();
-  await expect(page.getByText(/cash-movement evidence remains pending/i)).toBeVisible();
 
   await page.goto("/lp/investments/45-higgsfield");
   await expect(page.getByRole("heading", { name: "Higgsfield" })).toBeVisible();

@@ -13,7 +13,6 @@ const SAMPLE_LIMIT = 1600;
 
 // Small optical corrections supplement geometry; they never override size caps.
 const opticalBoosts = {
-  Pocket: 1.04,
   Ultrasonium: 1.06,
   "Sunflower Labs": 1.04,
   "Aurelius Systems": 0.96,

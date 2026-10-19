@@ -150,7 +150,7 @@ function SeptemberUpdateCopy() {
         A month ago, we wrote that cheaper intelligence would not make every AI company more valuable. It
         would reward the companies that control something difficult to replace: a workflow, a physical
         system, proprietary data, distribution, or infrastructure that compounds as the models improve. The
-        fifteen positions added since that letter make the next part of the thesis clearer. Intelligence is
+        fourteen positions added since that letter make the next part of the thesis clearer. Intelligence is
         leaving the chat window and entering the systems where work actually happens.
       </p>
 
@@ -184,13 +184,6 @@ function SeptemberUpdateCopy() {
         where an agent actually returns capacity, and whether the intervention improved an economic outcome.
         Autostep is building a current map of organizational work and a scorecard for what changes it. In a
         world with abundant automation, knowing what to automate—and proving the result—becomes infrastructure.
-      </p>
-
-      <p>
-        Pocket carries AI into conversations that never begin as software events. Its device captures
-        in-person and phone conversations, then turns them into transcripts, summaries, action items, and
-        searchable context. The important product decision is not simply recording. It is closing the loop
-        between what was said and what happens next while allowing the user to remain present in the room.
       </p>
 
       <p>
@@ -258,19 +251,21 @@ function SeptemberUpdateCopy() {
         Investor Account. The owner has now confirmed the final allocation is $20,766.24. We reduced recorded
         cost by another $8,455.76 and updated the directional value estimate proportionally. The original
         $30,000.00 outflow and evidenced $778.00 platform credit remain recorded; no additional refund or platform
-        credit is recorded without transaction evidence. The owner also revised the Pocket commitment from
-        $25,000.00 to $15,000.00; Pocket&apos;s cash route and completed transfer remain unevidenced, so no bank
-        movement was added or changed. The owner subsequently revised the final Rasyn allocation from
+        credit is recorded without transaction evidence. On October 19, 2026, the owner confirmed that All
+        Together backed out of Pocket. The withdrawn $15,000.00 commitment has therefore been removed from the
+        portfolio and from these restated figures. No Pocket-labelled cash movement exists in the bank ledger,
+        so no refund or reversal was invented. The owner subsequently revised the final Rasyn allocation from
         $9,993.59 to $9,994.00; the original $10,000.00 outflow remains in the bank ledger, and no separate
         $6.00 refund or AngelList account-balance credit is recorded without transaction evidence. The owner
         also revised the second Blue Origin allocation from $25,000.00 to $24,975.00. The actual $25,000.00
         AngelList outflow remains in the bank ledger, and no separate $25.00 refund or AngelList account credit
-        is recorded without transaction evidence. The figures in this update now reflect all four corrections.
+        is recorded without transaction evidence. The figures in this update now reflect the Pocket withdrawal
+        and the remaining allocation corrections.
       </p>
 
       <p>
         The change from the August letter includes {currency(snapshot.newInvestedCostSinceAugust)} across the
-        fifteen additions and a {currency(snapshot.reconciliationAdjustmentSinceAugust)}{" "}correction to
+        fourteen additions and a {currency(snapshot.reconciliationAdjustmentSinceAugust)}{" "}correction to
         Positron&apos;s recorded cost. Those additions and the correction remain at cost in the current estimate.
         That is why gross value increased while the current value multiple moved from 1.12× to 1.10×: the
         denominator grew, not because an existing mark was reduced.
