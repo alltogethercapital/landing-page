@@ -756,6 +756,11 @@ html[data-site-theme="dark"] .cog-wordmark {
   object-fit: contain;
 }
 
+/* Keep the white face above legacy theme filters on the lettering wrapper. */
+html:not([data-site-theme="dark"]) .cog-wordmark .cog-wordmark-name {
+  filter: none;
+}
+
 html:not([data-site-theme="dark"]) :is(.cog-wordmark-logo, .cog-wordmark-lettering) {
   filter: brightness(0) invert(1);
 }
