@@ -728,14 +728,6 @@ html[data-shader-tone="dark"] .cog-strip--portfolio::before {
   align-items: center;
   gap: 9px;
   line-height: 1;
-  /* A fine contact shadow separates the white face from the pale field. */
-  filter:
-    drop-shadow(0 -0.4px 0 rgb(96 111 83 / 85%))
-    drop-shadow(0 0.7px 0.25px rgb(55 71 43 / 85%))
-    drop-shadow(0 1.1px 0.75px rgb(36 50 29 / 25%));
-}
-
-html[data-site-theme="dark"] .cog-wordmark {
   filter: none;
 }
 
@@ -804,15 +796,6 @@ html[data-site-theme="dark"] .cog-wordmark {
   width: 100%;
   height: 100%;
   object-fit: contain;
-}
-
-/* Keep the white face above legacy theme filters on the lettering wrapper. */
-html:not([data-site-theme="dark"]) .cog-wordmark .cog-wordmark-name {
-  filter: none;
-}
-
-html:not([data-site-theme="dark"]) :is(.cog-wordmark-logo, .cog-wordmark-lettering) {
-  filter: brightness(0) invert(1);
 }
 
 .cog-wordmark-logo--dark {

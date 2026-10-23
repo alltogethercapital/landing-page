@@ -1,10 +1,10 @@
 {
-  "identity": "Machine Spirit / Soft Relief + White Signal",
+  "identity": "Machine Spirit / original kit symbol and Reference 2 wordmark",
   "defaultTheme": "light",
   "themePersistence": "New sessions start light; explicit dark-mode choices last within the current tab session",
   "interfaceIcons": "Custom Morphicons on a 24px grid, rendered at 20px with 1.5 strokes, square terminals, chamfered outlines and damped hover motion",
-  "light": "04 Soft Relief: white relief on pale stone static",
-  "dark": "01 White Signal: white relief on deep charcoal static",
+  "light": "Original ink symbol and Reference 2 lettering on pale stone static, with a subtle contact shadow",
+  "dark": "Original ivory symbol and white Reference 2 lettering on deep charcoal static, with a soft dark shadow",
   "geometry": {
     "rows": 3,
     "pieces": 7,
@@ -12,7 +12,7 @@
     "sourceHeight": 310,
     "cornerRadius": 4
   },
-  "wordmark": "Approved Reference 2 in white; a crisp graphite contact shadow lifts the light-mode lettering from Fog, and dark mode uses clean white lettering. The wing retains its approved relief material",
+  "wordmark": "Original brand-kit three-row, seven-piece symbol and exact Reference 2 image lettering; no relief recoloring or flattened artwork",
   "readingSurface": "Fog is the approved light mode: a luminous centre over a pale grey-green field, solid graphite text and visible machine static",
   "lightContrast": "Fog reading colours retain at least 7.08:1 primary and 4.69:1 secondary contrast against the conservative darkest combined static, gradient, atmospheric shade and hover values. No reading text uses outlines or text shadows",
   "hero": "Raw Transmission retains its dark cinematic palette in both UI themes",
@@ -26,5 +26,13 @@
   "sourceOptions": [
     "01 White Signal",
     "04 Soft Relief"
-  ]
+  ],
+  "brandKitVerification": {
+    "archive": "Machine-Spirit-Light-Brand-Kit-Soft-Relief.zip",
+    "inkSymbol": "Byte-for-byte match to 10 Website/compact-flat-symbol.svg",
+    "lettering": "Byte-for-byte match to 04 Logo Masters/Wordmark/wordmark-ink-2400x320.png",
+    "ivorySymbol": "Identical viewBox, transforms and all seven vector paths to 04 Logo Masters/flat-symbol.svg; existing ivory tint retained",
+    "inkSymbolSHA256": "c81f4cc7070b1a396867a22476341fa1e0a5e95db53c0e17fe18a4d8e04c321f",
+    "letteringSHA256": "6a58b353ffbcefc0c6ed107ba12db829f7f5dffcd88fda80ec4c5b7d3f0c62d2"
+  }
 }

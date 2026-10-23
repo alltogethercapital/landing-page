@@ -1,31 +1,32 @@
-/* Soft Relief in light mode; White Signal in dark mode. Keep the same lettering. */
-/* The white wordmark shares the wings' contact shadow on the light field. */
+/* Original ink/ivory symbol artwork and approved Reference 2 lettering. */
+.cog-wordmark {
+  filter: drop-shadow(0 0.6px 0.5px rgb(24 29 22 / 20%));
+}
+
+html[data-site-theme="dark"] .cog-wordmark {
+  filter: drop-shadow(0 1px 0.7px rgb(0 0 0 / 55%))
+    drop-shadow(0 2px 2px rgb(0 0 0 / 20%));
+}
+
 .cog-wordmark-symbol,
 .cog-wordmark-logo {
   width: 50px;
 }
 
-.cog-wordmark-symbol { aspect-ratio: 104 / 42; }
+.cog-wordmark-symbol { aspect-ratio: 920 / 310; }
 
 .cog-wordmark-name {
   overflow: visible;
-  filter: brightness(1);
-}
-
-html[data-site-theme="light"] .cog-wordmark-name {
-  filter: invert(1)
-    drop-shadow(0 0.65px 0.3px rgb(24 29 22 / 85%))
-    drop-shadow(0 1.6px 0.9px rgb(24 29 22 / 32%));
+  filter: none;
 }
 
 html[data-site-theme="light"] :is(.cog-title, .cog-strip-heading) {
   font-weight: 500;
 }
 
-.cog-wordmark-logo--light {
-  /* A crisp contact edge and soft lift keep the small white wings legible. */
-  filter: drop-shadow(0 0.75px 0.35px rgb(24 29 22 / 52%))
-    drop-shadow(0 1.8px 1.25px rgb(24 29 22 / 20%));
+.cog-wordmark-logo,
+.cog-wordmark-lettering {
+  filter: none;
 }
 
 html[data-site-theme="dark"] .cog-wordmark-name {
