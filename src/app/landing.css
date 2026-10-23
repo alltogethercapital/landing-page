@@ -47,7 +47,4 @@ html .cog-manifesto-section .cog-title {
     margin-inline: var(--mobile-gutter);
   }
 
-  .cog-page:has(.cog-landing) .cog-mobile-header {
-    background: linear-gradient(var(--cog-bg) 85%, transparent);
-  }
 }
