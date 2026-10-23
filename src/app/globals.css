@@ -263,6 +263,56 @@ html[data-site-theme="light"] .site-grain-atmosphere { display: block; }
   opacity: var(--cog-static-coarse);
 }
 
+.site-grain-noise {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Show one of 12 cached noise frames every 100ms; never move the surface. */
+.site-grain-noise-frame {
+  visibility: hidden;
+  animation: site-grain-refresh 1.2s step-end infinite;
+}
+
+@keyframes site-grain-refresh {
+  0% { visibility: visible; }
+  8.333333%, 100% { visibility: hidden; }
+}
+
+/* Dark static changes grain in place, without moving a visible texture plate. */
+html[data-site-theme="dark"] .site-grain-layer {
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  animation: none;
+  transform: none;
+  will-change: auto;
+}
+
+html[data-site-theme="dark"] .site-grain-noise { display: block; }
+
+.site-grain-noise--fine { opacity: calc(var(--cog-static-fine) * 0.72); }
+.site-grain-noise--coarse { opacity: calc(var(--cog-static-coarse) * 0.55); }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-grain-layer,
+  .site-grain-atmosphere,
+  .site-grain-noise-frame {
+    animation: none;
+    transform: none;
+  }
+
+  html[data-site-theme="dark"] .site-grain-noise { display: none; }
+  html[data-site-theme="dark"] .site-grain-layer { display: block; }
+}
+
 @keyframes site-grain-shift {
   0%, 100% { transform: translate(0, 0); }
   10% { transform: translate(-10%, -5%); }
@@ -361,7 +411,8 @@ html[data-site-theme="dark"] {
 
 @media (prefers-reduced-motion: reduce) {
   .site-grain-layer,
-  .site-grain-atmosphere {
+  .site-grain-atmosphere,
+  .site-grain-noise-frame {
     animation: none;
     will-change: auto;
   }

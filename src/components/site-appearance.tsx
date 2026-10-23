@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useId, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { SITE_THEME_STORAGE_KEY } from "@/lib/site-theme";
 import { UIIcon } from "@/components/icons";
@@ -59,13 +59,81 @@ export function setSiteTheme(nextTheme: SiteTheme) {
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
-/** Shared static plates match the selected kit without a full-screen bitmap. */
+const NOISE_SEEDS = [2, 17, 43, 79, 131, 197, 277, 367, 467, 577, 701, 839];
+
+function StationaryNoise({ coarse = false }: { coarse?: boolean }) {
+  const id = useId().replace(/:/g, "");
+  const size = coarse ? 256 : 512;
+  const scale = coarse ? 819.2 : 640;
+
+  return (
+    <svg
+      className={`site-grain-noise site-grain-noise--${coarse ? "coarse" : "fine"}`}
+      aria-hidden="true"
+      focusable="false"
+    >
+      {NOISE_SEEDS.map((seed, index) => {
+        const filterId = `static-filter-${id}-${seed}`;
+        const patternId = `static-pattern-${id}-${seed}`;
+        return (
+          <g key={seed}>
+            <defs>
+              <filter
+                id={filterId}
+                x="0"
+                y="0"
+                width={size}
+                height={size}
+                filterUnits="userSpaceOnUse"
+                colorInterpolationFilters="sRGB"
+              >
+                <feTurbulence
+                  type="fractalNoise"
+                  baseFrequency="0.8"
+                  numOctaves="1"
+                  stitchTiles="stitch"
+                  seed={coarse ? seed + 23 : seed}
+                />
+                <feColorMatrix type="saturate" values="0" />
+                <feComponentTransfer>
+                  <feFuncR type="linear" slope="3" intercept="-1" />
+                  <feFuncG type="linear" slope="3" intercept="-1" />
+                  <feFuncB type="linear" slope="3" intercept="-1" />
+                </feComponentTransfer>
+              </filter>
+              <pattern
+                id={patternId}
+                width={scale}
+                height={scale}
+                patternUnits="userSpaceOnUse"
+                viewBox={`0 0 ${size} ${size}`}
+              >
+                <rect width={size} height={size} filter={`url(#${filterId})`} />
+              </pattern>
+            </defs>
+            <rect
+              className="site-grain-noise-frame"
+              style={{ animationDelay: `${-index / 10}s` }}
+              width="100%"
+              height="100%"
+              fill={`url(#${patternId})`}
+            />
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+/** Light uses the original plates; dark refreshes noise in a stationary frame. */
 export function SiteGrain({ className = "" }: { className?: string }) {
   return (
     <div className={`site-grain ${className}`} data-grain="coarse" aria-hidden="true">
       <span className="site-grain-atmosphere" />
       <span className="site-grain-layer site-grain-layer--coarse" />
       <span className="site-grain-layer site-grain-layer--fine" />
+      <StationaryNoise coarse />
+      <StationaryNoise />
     </div>
   );
 }
