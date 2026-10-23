@@ -728,12 +728,11 @@ html[data-shader-tone="dark"] .cog-strip--portfolio::before {
   align-items: center;
   gap: 9px;
   line-height: 1;
-  /* Raised enamel: white faces above a defined olive edge and contact shadow. */
+  /* A fine contact shadow separates the white face from the pale field. */
   filter:
-    drop-shadow(0 -1px 0 #6c7860)
-    drop-shadow(0 1px 0 #536048)
-    drop-shadow(0 1px 0 #536048)
-    drop-shadow(0 2px 1px #24321d80);
+    drop-shadow(0 -0.4px 0 rgb(96 111 83 / 85%))
+    drop-shadow(0 0.7px 0.25px rgb(55 71 43 / 85%))
+    drop-shadow(0 1.1px 0.75px rgb(36 50 29 / 25%));
 }
 
 html[data-site-theme="dark"] .cog-wordmark {
