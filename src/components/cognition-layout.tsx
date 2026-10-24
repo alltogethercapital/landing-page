@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { Children, isValidElement, type ReactNode } from "react";
 import { ArrowUpRight } from "@/components/icons";
+import { SiteFooter } from "@/components/site-footer";
 import { WordmarkLettering } from "@/components/wordmark-lettering";
 import { BRAND_SYMBOL } from "@/lib/brand";
 import { cn } from "@/lib/utils";
@@ -62,7 +63,17 @@ export function CognitionPage({
   children: ReactNode;
   className?: string;
 }) {
-  return <main className={cn("cog-page min-h-screen", className)}>{children}</main>;
+  // The footer always starts below the fold, however short the page content is.
+  const items = Children.toArray(children);
+  const footer = items.filter((child) => isValidElement(child) && child.type === SiteFooter);
+  const content = items.filter((child) => !footer.includes(child));
+
+  return (
+    <main className={cn("cog-page min-h-screen", className)}>
+      {footer.length > 0 ? <div className="cog-page-fold">{content}</div> : content}
+      {footer}
+    </main>
+  );
 }
 
 export function CognitionSection({

@@ -23,6 +23,9 @@ function isNavItemActive(pathname: string, href: string) {
 }
 
 const OVERLAY_EVENT = "machine-spirit-overlay-open";
+// Separate thresholds keep the wordmark from flickering around a single scroll position.
+const NAV_CONDENSE_Y = 48;
+const NAV_EXPAND_Y = 16;
 
 function ContactLinks({ onClick }: { onClick?: () => void }) {
   return (
@@ -93,6 +96,26 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const openFrameRef = useRef<number | null>(null);
   const restoreFocusRef = useRef(false);
+  const [condensed, setCondensed] = useState(false);
+
+  // Once the page scrolls, the wordmark folds into its symbol and reopens back at the top.
+  useEffect(() => {
+    let frame: number | null = null;
+    const update = () => {
+      frame = null;
+      const y = window.scrollY;
+      setCondensed((current) => (current ? y > NAV_EXPAND_Y : y > NAV_CONDENSE_Y));
+    };
+    const onScroll = () => {
+      if (frame === null) frame = window.requestAnimationFrame(update);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame !== null) window.cancelAnimationFrame(frame);
+    };
+  }, []);
 
   // Route changes close the menu without a delayed, stale overlay or scroll lock.
   if (menu.pathname !== pathname) setMenu({ pathname, open: false });
@@ -203,7 +226,10 @@ export function SiteNav({ showLogo = false }: { showLogo?: boolean }) {
 
   return (
     <>
-      <aside className="cog-desktop-nav" aria-label="Primary">
+      <aside
+        className={cn("cog-desktop-nav", condensed && "is-condensed")}
+        aria-label="Primary"
+      >
         <Link href="/" aria-label="Machine Spirit home" className="cog-nav-logo">
           <LogoMark />
         </Link>

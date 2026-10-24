@@ -830,7 +830,7 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   font-family: var(--cog-support);
 }
 
-.cog-page > .cog-logo-lab-controls {
+:is(.cog-page, .cog-page-fold) > .cog-logo-lab-controls {
   position: fixed;
   z-index: 201;
 }
@@ -1010,9 +1010,20 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   background-size: 1px 100%;
 }
 
-.cog-page > * {
+:is(.cog-page, .cog-page-fold) > * {
   position: relative;
   z-index: 1;
+}
+
+/* Holds everything above the footer at a full viewport, so the footer always
+   starts below the fold. It stays unpositioned so the fixed nav and header
+   keep stacking above the footer. */
+.cog-page > .cog-page-fold {
+  position: static;
+  z-index: auto;
+  display: flow-root;
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
 .cog-desktop-nav {
@@ -1037,6 +1048,34 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   /* The wing hangs in the gutter; lettering shares the links' left edge. */
   margin-left: -53px;
   margin-bottom: 22px;
+}
+
+/* Scrolled: the lettering wipes away toward the symbol, which holds its place. */
+.cog-desktop-nav .cog-wordmark-name {
+  clip-path: inset(0 0 0 0);
+  transition:
+    clip-path 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 300ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cog-desktop-nav.is-condensed .cog-wordmark-name {
+  clip-path: inset(0 100% 0 0);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition-duration: 320ms, 220ms, 320ms;
+}
+
+.cog-desktop-nav.is-condensed .cog-nav-logo:is(:hover, :focus-visible) .cog-wordmark-name {
+  clip-path: inset(0 0 0 0);
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cog-desktop-nav .cog-wordmark-name {
+    transition: opacity 160ms ease;
+  }
 }
 
 .cog-mobile-nav {
@@ -1569,7 +1608,7 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   padding-top: 148px;
 }
 
-.cog-page > .cog-section:first-of-type:not(.cog-hero-section) {
+:is(.cog-page, .cog-page-fold) > .cog-section:first-of-type:not(.cog-hero-section) {
   padding-top: 148px;
 }
 
@@ -2279,7 +2318,7 @@ html[data-site-theme="dark"] .cog-wordmark-name {
     padding-top: 56px;
   }
 
-  .cog-page > .cog-section:first-of-type:not(.cog-hero-section) {
+  :is(.cog-page, .cog-page-fold) > .cog-section:first-of-type:not(.cog-hero-section) {
     min-height: auto;
     padding-top: 92px;
   }
