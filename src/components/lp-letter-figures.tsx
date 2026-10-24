@@ -1,4 +1,5 @@
 import { requireLpSession } from "@/lib/lp-auth";
+import { projectedPositionValue } from "@/lib/lp-projection";
 import {
   LETTER_ACCESS_CHANNEL_SPLIT,
   LETTER_ALLOCATION,
@@ -259,13 +260,7 @@ function ValuationEvidence() {
           entryValuation: mark.entryValuation ?? recordedPosition.entryValuation,
         }
       : recordedPosition;
-    const markedMultiple = mark
-      ? mark.latestValuationAmount / mark.entryValuationAmount
-      : 1;
-    const markedCostBasis = mark?.costBasisAmount ?? position.investedCost;
-    const carried = mark
-      ? position.investedCost - markedCostBasis + markedCostBasis * markedMultiple
-      : position.investedCost;
+    const carried = projectedPositionValue(position.investedCost, mark, position.performance);
     const delta = carried - position.investedCost;
     return {
       position,

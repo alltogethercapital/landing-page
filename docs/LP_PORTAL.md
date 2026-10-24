@@ -9,7 +9,13 @@
 - Google Drive file and spreadsheet IDs remain server-only and are removed from the DTO passed to client-facing views.
 - Login attempts are rate-limited per forwarded IP in staging.
 
-The portfolio currently renders an approved snapshot of the private Google Drive Schedule of Investments. It includes 44 recorded investments, source dates, cost, round, instrument, platform, entry valuation, review status, and matched public-site logos. It does not claim continuously changing private-company value.
+The portfolio renders a manually published snapshot of the private Google Drive Schedule of Investments. As of October 24, 2026 it includes 59 recorded positions across 57 unique issuers/vehicles. Two positions each belong to 1X and Blue Origin. H256 is one vehicle with a known Anduril slice; it is not counted again as a separate funded company position.
+
+The financial snapshot retains recorded cost, entry terms and evidence caveats. Its projected gross value uses explicitly sourced company comparisons plus one separately labeled owner-directed Anduril assumption. It is not administrator-reported NAV or regulatory AUM. Cash, liabilities, fees, carry, taxes, dilution and security-specific conversion terms are not modeled. Historical investor letters keep their historical snapshots.
+
+Company reviews live in `src/data/lp-company-updates.ts`, with a source link and an optional announcement date. Undated product checks and limited disclosures are labeled as such. Every SOI issuer must have a review before the portal can render. `/lp?section=updates` groups duplicate company positions once; individual position pages include the same review. Public portfolio names with no separate SOI row are shown outside the financial snapshot.
+
+See `docs/LP_REVIEW_2026-10-24.md` for this publication's valuation decisions and reconciliation.
 
 ## Approval-safe Drive update workflow
 

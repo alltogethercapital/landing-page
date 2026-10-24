@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { UIIcon } from "@/components/icons";
+import { LP_COMPANY_REVIEW_AS_OF } from "@/data/lp-company-updates";
 import { getCompanyContext, getLpInvestment, getLpSnapshot } from "@/lib/lp-data";
 import { pageTitle } from "@/lib/page-metadata";
 
@@ -119,6 +120,18 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
         </section>
       ) : null}
 
+      <section className="lp-company-update lp-company-update--detail" aria-labelledby="lp-company-update-heading">
+        <header>
+          <h2 id="lp-company-update-heading">Company update</h2>
+          <span>Reviewed {date(LP_COMPANY_REVIEW_AS_OF)}</span>
+        </header>
+        <h3>{investment.companyUpdate.headline}</h3>
+        {investment.companyUpdate.sourceDate && <p className="lp-company-update-date">Source date: {date(investment.companyUpdate.sourceDate)}</p>}
+        <p>{investment.companyUpdate.summary}</p>
+        {investment.companyUpdate.valuationNote && <p className="lp-company-update-valuation">{investment.companyUpdate.valuationNote}</p>}
+        <a className="lp-company-update-source" href={investment.companyUpdate.sourceUrl} target="_blank" rel="noreferrer">{investment.companyUpdate.source} ↗</a>
+      </section>
+
       <section className="lp-performance" aria-labelledby="lp-performance-heading">
         <header>
           <h2 id="lp-performance-heading">Position</h2>
@@ -137,7 +150,7 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
             </small>
           </div>
           <div>
-            <dt>Latest company valuation</dt>
+            <dt>Valuation reference</dt>
             <dd>{projection.latestCompanyValuation}</dd>
             <small>
               {projection.basis === "cost"

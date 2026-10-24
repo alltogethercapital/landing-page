@@ -145,8 +145,9 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
 //
 // The August 2026 investor update preserves its mailed three-mark snapshot
 // separately. This live portfolio set reflects the portfolio-wide valuation
-// review completed on August 18, 2026. Anduril is the sole scenario assumption;
-// all other inputs below are sourced company-level comparison valuations.
+// review refreshed on October 24, 2026. Corgi's September financing replaces
+// its July comparison. Other prior inputs are retained, not newly approved
+// administrator marks. Anduril remains the sole owner-directed assumption.
 export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark> = {
   "04-replit": {
     entryValuationAmount: 8_600_000_000,
@@ -181,11 +182,12 @@ export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark
   },
   "21-corgi": {
     entryValuationAmount: 2_500_000_000,
-    latestValuationAmount: 4_000_000_000,
-    latestValuation: "$4B valuation",
-    asOf: "2026-07-22",
-    source: "Corgi Series B extension",
-    sourceUrl: "https://sacra.com/c/corgi/",
+    latestValuationAmount: 5_000_000_000,
+    latestValuation: "$5B reported valuation",
+    asOf: "2026-09-26",
+    source: "Forbes report of closed Corgi Series B extension",
+    sourceUrl: "https://tollbit.forbes.com/sites/richardnieva/2026/09/26/corgi-5-billion-valuation/",
+    scope: "gross company-valuation comparison against the recorded SAFE cap; conversion terms and dilution are not modeled; not an administrator mark",
   },
   "24-1x-series-b": {
     entryValuationAmount: 4_590_000_000,
@@ -205,14 +207,14 @@ export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark
   },
 };
 
-export const LP_PROJECTION_AS_OF = "2026-08-21";
+export const LP_PROJECTION_AS_OF = "2026-10-24";
 
 export const LP_SNAPSHOT = {
   source: "All Together Drive · Schedule of Investments",
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
   sourceRange: "Sheet1!A2:J60",
   sourceModifiedAt: "2026-10-19",
-  publishedAt: "2026-10-19",
+  publishedAt: "2026-10-24",
   recordCount: 59,
   investedCostTotal: 840236.73,
   status: "Reconciled to SOI; pending records retain explicit evidence caveats",

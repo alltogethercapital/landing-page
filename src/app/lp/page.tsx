@@ -6,6 +6,8 @@ import {
   LpPortfolioPerformance,
 } from "@/components/lp-letter-figures";
 import { LpPortfolioTable } from "@/components/lp-portfolio-table";
+import { LpCompanyUpdates, companyUpdateDate } from "@/components/lp-company-updates";
+import { LP_COMPANY_REVIEW_AS_OF } from "@/data/lp-company-updates";
 import { getLpPortfolio } from "@/lib/lp-data";
 import { pageTitle } from "@/lib/page-metadata";
 
@@ -19,7 +21,9 @@ export async function generateMetadata({ searchParams }: LpPortfolioPageProps): 
     ? "Performance"
     : params.section === "analysis"
       ? "Insights"
-      : "Portfolio";
+      : params.section === "updates"
+        ? "Company updates"
+        : "Portfolio";
   return {
     title: pageTitle(section),
     robots: { index: false, follow: false, nocache: true },
@@ -68,7 +72,9 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
     ? "analysis"
     : value("section") === "performance"
       ? "performance"
-      : "investments";
+      : value("section") === "updates"
+        ? "updates"
+        : "investments";
   const investedCost = investments.reduce((total, item) => total + item.investedCost, 0);
   const pendingAllocation = investments.reduce(
     (total, item) => total + (item.vehicleAllocation?.pendingAmount ?? 0),
@@ -79,6 +85,9 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
     0,
   );
   const currentValueMultiple = totalProjectedValue / investedCost;
+  const scenarioUplift = investments.reduce((total, item) => total + (
+    item.projection.basis === "assumption" ? item.projection.projectedValue - item.investedCost : 0
+  ), 0);
   return (
     <div className="lp-portal-shell">
       <h1 className="sr-only">Portfolio</h1>
@@ -93,6 +102,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
             />
           </dt>
           <dd>{currency(investedCost)}</dd>
+          <small className="lp-summary-basis">Recorded investment cost</small>
         </div>
         <div className="lp-summary-metric--primary">
           <dt>
@@ -103,6 +113,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
             />
           </dt>
           <dd>{currency(totalProjectedValue)}</dd>
+          <small className="lp-summary-basis">Projected gross scenario</small>
         </div>
         <div>
           <dt>
@@ -126,6 +137,13 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         </div>
       </dl>
 
+      <details className="lp-valuation-review">
+        <summary>Reviewed {companyUpdateDate(LP_COMPANY_REVIEW_AS_OF)} · Valuation basis</summary>
+        <p>AUM is recorded investment cost. NAV above is a gross portfolio scenario before fees, carry, taxes, dilution and liabilities; it is not administrator-reported NAV. Cash balances and fund liabilities are not reconciled in this view.</p>
+        <p>The existing Anduril assumption contributes {currency(scenarioUplift)} above cost. With that slice at cost, the gross comparison value is {currency(totalProjectedValue - scenarioUplift)}. H256&apos;s {currency(pendingAllocation)} awaiting allocation is included once at cost.</p>
+        <p>This review updates Corgi&apos;s existing comparison to its reported $5B September financing. Other prior comparisons and the owner-directed Anduril scenario are retained. Positions without an applicable comparison remain at cost.</p>
+      </details>
+
       <nav className="lp-portfolio-tabs" aria-label="Portfolio sections">
         <Link
           href="/lp"
@@ -145,6 +163,9 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         >
           Performance
         </Link>
+        <Link href="/lp?section=updates" aria-current={section === "updates" ? "page" : undefined}>
+          Company updates
+        </Link>
       </nav>
 
       {section === "investments" && (
@@ -160,6 +181,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
           <LpPortfolioPerformance />
         </div>
       )}
+      {section === "updates" && <LpCompanyUpdates investments={investments} />}
 
       <footer className="lp-portal-footer">
         <span>Private and confidential</span>

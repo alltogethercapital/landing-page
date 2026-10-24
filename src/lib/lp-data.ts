@@ -1,6 +1,7 @@
 import "server-only";
 
 import { cache } from "react";
+import { LP_COMPANY_UPDATES, type LpCompanyUpdate } from "@/data/lp-company-updates";
 import {
   LP_INVESTMENTS,
   LP_PROJECTED_VALUATION_MARKS,
@@ -14,6 +15,7 @@ import {
 } from "@/lib/lp-investment-language";
 import { PORTFOLIO } from "@/lib/portfolio";
 import { requireLpSession } from "@/lib/lp-auth";
+import { projectedPositionValue } from "@/lib/lp-projection";
 
 export type LpInvestmentProjectionDto = {
   projectedValue: number;
@@ -37,6 +39,7 @@ export type LpInvestmentDto = Omit<
 > & {
   investmentAccess: string;
   ownershipType: string;
+  companyUpdate: LpCompanyUpdate;
   projection: LpInvestmentProjectionDto;
   round: string;
   valuationWhenInvested: string;
@@ -62,6 +65,10 @@ function assertLpData() {
   let investedCostTotal = 0;
 
   for (const investment of LP_INVESTMENTS) {
+    const companyUpdate = LP_COMPANY_UPDATES[investment.company];
+    if (!companyUpdate?.summary || !companyUpdate.sourceUrl.startsWith("https://")) {
+      throw new Error(`Missing company review: ${investment.company}`);
+    }
     if (ids.has(investment.id)) throw new Error(`Duplicate LP investment id: ${investment.id}`);
     if (chronologies.has(investment.chronology)) {
       throw new Error(`Duplicate LP chronology: ${investment.chronology}`);
@@ -166,13 +173,7 @@ function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
   const language = getLpInvestmentLanguage(platform, instrument);
   const mark = LP_PROJECTED_VALUATION_MARKS[investment.id];
   const approvedPerformance = investment.performance;
-  const markedCostBasis = mark?.costBasisAmount ?? investment.investedCost;
-  const projectedValue = approvedPerformance
-    ? approvedPerformance.currentValue + approvedPerformance.distributions
-    : mark
-      ? investment.investedCost - markedCostBasis
-        + markedCostBasis * (mark.latestValuationAmount / mark.entryValuationAmount)
-      : investment.investedCost;
+  const projectedValue = projectedPositionValue(investment.investedCost, mark, approvedPerformance);
   const projection: LpInvestmentProjectionDto = {
     projectedValue,
     grossMultiple: projectedValue / investment.investedCost,
@@ -198,6 +199,7 @@ function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
   void _privateDriveFolderId;
   return {
     ...safeInvestment,
+    companyUpdate: LP_COMPANY_UPDATES[investment.company],
     vehicleAllocation,
     ...language,
     projection,

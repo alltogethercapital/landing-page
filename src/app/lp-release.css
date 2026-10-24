@@ -27,11 +27,47 @@ html[data-site-theme="dark"] .lp-portal-page {
 
 .lp-portfolio-tabs {
   display: flex;
-  gap: clamp(28px, 4vw, 56px);
+  gap: clamp(20px, 3vw, 40px);
   margin-top: 36px;
   margin-bottom: 24px;
   border-bottom: 1px solid var(--lp-line);
 }
+
+.lp-summary-basis {
+  color: var(--lp-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.lp-valuation-review {
+  margin-top: 14px;
+  color: var(--lp-muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.lp-valuation-review summary { cursor: pointer; color: var(--lp-ink); }
+.lp-valuation-review p { max-width: 92ch; margin: 10px 0 0; }
+
+.lp-company-updates-heading,
+.lp-company-updates-related > p { max-width: 82ch; }
+.lp-company-updates h2 { font-size: 22px; line-height: 1.3; margin: 0 0 12px; }
+.lp-company-updates-heading p,
+.lp-company-updates-related > p { color: var(--lp-muted); font-size: 13px; line-height: 1.65; margin: 8px 0; }
+.lp-company-update-list { margin-top: 28px; }
+.lp-company-update { padding: 24px 0; border-top: 1px solid var(--lp-line); }
+.lp-company-update > header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; }
+.lp-company-update > header > a,
+.lp-company-update > header > strong,
+.lp-company-update > header > h2 { font-size: 17px; font-weight: 500; color: var(--lp-ink); margin: 0; }
+.lp-company-update > header > span,
+.lp-company-update-date { color: var(--lp-muted); font-size: 11px; }
+.lp-company-update h3 { margin: 12px 0 8px; font-size: 16px; font-weight: 500; line-height: 1.4; }
+.lp-company-update p { max-width: 90ch; margin: 8px 0; font-size: 13px; line-height: 1.75; color: var(--lp-muted); }
+.lp-company-update .lp-company-update-valuation { padding-left: 14px; border-left: 2px solid var(--lp-line); }
+.lp-company-update-source { display: inline-block; padding-block: 8px; font-size: 12px; line-height: 1.5; color: var(--lp-ink); overflow-wrap: anywhere; }
+.lp-company-updates-related { margin-top: 32px; }
+.lp-company-update--detail { margin-top: 40px; }
 
 .lp-portfolio-tabs + .lp-portfolio-section {
   margin-top: 0;
@@ -42,7 +78,8 @@ html[data-site-theme="dark"] .lp-portal-page {
   min-height: 44px;
   padding: 0 0 15px;
   color: var(--lp-muted);
-  font-size: clamp(18px, 1.8vw, 24px);
+  font-size: clamp(17px, 1.65vw, 22px);
+  white-space: nowrap;
   line-height: 1.15;
   text-decoration: none;
 }
@@ -860,15 +897,17 @@ html[data-site-theme="dark"] .lp-portal-page {
 
   .lp-portfolio-tabs {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 16px;
     margin-top: 32px;
     margin-bottom: 20px;
+    overflow-x: visible;
   }
 
   .lp-portfolio-tabs a {
     min-height: 40px;
     font-size: 17px;
+    white-space: nowrap;
   }
   .lp-vehicle-allocation > header { display: block; }
   .lp-vehicle-allocation > header span { display: block; margin-top: 5px; }
