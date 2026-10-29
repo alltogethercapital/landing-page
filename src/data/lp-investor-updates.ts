@@ -13,11 +13,11 @@ export const LP_INVESTOR_UPDATES: LpInvestorUpdateSummary[] = [
     slug: "october-2026",
     issue: 3,
     title: "Intelligence Meets the Production Line",
-    subtitle: "Chef Robotics, Physical AI, and the Next Operating Layer",
+    subtitle: "Chef Robotics, Standard Bots, and the Next Operating Layer",
     published: "October 16, 2026",
     publishedAt: "2026-10-16",
     excerpt:
-      "Why physical AI becomes valuable when it owns a production loop, and how Chef Robotics extends that thesis into food manufacturing.",
+      "Why physical AI becomes valuable when it owns a production loop, and how Chef Robotics and Standard Bots extend that thesis across food production and American manufacturing.",
   },
   {
     slug: "september-2026",
@@ -78,18 +78,18 @@ export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
   reconciliationAdjustmentSinceAugust: 15_000,
 } as const;
 
-export const LP_OCTOBER_2026_PORTFOLIO_AS_OF = "October 16, 2026";
+export const LP_OCTOBER_2026_PORTFOLIO_AS_OF = "October 29, 2026";
 
-// Current snapshot after adding Chef Robotics at owner-confirmed recorded cost.
-// Chef Robotics remains at cost because company-specific investment terms,
-// execution evidence, and completed cash movement have not yet been supplied.
+// Current snapshot after adding Standard Bots at owner-confirmed recorded cost.
+// Standard Bots remains at cost because no later company valuation, approved
+// administrator mark, execution evidence, or completed cash movement is supplied.
 export const LP_OCTOBER_2026_FUND_SNAPSHOT = {
-  investedCost: 840_236.73,
-  projectedGrossValue: 920_228.75,
+  investedCost: 855_236.73,
+  projectedGrossValue: 935_228.75,
   projectedGrossMultiple: 1.10,
   grossValueChange: 79_992.02,
-  positions: 59,
-  companies: 58,
-  newPositionsSinceSeptember: 1,
-  newInvestedCostSinceSeptember: 18_590.75,
+  positions: 60,
+  companies: 59,
+  newPositionsSinceSeptember: 2,
+  newInvestedCostSinceSeptember: 33_590.75,
 } as const;
