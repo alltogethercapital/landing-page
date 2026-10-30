@@ -91,9 +91,16 @@ function OctoberUpdateCopy() {
 
       <p>
         The investment extends an existing portfolio theme rather than opening a new one. Apptronik, 1X,
-        Figure AI, Path Robotics, Aformic, Weave Robotics, and Chef Robotics approach different labor and
+        Figure AI, Path Robotics, Aformic, Weave Robotics, Chef Robotics, and Standard Bots approach different labor and
         production problems, but the underwriting question is consistent: does the company control a
         deployment loop that becomes more valuable and harder to replace as the intelligence improves?
+      </p>
+
+      <p>
+        <strong>We also invested in Standard Bots.</strong> The company designs and assembles AI-native
+        industrial robots in Glen Cove, New York, pairing its own robot hardware with software that operators
+        can teach in plain language. Its platform addresses machining, welding, palletizing, assembly,
+        finishing, and inspection on a common product line.
       </p>
 
       <p>
@@ -112,11 +119,12 @@ function OctoberUpdateCopy() {
       </p>
 
       <p>
-        Since the September portfolio snapshot, we added one position at {currency(snapshot.newInvestedCostSinceSeptember)}
-        of recorded cost. Chef Robotics remains at cost in the estimate. The investment amount and date are
-        owner-confirmed; the round, entry valuation, instrument, investment route, executed acceptance, and
-        completed cash movement are not yet evidenced. The Schedule of Investments and portal show that
-        distinction explicitly, and no bank-ledger movement has been created without transaction evidence.
+        Since the September portfolio snapshot, we added {snapshot.newPositionsSinceSeptember} positions at {" "}
+        {currency(snapshot.newInvestedCostSinceSeptember)} of recorded cost. Chef Robotics and Standard Bots
+        remain at cost in the estimate. Standard Bots&apos; $15,000 position and $1 billion entry valuation are
+        owner-confirmed; its instrument, investment route, executed acceptance, and completed cash movement
+        are not yet evidenced. The Drive folder, Schedule of Investments, and portal show that distinction
+        explicitly, and no bank-ledger movement has been created without transaction evidence.
       </p>
 
       <p>

@@ -15,6 +15,7 @@ export type Company = {
 
 // Machine Spirit Capital portfolio (machinespirit.com/portfolio)
 export const PORTFOLIO: Company[] = [
+  { name: "Standard Bots", href: "https://standardbots.com/", sectors: ["Robotics", "AI", "Manufacturing"], blurb: "AI-native industrial robots designed and assembled in New York.", logo: "/logos/standard-bots.png", cardLogo: "/logos/cards/standard-bots.png", logoLabel: "Standard Bots", image: "/work/cards/standard-bots.png", cardImage: "/work/cards/standard-bots.png" },
   { name: "Chef Robotics", href: "https://www.chefrobotics.ai/", sectors: ["Robotics", "AI", "Manufacturing"], blurb: "Physical AI and flexible robotic systems for food production.", logo: "/logos/chef-robotics.png", cardLogo: "/logos/cards/chef-robotics.png", logoLabel: "Chef Robotics", image: "/work/cards/chef-robotics.jpg", cardImage: "/work/cards/chef-robotics.jpg" },
   { name: "Ultrasonium", href: "https://www.ultrasonium.com/", sectors: ["Manufacturing", "Materials", "Robotics"], blurb: "Next-generation manufacturing for complex, high-value metal parts.", cardLogo: "/logos/cards/ultrasonium.png" },
   { name: "Path Robotics", href: "https://www.path-robotics.com/", sectors: ["Robotics", "AI", "Manufacturing"], blurb: "Physical AI that brings adaptive autonomous welding to American manufacturing.", logo: "/logos/path-robotics.svg?v=20260915", cardLogo: "/logos/cards/path-robotics.svg?v=20260915", image: "/work/cards/path-robotics.jpg", cardImage: "/work/cards/path-robotics.jpg" },

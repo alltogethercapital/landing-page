@@ -12,6 +12,8 @@ export type Founder = {
 // Founder names, profiles, and portraits are grounded in public company,
 // investor, publication, LinkedIn, or founder-owned social sources.
 const FOUNDER_CATALOG: Founder[] = [
+  { name: "Evan Beard", headshot: "/founders/portraits/evan-beard.webp", companyName: "Standard Bots" },
+  { name: "David Golden", headshot: "/founders/portraits/david-golden.webp", companyName: "Standard Bots" },
   { name: "Jack Qiu", headshot: "/founders/portraits/jack-qiu.webp", companyName: "Ultrasonium" },
   { name: "Christopher Carter", headshot: "/founders/portraits/christopher-carter.webp", companyName: "Ultrasonium" },
   { name: "Hunter Brown", headshot: "/founders/portraits/hunter-brown.webp", companyName: "Ultrasonium" },

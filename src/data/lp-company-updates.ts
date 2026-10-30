@@ -401,6 +401,13 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
     sourceUrl: "https://www.chefrobotics.ai/resources",
     sourceDate: "2026-10-07", kind: "announcement",
   },
+  "Standard Bots": {
+    headline: "$200M Series C for AI-native industrial robots",
+    summary: "Standard Bots announced a $200 million Series C at a $1 billion valuation and says its robots are designed and assembled in Glen Cove, New York. The portfolio position is recorded at cost because no later company valuation or approved administrator mark has been supplied.",
+    source: "Standard Bots Series C announcement",
+    sourceUrl: "https://standardbots.com/articles/standard-bots-raises-200m-series-c-at-1b-valuation-as-americas-largest-manufacturer-of-ai-native-industrial-robots",
+    sourceDate: "2026-06-09", kind: "announcement",
+  },
 };
 
 // Names on the public portfolio without a separately funded SOI position.
