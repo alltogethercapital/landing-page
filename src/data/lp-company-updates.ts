@@ -1,6 +1,6 @@
 import "server-only";
 
-export const LP_COMPANY_REVIEW_AS_OF = "2026-10-24";
+export const LP_COMPANY_REVIEW_AS_OF = "2026-11-09";
 
 export type LpCompanyUpdate = {
   headline: string;
@@ -60,11 +60,12 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
     sourceDate: "2026-09-22", kind: "announcement",
   },
   "Shield AI": {
-    headline: "X-BAT public and private commitments reach $400M",
-    summary: "A $150M U.S. Navy agreement modification, matched by Shield AI capital, brings announced X-BAT commitments to $400M including prior actions. This is program funding, not a new equity valuation; flight testing remains a planned milestone.",
+    headline: "Series H announced at a $28.8B post-money valuation",
+    summary: "Shield announced $1B of Series H financing at a $28.8B post-money valuation as part of a $2.5B financing package supporting its pending Echodyne acquisition. The acquisition remains subject to regulatory approval and other closing conditions.",
     source: "Shield AI announcement",
-    sourceUrl: "https://shield.ai/shield-ai-and-u-s-government-investment-in-x-bat-reaches-400-million/",
-    sourceDate: "2026-10-08", kind: "announcement",
+    sourceUrl: "https://shield.ai/shield-to-acquire-echodyne-in-a-transaction-valued-at-5-3-billion-and-raise-2-5-billion-at-a-28-8-billion-valuation/",
+    sourceDate: "2026-11-05", kind: "announcement",
+    valuationNote: "Updates the gross company-valuation comparison to $28.8B from the recorded $10.5B entry valuation. This is not an administrator mark and does not model dilution, fees, carry, or the pending acquisition's closing risk.",
   },
   Samply: {
     headline: "Audio collaboration platform and developer integrations",
