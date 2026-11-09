@@ -107,9 +107,9 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         <div className="lp-summary-metric--primary">
           <dt>
             <MetricLabel
-              label="NAV"
+              label="Projected gross value"
               tooltipId="lp-nav-tooltip"
-              description={`Net asset value (NAV) is assets minus liabilities. This projected NAV includes H256's ${currency(pendingAllocation)} allocation being finalized between Atoms and Applied Intuition at cost and assumes no fund liabilities or other deductions. It is a gross scenario estimate, not administrator-reported NAV.`}
+              description={`This estimated gross comparison value includes H256's ${currency(pendingAllocation)} allocation being finalized between Atoms and Applied Intuition at cost. It is not administrator-reported NAV and does not deduct fees, carry, liabilities, taxes, or dilution.`}
             />
           </dt>
           <dd>{currency(totalProjectedValue)}</dd>
@@ -128,9 +128,9 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         <div>
           <dt>
             <MetricLabel
-              label="Gross value multiple"
+              label="Current value multiple"
               tooltipId="lp-gross-value-multiple-tooltip"
-              description={`Gross value multiple is projected NAV divided by AUM at recorded cost: ${currency(totalProjectedValue)} ÷ ${currency(investedCost)} = ${currentValueMultiple.toFixed(2)}×. It is before fees, carry, liabilities, and other deductions.`}
+              description={`Current value multiple is projected gross value divided by recorded investment cost: ${currency(totalProjectedValue)} ÷ ${currency(investedCost)} = ${currentValueMultiple.toFixed(2)}×. It is an estimate before fees, carry, liabilities, taxes, dilution, and other deductions.`}
             />
           </dt>
           <dd>{currentValueMultiple.toFixed(2)}×</dd>
@@ -139,9 +139,9 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
 
       <details className="lp-valuation-review">
         <summary>Reviewed {companyUpdateDate(LP_COMPANY_REVIEW_AS_OF)} · Valuation basis</summary>
-        <p>AUM is recorded investment cost. NAV above is a gross portfolio scenario before fees, carry, taxes, dilution and liabilities; it is not administrator-reported NAV. Cash balances and fund liabilities are not reconciled in this view.</p>
+        <p>AUM is recorded investment cost. Projected gross value is an estimate before fees, carry, taxes, dilution and liabilities; it is not administrator-reported NAV. Cash balances and fund liabilities are not reconciled in this view.</p>
         <p>The existing Anduril assumption contributes {currency(scenarioUplift)} above cost. With that slice at cost, the gross comparison value is {currency(totalProjectedValue - scenarioUplift)}. H256&apos;s {currency(pendingAllocation)} awaiting allocation is included once at cost.</p>
-        <p>This review updates Corgi&apos;s existing comparison to its reported $5B September financing. Other prior comparisons and the owner-directed Anduril scenario are retained. Positions without an applicable comparison remain at cost.</p>
+        <p>This review updates Shield&apos;s comparison to its company-announced $28.8B Series H valuation. Other prior comparisons and the owner-directed Anduril scenario are retained. Positions without an applicable comparison remain at cost.</p>
       </details>
 
       <nav className="lp-portfolio-tabs" aria-label="Portfolio sections">

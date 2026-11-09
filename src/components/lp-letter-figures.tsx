@@ -347,7 +347,7 @@ function ValuationEvidence() {
               <td>Atoms or Applied Intuition</td>
               <td>
                 Included at cost
-                <small>In AUM, NAV, and total math</small>
+                <small>In recorded cost and projected gross value</small>
               </td>
               <td className="is-number">{currency(LETTER_H256_PENDING_AMOUNT)}</td>
               <td className="is-number lp-performance-change">

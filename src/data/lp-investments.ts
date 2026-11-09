@@ -171,7 +171,15 @@ export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark
     scope: "scenario applies only to H256's $88,000 Anduril allocation; $112,000 remains at cost; not a completed financing or fund-administrator mark",
     basis: "assumption",
   },
-  "07-shield-ai": { entryValuationAmount: 10_500_000_000, latestValuationAmount: 12_700_000_000, latestValuation: "$12.7B post-money", asOf: "2026-03-26", source: "Shield AI Series G", sourceUrl: "https://techcrunch.com/2026/03/26/defense-startup-shield-ai-lands-12-7b-valuation-up-140-after-u-s-air-force-deal/" },
+  "07-shield-ai": {
+    entryValuationAmount: 10_500_000_000,
+    latestValuationAmount: 28_800_000_000,
+    latestValuation: "$28.8B post-money",
+    asOf: "2026-11-05",
+    source: "Shield Series H announcement",
+    sourceUrl: "https://shield.ai/shield-to-acquire-echodyne-in-a-transaction-valued-at-5-3-billion-and-raise-2-5-billion-at-a-28-8-billion-valuation/",
+    scope: "gross company-valuation comparison; the announced Series H supports Shield's pending Echodyne acquisition and is not a fund-administrator mark of All Together's position",
+  },
   "12-apptronik": { entryValuationAmount: 4_900_000_000, latestValuationAmount: 5_300_000_000, latestValuation: "~$5.3B post-money", asOf: "2026-02-11", source: "Apptronik Series A extension", sourceUrl: "https://techcrunch.com/2026/02/11/humanoid-robot-startup-apptronik-has-now-raised-935m-at-a-5b-valuation/" },
   "17-hark": {
     entryValuationAmount: 5_775_000_000,
@@ -208,15 +216,15 @@ export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark
   },
 };
 
-export const LP_PROJECTION_AS_OF = "2026-10-29";
+export const LP_PROJECTION_AS_OF = "2026-11-09";
 
 export const LP_SNAPSHOT = {
   source: "All Together Drive · Schedule of Investments",
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
   sourceRange: "Sheet1!A2:J61",
   sourceModifiedAt: "2026-10-29",
-  publishedAt: "2026-10-29",
+  publishedAt: "2026-11-09",
   recordCount: 60,
   investedCostTotal: 855236.73,
-  status: "Reconciled to SOI through Standard Bots; pending records retain explicit evidence caveats",
+  status: "Reconciled to SOI through Standard Bots; valuation evidence reviewed November 9; pending records retain explicit evidence caveats",
 } as const;
