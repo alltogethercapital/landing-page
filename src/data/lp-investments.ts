@@ -138,6 +138,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "58-atomarine", chronology: 58, company: "Atomarine", investedCost: 10000, investmentDate: "2026-09-16", round: "Seed", entryValuation: "$125M post-money cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "1nZD5UYXSxlF2E3rn9jO1wDly8sG9zRI2", logo: "/logos/cards/atomarine.png", description: "Floating data center campuses with standalone power and seawater cooling.", reviewStatus: "pending", reviewNote: "Owner-confirmed position; supplied offering documents are generic and unsigned, and cash-movement evidence remains pending.", securityAllocation: [{ securityType: "SAFE", share: 1 }] },
   { id: "59-chef-robotics", chronology: 59, company: "Chef Robotics", investedCost: 18590.75, investmentDate: "2026-10-16", round: "N/A", entryValuation: "Not evidenced", instrument: "Not specified", platform: "Not specified", driveFolderId: "1VEsHa4Vp_hMfcaQPVkrW1VKEcMuSBSvY", logo: "/logos/cards/chef-robotics.png", description: "Physical AI and robotic systems for food production.", reviewStatus: "pending", reviewNote: "Owner confirmed the $18,590.75 position and October 16, 2026 investment date. Round, entry valuation, instrument, investment route, executed acceptance, and completed cash movement remain unevidenced; no bank-ledger movement is recorded without transaction evidence.", securityAllocation: [{ securityType: "Not specified", share: 1 }] },
   { id: "60-standard-bots", chronology: 60, company: "Standard Bots", investedCost: 15000, investmentDate: "2026-10-29", round: "Series C", entryValuation: "$1B post-money", instrument: "Equity", platform: "Not specified", driveFolderId: "1c_tX4tgVZesvBxzeKpgJPgFfVIUDQ6KJ", logo: "/logos/cards/standard-bots.png", description: "AI-native industrial robots for American manufacturing.", reviewStatus: "pending", reviewNote: "Owner confirmed a $15,000 position at a $1B valuation on October 29, 2026. Supplied platform terms identify Series C preferred equity, a $1B post-money valuation, a $200M estimated round size, Platform Advisor, LLC as investment adviser, a $1M platform allocation, and estimated fees of 1%. The $1M allocation is platform-level, not All Together's amount. All Together's investment vehicle, investor-specific execution, acceptance, and completed cash movement remain unevidenced; no bank-ledger movement is recorded without transaction evidence.", securityAllocation: [{ securityType: "Equity", share: 1 }] },
+  { id: "61-longshot-space", chronology: 61, company: "Longshot Space", investedCost: 5000, investmentDate: "2026-11-10", round: "Series A", entryValuation: "$180M post-money", instrument: "SPV", platform: "AngelList", driveFolderId: "1I13bw8dZh0S5vDFb5B-euAPo9sFYBeS8", logo: "/logos/cards/longshot-space.png", description: "Reusable ground accelerators for hypersonic testing and future cargo launch.", reviewStatus: "pending", reviewNote: "Owner confirmed a $5,000 position at a $180M post-money valuation on November 10, 2026. Supplied platform evidence identifies a Series A opportunity on AngelList. The legal package identifies LO-0720 Fund II, a series of JMWTX Investments, LP, but the supplied Subscription Agreement points to a separate electronic-signature package and does not evidence All Together's execution, commitment, GP acceptance, or acceptance date. Cash route, transfer date, and completed movement remain unevidenced; no bank-ledger movement is recorded without transaction evidence. The $1,000 platform minimum and lead commitment are not All Together's amount.", securityAllocation: [{ securityType: "Not specified", share: 1 }] },
 ];
 
 // Valuation inputs used for the LP-facing gross projection. Most inputs are
@@ -216,15 +217,15 @@ export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark
   },
 };
 
-export const LP_PROJECTION_AS_OF = "2026-11-09";
+export const LP_PROJECTION_AS_OF = "2026-11-10";
 
 export const LP_SNAPSHOT = {
   source: "All Together Drive · Schedule of Investments",
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
-  sourceRange: "Sheet1!A2:J61",
-  sourceModifiedAt: "2026-10-29",
-  publishedAt: "2026-11-09",
-  recordCount: 60,
-  investedCostTotal: 855236.73,
-  status: "Reconciled to SOI through Standard Bots; valuation evidence reviewed November 9; pending records retain explicit evidence caveats",
+  sourceRange: "Sheet1!A2:J62",
+  sourceModifiedAt: "2026-11-10",
+  publishedAt: "2026-11-10",
+  recordCount: 61,
+  investedCostTotal: 860236.73,
+  status: "Reconciled to SOI through Longshot Space; valuation evidence reviewed November 9; pending records retain explicit evidence caveats",
 } as const;

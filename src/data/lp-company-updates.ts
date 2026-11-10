@@ -409,6 +409,13 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
     sourceUrl: "https://standardbots.com/articles/standard-bots-raises-200m-series-c-at-1b-valuation-as-americas-largest-manufacturer-of-ai-native-industrial-robots",
     sourceDate: "2026-06-09", kind: "announcement",
   },
+  "Longshot Space": {
+    headline: "Ground-accelerator testing continues",
+    summary: "Longshot reports more than 100 shots and Mach 4.2 on its Oakland accelerator. The $5,000 owner-confirmed position is recorded at cost at a $180 million post-money entry valuation because no later company valuation or approved administrator mark has been supplied.",
+    source: "Longshot company website",
+    sourceUrl: "https://longshotspace.com/company",
+    kind: "current-status",
+  },
 };
 
 // Names on the public portfolio without a separately funded SOI position.
@@ -421,13 +428,6 @@ export const LP_RELATED_COMPANY_UPDATES = [
     source: "Applied Intuition announcement",
     sourceUrl: "https://www.appliedintuition.com/press-releases/navy-selects-applied-intuition-field-ai-perception",
     sourceDate: "2026-10-22",
-  },
-  {
-    company: "Longshot Space",
-    headline: "Ground-accelerator testing continues",
-    summary: "Longshot reports more than 100 shots and Mach 4.2 on its Oakland accelerator. It appears on the public portfolio but has no funded SOI row; no cost or NAV amount is added without investment evidence.",
-    source: "Longshot company website",
-    sourceUrl: "https://longshotspace.com/company",
   },
   {
     company: "Commons Clinic",
