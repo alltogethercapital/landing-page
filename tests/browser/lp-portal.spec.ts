@@ -10,17 +10,17 @@ test("publishes the November 9 review with complete coverage and reconciled scen
   await page.getByRole("button", { name: /Sign in/ }).click();
   await expect(page).toHaveURL(/\/lp$/);
   const summary = page.locator(".lp-summary-grid");
-  await expect(summary).toContainText("$855,237");
-  await expect(summary).toContainText("$969,895");
+  await expect(summary).toContainText("$860,237");
+  await expect(summary).toContainText("$974,895");
   await expect(summary).toContainText("Projected gross scenario");
   await page.locator(".lp-valuation-review summary").click();
   await expect(page.locator(".lp-valuation-review")).toContainText("$58,667");
-  await expect(page.locator(".lp-valuation-review")).toContainText("$911,229");
+  await expect(page.locator(".lp-valuation-review")).toContainText("$916,229");
   await page.getByRole("link", { name: "Company updates", exact: true }).click();
-  await expect(page.locator(".lp-company-update-list > article")).toHaveCount(58);
-  await expect(page.locator(".lp-company-update-list .lp-company-update-source")).toHaveCount(58);
-  await expect(page.locator(".lp-company-updates-heading")).toContainText("All 60 positions covered across 58 issuers and vehicles");
-  await expect(page.locator(".lp-company-updates-related > article")).toHaveCount(3);
+  await expect(page.locator(".lp-company-update-list > article")).toHaveCount(59);
+  await expect(page.locator(".lp-company-update-list .lp-company-update-source")).toHaveCount(59);
+  await expect(page.locator(".lp-company-updates-heading")).toContainText("All 61 positions covered across 59 issuers and vehicles");
+  await expect(page.locator(".lp-company-updates-related > article")).toHaveCount(2);
   expect(await page.content()).not.toContain("driveFolderId");
   await page.screenshot({ path: "output/playwright/lp-portal/company-review-desktop.png" });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -32,7 +32,7 @@ test("publishes the November 9 review with complete coverage and reconciled scen
   const pending = toCents(await page.locator(".lp-performance-pending-row td:last-child").innerText());
   const total = toCents(await page.locator(".lp-performance-total-row td:last-child").innerText());
   expect(rows.reduce((sum, value) => sum + toCents(value), pending)).toBe(total);
-  expect(total).toBe(96989543);
+  expect(total).toBe(97489543);
   await page.goto("/lp/investments/21-corgi");
   await expect(page.locator(".lp-performance")).toContainText("$20,000");
   await expect(page.locator(".lp-performance")).toContainText("$5B reported valuation");
@@ -41,6 +41,12 @@ test("publishes the November 9 review with complete coverage and reconciled scen
     await expect(page.locator(".lp-performance")).toContainText("Held at invested cost");
     await expect(page.locator(".lp-company-update--detail")).toContainText("Retained at cost");
   }
+  await page.goto("/lp/investments/61-longshot-space");
+  await expect(page.getByRole("heading", { name: "Longshot Space" })).toBeVisible();
+  await expect(page.locator(".lp-performance")).toContainText("$5,000");
+  await expect(page.locator(".lp-performance")).toContainText("Held at invested cost");
+  await expect(page.locator(".lp-detail-facts")).toContainText("$180M after the round");
+  await expect(page.locator(".lp-detail-note")).toContainText("Cash route, transfer date, and completed movement remain unevidenced");
   await page.goto("/lp?section=analysis");
   await expect(page.locator(".lp-portal-shell")).not.toContainText("NaN");
   await expect(page.locator(".lp-portal-shell")).not.toContainText("undefined");
@@ -75,7 +81,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.getByRole("button", { name: "Graph view" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Table view" })).toHaveCount(0);
   await expect(page.getByText("43 companies · 1 not-yet-allocated balance", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("$855,237", { exact: true })).toBeVisible();
+  await expect(page.getByText("$860,237", { exact: true })).toBeVisible();
   const summaryGrid = page.locator(".lp-summary-grid");
   await expect(summaryGrid.getByText("$821,014.25", { exact: true })).toHaveCount(0);
   await expect(summaryGrid.getByText("$901,760.05", { exact: true })).toHaveCount(0);
@@ -105,7 +111,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(summaryGrid.getByText("Finalizing allocation", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("Pending allocation", { exact: true })).toHaveCount(0);
   await expect(summaryGrid.getByText("$112,000", { exact: true })).toBeVisible();
-  await expect(page.getByText("$969,895", { exact: true })).toBeVisible();
+  await expect(page.getByText("$974,895", { exact: true })).toBeVisible();
   await expect(page.getByText("Current value multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.13×", { exact: true })).toBeVisible();
