@@ -19,10 +19,10 @@ test("publishes the September investor update with a dated portfolio snapshot", 
   await expect(page).toHaveURL(/\/lp\/updates\/september-2026$/);
   await expect(page.getByRole("heading", { name: "The Work Moves Into the World" })).toBeVisible();
   const copy = page.locator(".lp-update-article-copy");
-  await expect(copy).toContainText("58 recorded positions across 57 companies");
-  await expect(copy).toContainText("$821,645.98");
-  await expect(copy).toContainText("$901,638.00");
-  await expect(copy).toContainText("1.10× current value multiple");
+  await expect(copy).toContainText("59 recorded positions across 58 companies");
+  await expect(copy).toContainText("$851,645.98");
+  await expect(copy).toContainText("$931,638.00");
+  await expect(copy).toContainText("1.09× current value multiple");
   await expect(copy).toContainText("$79,992.02 above recorded cost");
   await expect(copy).toContainText("$154,883.97 across the fourteen additions");
   await expect(copy).toContainText("$15,000.00 correction to Positron");

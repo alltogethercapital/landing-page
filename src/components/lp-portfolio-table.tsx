@@ -50,7 +50,7 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
           <>
             H256 · Will go to <Link href="/companies#applied-intuition">Applied Intuition</Link>
             {" or "}
-            <Link href="/lp/investments/41-atoms">Atoms</Link>
+            <Link href="/lp/investments/42-atoms">Atoms</Link>
             {` · ${formatWholePercent(allocation.awaitingShare)} of vehicle`}
           </>
         ),
