@@ -275,7 +275,7 @@ function SeptemberUpdateCopy() {
         The change from the August letter includes {currency(snapshot.newInvestedCostSinceAugust)} across the
         fourteen additions and a {currency(snapshot.reconciliationAdjustmentSinceAugust)}{" "}correction to
         Positron&apos;s recorded cost. Those additions and the correction remain at cost in the current estimate.
-        That is why gross value increased while the current value multiple moved from 1.12× to 1.10×: the
+        That is why gross value increased while the current value multiple moved from 1.12× to 1.09×: the
         denominator grew, not because an existing mark was reduced.
       </p>
 

@@ -39,7 +39,7 @@ test("uses the page name and Machine Spirit Cap suffix on every page", async ({ 
   await page.waitForLoadState("networkidle");
   await expect(page.getByRole("button", { name: "Table view" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Graph view" })).toHaveCount(0);
-  await expect(page.locator(".lp-company-allocation-view .lp-figure-bar-row")).toHaveCount(58);
+  await expect(page.locator(".lp-company-allocation-view .lp-figure-bar-row")).toHaveCount(59);
   const investmentPaths = await page
     .locator('a[href^="/lp/investments/"]')
     .evaluateAll((links) => [...new Set(links.map((link) => link.getAttribute("href")))].filter(Boolean));

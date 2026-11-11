@@ -44,22 +44,24 @@ export const LP_INVESTOR_UPDATES: LpInvestorUpdateSummary[] = [
 export const LP_AUGUST_2026_PORTFOLIO_AS_OF = "August 18, 2026";
 
 // Figures of record, reconciled to the live portfolio after the August 18,
-// 2026 portfolio-wide valuation review. Eight sourced company comparisons and
+// 2026 portfolio-wide valuation review and restated to restore the omitted June
+// 18 Stripe position. Eight sourced company comparisons and
 // one owner-directed Anduril scenario are applied; all other positions remain
 // at cost. H256's allocation being finalized is included at cost in both totals.
 export const LP_AUGUST_2026_FUND_SNAPSHOT = {
-  investedCost: 651_762.01,
-  projectedGrossValue: 731_754.03,
+  investedCost: 681_762.01,
+  projectedGrossValue: 761_754.03,
   projectedGrossMultiple: 1.12,
-  positions: 44,
-  companies: 43,
+  positions: 45,
+  companies: 44,
   markedPositions: 9,
 } as const;
 
 export const LP_SEPTEMBER_2026_PORTFOLIO_AS_OF = "September 16, 2026";
 
-// Reconciled to the live Schedule of Investments after the recent amount
-// corrections and the Pocket withdrawal. The change from the August letter comprises $154,883.97 across fourteen new
+// Reconciled to the live Schedule of Investments after restoring the omitted
+// June 18 Stripe position, the recent amount corrections, and the Pocket
+// withdrawal. The change from the August letter comprises $154,883.97 across fourteen new
 // positions plus a $15,000 correction to Positron's recorded cost. Supabase's final
 // allocation is $18.48 below its originally recorded cost; that pre-August correction
 // is reflected in both historical snapshots. Apptronik's final allocation is $8,455.76
@@ -67,12 +69,12 @@ export const LP_SEPTEMBER_2026_PORTFOLIO_AS_OF = "September 16, 2026";
 // Origin allocation is $25.00 below the original $25,000 allocation. Rasyn's final allocation is
 // $6.00 and Ultrasonium's is $85.03 below initially recorded cost.
 export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
-  investedCost: 821_645.98,
-  projectedGrossValue: 901_638.00,
-  projectedGrossMultiple: 1.10,
+  investedCost: 851_645.98,
+  projectedGrossValue: 931_638.00,
+  projectedGrossMultiple: 1.09,
   grossValueChange: 79_992.02,
-  positions: 58,
-  companies: 57,
+  positions: 59,
+  companies: 58,
   newPositionsSinceAugust: 14,
   newInvestedCostSinceAugust: 154_883.97,
   reconciliationAdjustmentSinceAugust: 15_000,
@@ -80,16 +82,17 @@ export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
 
 export const LP_OCTOBER_2026_PORTFOLIO_AS_OF = "October 29, 2026";
 
-// Current snapshot after adding Standard Bots at owner-confirmed recorded cost.
+// Current dated snapshot after adding Standard Bots at owner-confirmed recorded
+// cost and restoring the omitted June 18 Stripe position.
 // Standard Bots remains at cost because no later company valuation, approved
 // administrator mark, execution evidence, or completed cash movement is supplied.
 export const LP_OCTOBER_2026_FUND_SNAPSHOT = {
-  investedCost: 855_236.73,
-  projectedGrossValue: 935_228.75,
-  projectedGrossMultiple: 1.10,
+  investedCost: 885_236.73,
+  projectedGrossValue: 965_228.75,
+  projectedGrossMultiple: 1.09,
   grossValueChange: 79_992.02,
-  positions: 60,
-  companies: 59,
+  positions: 61,
+  companies: 60,
   newPositionsSinceSeptember: 2,
   newInvestedCostSinceSeptember: 33_590.75,
 } as const;

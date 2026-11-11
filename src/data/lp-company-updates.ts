@@ -1,6 +1,6 @@
 import "server-only";
 
-export const LP_COMPANY_REVIEW_AS_OF = "2026-11-09";
+export const LP_COMPANY_REVIEW_AS_OF = "2026-11-10";
 
 export type LpCompanyUpdate = {
   headline: string;
@@ -218,6 +218,14 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
     summary: "Matforge now operates as Discovered Materials. Its current site announces a $9M seed led by Lightspeed and the open-source Material Discovery Bench for AI-driven semiconductor materials research, without disclosing a company valuation.",
     source: "Discovered Materials announcement",
     sourceUrl: "https://discoveredmaterials.com/", kind: "current-status",
+  },
+  Stripe: {
+    headline: "Economic infrastructure across payments and financial services",
+    summary: "Stripe's current company materials describe a global financial-infrastructure platform spanning payments, billing, revenue automation, money management, and embedded finance. No later position-level valuation or administrator mark was verified for this review, so the signed $30,000 commitment remains at cost and pending administrator-acceptance and cash evidence.",
+    source: "Stripe company newsroom",
+    sourceUrl: "https://stripe.com/newsroom/information",
+    kind: "current-status",
+    valuationNote: "Retained at cost. The investment memo cites an approximately $180B implied entry valuation; no later approved mark is applied.",
   },
   "Plena Health": {
     headline: "No newer dated operating update verified",
