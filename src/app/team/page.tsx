@@ -41,12 +41,6 @@ const MEMBERS: Member[] = [
     linkedin: "https://www.linkedin.com/in/hisham-el-husseini/",
     email: "hisham@machinespirit.com",
   },
-  {
-    name: "NEO",
-    role: "Head of Robotics",
-    img: "/leadership/transparent/neo-team-studio.webp",
-    website: { label: "1x.tech", href: "https://www.1x.tech/" },
-  },
 ];
 
 function MemberCard({ member, eager = false }: { member: Member; eager?: boolean }) {
