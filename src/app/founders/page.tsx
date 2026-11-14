@@ -77,12 +77,11 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
             {founder.linkedin && (
               <a href={founder.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${founder.name} on LinkedIn`}>
                 <LinkedInIcon />
-                LinkedIn
               </a>
             )}
             {founder.x && (
               <a href={founder.x} target="_blank" rel="noopener noreferrer" aria-label={`${founder.name} on X`}>
-                <XIcon />X
+                <XIcon />
               </a>
             )}
           </div>
