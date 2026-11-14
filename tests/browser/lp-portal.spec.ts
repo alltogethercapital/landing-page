@@ -33,6 +33,10 @@ test("publishes the November 13 portfolio with complete coverage and reconciled 
   const total = toCents(await page.locator(".lp-performance-total-row td:last-child").innerText());
   expect(rows.reduce((sum, value) => sum + toCents(value), pending)).toBe(total);
   expect(total).toBe(99989543);
+  await page.goto("/lp/investments/62-summer-engine");
+  await expect(page.getByRole("heading", { name: "Summer Engine" })).toBeVisible();
+  await expect(page.getByText("Uncapped", { exact: true })).toHaveCount(2);
+  await expect(page.getByText(/owner confirmed.*uncapped valuation terms/i)).toBeVisible();
   await page.goto("/lp/investments/21-corgi");
   await expect(page.locator(".lp-performance")).toContainText("$20,000");
   await expect(page.locator(".lp-performance")).toContainText("$5B reported valuation");
