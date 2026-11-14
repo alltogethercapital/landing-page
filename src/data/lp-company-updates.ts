@@ -18,7 +18,7 @@ export type LpCompanyUpdate = {
 export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
   "Summer Engine": {
     headline: "AI-native game engine joins Y Combinator's Fall 2026 batch",
-    summary: "Summer Engine presents a full 2D and 3D game engine for people and coding agents, with multiplayer, publishing, analytics, and a large asset library. The $25,000 position remains at cost because entry terms and investor-specific execution evidence have not been supplied.",
+    summary: "Summer Engine presents a full 2D and 3D game engine for people and coding agents, with multiplayer, publishing, analytics, and a large asset library. The $25,000 position is uncapped and remains at cost because investor-specific execution evidence and other closing terms have not been supplied.",
     source: "Summer Engine company and Y Combinator profiles",
     sourceUrl: "https://www.summerengine.com/press",
     sourceDate: "2026-11-13",
