@@ -45,7 +45,7 @@ for (const [original, portrait] of Object.entries(verified)) {
     errors.push(`${pending.get(original)}: pending or generic avatars cannot be published`);
   }
   if (typeof portrait !== "string" ||
-      !/^\/founders\/(?:cutouts-webp|transparent(?:-v2)?)\/[a-z0-9-]+\.webp$/.test(portrait)) {
+      !/^\/founders\/(?:cutouts-webp|transparent(?:-v[23])?)\/[a-z0-9-]+\.webp$/.test(portrait)) {
     errors.push(`Portrait registry must reference a local transparent WebP: ${original}`);
     continue;
   }
