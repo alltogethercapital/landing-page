@@ -826,7 +826,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
       "height": 0.882353
     },
     "inkAspect": 1.25,
-    "kind": "wordmark",
+    "kind": "icon",
+    "label": "Core Automation",
     "tone": "dark",
     "meanLuminance": 0.153771,
     "inkCoverage": 0.915235,

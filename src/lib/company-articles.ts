@@ -586,38 +586,6 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
-    slug: "applied-intuition",
-    title: "Applied Intuition.",
-    date: "May 11, 2026",
-    dateISO: "2026-05-11",
-    category: "Portfolio",
-    author: "Machine Spirit Capital",
-    excerpt: "Applied Intuition builds the simulation, tooling, and operating layer that autonomous vehicles and machines actually run on.",
-    image: "/updates/covers/applied-intuition.jpg",
-    sections: [
-    {
-      body: [
-        "Applied Intuition builds the software layer underneath autonomous machines. The company started in simulation and developer tooling for autonomous vehicle programs and now sells a full stack: development tools, a vehicle operating system, and an autonomy system that manufacturers license instead of building from scratch. Its tagline is \"Physical AI that moves the world,\" and the substance behind it is mostly infrastructure rather than spectacle.",
-        "The customer list is heavy industry. Toyota, Porsche, Volkswagen, Nissan, and Stellantis appear on the company's site, alongside Komatsu in mining and construction equipment, and TRATON is building its TRATON ONE OS in partnership with the company. Beyond automotive, Applied Intuition serves defense, trucking, mining, construction, and agriculture. In each of those domains, a software failure breaks something physical.",
-      ],
-    },
-    {
-      heading: "What they're building",
-      body: [
-        "Three product lines. Tools for Vehicle Intelligence is the development platform. It covers simulation, evaluation, data collection, and quality control, including petabyte-scale ingestion pipelines and a closed-loop system that turns real-world sensor data into labeled training segments. Vehicle OS is one operating system meant to run across trucks, drones, robots, and humanoids, with observability and code-first tooling built in. The Self-Driving System packages multi-domain autonomy models with simulation-based safety validation.",
-        "Simulation is the thread through all of it. An autonomy program might wait years to encounter a rare highway scenario in the field; in simulation it can run that scenario thousands of times a night. That is how validation actually gets done.",
-      ],
-    },
-    {
-      heading: "Why we're investing",
-      body: [
-        "Autonomy is a hard-frontier problem in the precise sense we care about. The demo is the easy part. What follows is a long middle of validation, certification, OEM integration, and data infrastructure, where nothing demos well. Applied Intuition sells exactly that middle, the connective tissue between AI models and the machines that have to carry them. It is assembly work, done as a product.",
-        "The company's own line is that 99% of autonomy's impact lies ahead. That can sound like hype. We read it as a claim about duration. Vehicles will need this software underneath them for decades, and so will equipment and defense systems. If autonomy reaches roads, mines, and battlefields at scale, a large share of it will run on this stack. That is a position worth taking before the outcome is obvious.",
-      ],
-    },
-    ],
-  },
-  {
     slug: "figure-ai",
     title: "Figure AI.",
     date: "May 8, 2026",

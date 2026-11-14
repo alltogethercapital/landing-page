@@ -243,12 +243,6 @@ const FOUNDER_CATALOG: Founder[] = [
     x: "https://x.com/juliacvillagra",
   },
   {
-    name: "Qasar Younis",
-    companyName: "Applied Intuition",
-    headshot: "/founders/cutouts/qasar-younis.png",
-    linkedin: "https://www.linkedin.com/in/qasar/",
-  },
-  {
     name: "Peter Cetale",
     companyName: "Sourcerer",
     headshot: "/founders/cutouts/peter-cetale.png",
