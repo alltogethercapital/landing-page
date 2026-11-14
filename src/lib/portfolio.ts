@@ -15,6 +15,7 @@ export type Company = {
 
 // Machine Spirit Capital portfolio (machinespirit.com/portfolio)
 export const PORTFOLIO: Company[] = [
+  { name: "Summer Engine", href: "https://www.summerengine.com/", sectors: ["AI", "Gaming", "Software"], blurb: "The AI game engine for building, publishing, and growing real 2D and 3D games.", logo: "/logos/summer-engine.svg", cardLogo: "/logos/cards/summer-engine.svg", image: "/work/cards/summer-engine.jpg", cardImage: "/work/cards/summer-engine.jpg" },
   { name: "Standard Bots", href: "https://standardbots.com/", sectors: ["Robotics", "AI", "Manufacturing"], blurb: "AI-native industrial robots designed and assembled in New York.", logo: "/logos/standard-bots.png", cardLogo: "/logos/cards/standard-bots.png", logoLabel: "Standard Bots", image: "/work/cards/standard-bots.png", cardImage: "/work/cards/standard-bots.png" },
   { name: "Chef Robotics", href: "https://www.chefrobotics.ai/", sectors: ["Robotics", "AI", "Manufacturing"], blurb: "Physical AI and flexible robotic systems for food production.", logo: "/logos/chef-robotics.png", cardLogo: "/logos/cards/chef-robotics.png", logoLabel: "Chef Robotics", image: "/work/cards/chef-robotics.jpg", cardImage: "/work/cards/chef-robotics.jpg" },
   { name: "Ultrasonium", href: "https://www.ultrasonium.com/", sectors: ["Manufacturing", "Materials", "Robotics"], blurb: "Next-generation manufacturing for complex, high-value metal parts.", cardLogo: "/logos/cards/ultrasonium.png" },

@@ -16,6 +16,14 @@ export type LpCompanyUpdate = {
 // same company news, but keep their own costs and valuation inputs. Undated
 // product pages are explicitly current-status checks, never dated news events.
 export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
+  "Summer Engine": {
+    headline: "AI-native game engine joins Y Combinator's Fall 2026 batch",
+    summary: "Summer Engine presents a full 2D and 3D game engine for people and coding agents, with multiplayer, publishing, analytics, and a large asset library. The $25,000 position remains at cost because entry terms and investor-specific execution evidence have not been supplied.",
+    source: "Summer Engine company and Y Combinator profiles",
+    sourceUrl: "https://www.summerengine.com/press",
+    sourceDate: "2026-11-13",
+    kind: "current-status",
+  },
   "Budbreak Innovations": {
     headline: "Emma field deployments and 2026 closed beta",
     summary: "Budbreak reports Emma deployments across wine grapes, blueberries and lettuce, with its 2026 closed beta accepting growers. Its public site describes field deployments across Napa, Sonoma, Lodi and the Finger Lakes.",
