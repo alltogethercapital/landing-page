@@ -139,6 +139,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "59-atomarine", chronology: 59, company: "Atomarine", investedCost: 10000, investmentDate: "2026-09-16", round: "Seed", entryValuation: "$125M post-money cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "1nZD5UYXSxlF2E3rn9jO1wDly8sG9zRI2", logo: "/logos/cards/atomarine.png", description: "Floating data center campuses with standalone power and seawater cooling.", reviewStatus: "pending", reviewNote: "Owner-confirmed position; supplied offering documents are generic and unsigned, and cash-movement evidence remains pending.", securityAllocation: [{ securityType: "SAFE", share: 1 }] },
   { id: "60-chef-robotics", chronology: 60, company: "Chef Robotics", investedCost: 18590.75, investmentDate: "2026-10-16", round: "N/A", entryValuation: "Not evidenced", instrument: "Not specified", platform: "Not specified", driveFolderId: "1VEsHa4Vp_hMfcaQPVkrW1VKEcMuSBSvY", logo: "/logos/cards/chef-robotics.png", description: "Physical AI and robotic systems for food production.", reviewStatus: "pending", reviewNote: "Owner confirmed the $18,590.75 position and October 16, 2026 investment date. Round, entry valuation, instrument, investment route, executed acceptance, and completed cash movement remain unevidenced; no bank-ledger movement is recorded without transaction evidence.", securityAllocation: [{ securityType: "Not specified", share: 1 }] },
   { id: "61-standard-bots", chronology: 61, company: "Standard Bots", investedCost: 15000, investmentDate: "2026-10-29", round: "Series C", entryValuation: "$1B post-money", instrument: "Equity", platform: "Not specified", driveFolderId: "1c_tX4tgVZesvBxzeKpgJPgFfVIUDQ6KJ", logo: "/logos/cards/standard-bots.png", description: "AI-native industrial robots for American manufacturing.", reviewStatus: "pending", reviewNote: "Owner confirmed a $15,000 position at a $1B valuation on October 29, 2026. Supplied platform terms identify Series C preferred equity, a $1B post-money valuation, a $200M estimated round size, Platform Advisor, LLC as investment adviser, a $1M platform allocation, and estimated fees of 1%. The $1M allocation is platform-level, not All Together's amount. All Together's investment vehicle, investor-specific execution, acceptance, and completed cash movement remain unevidenced; no bank-ledger movement is recorded without transaction evidence.", securityAllocation: [{ securityType: "Equity", share: 1 }] },
+  { id: "62-summer-engine", chronology: 62, company: "Summer Engine", investedCost: 25000, investmentDate: "2026-11-13", round: "N/A", entryValuation: "Not evidenced", instrument: "Not specified", platform: "Not specified", driveFolderId: "1VlSG2viDL9xFN6tTNaTIz5JyDOmvhJgO", logo: "/logos/cards/summer-engine.svg", logoTreatment: "inverse", description: "The AI game engine for people and agents.", reviewStatus: "pending", reviewNote: "Owner confirmed the $25,000 position and November 13, 2026 investment date. Round, entry valuation, instrument, platform or vehicle, investor-specific execution, company or GP acceptance, and completed cash movement remain unevidenced; no bank-ledger movement is recorded without transaction evidence.", securityAllocation: [{ securityType: "Not specified", share: 1 }] },
 ];
 
 // Valuation inputs used for the LP-facing gross projection. Most inputs are
@@ -222,10 +223,10 @@ export const LP_PROJECTION_AS_OF = "2026-11-10";
 export const LP_SNAPSHOT = {
   source: "All Together Drive · Schedule of Investments",
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
-  sourceRange: "Sheet1!A2:J62",
-  sourceModifiedAt: "2026-11-10",
-  publishedAt: "2026-11-10",
-  recordCount: 61,
-  investedCostTotal: 860236.73,
-  status: "Reconciled position-for-position to Drive chronology 1–61 and SOI through Standard Bots; Stripe removed because it was not an investment; valuation evidence reviewed November 10; pending records retain explicit evidence caveats",
+  sourceRange: "Sheet1!A2:J63",
+  sourceModifiedAt: "2026-11-13",
+  publishedAt: "2026-11-13",
+  recordCount: 62,
+  investedCostTotal: 885236.73,
+  status: "Reconciled position-for-position to Drive chronology 1–62 and SOI through Summer Engine; valuation evidence reviewed November 10; pending records retain explicit evidence caveats",
 } as const;

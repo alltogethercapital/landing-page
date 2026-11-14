@@ -17,6 +17,7 @@ export type Article = {
 };
 
 const NEW_INVESTMENT_ARTICLES: Article[] = [
+  ["summer-engine", "Summer Engine", "the AI game engine for people and agents", "a full 2D and 3D game engine where creators and coding agents can build, test, publish, and grow games", "a creative platform that joins a real engine, agent workflows, multiplayer, publishing, and analytics in one system"],
   ["standard-bots", "Standard Bots", "AI-native industrial robots for American manufacturing", "industrial robot hardware, software, and AI that operators can teach in plain language for machining, welding, palletizing, assembly, finishing, and inspection", "a common platform that makes industrial automation faster to deploy across manufacturers and production tasks"],
   ["chef-robotics", "Chef Robotics", "physical AI for food production", "flexible robotic systems that use AI to portion, assemble, and package meals in production environments", "a production platform that can learn across deployments while helping food manufacturers add capacity and consistency"],
   ["ultrasonium", "Ultrasonium", "next-generation metals manufacturing", "a manufacturing platform for producing difficult, high-value metal parts faster and across a wider range of alloys", "a path from advanced designs to usable parts for aerospace, energy, robotics, and compute"],
@@ -38,12 +39,14 @@ const NEW_INVESTMENT_ARTICLES: Article[] = [
 ].map(([slug, title, excerpt, product, thesis]) => ({
   slug,
   title: `${title}.`,
-  date: slug === "standard-bots" ? "October 29, 2026" : slug === "chef-robotics" ? "October 16, 2026" : slug === "atomarine" ? "September 16, 2026" : slug === "astro-mechanica" ? "September 14, 2026" : slug === "allia-health" ? "September 12, 2026" : slug === "ultrasonium" ? "September 9, 2026" : slug === "path-robotics" ? "September 8, 2026" : slug === "positron" ? "August 13, 2026" : slug === "matforge" ? "June 17, 2026" : slug === "raspire" ? "June 14, 2026" : slug === "rendezvous-robotics" || slug === "compresr" ? "June 11, 2026" : "September 7, 2026",
-  dateISO: slug === "standard-bots" ? "2026-10-29" : slug === "chef-robotics" ? "2026-10-16" : slug === "atomarine" ? "2026-09-16" : slug === "astro-mechanica" ? "2026-09-14" : slug === "allia-health" ? "2026-09-12" : slug === "ultrasonium" ? "2026-09-09" : slug === "path-robotics" ? "2026-09-08" : slug === "positron" ? "2026-08-13" : slug === "matforge" ? "2026-06-17" : slug === "raspire" ? "2026-06-14" : slug === "rendezvous-robotics" || slug === "compresr" ? "2026-06-11" : "2026-09-07",
+  date: slug === "summer-engine" ? "November 13, 2026" : slug === "standard-bots" ? "October 29, 2026" : slug === "chef-robotics" ? "October 16, 2026" : slug === "atomarine" ? "September 16, 2026" : slug === "astro-mechanica" ? "September 14, 2026" : slug === "allia-health" ? "September 12, 2026" : slug === "ultrasonium" ? "September 9, 2026" : slug === "path-robotics" ? "September 8, 2026" : slug === "positron" ? "August 13, 2026" : slug === "matforge" ? "June 17, 2026" : slug === "raspire" ? "June 14, 2026" : slug === "rendezvous-robotics" || slug === "compresr" ? "June 11, 2026" : "September 7, 2026",
+  dateISO: slug === "summer-engine" ? "2026-11-13" : slug === "standard-bots" ? "2026-10-29" : slug === "chef-robotics" ? "2026-10-16" : slug === "atomarine" ? "2026-09-16" : slug === "astro-mechanica" ? "2026-09-14" : slug === "allia-health" ? "2026-09-12" : slug === "ultrasonium" ? "2026-09-09" : slug === "path-robotics" ? "2026-09-08" : slug === "positron" ? "2026-08-13" : slug === "matforge" ? "2026-06-17" : slug === "raspire" ? "2026-06-14" : slug === "rendezvous-robotics" || slug === "compresr" ? "2026-06-11" : "2026-09-07",
   category: "Portfolio",
   author: "Machine Spirit Capital",
   excerpt: `We invested in ${title}, building ${excerpt}.`,
-  image: slug === "standard-bots"
+  image: slug === "summer-engine"
+    ? "/updates/covers/summer-engine.jpg"
+    : slug === "standard-bots"
     ? "/updates/covers/standard-bots.png"
     : ["positron", "matforge", "raspire", "rendezvous-robotics", "compresr"].includes(slug)
     ? `/logos/cards/${slug}.svg`
