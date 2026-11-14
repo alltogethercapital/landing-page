@@ -43,7 +43,19 @@ test("keeps every sourced logo monochrome at rest and reveals source color on en
       expect(await image.evaluate((node) => getComputedStyle(node).filter)).not.toBe("none");
 
       await card.locator(".cog-company-card-link").hover();
-      await expect(image).toHaveCSS("filter", "none");
+      if (await image.evaluate((node) => node.classList.contains("company-logo-image--baked"))) {
+        expect(await image.evaluate((node) => getComputedStyle(node).filter)).not.toBe("none");
+      } else if (theme === "dark") {
+        await expect(image).toHaveCSS("filter", "contrast(1.3) saturate(1.05)");
+      } else {
+        await expect(image).toHaveCSS("filter", "none");
+      }
+      if (theme === "dark") {
+        await expect(card.locator(".company-logo-artwork")).toHaveCSS(
+          "background-color",
+          "rgb(244, 242, 237)",
+        );
+      }
     }
   }
 });

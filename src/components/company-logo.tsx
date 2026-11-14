@@ -42,7 +42,7 @@ function LogoArtwork({ src, mark = false }: { src: string; mark?: boolean }) {
         quality={90}
         sizes={`${Math.ceil((mark ? 40 : 192) / crop.width)}px`}
         unoptimized={src.split(/[?#]/, 1)[0].endsWith(".svg")}
-        className={`company-logo-image${metric?.bakedBackground ? "" : " company-logo-image--transparent"}`}
+        className={`company-logo-image${metric?.bakedBackground ? " company-logo-image--baked" : " company-logo-image--transparent"}`}
         style={{
           width: `${100 / crop.width}%`,
           height: `${100 / crop.height}%`,
