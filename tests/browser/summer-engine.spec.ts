@@ -30,6 +30,11 @@ test("publishes Summer Engine across every authorized surface", async ({ page })
   await page.goto("/founders#summer-engine");
   await expect(page.getByText("Mathias Heide", { exact: true })).toBeVisible();
   await expect(page.getByText("Marcus Teller", { exact: true })).toBeVisible();
+  for (const name of ["Evan Beard", "David Golden"]) {
+    const portrait = page.locator("article", { has: page.getByText(name, { exact: true }) }).locator("img");
+    await expect(portrait).toHaveAttribute("src", new RegExp(`/founders/transparent-v3/${name.toLowerCase().replaceAll(" ", "-")}\\.webp$`));
+    expect(await portrait.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThanOrEqual(800);
+  }
   for (const name of ["Mathias Heide", "Marcus Teller"]) {
     const card = page.locator("article", { has: page.getByText(name, { exact: true }) });
     const linkedIn = card.getByRole("link", { name: `${name} on LinkedIn` });
