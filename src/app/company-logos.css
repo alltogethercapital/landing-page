@@ -49,6 +49,7 @@ html .company-logo .company-logo-image {
   margin: 0;
   object-fit: fill;
   filter: var(--cog-logo-filter);
+  transition: filter 180ms ease;
 }
 
 /* Give transparent artwork the same ink strength without flattening app tiles. */
@@ -58,6 +59,13 @@ html .company-logo .company-logo-image--transparent {
 
 html[data-site-theme="dark"] .company-logo .company-logo-image--transparent {
   filter: grayscale(1) brightness(0.25) invert(1);
+}
+
+/* Logos stay monochrome at rest in either theme and reveal only their
+   company-owned source color when the company link is intentionally engaged. */
+html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .company-logo-image {
+  filter: none;
 }
 
 .company-logo--lockup {

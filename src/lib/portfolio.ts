@@ -227,16 +227,10 @@ export const PORTFOLIO: Company[] = [
     cardImage: "/work/cards/sourcerer.jpg",
   },
   {
-    name: "Applied Intuition",
-    href: "https://www.appliedintuition.com/",
-    sectors: ["AI", "Robotics"],
-    investmentStatus: "pending",
-    blurb: "Simulation and tooling for autonomous vehicles and machines.",
-    logo: "/logos/applied.png",
-    cardLogo: "/logos/cards/applied.png",
-    image: "/work/applied.jpg",
-    cardImage: "/work/cards/applied.jpg",
-    video: "eL-YnfG4K_0", // Inside 2025: Applied Intuition's Year of Building Physical AI
+    name: "Prometheus",
+    href: "https://www.prometheus.ai/",
+    sectors: ["AI", "Engineering", "Manufacturing"],
+    blurb: "AI tools designed to accelerate engineering and invention across the physical economy.",
   },
   {
     name: "Figure AI",

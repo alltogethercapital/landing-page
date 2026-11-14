@@ -154,8 +154,8 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   const finalizingAllocationRow = companyAllocationRows.nth(0);
   await expect(finalizingAllocationRow).toContainText("Finalizing allocation");
   await expect(finalizingAllocationRow).toContainText("H256 · Will go to Applied Intuition or Atoms · 56% of vehicle");
-  await expect(finalizingAllocationRow.getByRole("link", { name: "Applied Intuition", exact: true }))
-    .toHaveAttribute("href", "/companies#applied-intuition");
+  await expect(finalizingAllocationRow).toContainText("Applied Intuition");
+  await expect(finalizingAllocationRow.getByRole("link", { name: "Applied Intuition", exact: true })).toHaveCount(0);
   await expect(finalizingAllocationRow.getByRole("link", { name: "Atoms", exact: true }))
     .toHaveAttribute("href", "/lp/investments/41-atoms");
   await expect(finalizingAllocationRow).toContainText("$112,000");
