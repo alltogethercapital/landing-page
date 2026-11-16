@@ -37,10 +37,8 @@ test("publishes the September investor update with a dated portfolio snapshot", 
   await expect(copy).toContainText("revised the second Blue Origin allocation from $25,000.00 to $24,975.00");
   await expect(copy).toContainText("no separate $25.00 refund or AngelList account credit is recorded without transaction evidence");
   await expect(copy).toContainText("the Pocket withdrawal and the remaining allocation corrections");
-  await expect(copy).toContainText("Restated November 16, 2026");
-  await expect(copy).toContainText("final allocation of $9,303.06");
-  await expect(copy).toContainText("returned $696.94 to our AngelList cash balance (Investor Account)");
-  await expect(copy).toContainText("Cash-movement evidence for the original wire remains pending");
+  await expect(copy).toContainText("Restated Nov 16, 2026: Atomarine allocation reduced to $9,303.06 after the SPV was oversubscribed; $696.94 was returned to cash.");
+  await expect(copy).not.toContainText("original wire remains pending");
   await expect(copy).toContainText("not audited NAV");
   await expect(copy).toContainText("do not convert a commitment");
   await expect(copy).not.toContainText("quarterly");

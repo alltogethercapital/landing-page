@@ -119,13 +119,8 @@ function OctoberUpdateCopy() {
       </p>
 
       <p>
-        <strong>Restated November 16, 2026.</strong> The owner confirmed via AngelList&apos;s email of that
-        date that the Atomarine SPV was oversubscribed. The syndicate lead reduced Outer Rim Ventures
-        LLC&apos;s $10,000.00 commitment to a final allocation of $9,303.06 and returned $696.94 to our
-        AngelList cash balance (Investor Account). The figures in this update reflect the lower allocation;
-        the cash credit is excluded from invested cost and projected gross value. The September 16, 2026
-        investment date, Seed round, $125M post-money cap and SAFE terms are unchanged. Cash-movement
-        evidence for the original wire remains pending.
+        <strong>Restated Nov 16, 2026:</strong> Atomarine allocation reduced to $9,303.06 after the SPV was
+        oversubscribed; $696.94 was returned to cash.
       </p>
 
       <p>
@@ -282,13 +277,8 @@ function SeptemberUpdateCopy() {
       </p>
 
       <p>
-        <strong>Restated November 16, 2026.</strong> The owner confirmed via AngelList&apos;s email of that
-        date that the Atomarine SPV was oversubscribed. The syndicate lead reduced Outer Rim Ventures
-        LLC&apos;s $10,000.00 commitment to a final allocation of $9,303.06 and returned $696.94 to our
-        AngelList cash balance (Investor Account). The figures in this update reflect the lower allocation;
-        the cash credit is excluded from invested cost and projected gross value. The September 16, 2026
-        investment date, Seed round, $125M post-money cap and SAFE terms are unchanged. Cash-movement
-        evidence for the original wire remains pending.
+        <strong>Restated Nov 16, 2026:</strong> Atomarine allocation reduced to $9,303.06 after the SPV was
+        oversubscribed; $696.94 was returned to cash.
       </p>
 
       <p>

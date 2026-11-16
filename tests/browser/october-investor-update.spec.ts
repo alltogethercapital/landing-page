@@ -27,10 +27,8 @@ test("publishes the October investor update with the current portfolio snapshot"
   await expect(copy).toContainText("$33,590.75");
   await expect(copy).toContainText("completed cash movement are not yet evidenced");
   await expect(copy).toContainText("no bank-ledger movement has been created without transaction evidence");
-  await expect(copy).toContainText("Restated November 16, 2026");
-  await expect(copy).toContainText("final allocation of $9,303.06");
-  await expect(copy).toContainText("returned $696.94 to our AngelList cash balance (Investor Account)");
-  await expect(copy).toContainText("Cash-movement evidence for the original wire remains pending");
+  await expect(copy).toContainText("Restated Nov 16, 2026: Atomarine allocation reduced to $9,303.06 after the SPV was oversubscribed; $696.94 was returned to cash.");
+  await expect(copy).not.toContainText("original wire remains pending");
   await expect(copy).toContainText("not audited NAV");
   await expect(copy).toContainText("at least twice per year");
   await expect(copy).not.toContainText("quarterly");
