@@ -119,6 +119,16 @@ function OctoberUpdateCopy() {
       </p>
 
       <p>
+        <strong>Restated November 16, 2026.</strong> The owner confirmed via AngelList&apos;s email of that
+        date that the Atomarine SPV was oversubscribed. The syndicate lead reduced Outer Rim Ventures
+        LLC&apos;s $10,000.00 commitment to a final allocation of $9,303.06 and returned $696.94 to our
+        AngelList cash balance (Investor Account). The figures in this update reflect the lower allocation;
+        the cash credit is excluded from invested cost and projected gross value. The September 16, 2026
+        investment date, Seed round, $125M post-money cap and SAFE terms are unchanged. Cash-movement
+        evidence for the original wire remains pending.
+      </p>
+
+      <p>
         Since the September portfolio snapshot, we added {snapshot.newPositionsSinceSeptember} positions at {" "}
         {currency(snapshot.newInvestedCostSinceSeptember)} of recorded cost. Chef Robotics and Standard Bots
         remain at cost in the estimate. Standard Bots&apos; $15,000 position and $1 billion entry valuation are
@@ -272,10 +282,20 @@ function SeptemberUpdateCopy() {
       </p>
 
       <p>
+        <strong>Restated November 16, 2026.</strong> The owner confirmed via AngelList&apos;s email of that
+        date that the Atomarine SPV was oversubscribed. The syndicate lead reduced Outer Rim Ventures
+        LLC&apos;s $10,000.00 commitment to a final allocation of $9,303.06 and returned $696.94 to our
+        AngelList cash balance (Investor Account). The figures in this update reflect the lower allocation;
+        the cash credit is excluded from invested cost and projected gross value. The September 16, 2026
+        investment date, Seed round, $125M post-money cap and SAFE terms are unchanged. Cash-movement
+        evidence for the original wire remains pending.
+      </p>
+
+      <p>
         The change from the August letter includes {currency(snapshot.newInvestedCostSinceAugust)} across the
         fourteen additions and a {currency(snapshot.reconciliationAdjustmentSinceAugust)}{" "}correction to
         Positron&apos;s recorded cost. Those additions and the correction remain at cost in the current estimate.
-        That is why gross value increased while the current value multiple moved from 1.12× to 1.09×: the
+        That is why gross value increased while the current value multiple moved from 1.12× to 1.10×: the
         denominator grew, not because an existing mark was reduced.
       </p>
 

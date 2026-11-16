@@ -19,12 +19,12 @@ test("publishes the September investor update with a dated portfolio snapshot", 
   await expect(page).toHaveURL(/\/lp\/updates\/september-2026$/);
   await expect(page.getByRole("heading", { name: "The Work Moves Into the World" })).toBeVisible();
   const copy = page.locator(".lp-update-article-copy");
-  await expect(copy).toContainText("59 recorded positions across 58 companies");
-  await expect(copy).toContainText("$851,645.98");
-  await expect(copy).toContainText("$931,638.00");
-  await expect(copy).toContainText("1.09× current value multiple");
+  await expect(copy).toContainText("58 recorded positions across 57 companies");
+  await expect(copy).toContainText("$820,949.04");
+  await expect(copy).toContainText("$900,941.06");
+  await expect(copy).toContainText("1.10× current value multiple");
   await expect(copy).toContainText("$79,992.02 above recorded cost");
-  await expect(copy).toContainText("$154,883.97 across the fourteen additions");
+  await expect(copy).toContainText("$154,187.03 across the fourteen additions");
   await expect(copy).toContainText("$15,000.00 correction to Positron");
   await expect(copy).toContainText("Restated October 19, 2026");
   await expect(copy).toContainText("final allocation is $20,766.24");
@@ -37,6 +37,10 @@ test("publishes the September investor update with a dated portfolio snapshot", 
   await expect(copy).toContainText("revised the second Blue Origin allocation from $25,000.00 to $24,975.00");
   await expect(copy).toContainText("no separate $25.00 refund or AngelList account credit is recorded without transaction evidence");
   await expect(copy).toContainText("the Pocket withdrawal and the remaining allocation corrections");
+  await expect(copy).toContainText("Restated November 16, 2026");
+  await expect(copy).toContainText("final allocation of $9,303.06");
+  await expect(copy).toContainText("returned $696.94 to our AngelList cash balance (Investor Account)");
+  await expect(copy).toContainText("Cash-movement evidence for the original wire remains pending");
   await expect(copy).toContainText("not audited NAV");
   await expect(copy).toContainText("do not convert a commitment");
   await expect(copy).not.toContainText("quarterly");

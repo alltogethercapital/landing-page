@@ -61,34 +61,38 @@ export const LP_SEPTEMBER_2026_PORTFOLIO_AS_OF = "September 16, 2026";
 
 // Reconciled to the live Schedule of Investments after removing Stripe,
 // which was not an investment, the recent amount corrections, and the Pocket
-// withdrawal. The change from the August letter comprises $154,883.97 across fourteen new
+// withdrawal. The change from the August letter comprises $154,187.03 across fourteen new
 // positions plus a $15,000 correction to Positron's recorded cost. Supabase's final
 // allocation is $18.48 below its originally recorded cost; that pre-August correction
 // is reflected in both historical snapshots. Apptronik's final allocation is $8,455.76
 // below its prior allocation and its directional mark changes proportionally. The second Blue
 // Origin allocation is $25.00 below the original $25,000 allocation. Rasyn's final allocation is
-// $6.00 and Ultrasonium's is $85.03 below initially recorded cost.
+// $6.00 and Ultrasonium's is $85.03 below initially recorded cost. Restated November 16,
+// 2026 for Atomarine's $696.94 final allocation reduction and owner-confirmed AngelList
+// Investor Account credit. Atomarine remains at cost; the credit is outside invested cost
+// and projected gross value. The August snapshot predates Atomarine and is unchanged.
 export const LP_SEPTEMBER_2026_FUND_SNAPSHOT = {
-  investedCost: 821_645.98,
-  projectedGrossValue: 901_638.00,
-  projectedGrossMultiple: 1.09,
+  investedCost: 820_949.04,
+  projectedGrossValue: 900_941.06,
+  projectedGrossMultiple: 1.10,
   grossValueChange: 79_992.02,
   positions: 58,
   companies: 57,
   newPositionsSinceAugust: 14,
-  newInvestedCostSinceAugust: 154_883.97,
+  newInvestedCostSinceAugust: 154_187.03,
   reconciliationAdjustmentSinceAugust: 15_000,
 } as const;
 
 export const LP_OCTOBER_2026_PORTFOLIO_AS_OF = "October 29, 2026";
 
 // Current dated snapshot after adding Standard Bots at owner-confirmed recorded
-// cost and removing Stripe, which was not an investment.
+// cost and removing Stripe, which was not an investment. Restated November 16, 2026
+// for the same $696.94 Atomarine reduction reflected in the September snapshot.
 // Standard Bots remains at cost because no later company valuation, approved
 // administrator mark, execution evidence, or completed cash movement is supplied.
 export const LP_OCTOBER_2026_FUND_SNAPSHOT = {
-  investedCost: 855_236.73,
-  projectedGrossValue: 935_228.75,
+  investedCost: 854_539.79,
+  projectedGrossValue: 934_531.81,
   projectedGrossMultiple: 1.09,
   grossValueChange: 79_992.02,
   positions: 60,

@@ -8,7 +8,7 @@ test("publishes the October investor update with the current portfolio snapshot"
 
   await page.goto("/lp/updates");
   const octoberUpdate = page.getByRole("link", {
-    name: /Intelligence Meets the Production Line: Chef Robotics, Physical AI/,
+    name: /Intelligence Meets the Production Line: Chef Robotics, Standard Bots/,
   });
   await expect(octoberUpdate).toBeVisible();
   await expect(octoberUpdate).toHaveAttribute("href", "/lp/updates/october-2026");
@@ -19,14 +19,18 @@ test("publishes the October investor update with the current portfolio snapshot"
   await expect(page).toHaveURL(/\/lp\/updates\/october-2026$/);
   await expect(page.getByRole("heading", { name: "Intelligence Meets the Production Line" })).toBeVisible();
   const copy = page.locator(".lp-update-article-copy");
-  await expect(copy).toContainText("59 recorded positions across 58 companies");
-  await expect(copy).toContainText("$840,236.73");
-  await expect(copy).toContainText("$920,228.75");
+  await expect(copy).toContainText("60 recorded positions across 59 companies");
+  await expect(copy).toContainText("$854,539.79");
+  await expect(copy).toContainText("$934,531.81");
   await expect(copy).toContainText("1.09× current value multiple");
   await expect(copy).toContainText("$79,992.02 above recorded cost");
-  await expect(copy).toContainText("$18,590.75");
+  await expect(copy).toContainText("$33,590.75");
   await expect(copy).toContainText("completed cash movement are not yet evidenced");
   await expect(copy).toContainText("no bank-ledger movement has been created without transaction evidence");
+  await expect(copy).toContainText("Restated November 16, 2026");
+  await expect(copy).toContainText("final allocation of $9,303.06");
+  await expect(copy).toContainText("returned $696.94 to our AngelList cash balance (Investor Account)");
+  await expect(copy).toContainText("Cash-movement evidence for the original wire remains pending");
   await expect(copy).toContainText("not audited NAV");
   await expect(copy).toContainText("at least twice per year");
   await expect(copy).not.toContainText("quarterly");

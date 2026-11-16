@@ -18,7 +18,7 @@ test("publishes Atomarine across every authorized public surface", async ({ page
   expect(response?.status()).toBe(200);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Atomarine.");
   const article = await page.locator("main").innerText();
-  for (const confidential of ["$200k", "$200,000", "$125M", "$16M", "AngelList", "Exitfund", "20.0%", "carry", "$4B", "LOI"]) {
+  for (const confidential of ["$10,000", "$9,303.06", "$696.94", "$200k", "$200,000", "$125M", "$16M", "AngelList", "Exitfund", "20.0%", "carry", "$4B", "LOI"]) {
     expect(article).not.toContain(confidential);
   }
 });
