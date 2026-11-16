@@ -53,6 +53,11 @@ export default function Home() {
             That is the machine spirit: intelligence given form and purpose.
           </p>
           <p>
+            We want safe AI, guided by intelligent global teamwork, to expand
+            human agency and carry us toward an abundant, human-centric
+            future—not an AI-centric one.
+          </p>
+          <p>
             We back the founders building it across AI, robotics, semiconductors,
             energy, defense, and space.
           </p>
