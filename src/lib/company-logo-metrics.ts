@@ -21,8 +21,8 @@ export type CompanyLogoMetric = {
   stacked?: boolean;
   /** These sources cannot be recolored using their alpha mask alone. */
   bakedBackground?: "dark-tile" | "light-tile" | "light-checkerboard";
-  /** Artwork drawn for dark backgrounds shows its true colors on a dark surface. */
-  hoverSurface?: "dark";
+  /** Reversed artwork shown on dark-mode hover in place of the source. */
+  darkHover?: string;
 };
 
 export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> = {
@@ -48,7 +48,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.133008,
     "inkCoverage": 0.310873,
     "visibleCoverage": 0.304896,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/summer-engine.png"
   },
   "/logos/cards/standard-bots.svg": {
     "name": "Standard Bots",
@@ -148,7 +149,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.074451,
     "inkCoverage": 0.251842,
     "visibleCoverage": 0.251842,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/path-robotics.png"
   },
   "/logos/cards/molagri.svg": {
     "name": "Molagri",
@@ -172,7 +174,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0,
     "inkCoverage": 0.296678,
     "visibleCoverage": 0.296678,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/molagri.png"
   },
   "/logos/cards/atomarine.png": {
     "name": "Atomarine",
@@ -223,7 +226,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0,
     "inkCoverage": 0.219671,
     "visibleCoverage": 0.156333,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/astro-mechanica.png"
   },
   "/logos/cards/allia-health.png": {
     "name": "Allia Health",
@@ -248,7 +252,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.274741,
     "inkCoverage": 0.575997,
     "visibleCoverage": 0.437614,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/allia-health.png"
   },
   "/logos/cards/trynearby.svg": {
     "name": "TryNearby",
@@ -296,7 +301,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0,
     "inkCoverage": 0.280533,
     "visibleCoverage": 0.196253,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/familiar-labs.png"
   },
   "/logos/cards/carsignal.png": {
     "name": "CarSignal",
@@ -321,7 +327,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.015408,
     "inkCoverage": 0.381595,
     "visibleCoverage": 0.225058,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/carsignal.png"
   },
   "/logos/cards/datoric.png": {
     "name": "Datoric",
@@ -422,7 +429,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0,
     "inkCoverage": 0.262874,
     "visibleCoverage": 0.218641,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/shield-ai.png"
   },
   "/logos/cards/1x.png": {
     "name": "1X",
@@ -446,7 +454,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.245638,
     "inkCoverage": 0.214999,
     "visibleCoverage": 0.175168,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/1x.png"
   },
   "/logos/cards/openai.png": {
     "name": "OpenAI",
@@ -470,7 +479,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0,
     "inkCoverage": 0.347057,
     "visibleCoverage": 0.295612,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/openai.png"
   },
   "/logos/cards/blue-origin.png": {
     "name": "Blue Origin",
@@ -495,7 +505,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "inkCoverage": 0.250443,
     "visibleCoverage": 0.156085,
     "opticalBoost": 1,
-    "stacked": true
+    "stacked": true,
+    "darkHover": "/logos/cards/dark/blue-origin.png"
   },
   "/logos/cards/longshot-space.png": {
     "name": "Longshot Space",
@@ -519,7 +530,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.161438,
     "inkCoverage": 0.531999,
     "visibleCoverage": 0.249727,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/longshot-space.png"
   },
   "/logos/cards/positron-ai.svg": {
     "name": "Positron",
@@ -543,8 +555,7 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.750119,
     "inkCoverage": 0.302303,
     "visibleCoverage": 0.241183,
-    "opticalBoost": 1,
-    "hoverSurface": "dark"
+    "opticalBoost": 1
   },
   "/logos/cards/weave-robotics.png": {
     "name": "Weave Robotics",
@@ -568,7 +579,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.039222,
     "inkCoverage": 0.376697,
     "visibleCoverage": 0.22648,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/weave-robotics.png"
   },
   "/logos/cards/supabase.png": {
     "name": "Supabase",
@@ -592,7 +604,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.152901,
     "inkCoverage": 0.248244,
     "visibleCoverage": 0.154787,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/supabase.png"
   },
   "/logos/cards/valstad.png": {
     "name": "Valstad",
@@ -616,7 +629,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.039219,
     "inkCoverage": 0.520136,
     "visibleCoverage": 0.321896,
-    "opticalBoost": 0.96
+    "opticalBoost": 0.96,
+    "darkHover": "/logos/cards/dark/valstad.png"
   },
   "/logos/cards/sunflower-labs.svg": {
     "name": "Sunflower Labs",
@@ -640,7 +654,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.169283,
     "inkCoverage": 0.163815,
     "visibleCoverage": 0.162873,
-    "opticalBoost": 1.04
+    "opticalBoost": 1.04,
+    "darkHover": "/logos/cards/dark/sunflower-labs.png"
   },
   "/logos/cards/atoms.png": {
     "name": "Atoms",
@@ -664,7 +679,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0,
     "inkCoverage": 0.524415,
     "visibleCoverage": 0.524012,
-    "opticalBoost": 0.96
+    "opticalBoost": 0.96,
+    "darkHover": "/logos/cards/dark/atoms.png"
   },
   "/logos/cards/higgsfield-mark.png": {
     "name": "Higgsfield",
@@ -714,7 +730,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.054295,
     "inkCoverage": 0.295438,
     "visibleCoverage": 0.248716,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/decart.png"
   },
   "/logos/cards/matforge.svg": {
     "name": "Matforge",
@@ -738,7 +755,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.066249,
     "inkCoverage": 0.409086,
     "visibleCoverage": 0.099022,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/matforge.png"
   },
   "/logos/cards/raspire.svg": {
     "name": "Raspire",
@@ -763,9 +781,10 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.098003,
     "inkCoverage": 0.379741,
     "visibleCoverage": 0.244291,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/raspire.png"
   },
-  "/logos/cards/rendezvous-robotics-lockup.svg": {
+  "/logos/cards/rendezvous-robotics-ink.svg": {
     "name": "Rendezvous Robotics",
     "intrinsicWidth": 477,
     "intrinsicHeight": 93,
@@ -783,12 +802,12 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     },
     "inkAspect": 5.129032,
     "kind": "wordmark",
-    "tone": "light",
-    "meanLuminance": 0.962834,
+    "tone": "dark",
+    "meanLuminance": 0.023714,
     "inkCoverage": 0.325407,
     "visibleCoverage": 0.325407,
     "opticalBoost": 1,
-    "hoverSurface": "dark"
+    "darkHover": "/logos/cards/dark/rendezvous-robotics-ink.svg"
   },
   "/logos/cards/compresr.svg": {
     "name": "Compresr",
@@ -864,9 +883,10 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.043705,
     "inkCoverage": 0.317501,
     "visibleCoverage": 0.262477,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/anduril.png"
   },
-  "/logos/cards/aurelius-logo.png": {
+  "/logos/cards/aurelius-ink.png": {
     "name": "Aurelius Systems",
     "intrinsicWidth": 1424,
     "intrinsicHeight": 264,
@@ -884,12 +904,12 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     },
     "inkAspect": 5.482625,
     "kind": "wordmark",
-    "tone": "light",
-    "meanLuminance": 0.990161,
+    "tone": "dark",
+    "meanLuminance": 0.009839,
     "inkCoverage": 0.291817,
     "visibleCoverage": 0.285486,
     "opticalBoost": 0.96,
-    "hoverSurface": "dark"
+    "darkHover": "/logos/cards/dark/aurelius-ink.png"
   },
   "/logos/cards/salient.png": {
     "name": "Salient Motion",
@@ -913,7 +933,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0,
     "inkCoverage": 0.241106,
     "visibleCoverage": 0.197873,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/salient.png"
   },
   "/logos/cards/replit.png": {
     "name": "Replit",
@@ -937,9 +958,10 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.123313,
     "inkCoverage": 0.312625,
     "visibleCoverage": 0.265769,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/replit.png"
   },
-  "/logos/cards/sourcerer.svg": {
+  "/logos/cards/sourcerer-color.svg": {
     "name": "Sourcerer",
     "intrinsicWidth": 156,
     "intrinsicHeight": 22,
@@ -957,12 +979,12 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     },
     "inkAspect": 7.090909,
     "kind": "wordmark",
-    "tone": "light",
-    "meanLuminance": 1,
+    "tone": "dark",
+    "meanLuminance": 0.055768,
     "inkCoverage": 0.291171,
     "visibleCoverage": 0.291171,
     "opticalBoost": 1,
-    "hoverSurface": "dark"
+    "darkHover": "/logos/cards/dark/sourcerer-color.svg"
   },
   "/logos/cards/figure.png": {
     "name": "Figure AI",
@@ -986,7 +1008,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0,
     "inkCoverage": 0.310923,
     "visibleCoverage": 0.248487,
-    "opticalBoost": 1.03
+    "opticalBoost": 1.03,
+    "darkHover": "/logos/cards/dark/figure.png"
   },
   "/logos/cards/apptronik.png": {
     "name": "Apptronik",
@@ -1010,7 +1033,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.043687,
     "inkCoverage": 0.251947,
     "visibleCoverage": 0.174425,
-    "opticalBoost": 1.1
+    "opticalBoost": 1.1,
+    "darkHover": "/logos/cards/dark/apptronik.png"
   },
   "/logos/cards/volantis-orange.png": {
     "name": "Volantis",
@@ -1036,7 +1060,7 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "visibleCoverage": 0.326311,
     "opticalBoost": 1
   },
-  "/logos/cards/starcloud.svg": {
+  "/logos/cards/starcloud-ink.svg": {
     "name": "Starcloud",
     "intrinsicWidth": 171,
     "intrinsicHeight": 24,
@@ -1054,12 +1078,12 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     },
     "inkAspect": 7.952381,
     "kind": "wordmark",
-    "tone": "light",
-    "meanLuminance": 0.955393,
+    "tone": "dark",
+    "meanLuminance": 0,
     "inkCoverage": 0.208694,
     "visibleCoverage": 0.178336,
     "opticalBoost": 1,
-    "hoverSurface": "dark"
+    "darkHover": "/logos/cards/dark/starcloud-ink.svg"
   },
   "/logos/cards/reflect-orbital.png": {
     "name": "Reflect Orbital",
@@ -1083,7 +1107,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.066667,
     "inkCoverage": 0.132461,
     "visibleCoverage": 0.105603,
-    "opticalBoost": 1.05
+    "opticalBoost": 1.05,
+    "darkHover": "/logos/cards/dark/reflect-orbital.png"
   },
   "/logos/cards/exowatt.svg": {
     "name": "Exowatt",
@@ -1107,9 +1132,10 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.189875,
     "inkCoverage": 0.146897,
     "visibleCoverage": 0.146897,
-    "opticalBoost": 1.06
+    "opticalBoost": 1.06,
+    "darkHover": "/logos/cards/dark/exowatt.svg"
   },
-  "/logos/cards/apollo-atomics-logo.png": {
+  "/logos/cards/apollo-atomics-ink.png": {
     "name": "Apollo Atomics",
     "intrinsicWidth": 3073,
     "intrinsicHeight": 888,
@@ -1127,12 +1153,12 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     },
     "inkAspect": 3.463203,
     "kind": "wordmark",
-    "tone": "light",
-    "meanLuminance": 0.973053,
+    "tone": "dark",
+    "meanLuminance": 0.025561,
     "inkCoverage": 0.256611,
     "visibleCoverage": 0.256611,
     "opticalBoost": 1.06,
-    "hoverSurface": "dark"
+    "darkHover": "/logos/cards/dark/apollo-atomics-ink.png"
   },
   "/logos/cards/aalo.png": {
     "name": "Aalo Atomics",
@@ -1156,7 +1182,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.043704,
     "inkCoverage": 0.342647,
     "visibleCoverage": 0.287747,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/aalo.png"
   },
   "/logos/cards/quaise.svg": {
     "name": "Quaise Energy",
@@ -1180,7 +1207,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.241222,
     "inkCoverage": 0.327897,
     "visibleCoverage": 0.327897,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/quaise.svg"
   },
   "/logos/cards/unspun.png": {
     "name": "Unspun",
@@ -1204,7 +1232,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.043704,
     "inkCoverage": 0.352379,
     "visibleCoverage": 0.298978,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/unspun.png"
   },
   "/logos/cards/mav-unlimited.svg": {
     "name": "MAV Unlimited",
@@ -1229,9 +1258,10 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "inkCoverage": 0.098251,
     "visibleCoverage": 0.098251,
     "opticalBoost": 1.12,
-    "stacked": true
+    "stacked": true,
+    "darkHover": "/logos/cards/dark/mav-unlimited.svg"
   },
-  "/logos/cards/lance-logo.png": {
+  "/logos/cards/lance-ink.png": {
     "name": "Lance",
     "intrinsicWidth": 261,
     "intrinsicHeight": 48,
@@ -1249,35 +1279,36 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     },
     "inkAspect": 5.4375,
     "kind": "wordmark",
-    "tone": "light",
-    "meanLuminance": 1,
+    "tone": "dark",
+    "meanLuminance": 0,
     "inkCoverage": 0.497972,
     "visibleCoverage": 0.497972,
     "opticalBoost": 0.97,
-    "hoverSurface": "dark"
+    "darkHover": "/logos/cards/dark/lance-ink.png"
   },
-  "/logos/cards/samply.png": {
+  "/logos/cards/samply-mark.svg": {
     "name": "Samply",
-    "intrinsicWidth": 1226,
-    "intrinsicHeight": 340,
+    "intrinsicWidth": 1067,
+    "intrinsicHeight": 1067,
     "inkBounds": {
-      "x": 20,
-      "y": 20,
-      "width": 1186,
-      "height": 300
+      "x": 250,
+      "y": 217,
+      "width": 569,
+      "height": 629
     },
     "crop": {
-      "left": 0.016313,
-      "top": 0.058824,
-      "width": 0.967374,
-      "height": 0.882353
+      "left": 0.234302,
+      "top": 0.203374,
+      "width": 0.533271,
+      "height": 0.589503
     },
-    "inkAspect": 3.953333,
-    "kind": "wordmark",
-    "tone": "dark",
-    "meanLuminance": 0.043704,
-    "inkCoverage": 0.432512,
-    "visibleCoverage": 0.369177,
+    "inkAspect": 0.90461,
+    "kind": "icon",
+    "label": "Samply",
+    "tone": "mixed",
+    "meanLuminance": 0.595745,
+    "inkCoverage": 0.546773,
+    "visibleCoverage": 0.171886,
     "opticalBoost": 1
   },
   "/logos/cards/hark.png": {
@@ -1302,7 +1333,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.043696,
     "inkCoverage": 0.363531,
     "visibleCoverage": 0.306981,
-    "opticalBoost": 0.96
+    "opticalBoost": 0.96,
+    "darkHover": "/logos/cards/dark/hark.png"
   },
   "/logos/cards/campus.svg": {
     "name": "Campus",
@@ -1374,7 +1406,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0,
     "inkCoverage": 0.683004,
     "visibleCoverage": 0.683004,
-    "opticalBoost": 0.94
+    "opticalBoost": 0.94,
+    "darkHover": "/logos/cards/dark/maven.png"
   },
   "/logos/cards/eccentric.png": {
     "name": "Eccentric Machines",
@@ -1398,7 +1431,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.171803,
     "inkCoverage": 0.606349,
     "visibleCoverage": 0.492431,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/eccentric.png"
   },
   "/logos/cards/array-labs.png": {
     "name": "Array Labs",
@@ -1423,7 +1457,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "inkCoverage": 0.258288,
     "visibleCoverage": 0.216339,
     "opticalBoost": 1,
-    "stacked": true
+    "stacked": true,
+    "darkHover": "/logos/cards/dark/array-labs.png"
   },
   "/logos/cards/commons-clinic.png": {
     "name": "Commons Clinic",
@@ -1448,7 +1483,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "inkCoverage": 0.263545,
     "visibleCoverage": 0.22465,
     "opticalBoost": 1,
-    "stacked": true
+    "stacked": true,
+    "darkHover": "/logos/cards/dark/commons-clinic.png"
   },
   "/logos/cards/plena-health-wordmark.png": {
     "name": "Plena Health",
@@ -1520,7 +1556,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.202363,
     "inkCoverage": 0.350657,
     "visibleCoverage": 0.279714,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/aformic.png"
   }
 };
 

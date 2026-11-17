@@ -38,10 +38,7 @@ html .cog-logo-cell {
   overflow: hidden;
   border-radius: 2px;
   opacity: 0.88;
-  transition:
-    opacity 220ms ease,
-    background-color 220ms ease,
-    box-shadow 220ms ease;
+  transition: opacity 220ms ease;
 }
 
 /* Override old fill-image padding and compact-result stretching at the source. */
@@ -66,16 +63,6 @@ html .company-logo .company-logo-image--transparent {
 
 html[data-site-theme="dark"] .company-logo .company-logo-image--transparent {
   filter: grayscale(1) brightness(0.25) invert(1);
-}
-
-/* White or light artwork drawn for dark backgrounds is inverted to ink in
-   light mode and kept light in dark mode, preserving its internal tones. */
-html .company-logo .company-logo-artwork--on-dark .company-logo-image--transparent {
-  filter: grayscale(1) invert(1) contrast(1.15);
-}
-
-html[data-site-theme="dark"] .company-logo .company-logo-artwork--on-dark .company-logo-image--transparent {
-  filter: grayscale(1) contrast(1.15);
 }
 
 /* Positron's single-color teal lockup is a mid tone; render it as a solid
@@ -132,41 +119,36 @@ html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :fo
   filter: none;
 }
 
-/* Transparent marks lift onto a neutral proofing surface on hover in both
-   themes, so their true colors (including pure black ink) read clearly and
-   every card visibly changes. Tiles already carry their own background. */
-html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
-  .company-logo-artwork--transparent {
-  background: #ffffff;
-  box-shadow: 0 0 0 6px #ffffff;
+/* No surface is ever added behind a logo on hover: it stays transparent on
+   the page. In dark mode, sources with black ink swap to reversed artwork
+   (official white versions, or black ink turned white with brand colors
+   kept) so they stay visible on the dark page. */
+html .company-logo .company-logo-image--dark-hover {
+  opacity: 0;
+  filter: none;
+  transition: opacity 220ms ease;
 }
 
-html[data-site-theme="dark"]
-  :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
-  .company-logo-artwork--transparent {
-  background: #f4f2ed;
-  box-shadow: 0 0 0 6px #f4f2ed;
+html[data-site-theme="dark"] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .company-logo-artwork--has-dark .company-logo-image--transparent {
+  opacity: 0;
 }
 
-/* Artwork the company draws in white or light color for dark backgrounds
-   (Positron, Rendezvous Robotics, Aurelius, Sourcerer, Starcloud, Apollo
-   Atomics, Lance) shows its real form on a dark surface instead. */
-html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
-  .company-logo-artwork--on-dark {
-  background: #0b0d0b;
-  box-shadow: 0 0 0 6px #0b0d0b;
+html[data-site-theme="dark"] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .company-logo-artwork--has-dark .company-logo-image--dark-hover {
+  opacity: 1;
 }
 
-/* Datoric's source is black line art on white; redraw it in those colors. */
-html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
-  .company-logo-artwork--datoric {
-  background: #ffffff;
-  box-shadow: 0 0 0 3px #ffffff;
-}
-
+/* Datoric's source is black line art: black on hover in light mode, its
+   reversed white line art on hover in dark mode, never on a backing. */
 html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
   .company-logo-datoric {
   background-color: #000000;
+}
+
+html[data-site-theme="dark"] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .company-logo-datoric {
+  background-color: #ffffff;
 }
 
 @media (prefers-reduced-motion: reduce) {
