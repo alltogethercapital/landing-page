@@ -68,6 +68,26 @@ html[data-site-theme="dark"] .company-logo .company-logo-image--transparent {
   filter: grayscale(1) brightness(0.25) invert(1);
 }
 
+/* White or light artwork drawn for dark backgrounds is inverted to ink in
+   light mode and kept light in dark mode, preserving its internal tones. */
+html .company-logo .company-logo-artwork--on-dark .company-logo-image--transparent {
+  filter: grayscale(1) invert(1) contrast(1.15);
+}
+
+html[data-site-theme="dark"] .company-logo .company-logo-artwork--on-dark .company-logo-image--transparent {
+  filter: grayscale(1) contrast(1.15);
+}
+
+/* Positron's single-color teal lockup is a mid tone; render it as a solid
+   ink silhouette so it carries the same weight as its neighbors. */
+html .company-logo[data-logo-name="Positron"] .company-logo-image--transparent {
+  filter: brightness(0);
+}
+
+html[data-site-theme="dark"] .company-logo[data-logo-name="Positron"] .company-logo-image--transparent {
+  filter: brightness(0) invert(1);
+}
+
 /* Opaque tiles (Standard Bots, Chef Robotics, Atomarine, Autostep, Compresr)
    keep their full tonal range so the mark inside the tile stays legible,
    inverted in dark mode so the tile and its mark keep their separation. */
@@ -82,21 +102,22 @@ html[data-site-theme="dark"] .company-logo .company-logo-image--baked {
 /* Atomarine's mark sits on a mid-tone navy gradient; stretch its tones so the
    wave mark separates from the tile in both themes. */
 html .company-logo[data-logo-name="Atomarine"] .company-logo-image--baked {
-  filter: grayscale(1) brightness(0.7) contrast(1.8);
+  filter: grayscale(1) brightness(0.9) contrast(2.2);
 }
 
 html[data-site-theme="dark"] .company-logo[data-logo-name="Atomarine"] .company-logo-image--baked {
-  filter: grayscale(1) brightness(0.7) contrast(1.8) invert(1);
+  filter: grayscale(1) brightness(0.9) contrast(2.2) invert(1);
 }
 
-/* Higgsfield pairs a light lime tile with a black wordmark. Flattening it to
-   ink hides the glyph, so keep the tile's tonal separation at rest. */
-html .company-logo[data-logo-name="Higgsfield"] .company-logo-image--transparent {
-  filter: grayscale(1) contrast(1.2);
+/* Higgsfield's tile is light lime with a black glyph. Invert it at rest so it
+   matches every other tile: a dark tile with a light glyph in light mode and
+   a light tile with a dark glyph in dark mode. */
+html .company-logo .company-logo-artwork--light-tile .company-logo-image--baked {
+  filter: grayscale(1) invert(1) contrast(1.2);
 }
 
-html[data-site-theme="dark"] .company-logo[data-logo-name="Higgsfield"] .company-logo-image--transparent {
-  filter: grayscale(1) invert(1) contrast(1.15);
+html[data-site-theme="dark"] .company-logo .company-logo-artwork--light-tile .company-logo-image--baked {
+  filter: grayscale(1) contrast(1.15);
 }
 
 /* Hovering or focusing any company link reveals that company's real logo in
@@ -111,14 +132,29 @@ html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :fo
   filter: none;
 }
 
-/* Authentic color artwork can contain black ink. Give transparent marks a
-   neutral light proofing surface in dark mode so no brand detail disappears
-   into the page. Tiles already carry their own background. */
+/* Transparent marks lift onto a neutral proofing surface on hover in both
+   themes, so their true colors (including pure black ink) read clearly and
+   every card visibly changes. Tiles already carry their own background. */
+html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .company-logo-artwork--transparent {
+  background: #ffffff;
+  box-shadow: 0 0 0 6px #ffffff;
+}
+
 html[data-site-theme="dark"]
   :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
   .company-logo-artwork--transparent {
   background: #f4f2ed;
   box-shadow: 0 0 0 6px #f4f2ed;
+}
+
+/* Artwork the company draws in white or light color for dark backgrounds
+   (Positron, Rendezvous Robotics, Aurelius, Sourcerer, Starcloud, Apollo
+   Atomics, Lance) shows its real form on a dark surface instead. */
+html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .company-logo-artwork--on-dark {
+  background: #0b0d0b;
+  box-shadow: 0 0 0 6px #0b0d0b;
 }
 
 /* Datoric's source is black line art on white; redraw it in those colors. */

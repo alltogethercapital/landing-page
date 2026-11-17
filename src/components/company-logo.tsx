@@ -40,8 +40,15 @@ function LogoArtwork({ src, mark = false }: { src: string; mark?: boolean }) {
   // Opaque app tiles carry their own background; transparent marks need a
   // theme-aware ink treatment at rest and a proofing surface on dark hover.
   const surface = metric?.bakedBackground ? "tile" : "transparent";
+  const classes = [
+    "company-logo-artwork",
+    `company-logo-artwork--${surface}`,
+    metric?.bakedBackground === "light-tile" ? "company-logo-artwork--light-tile" : "",
+    metric?.hoverSurface === "dark" ? "company-logo-artwork--on-dark" : "",
+    mark ? "company-logo-artwork--mark" : "",
+  ].filter(Boolean).join(" ");
   return (
-    <span className={`company-logo-artwork company-logo-artwork--${surface}${mark ? " company-logo-artwork--mark" : ""}`} style={style}>
+    <span className={classes} style={style}>
       <Image
         src={src}
         alt=""
