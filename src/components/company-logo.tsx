@@ -26,14 +26,22 @@ function LogoArtwork({ src, mark = false }: { src: string; mark?: boolean }) {
   } as CSSProperties;
 
   // The official white-on-black icon provides a clean luminance mask. The
-  // older Datoric wordmark file contains a baked checkerboard, not alpha.
+  // older Datoric wordmark file contains a baked checkerboard, not alpha, so
+  // its true black-on-white colors are drawn on hover from the same mask.
   if (metric?.name === "Datoric") {
-    return <span className="company-logo-artwork company-logo-datoric" style={{ ...style, aspectRatio: 1 }} />;
+    return (
+      <span className="company-logo-artwork company-logo-artwork--datoric" style={{ ...style, aspectRatio: 1 }}>
+        <span className="company-logo-datoric" />
+      </span>
+    );
   }
 
   const crop = metric?.crop ?? { left: 0, top: 0, width: 1, height: 1 };
+  // Opaque app tiles carry their own background; transparent marks need a
+  // theme-aware ink treatment at rest and a proofing surface on dark hover.
+  const surface = metric?.bakedBackground ? "tile" : "transparent";
   return (
-    <span className={`company-logo-artwork${mark ? " company-logo-artwork--mark" : ""}`} style={style}>
+    <span className={`company-logo-artwork company-logo-artwork--${surface}${mark ? " company-logo-artwork--mark" : ""}`} style={style}>
       <Image
         src={src}
         alt=""
