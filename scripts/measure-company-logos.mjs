@@ -31,6 +31,8 @@ const opticalBoosts = {
   "Core Automation": 1.08,
 };
 const bakedBackgrounds = {
+  "Standard Bots": "dark-tile",
+  "Chef Robotics": "dark-tile",
   Atomarine: "dark-tile",
   Datoric: "light-checkerboard",
   Autostep: "dark-tile",

@@ -48,15 +48,15 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "visibleCoverage": 0.304896,
     "opticalBoost": 1
   },
-  "/logos/cards/standard-bots.png": {
+  "/logos/cards/standard-bots.svg": {
     "name": "Standard Bots",
-    "intrinsicWidth": 32,
-    "intrinsicHeight": 32,
+    "intrinsicWidth": 512,
+    "intrinsicHeight": 512,
     "inkBounds": {
       "x": 0,
       "y": 0,
-      "width": 32,
-      "height": 32
+      "width": 512,
+      "height": 512
     },
     "crop": {
       "left": 0,
@@ -71,7 +71,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.137889,
     "inkCoverage": 1,
     "visibleCoverage": 1,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "bakedBackground": "dark-tile"
   },
   "/logos/cards/chef-robotics.png": {
     "name": "Chef Robotics",
@@ -96,7 +97,8 @@ export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> =
     "meanLuminance": 0.042518,
     "inkCoverage": 1,
     "visibleCoverage": 1,
-    "opticalBoost": 1
+    "opticalBoost": 1,
+    "bakedBackground": "dark-tile"
   },
   "/logos/cards/ultrasonium.png": {
     "name": "Ultrasonium",
