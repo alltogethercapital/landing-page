@@ -37,16 +37,23 @@ function LogoArtwork({ src, mark = false }: { src: string; mark?: boolean }) {
   }
 
   const crop = metric?.crop ?? { left: 0, top: 0, width: 1, height: 1 };
-  // Opaque app tiles carry their own background; transparent marks need a
-  // theme-aware ink treatment at rest and a proofing surface on dark hover.
+  // Opaque app tiles carry their own background. Transparent marks take a
+  // theme-aware ink treatment at rest and show their true colors on hover,
+  // swapping to reversed artwork on dark-mode hover when the source has black ink.
   const surface = metric?.bakedBackground ? "tile" : "transparent";
   const classes = [
     "company-logo-artwork",
     `company-logo-artwork--${surface}`,
     metric?.bakedBackground === "light-tile" ? "company-logo-artwork--light-tile" : "",
-    metric?.hoverSurface === "dark" ? "company-logo-artwork--on-dark" : "",
+    metric?.darkHover ? "company-logo-artwork--has-dark" : "",
     mark ? "company-logo-artwork--mark" : "",
   ].filter(Boolean).join(" ");
+  const imageStyle = {
+    width: `${100 / crop.width}%`,
+    height: `${100 / crop.height}%`,
+    left: `${-100 * crop.left / crop.width}%`,
+    top: `${-100 * crop.top / crop.height}%`,
+  };
   return (
     <span className={classes} style={style}>
       <Image
@@ -58,13 +65,21 @@ function LogoArtwork({ src, mark = false }: { src: string; mark?: boolean }) {
         sizes={`${Math.ceil((mark ? 40 : 192) / crop.width)}px`}
         unoptimized={src.split(/[?#]/, 1)[0].endsWith(".svg")}
         className={`company-logo-image${metric?.bakedBackground ? " company-logo-image--baked" : " company-logo-image--transparent"}`}
-        style={{
-          width: `${100 / crop.width}%`,
-          height: `${100 / crop.height}%`,
-          left: `${-100 * crop.left / crop.width}%`,
-          top: `${-100 * crop.top / crop.height}%`,
-        }}
+        style={imageStyle}
       />
+      {metric?.darkHover ? (
+        <Image
+          src={metric.darkHover}
+          alt=""
+          width={Math.ceil(metric.intrinsicWidth)}
+          height={Math.ceil(metric.intrinsicHeight)}
+          quality={90}
+          sizes={`${Math.ceil((mark ? 40 : 192) / crop.width)}px`}
+          unoptimized={metric.darkHover.endsWith(".svg")}
+          className="company-logo-image company-logo-image--dark-hover"
+          style={imageStyle}
+        />
+      ) : null}
     </span>
   );
 }

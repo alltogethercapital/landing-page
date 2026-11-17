@@ -165,7 +165,7 @@ export const PORTFOLIO: Company[] = [
   },
   { name: "Matforge", href: "https://discoveredmaterials.com/", sectors: ["AI", "Semiconductors", "Materials"], blurb: "Now Discovered Materials, building AI scientists for semiconductor materials discovery.", cardLogo: "/logos/cards/matforge.svg" },
   { name: "Raspire", href: "https://raspire.com/", sectors: ["Security", "AI", "Software"], blurb: "AI-powered runtime security for mobile applications with no source-code changes.", cardLogo: "/logos/cards/raspire.svg?v=20261014", logoLabel: "Raspire" },
-  { name: "Rendezvous Robotics", href: "https://www.rdvrobotics.com/", sectors: ["Space", "Robotics", "Defense"], blurb: "Modular spacecraft that autonomously assemble and reconfigure in orbit.", cardLogo: "/logos/cards/rendezvous-robotics-lockup.svg" },
+  { name: "Rendezvous Robotics", href: "https://www.rdvrobotics.com/", sectors: ["Space", "Robotics", "Defense"], blurb: "Modular spacecraft that autonomously assemble and reconfigure in orbit.", cardLogo: "/logos/cards/rendezvous-robotics-ink.svg" },
   { name: "Compresr", href: "https://www.compresr.com/", sectors: ["AI", "Infrastructure", "Software"], blurb: "Question-aware context compression for faster, more accurate, lower-cost AI systems.", cardLogo: "/logos/cards/compresr.svg", logoLabel: "Compresr" },
   {
     name: "Core Automation",
@@ -193,7 +193,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Defense", "Directed Energy"],
     blurb: "Archimedes, an autonomous directed-energy counter-drone laser.",
     logo: "/logos/aurelius.png",
-    cardLogo: "/logos/cards/aurelius-logo.png",
+    cardLogo: "/logos/cards/aurelius-ink.png",
     image: "/work/aurelius.jpg",
     cardImage: "/work/cards/aurelius.jpg",
     video: "Oym5abej2qw", // This Startup Shoots Down Drones With Lasers (Cerebral Valley)
@@ -224,7 +224,7 @@ export const PORTFOLIO: Company[] = [
     href: "https://sourcererai.com/",
     sectors: ["AI", "Supply Chain"],
     blurb: "AI-native distributor automating sourcing, freight, and trade finance.",
-    cardLogo: "/logos/cards/sourcerer.svg",
+    cardLogo: "/logos/cards/sourcerer-color.svg",
     cardImage: "/work/cards/sourcerer.jpg",
   },
   {
@@ -274,7 +274,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Space", "Compute"],
     blurb: "Data centers in orbit, powered by the sun.",
     logo: "/logos/starcloud.png",
-    cardLogo: "/logos/cards/starcloud.svg",
+    cardLogo: "/logos/cards/starcloud-ink.svg",
     image: "/work/starcloud.jpg",
     cardImage: "/work/cards/starcloud.jpg",
     video: "u9m6tCZa2-k", // Starcloud Constellation (Starcloud)
@@ -303,7 +303,7 @@ export const PORTFOLIO: Company[] = [
     href: "https://www.apolloatomics.com/",
     sectors: ["Energy", "Nuclear"],
     blurb: "Compact pressurized-water reactors built for factory deployment.",
-    cardLogo: "/logos/cards/apollo-atomics-logo.png",
+    cardLogo: "/logos/cards/apollo-atomics-ink.png",
     cardImage: "/work/cards/apollo-atomics.jpg",
   },
   {
@@ -353,7 +353,7 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Software"],
     blurb: "Building the future of hospitality.",
     logo: "/logos/lance.png",
-    cardLogo: "/logos/cards/lance-logo.png",
+    cardLogo: "/logos/cards/lance-ink.png",
     image: "/work/lance.jpg",
     cardImage: "/work/cards/lance.jpg",
     video: "4lfd34piGiE", // guests got places to be (Lance)
@@ -364,7 +364,8 @@ export const PORTFOLIO: Company[] = [
     sectors: ["Software", "Audio"],
     blurb: "Sample management for modern music producers.",
     logo: "/logos/samply.png",
-    cardLogo: "/logos/cards/samply.png",
+    cardLogo: "/logos/cards/samply-mark.svg",
+    logoLabel: "Samply",
     image: "/work/samply.jpg",
     cardImage: "/work/cards/samply.jpg",
     video: "0MT2smBqloI", // Getting started with Samply (Samply)
