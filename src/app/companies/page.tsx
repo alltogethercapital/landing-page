@@ -27,7 +27,7 @@ function CompanyArticle({ company }: { company: Company }) {
         rel="noopener noreferrer"
         className="cog-company-card-link"
         aria-label={`Visit ${company.name}`}
-        aria-describedby={`${slugify(company.name)}-market`}
+        aria-describedby={company.publicListing ? `${slugify(company.name)}-market` : undefined}
       >
         <span className="cog-company-card-arrow" aria-hidden="true">
           <ArrowUpRight />

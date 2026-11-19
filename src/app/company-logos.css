@@ -272,20 +272,19 @@ html[data-site-theme="dark"] :is(.cog-logo-cell, .cog-company-card-link):is(:hov
   }
 }
 
-/* Every card carries a whisper-quiet market label: "Private" by default and
-   "Public" for a position bought on the public markets. It sits in the card's
-   top-left corner in the muted support face, never competes with the logo, and
-   brightens slightly with the rest of the card on hover. A public position's
-   exchange and ticker appear only while its card is hovered or focused. */
+/* A /companies card for a public-market position carries a whisper-quiet
+   "Public" label beneath its description, in the muted support face. Its
+   exchange and ticker appear only while the card is hovered or focused.
+   Private positions carry no label. */
 .market-tag {
-  position: absolute;
-  top: 2px;
-  left: 4px;
-  z-index: 1;
+  position: relative;
   display: block;
+  align-self: flex-start;
+  margin-top: auto;
+  padding-top: 16px;
   color: var(--cog-muted);
   font-family: var(--cog-support);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0.12em;
@@ -301,23 +300,12 @@ html[data-site-theme="dark"] :is(.cog-logo-cell, .cog-company-card-link):is(:hov
   transition: opacity 220ms ease;
 }
 
-html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible) .market-tag {
+html[data-site-theme] .cog-company-card-link:is(:hover, :focus-visible) .market-tag {
   opacity: 0.8;
 }
 
-html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible) .market-tag-ticker {
+html[data-site-theme] .cog-company-card-link:is(:hover, :focus-visible) .market-tag-ticker {
   opacity: 1;
-}
-
-/* On a /companies card the label closes the card, beneath the description. */
-.cog-company-card-link .market-tag {
-  position: relative;
-  top: auto;
-  left: auto;
-  align-self: flex-start;
-  margin-top: auto;
-  padding-top: 16px;
-  font-size: 10px;
 }
 
 /* Touch screens have no hover: keep a public listing's ticker readable. */
