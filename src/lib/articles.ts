@@ -64,6 +64,38 @@ const NEW_INVESTMENT_ARTICLES: Article[] = [
 
 // Updates: the firm's writing. Newest first.
 const ARTICLE_ENTRIES: Article[] = [
+  {
+    slug: "anthropic",
+    title: "Anthropic.",
+    date: "November 19, 2026",
+    dateISO: "2026-11-19",
+    category: "Portfolio",
+    author: "Machine Spirit Capital",
+    excerpt:
+      "We bought Anthropic on its first day of trading on the Nasdaq, our first position bought on the public markets.",
+    image: "/updates/covers/anthropic.svg",
+    sections: [
+      {
+        body: [
+          "Anthropic began trading on the Nasdaq Global Select Market on November 19, 2026, under the symbol ANT. We bought shares on the public market that morning.",
+          "Every other company in our portfolio we back privately. Anthropic is the exception: a company we chose to own in the open market on the day it became one.",
+        ],
+      },
+      {
+        heading: "What they are building",
+        body: [
+          "Anthropic is an AI safety and research company. It builds Claude, a family of frontier models used by people, developers, and businesses, and it publishes research on making those systems reliable, interpretable, and steerable.",
+        ],
+      },
+      {
+        heading: "Why we own it",
+        body: [
+          "We want safe AI, guided by intelligent global teamwork, to expand human agency. Anthropic has put that question at the center of its work rather than at the edge of it.",
+          "Frontier models are becoming the infrastructure that the companies we back build on. Owning the lab that treats safety as the product is part of the same thesis.",
+        ],
+      },
+    ],
+  },
   ...NEW_INVESTMENT_ARTICLES,
   {
     slug: "autostep",

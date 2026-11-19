@@ -271,3 +271,94 @@ html[data-site-theme="dark"] :is(.cog-logo-cell, .cog-company-card-link):is(:hov
     row-gap: 20px;
   }
 }
+
+/* The one position bought on the public markets carries a quiet ticker glyph.
+   Private positions are the default and carry no marker. The glyph morphs and
+   the listing appears only while its company link is hovered or focused. */
+.public-listing-mark {
+  position: absolute;
+  inset: 0;
+  color: var(--cog-muted);
+  pointer-events: none;
+}
+
+.public-listing-mark-icon {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  opacity: 0.42;
+  transition: opacity 220ms ease;
+}
+
+.public-listing-mark svg.morphicon {
+  width: 14px !important;
+  height: 14px !important;
+  stroke-width: 1.75 !important;
+}
+
+.public-listing-mark-tip {
+  position: absolute;
+  right: 0;
+  bottom: 4px;
+  left: 0;
+  text-align: center;
+  font-family: var(--cog-support);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(2px);
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .public-listing-mark-icon {
+  opacity: 0.9;
+}
+
+html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .public-listing-mark-tip {
+  opacity: 1;
+  transform: none;
+}
+
+/* On a company card the marker sits in flow beneath the description. */
+.cog-company-card-link .public-listing-mark {
+  position: static;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  margin-top: -12px;
+}
+
+.cog-company-card-link :is(.public-listing-mark-icon, .public-listing-mark-tip) {
+  position: static;
+}
+
+.cog-company-card-link .public-listing-mark-tip {
+  text-align: left;
+  font-size: 12px;
+  transform: translateX(-2px);
+}
+
+/* Touch screens have no hover: keep the card's listing readable. */
+@media (hover: none) {
+  .cog-company-card-link .public-listing-mark-tip {
+    opacity: 0.8;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .public-listing-mark-icon,
+  .public-listing-mark-tip {
+    transition: none;
+  }
+}

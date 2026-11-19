@@ -6,11 +6,12 @@ import {
   CognitionSection,
   CognitionStrip,
 } from "@/components/cognition-layout";
+import { PublicListingMark } from "@/components/public-listing-mark";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { UpdatesCarousel } from "@/components/updates-carousel";
 import { ARTICLES } from "@/lib/articles";
-import { PORTFOLIO } from "@/lib/portfolio";
+import { PORTFOLIO, slugify } from "@/lib/portfolio";
 import { pageMetadata } from "@/lib/page-metadata";
 
 export const metadata = pageMetadata(
@@ -80,8 +81,12 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="cog-logo-cell"
                 aria-label={company.name}
+                aria-describedby={company.publicListing ? `${slugify(company.name)}-listing` : undefined}
               >
                 <CompanyLogo name={company.name} src={logo} label={company.logoLabel} decorative />
+                {company.publicListing ? (
+                  <PublicListingMark listing={company.publicListing} id={`${slugify(company.name)}-listing`} />
+                ) : null}
               </a>
             );
           })}
