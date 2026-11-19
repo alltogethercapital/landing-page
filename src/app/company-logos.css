@@ -37,7 +37,8 @@ html .cog-logo-cell {
   width: min(100%, calc(var(--logo-optical-width) * var(--logo-scale)));
   overflow: hidden;
   border-radius: 2px;
-  transition: background-color 180ms ease, box-shadow 180ms ease;
+  opacity: 0.88;
+  transition: opacity 220ms ease;
 }
 
 /* Override old fill-image padding and compact-result stretching at the source. */
@@ -51,10 +52,11 @@ html .company-logo .company-logo-image {
   margin: 0;
   object-fit: fill;
   filter: var(--cog-logo-filter);
-  transition: filter 180ms ease;
+  transition: filter 220ms ease;
 }
 
-/* Give transparent artwork the same ink strength without flattening app tiles. */
+/* At rest every logo is a monochrome proof of its source that belongs to the
+   active theme. Transparent marks take the theme's ink strength. */
 html .company-logo .company-logo-image--transparent {
   filter: grayscale(1) brightness(0.25);
 }
@@ -63,34 +65,98 @@ html[data-site-theme="dark"] .company-logo .company-logo-image--transparent {
   filter: grayscale(1) brightness(0.25) invert(1);
 }
 
-/* Logos stay monochrome at rest in either theme and reveal only their
-   company-owned source color when the company link is intentionally engaged. */
+/* Positron's single-color teal lockup is a mid tone; render it as a solid
+   ink silhouette so it carries the same weight as its neighbors. */
+html .company-logo[data-logo-name="Positron"] .company-logo-image--transparent {
+  filter: brightness(0);
+}
+
+html[data-site-theme="dark"] .company-logo[data-logo-name="Positron"] .company-logo-image--transparent {
+  filter: brightness(0) invert(1);
+}
+
+/* Opaque tiles (Standard Bots, Chef Robotics, Atomarine, Autostep, Compresr)
+   keep their full tonal range so the mark inside the tile stays legible,
+   inverted in dark mode so the tile and its mark keep their separation. */
+html .company-logo .company-logo-image--baked {
+  filter: grayscale(1) contrast(1.2);
+}
+
+html[data-site-theme="dark"] .company-logo .company-logo-image--baked {
+  filter: grayscale(1) invert(1) contrast(1.15);
+}
+
+/* Atomarine's mark sits on a mid-tone navy gradient; stretch its tones so the
+   wave mark separates from the tile in both themes. */
+html .company-logo[data-logo-name="Atomarine"] .company-logo-image--baked {
+  filter: grayscale(1) brightness(0.9) contrast(2.2);
+}
+
+html[data-site-theme="dark"] .company-logo[data-logo-name="Atomarine"] .company-logo-image--baked {
+  filter: grayscale(1) brightness(0.9) contrast(2.2) invert(1);
+}
+
+/* Higgsfield's tile is light lime with a black glyph. Invert it at rest so it
+   matches every other tile: a dark tile with a light glyph in light mode and
+   a light tile with a dark glyph in dark mode. */
+html .company-logo .company-logo-artwork--light-tile .company-logo-image--baked {
+  filter: grayscale(1) invert(1) contrast(1.2);
+}
+
+html[data-site-theme="dark"] .company-logo .company-logo-artwork--light-tile .company-logo-image--baked {
+  filter: grayscale(1) contrast(1.15);
+}
+
+/* Hovering or focusing any company link reveals that company's real logo in
+   its own colors, unfiltered, for every artwork type. */
+html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .company-logo-artwork {
+  opacity: 1;
+}
+
 html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
   .company-logo-image {
   filter: none;
 }
 
-html[data-site-theme="dark"]
-  :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
-  .company-logo-image {
-  filter: contrast(1.3) saturate(1.05);
+/* No surface is ever added behind a logo on hover: it stays transparent on
+   the page. In dark mode, sources with black ink swap to reversed artwork
+   (official white versions, or black ink turned white with brand colors
+   kept) so they stay visible on the dark page. */
+html .company-logo .company-logo-image--dark-hover {
+  opacity: 0;
+  filter: none;
+  transition: opacity 220ms ease;
 }
 
-/* A few company-owned files are tiles rather than transparent marks. Their
-   raw colors lose internal detail, so retain the theme-safe monochrome proof. */
-html[data-site-theme]
-  :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
-  .company-logo-image--baked {
-  filter: var(--cog-logo-filter);
+html[data-site-theme="dark"] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .company-logo-artwork--has-dark .company-logo-image--transparent {
+  opacity: 0;
 }
 
-/* Authentic color artwork can contain black ink. Give it a neutral light
-   proofing surface in dark mode so no brand detail disappears into the page. */
-html[data-site-theme="dark"]
-  :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
-  .company-logo-artwork {
-  background: #f4f2ed;
-  box-shadow: 0 0 0 6px #f4f2ed;
+html[data-site-theme="dark"] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .company-logo-artwork--has-dark .company-logo-image--dark-hover {
+  opacity: 1;
+}
+
+/* Datoric's source is black line art: black on hover in light mode, its
+   reversed white line art on hover in dark mode, never on a backing. */
+html[data-site-theme] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .company-logo-datoric {
+  background-color: #000000;
+}
+
+html[data-site-theme="dark"] :is(.cog-logo-cell, .cog-company-card-link):is(:hover, :focus-visible)
+  .company-logo-datoric {
+  background-color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .company-logo-artwork,
+  html .company-logo .company-logo-image,
+  .company-logo-datoric {
+    transition: none;
+  }
 }
 
 .company-logo--lockup {
@@ -127,7 +193,11 @@ html[data-site-theme="dark"]
 }
 
 .company-logo-datoric {
-  background: currentColor;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  transition: background-color 220ms ease;
   mask-image: url("/logos/normalized/datoric-symbol.png");
   mask-mode: luminance;
   mask-size: 177.7778% 177.7778%;
@@ -157,7 +227,7 @@ html[data-site-theme="dark"]
 
 .company-logo--compact .company-logo-artwork { width: min(100%, var(--logo-compact-width)); }
 
-.company-logo--compact .company-logo-datoric {
+.company-logo--compact .company-logo-artwork--datoric {
   width: 24px;
   height: 24px;
 }

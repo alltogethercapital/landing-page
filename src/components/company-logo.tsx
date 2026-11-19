@@ -26,14 +26,36 @@ function LogoArtwork({ src, mark = false }: { src: string; mark?: boolean }) {
   } as CSSProperties;
 
   // The official white-on-black icon provides a clean luminance mask. The
-  // older Datoric wordmark file contains a baked checkerboard, not alpha.
+  // older Datoric wordmark file contains a baked checkerboard, not alpha, so
+  // its true black-on-white colors are drawn on hover from the same mask.
   if (metric?.name === "Datoric") {
-    return <span className="company-logo-artwork company-logo-datoric" style={{ ...style, aspectRatio: 1 }} />;
+    return (
+      <span className="company-logo-artwork company-logo-artwork--datoric" style={{ ...style, aspectRatio: 1 }}>
+        <span className="company-logo-datoric" />
+      </span>
+    );
   }
 
   const crop = metric?.crop ?? { left: 0, top: 0, width: 1, height: 1 };
+  // Opaque app tiles carry their own background. Transparent marks take a
+  // theme-aware ink treatment at rest and show their true colors on hover,
+  // swapping to reversed artwork on dark-mode hover when the source has black ink.
+  const surface = metric?.bakedBackground ? "tile" : "transparent";
+  const classes = [
+    "company-logo-artwork",
+    `company-logo-artwork--${surface}`,
+    metric?.bakedBackground === "light-tile" ? "company-logo-artwork--light-tile" : "",
+    metric?.darkHover ? "company-logo-artwork--has-dark" : "",
+    mark ? "company-logo-artwork--mark" : "",
+  ].filter(Boolean).join(" ");
+  const imageStyle = {
+    width: `${100 / crop.width}%`,
+    height: `${100 / crop.height}%`,
+    left: `${-100 * crop.left / crop.width}%`,
+    top: `${-100 * crop.top / crop.height}%`,
+  };
   return (
-    <span className={`company-logo-artwork${mark ? " company-logo-artwork--mark" : ""}`} style={style}>
+    <span className={classes} style={style}>
       <Image
         src={src}
         alt=""
@@ -43,13 +65,21 @@ function LogoArtwork({ src, mark = false }: { src: string; mark?: boolean }) {
         sizes={`${Math.ceil((mark ? 40 : 192) / crop.width)}px`}
         unoptimized={src.split(/[?#]/, 1)[0].endsWith(".svg")}
         className={`company-logo-image${metric?.bakedBackground ? " company-logo-image--baked" : " company-logo-image--transparent"}`}
-        style={{
-          width: `${100 / crop.width}%`,
-          height: `${100 / crop.height}%`,
-          left: `${-100 * crop.left / crop.width}%`,
-          top: `${-100 * crop.top / crop.height}%`,
-        }}
+        style={imageStyle}
       />
+      {metric?.darkHover ? (
+        <Image
+          src={metric.darkHover}
+          alt=""
+          width={Math.ceil(metric.intrinsicWidth)}
+          height={Math.ceil(metric.intrinsicHeight)}
+          quality={90}
+          sizes={`${Math.ceil((mark ? 40 : 192) / crop.width)}px`}
+          unoptimized={metric.darkHover.endsWith(".svg")}
+          className="company-logo-image company-logo-image--dark-hover"
+          style={imageStyle}
+        />
+      ) : null}
     </span>
   );
 }
