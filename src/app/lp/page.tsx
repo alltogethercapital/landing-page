@@ -8,7 +8,9 @@ import {
 import { LpPortfolioTable } from "@/components/lp-portfolio-table";
 import { LpCompanyUpdates, companyUpdateDate } from "@/components/lp-company-updates";
 import { LP_COMPANY_REVIEW_AS_OF } from "@/data/lp-company-updates";
-import { getLpPortfolio } from "@/lib/lp-data";
+import { LpAllocationDonut, type LpAllocationSlice } from "@/components/lp-allocation-donut";
+import { LETTER_ALLOCATION } from "@/data/lp-letter-figures";
+import { getLpPortfolio, type LpInvestmentDto } from "@/lib/lp-data";
 import { pageTitle } from "@/lib/page-metadata";
 
 type LpPortfolioPageProps = {
@@ -36,6 +38,35 @@ function currency(value: number) {
     currency: "USD",
     maximumFractionDigits: 0,
   }).format(value);
+}
+
+const TOP_COMPANY_SLICES = 8;
+
+// Invested cost by company. H256 looks through to the amount deployed to Anduril
+// and the balance still being finalized, matching the Investments table.
+function companySlices(investments: LpInvestmentDto[]): LpAllocationSlice[] {
+  const totals = new Map<string, number>();
+  const add = (label: string, amount: number) => totals.set(label, (totals.get(label) ?? 0) + amount);
+  for (const investment of investments) {
+    const allocation = investment.vehicleAllocation;
+    if (allocation) {
+      add(allocation.deployedCompany, allocation.deployedAmount);
+      add("Finalizing allocation", allocation.pendingAmount);
+    } else {
+      add(investment.company, investment.investedCost);
+    }
+  }
+  const sorted = [...totals.entries()].sort((left, right) => right[1] - left[1]);
+  const top = sorted.slice(0, TOP_COMPANY_SLICES).map(([label, amount]) => ({ key: label, label, amount }));
+  const rest = sorted.slice(TOP_COMPANY_SLICES);
+  if (rest.length > 0) {
+    top.push({
+      key: "other",
+      label: `Other (${rest.length})`,
+      amount: rest.reduce((sum, [, amount]) => sum + amount, 0),
+    });
+  }
+  return top;
 }
 
 function MetricLabel({
@@ -98,29 +129,27 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
             <MetricLabel
               label="AUM"
               tooltipId="lp-aum-tooltip"
-              description={`Assets under management (AUM) at recorded cost: all ${investments.length} legal positions in the Schedule of Investments, including the ${currency(pendingAllocation)} H256 allocation being finalized between Atoms and Applied Intuition. This is not a fair-value or regulatory AUM calculation.`}
+              description={`Recorded cost of all ${investments.length} positions, including ${currency(pendingAllocation)} of H256 still being allocated. Not a fair-value or regulatory AUM figure.`}
             />
           </dt>
           <dd>{currency(investedCost)}</dd>
-          <small className="lp-summary-basis">Recorded investment cost</small>
         </div>
         <div className="lp-summary-metric--primary">
           <dt>
             <MetricLabel
-              label="Projected gross value"
+              label="Projected"
               tooltipId="lp-nav-tooltip"
-              description={`This estimated gross comparison value includes H256's ${currency(pendingAllocation)} allocation being finalized between Atoms and Applied Intuition at cost. It is not administrator-reported NAV and does not deduct fees, carry, liabilities, taxes, or dilution.`}
+              description="Estimated gross value from latest comparable valuations; positions without one stay at cost. Not administrator-reported NAV; before fees, carry, taxes and dilution."
             />
           </dt>
           <dd>{currency(totalProjectedValue)}</dd>
-          <small className="lp-summary-basis">Projected gross scenario</small>
         </div>
         <div>
           <dt>
             <MetricLabel
-              label="Finalizing allocation"
+              label="Pending"
               tooltipId="lp-pending-allocation-tooltip"
-              description={`The ${currency(pendingAllocation)} portion of H256 is being finalized between Atoms and Applied Intuition. It remains included at recorded cost in both AUM and projected NAV until the allocation is deployed.`}
+              description={`${currency(pendingAllocation)} of H256 being finalized between Atoms and Applied Intuition. Held at cost in AUM and Projected until deployed.`}
             />
           </dt>
           <dd>{currency(pendingAllocation)}</dd>
@@ -128,9 +157,9 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         <div>
           <dt>
             <MetricLabel
-              label="Current value multiple"
+              label="Multiple"
               tooltipId="lp-gross-value-multiple-tooltip"
-              description={`Current value multiple is projected gross value divided by recorded investment cost: ${currency(totalProjectedValue)} ÷ ${currency(investedCost)} = ${currentValueMultiple.toFixed(2)}×. It is an estimate before fees, carry, liabilities, taxes, dilution, and other deductions.`}
+              description={`Projected ÷ AUM: ${currency(totalProjectedValue)} ÷ ${currency(investedCost)}. Gross estimate.`}
             />
           </dt>
           <dd>{currentValueMultiple.toFixed(2)}×</dd>
@@ -143,6 +172,20 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         <p>The existing Anduril assumption contributes {currency(scenarioUplift)} above cost. With that slice at cost, the gross comparison value is {currency(totalProjectedValue - scenarioUplift)}. H256&apos;s {currency(pendingAllocation)} awaiting allocation is included once at cost.</p>
         <p>This review updates Shield&apos;s comparison to its company-announced $28.8B Series H valuation. Other prior comparisons and the owner-directed Anduril scenario are retained. Positions without an applicable comparison remain at cost.</p>
       </details>
+
+      {section === "investments" && (
+        <LpAllocationDonut
+          positionCount={investments.length}
+          views={[
+            { key: "company", label: "By company", slices: companySlices(investments) },
+            {
+              key: "sector",
+              label: "By sector",
+              slices: LETTER_ALLOCATION.map(({ key, label, amount }) => ({ key, label, amount })),
+            },
+          ]}
+        />
+      )}
 
       <nav className="lp-portfolio-tabs" aria-label="Portfolio sections">
         <Link
