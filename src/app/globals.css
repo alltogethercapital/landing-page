@@ -3323,15 +3323,6 @@ html[data-site-theme="light"] .lp-logo--inverse img {
   letter-spacing: -0.045em;
 }
 
-.lp-updates-index-header p {
-  max-width: 700px;
-  margin: 0;
-  color: var(--lp-muted);
-  font-family: var(--cog-prose);
-  font-size: 19px;
-  line-height: 1.6;
-}
-
 .lp-updates-list {
   margin: 72px 0 0;
   padding: 0;
@@ -3497,10 +3488,6 @@ html[data-site-theme="light"] .lp-logo--inverse img {
   .lp-updates-index-header h1,
   .lp-update-article-header h1 {
     font-size: 44px;
-  }
-
-  .lp-updates-index-header p {
-    font-size: 17px;
   }
 
   .lp-updates-list {

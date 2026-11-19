@@ -272,52 +272,21 @@ html[data-site-theme="dark"] :is(.cog-logo-cell, .cog-company-card-link):is(:hov
   }
 }
 
-/* A /companies card for a public-market position carries a whisper-quiet
-   "Public" label beneath its description, in the muted support face. Its
-   exchange and ticker appear only while the card is hovered or focused.
-   Private positions carry no label. */
-.market-tag {
-  position: relative;
-  display: block;
+/* The one public-market position carries a plain "Public" pill on /companies. */
+.company-public-pill {
   align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
   margin-top: auto;
-  padding-top: 16px;
+  border: 1px solid color-mix(in srgb, var(--cog-muted) 45%, transparent);
+  border-radius: 9999px;
+  padding: 2px 10px;
   color: var(--cog-muted);
   font-family: var(--cog-support);
-  font-size: 10px;
+  font-size: 11.5px;
   font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
   white-space: nowrap;
-  opacity: 0.4;
   pointer-events: none;
-  transition: opacity 220ms ease;
-}
-
-.market-tag-ticker {
-  opacity: 0;
-  transition: opacity 220ms ease;
-}
-
-html[data-site-theme] .cog-company-card-link:is(:hover, :focus-visible) .market-tag {
-  opacity: 0.8;
-}
-
-html[data-site-theme] .cog-company-card-link:is(:hover, :focus-visible) .market-tag-ticker {
-  opacity: 1;
-}
-
-/* Touch screens have no hover: keep a public listing's ticker readable. */
-@media (hover: none) {
-  .market-tag-ticker {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .market-tag,
-  .market-tag-ticker {
-    transition: none;
-  }
 }

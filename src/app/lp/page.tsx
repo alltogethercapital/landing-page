@@ -6,8 +6,7 @@ import {
   LpPortfolioPerformance,
 } from "@/components/lp-letter-figures";
 import { LpPortfolioTable } from "@/components/lp-portfolio-table";
-import { LpCompanyUpdates, companyUpdateDate } from "@/components/lp-company-updates";
-import { LP_COMPANY_REVIEW_AS_OF } from "@/data/lp-company-updates";
+import { LpCompanyUpdates } from "@/components/lp-company-updates";
 import { LpAllocationDonut, type LpAllocationSlice } from "@/components/lp-allocation-donut";
 import { LETTER_ALLOCATION } from "@/data/lp-letter-figures";
 import { getLpPortfolio, type LpInvestmentDto } from "@/lib/lp-data";
@@ -116,9 +115,6 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
     0,
   );
   const currentValueMultiple = totalProjectedValue / investedCost;
-  const scenarioUplift = investments.reduce((total, item) => total + (
-    item.projection.basis === "assumption" ? item.projection.projectedValue - item.investedCost : 0
-  ), 0);
   return (
     <div className="lp-portal-shell">
       <h1 className="sr-only">Portfolio</h1>
@@ -165,13 +161,6 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
           <dd>{currentValueMultiple.toFixed(2)}×</dd>
         </div>
       </dl>
-
-      <details className="lp-valuation-review">
-        <summary>Reviewed {companyUpdateDate(LP_COMPANY_REVIEW_AS_OF)} · Valuation basis</summary>
-        <p>AUM is recorded investment cost. Projected gross value is an estimate before fees, carry, taxes, dilution and liabilities; it is not administrator-reported NAV. Cash balances and fund liabilities are not reconciled in this view.</p>
-        <p>The existing Anduril assumption contributes {currency(scenarioUplift)} above cost. With that slice at cost, the gross comparison value is {currency(totalProjectedValue - scenarioUplift)}. H256&apos;s {currency(pendingAllocation)} awaiting allocation is included once at cost.</p>
-        <p>This review updates Shield&apos;s comparison to its company-announced $28.8B Series H valuation. Other prior comparisons and the owner-directed Anduril scenario are retained. Positions without an applicable comparison remain at cost.</p>
-      </details>
 
       {section === "investments" && (
         <LpAllocationDonut

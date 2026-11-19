@@ -33,27 +33,7 @@ html[data-site-theme="dark"] .lp-portal-page {
   border-bottom: 1px solid var(--lp-line);
 }
 
-.lp-summary-basis {
-  color: var(--lp-muted);
-  font-size: 11px;
-  line-height: 1.4;
-}
-
-.lp-valuation-review {
-  margin-top: 14px;
-  color: var(--lp-muted);
-  font-size: 12px;
-  line-height: 1.65;
-}
-
-.lp-valuation-review summary { cursor: pointer; color: var(--lp-ink); }
-.lp-valuation-review p { max-width: 92ch; margin: 10px 0 0; }
-
-.lp-company-updates-heading,
-.lp-company-updates-related > p { max-width: 82ch; }
 .lp-company-updates h2 { font-size: 22px; line-height: 1.3; margin: 0 0 12px; }
-.lp-company-updates-heading p,
-.lp-company-updates-related > p { color: var(--lp-muted); font-size: 13px; line-height: 1.65; margin: 8px 0; }
 .lp-company-update-list { margin-top: 28px; }
 .lp-company-update { padding: 24px 0; border-top: 1px solid var(--lp-line); }
 .lp-company-update > header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; }
@@ -64,7 +44,6 @@ html[data-site-theme="dark"] .lp-portal-page {
 .lp-company-update-date { color: var(--lp-muted); font-size: 11px; }
 .lp-company-update h3 { margin: 12px 0 8px; font-size: 16px; font-weight: 500; line-height: 1.4; }
 .lp-company-update p { max-width: 90ch; margin: 8px 0; font-size: 13px; line-height: 1.75; color: var(--lp-muted); }
-.lp-company-update .lp-company-update-valuation { padding-left: 14px; border-left: 2px solid var(--lp-line); }
 .lp-company-update-source { display: inline-block; padding-block: 8px; font-size: 12px; line-height: 1.5; color: var(--lp-ink); overflow-wrap: anywhere; }
 .lp-company-updates-related { margin-top: 32px; }
 .lp-company-update--detail { margin-top: 40px; }
@@ -271,20 +250,9 @@ html[data-site-theme="dark"] .lp-portal-page {
 
 .lp-detail-facts:has(+ .lp-performance),
 .lp-detail-facts:has(+ .lp-vehicle-allocation),
-.lp-detail-facts:has(+ .lp-detail-note),
 .lp-detail-facts:has(+ .lp-portal-footer),
 .lp-performance:has(+ .lp-portal-footer) {
   border-bottom: 0;
-}
-
-.lp-detail-note {
-  margin: 0;
-  border-bottom: 1px solid var(--lp-line);
-  padding: 16px 0 18px;
-  color: var(--lp-muted);
-  font-family: var(--cog-support);
-  font-size: 12px;
-  line-height: 1.55;
 }
 
 .lp-vehicle-allocation {
@@ -306,8 +274,7 @@ html[data-site-theme="dark"] .lp-portal-page {
   font-weight: 400;
 }
 
-.lp-vehicle-allocation > header span,
-.lp-vehicle-allocation > p {
+.lp-vehicle-allocation > header span {
   color: var(--lp-muted);
   font-family: var(--cog-support);
   font-size: 12px;
@@ -347,12 +314,6 @@ html[data-site-theme="dark"] .lp-portal-page {
   margin-top: 6px;
   font-size: 14px;
   line-height: 1.4;
-}
-
-.lp-vehicle-allocation > p {
-  max-width: 760px;
-  margin: 14px 0 0;
-  line-height: 1.55;
 }
 
 .lp-update-list-heading {

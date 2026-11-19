@@ -6,7 +6,6 @@ import {
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { ArrowUpRight } from "@/components/icons";
-import { MarketTag } from "@/components/market-tag";
 import { PORTFOLIO, slugify, type Company } from "@/lib/portfolio";
 import { pageMetadata } from "@/lib/page-metadata";
 
@@ -27,7 +26,6 @@ function CompanyArticle({ company }: { company: Company }) {
         rel="noopener noreferrer"
         className="cog-company-card-link"
         aria-label={`Visit ${company.name}`}
-        aria-describedby={company.publicListing ? `${slugify(company.name)}-market` : undefined}
       >
         <span className="cog-company-card-arrow" aria-hidden="true">
           <ArrowUpRight />
@@ -40,7 +38,7 @@ function CompanyArticle({ company }: { company: Company }) {
             <span className="cog-company-card-description">{company.blurb}</span>
           )}
         </span>
-        <MarketTag company={company} id={`${slugify(company.name)}-market`} />
+        {company.publicListing ? <span className="company-public-pill">Public</span> : null}
       </a>
     </article>
   );
