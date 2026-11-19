@@ -278,8 +278,10 @@ html[data-site-theme="dark"] :is(.cog-logo-cell, .cog-company-card-link):is(:hov
   display: inline-flex;
   align-items: center;
   margin-top: auto;
-  border: 1px solid color-mix(in srgb, var(--cog-muted) 45%, transparent);
-  border-radius: 9999px;
+  /* The site is squared and borderless everywhere (globals.css, site-rails.css);
+     this pill is the one exception, so its outline is an inset ring. */
+  border-radius: 9999px !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cog-muted) 50%, transparent);
   padding: 2px 10px;
   color: var(--cog-muted);
   font-family: var(--cog-support);
