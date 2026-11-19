@@ -26,6 +26,31 @@ export type CompanyLogoMetric = {
 };
 
 export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> = {
+  "/logos/cards/anthropic.svg": {
+    "name": "Anthropic",
+    "intrinsicWidth": 570,
+    "intrinsicHeight": 64,
+    "inkBounds": {
+      "x": 0,
+      "y": 0,
+      "width": 570,
+      "height": 64
+    },
+    "crop": {
+      "left": 0,
+      "top": 0,
+      "width": 1,
+      "height": 1
+    },
+    "inkAspect": 8.90625,
+    "kind": "wordmark",
+    "tone": "dark",
+    "meanLuminance": 0.07802,
+    "inkCoverage": 0.437637,
+    "visibleCoverage": 0.437637,
+    "opticalBoost": 1,
+    "darkHover": "/logos/cards/dark/anthropic.svg"
+  },
   "/logos/cards/summer-engine.svg": {
     "name": "Summer Engine",
     "intrinsicWidth": 812,

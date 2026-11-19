@@ -40,6 +40,7 @@ export function buildSearchIndex(): SearchResult[] {
       company.name,
       company.sectors.join(" "),
       company.blurb,
+      company.publicListing && `${company.publicListing.exchange} ${company.publicListing.ticker} public`,
     ]),
   }));
 

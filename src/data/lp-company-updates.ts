@@ -16,6 +16,14 @@ export type LpCompanyUpdate = {
 // same company news, but keep their own costs and valuation inputs. Undated
 // product pages are explicitly current-status checks, never dated news events.
 export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
+  Anthropic: {
+    headline: "Prices the largest IPO on record and lists on Nasdaq as ANT",
+    summary: "Anthropic priced its initial public offering of Class A common stock at $83.00 per share on November 18, 2026, selling 980 million shares, and began trading on the Nasdaq Global Select Market on November 19 under the symbol ANT. Machine Spirit bought $100,000 of ANT on the public market at the $111.50 opening price. This is the portfolio's one public-market position; it is held at cost here until an approved market mark is published.",
+    source: "Anthropic IPO pricing announcement",
+    sourceUrl: "https://www.anthropic.com/news/anthropic-prices-initial-public-offering",
+    sourceDate: "2026-11-18",
+    kind: "announcement",
+  },
   "Summer Engine": {
     headline: "AI-native game engine joins Y Combinator's Fall 2026 batch",
     summary: "Summer Engine presents a full 2D and 3D game engine for people and coding agents, with multiplayer, publishing, analytics, and a large asset library. The $25,000 position is uncapped and remains at cost because investor-specific execution evidence and other closing terms have not been supplied.",

@@ -23,6 +23,7 @@ export const UI_ICON_PATHS = {
   linkedin: "M5 3h14l2 2v14l-2 2H5l-2-2V5l2-2Z M7 10v7M7 7v.1M11 17v-7M11 12l2-2h2l2 2v5",
   x: "M4 3h4l12 18h-4L4 3ZM20 3 4 21",
   favorite: "M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z",
+  market: "M3 17l5-5 4 4 8-8M15 8h5v5",
   "favorite-filled": "M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3ZM9 12l2 2 4-4",
 } as const;
 
@@ -49,4 +50,5 @@ export const UI_ICON_HOVER_PATHS: Partial<Record<UIIconName, string>> = {
   "chevron-down": "M6 11l6 6 6-6",
   "corner-down-left": "M21 4v9l-2 2H2M7 10l-5 5 5 5",
   refresh: "M4 10V7l4-4h8l5 5v8l-5 5H8l-4-4M3 3v7h8",
+  market: "M3 16l5-6 4 3 8-9M15 4h5v5",
 };

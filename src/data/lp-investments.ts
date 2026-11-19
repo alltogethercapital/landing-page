@@ -140,6 +140,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "60-chef-robotics", chronology: 60, company: "Chef Robotics", investedCost: 18590.75, investmentDate: "2026-10-16", round: "N/A", entryValuation: "Not evidenced", instrument: "Not specified", platform: "Not specified", driveFolderId: "1VEsHa4Vp_hMfcaQPVkrW1VKEcMuSBSvY", logo: "/logos/cards/chef-robotics.png", description: "Physical AI and robotic systems for food production.", reviewStatus: "pending", reviewNote: "Owner confirmed the $18,590.75 position and October 16, 2026 investment date. Round, entry valuation, instrument, investment route, executed acceptance, and completed cash movement remain unevidenced; no bank-ledger movement is recorded without transaction evidence.", securityAllocation: [{ securityType: "Not specified", share: 1 }] },
   { id: "61-standard-bots", chronology: 61, company: "Standard Bots", investedCost: 15000, investmentDate: "2026-10-29", round: "Series C", entryValuation: "$1B post-money", instrument: "Equity", platform: "Not specified", driveFolderId: "1c_tX4tgVZesvBxzeKpgJPgFfVIUDQ6KJ", logo: "/logos/cards/standard-bots.png", description: "AI-native industrial robots for American manufacturing.", reviewStatus: "pending", reviewNote: "Owner confirmed a $15,000 position at a $1B valuation on October 29, 2026. Supplied platform terms identify Series C preferred equity, a $1B post-money valuation, a $200M estimated round size, Platform Advisor, LLC as investment adviser, a $1M platform allocation, and estimated fees of 1%. The $1M allocation is platform-level, not All Together's amount. All Together's investment vehicle, investor-specific execution, acceptance, and completed cash movement remain unevidenced; no bank-ledger movement is recorded without transaction evidence.", securityAllocation: [{ securityType: "Equity", share: 1 }] },
   { id: "62-summer-engine", chronology: 62, company: "Summer Engine", investedCost: 25000, investmentDate: "2026-11-13", round: "N/A", entryValuation: "Uncapped", instrument: "Not specified", platform: "Not specified", driveFolderId: "1VlSG2viDL9xFN6tTNaTIz5JyDOmvhJgO", logo: "/logos/cards/summer-engine.svg", logoTreatment: "inverse", description: "The AI game engine for people and agents.", reviewStatus: "pending", reviewNote: "Owner confirmed the $25,000 position, November 13, 2026 investment date, and uncapped valuation terms. Round, instrument, platform or vehicle, investor-specific execution, company or GP acceptance, and completed cash movement remain unevidenced; no bank-ledger movement is recorded without transaction evidence.", securityAllocation: [{ securityType: "Not specified", share: 1 }] },
+  { id: "63-anthropic", chronology: 63, company: "Anthropic", investedCost: 100000, investmentDate: "2026-11-19", round: "Public (Nasdaq: ANT)", entryValuation: "~$2.01T fully diluted at open", instrument: "Public Equity", platform: "Fidelity", driveFolderId: "1x9fZRQlxyiuizI5oMC_vGtGG9I0yyn6u", logo: "/logos/cards/anthropic.svg", description: "Frontier AI research and safety, and the creators of Claude.", reviewStatus: "pending", reviewNote: "Bought on the public market on Anthropic's first trading day: Nasdaq: ANT Class A common stock at the $111.50 opening price, against the $83.00 IPO price. $100,000 at $111.50 is about 896.86 shares; the executed share count and trade confirmation have not been supplied yet. Unlike the private positions, this position has a daily market price.", securityAllocation: [{ securityType: "Public Equity", share: 1 }] },
 ];
 
 // Valuation inputs used for the LP-facing gross projection. Most inputs are
@@ -223,10 +224,10 @@ export const LP_PROJECTION_AS_OF = "2026-11-10";
 export const LP_SNAPSHOT = {
   source: "All Together Drive · Schedule of Investments",
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
-  sourceRange: "Sheet1!A2:J63",
-  sourceModifiedAt: "2026-11-13",
-  publishedAt: "2026-11-13",
-  recordCount: 62,
-  investedCostTotal: 885236.73,
-  status: "Reconciled position-for-position to Drive chronology 1–62 and SOI through Summer Engine; valuation evidence reviewed November 10; pending records retain explicit evidence caveats",
+  sourceRange: "Sheet1!A2:J64",
+  sourceModifiedAt: "2026-11-19",
+  publishedAt: "2026-11-19",
+  recordCount: 63,
+  investedCostTotal: 985236.73,
+  status: "Reconciled position-for-position to Drive chronology 1–63 and SOI through Anthropic; Anthropic is the one position bought on the public market; valuation evidence reviewed November 10; pending records retain explicit evidence caveats",
 } as const;

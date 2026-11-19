@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const password = process.env.LP_TEST_PASSWORD || "StagingPortalPassphrase-2026";
 
-test("publishes the November 13 portfolio with complete coverage and reconciled scenario totals", async ({ page }) => {
+test("publishes the November 19 portfolio with complete coverage and reconciled scenario totals", async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto("/lp?section=updates");
   await expect(page).toHaveURL(/\/lp-login$/);
@@ -10,16 +10,16 @@ test("publishes the November 13 portfolio with complete coverage and reconciled 
   await page.getByRole("button", { name: /Sign in/ }).click();
   await expect(page).toHaveURL(/\/lp$/);
   const summary = page.locator(".lp-summary-grid");
-  await expect(summary).toContainText("$885,237");
-  await expect(summary).toContainText("$999,895");
+  await expect(summary).toContainText("$985,237");
+  await expect(summary).toContainText("$1,099,895");
   await expect(summary).toContainText("Projected gross scenario");
   await page.locator(".lp-valuation-review summary").click();
   await expect(page.locator(".lp-valuation-review")).toContainText("$58,667");
-  await expect(page.locator(".lp-valuation-review")).toContainText("$941,229");
+  await expect(page.locator(".lp-valuation-review")).toContainText("$1,041,229");
   await page.getByRole("link", { name: "Company updates", exact: true }).click();
-  await expect(page.locator(".lp-company-update-list > article")).toHaveCount(60);
-  await expect(page.locator(".lp-company-update-list .lp-company-update-source")).toHaveCount(60);
-  await expect(page.locator(".lp-company-updates-heading")).toContainText("All 62 positions covered across 60 issuers and vehicles");
+  await expect(page.locator(".lp-company-update-list > article")).toHaveCount(61);
+  await expect(page.locator(".lp-company-update-list .lp-company-update-source")).toHaveCount(61);
+  await expect(page.locator(".lp-company-updates-heading")).toContainText("All 63 positions covered across 61 issuers and vehicles");
   await expect(page.locator(".lp-company-updates-related > article")).toHaveCount(2);
   expect(await page.content()).not.toContain("driveFolderId");
   await page.screenshot({ path: "output/playwright/lp-portal/company-review-desktop.png" });
@@ -32,11 +32,18 @@ test("publishes the November 13 portfolio with complete coverage and reconciled 
   const pending = toCents(await page.locator(".lp-performance-pending-row td:last-child").innerText());
   const total = toCents(await page.locator(".lp-performance-total-row td:last-child").innerText());
   expect(rows.reduce((sum, value) => sum + toCents(value), pending)).toBe(total);
-  expect(total).toBe(99989543);
+  expect(total).toBe(109989543);
   await page.goto("/lp/investments/62-summer-engine");
   await expect(page.getByRole("heading", { name: "Summer Engine" })).toBeVisible();
   await expect(page.getByText("Uncapped", { exact: true })).toHaveCount(2);
   await expect(page.getByText(/owner confirmed.*uncapped valuation terms/i)).toBeVisible();
+  await page.goto("/lp/investments/63-anthropic");
+  await expect(page.getByRole("heading", { name: "Anthropic" })).toBeVisible();
+  await expect(page.locator(".lp-performance")).toContainText("$100,000");
+  await expect(page.locator(".lp-performance")).toContainText("Held at invested cost");
+  await expect(page.locator("main")).toContainText(/Bought on the public market · Publicly traded shares/i);
+  await expect(page.locator("main")).toContainText("Public market (Nasdaq: ANT)");
+  await expect(page.locator(".lp-detail-note")).toContainText("896.86 shares");
   await page.goto("/lp/investments/21-corgi");
   await expect(page.locator(".lp-performance")).toContainText("$20,000");
   await expect(page.locator(".lp-performance")).toContainText("$5B reported valuation");
@@ -115,10 +122,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(summaryGrid.getByText("Finalizing allocation", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("Pending allocation", { exact: true })).toHaveCount(0);
   await expect(summaryGrid.getByText("$112,000", { exact: true })).toBeVisible();
-  await expect(page.getByText("$999,895", { exact: true })).toBeVisible();
+  await expect(page.getByText("$1,099,895", { exact: true })).toBeVisible();
   await expect(page.getByText("Current value multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("1.13×", { exact: true })).toBeVisible();
+  await expect(page.getByText("1.12×", { exact: true })).toBeVisible();
   await expect(page.getByText("1.15×", { exact: true })).toHaveCount(0);
   await expect(page.getByText(/Projection as of 2026-08-18/i)).toHaveCount(0);
   const portalLogoBox = await page.locator(".lp-portal-nav-logo").boundingBox();
@@ -149,7 +156,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.locator(".lp-company-allocation-head")).toHaveCSS("border-bottom-style", "solid");
   await expect(page.locator(".lp-company-allocation-head")).toHaveCSS("border-bottom-width", "1px");
   const companyAllocationRows = page.locator(".lp-company-allocation-view .lp-figure-bar-row");
-  await expect(companyAllocationRows).toHaveCount(61);
+  await expect(companyAllocationRows).toHaveCount(62);
   await expect(page.locator(".lp-company-allocation-view .lp-figure-bar-row.is-lead")).toHaveCount(0);
   const finalizingAllocationRow = companyAllocationRows.nth(0);
   await expect(finalizingAllocationRow).toContainText("Finalizing allocation");
@@ -203,8 +210,8 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.locator("#lp-figure-concentration-and-structure")).toHaveClass(/sr-only/);
   await expect(page.locator(".lp-figure-section-head")).toHaveCount(0);
   await expect(page.locator(".lp-summary-grid")).toBeVisible();
-  await expect(page.locator(".lp-summary-grid").getByText("$999,895", { exact: true })).toBeVisible();
-  await expect(page.locator(".lp-summary-grid").getByText("1.13×", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("$1,099,895", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("1.12×", { exact: true })).toBeVisible();
   const analysisSummaryBox = await page.locator(".lp-summary-grid").boundingBox();
   const analysisTabsBox = await portfolioSections.boundingBox();
   expect(analysisSummaryBox).not.toBeNull();
@@ -298,7 +305,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   });
   expect(investmentColumnTitleStyle).toEqual(performanceColumnTitleStyle);
   const performanceRows = page.locator(".lp-figure-table--marks tbody tr");
-  await expect(performanceRows).toHaveCount(60);
+  await expect(performanceRows).toHaveCount(63);
   const h256AndurilMark = performanceRows.filter({ hasText: "Anduril" });
   await expect(h256AndurilMark.getByRole("rowheader")).toContainText("Anduril");
   await expect(h256AndurilMark).toContainText("H256 → Anduril mark");
@@ -333,10 +340,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(pendingPerformanceRow).toContainText("No performance");
   await expect(pendingPerformanceRow).toContainText("In recorded cost and projected gross value");
   const performanceTotal = page.locator(".lp-performance-total-row");
-  await expect(performanceTotal).toContainText("$890,236.73");
-  await expect(performanceTotal).toContainText("1.13×");
+  await expect(performanceTotal).toContainText("$985,236.73");
+  await expect(performanceTotal).toContainText("1.12×");
   await expect(performanceTotal).toContainText("+$114,658.70");
-  await expect(performanceTotal).toContainText("$999,895.43");
+  await expect(performanceTotal).toContainText("$1,099,895.43");
   await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-performance-desktop.png", fullPage: true });
 
@@ -678,7 +685,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     expect(viewportInvestmentGap).toBeGreaterThanOrEqual(16);
     expect(viewportInvestmentGap).toBeLessThanOrEqual(32);
     await expect(page.getByRole("heading", { name: "All companies" })).toHaveCount(0);
-    await expect(page.locator(".lp-company-allocation-view .lp-figure-bar-row")).toHaveCount(61);
+    await expect(page.locator(".lp-company-allocation-view .lp-figure-bar-row")).toHaveCount(62);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     if (viewport.name === "phone") {
       await page.screenshot({
@@ -710,7 +717,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page).toHaveURL(/\/lp\?section=performance$/);
     await expect(page.getByRole("heading", { name: "Allocated positions" })).toHaveCount(0);
     await expect(page.getByText("Green delta = gain vs. cost", { exact: true })).toHaveCount(0);
-    await expect(page.locator(".lp-figure-table--marks tbody tr")).toHaveCount(60);
+    await expect(page.locator(".lp-figure-table--marks tbody tr")).toHaveCount(63);
     await expect(page.locator(".lp-performance-pending-row")).toContainText("Finalizing allocation");
     await expect(page.locator(".lp-performance-pending-row")).toContainText("Atoms or Applied Intuition");
     await expect(page.locator("#lp-performance-section-title")).toHaveClass(/sr-only/);

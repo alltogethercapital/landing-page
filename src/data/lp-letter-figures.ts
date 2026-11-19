@@ -64,7 +64,7 @@ const CATEGORY_BY_CHRONOLOGY: Record<number, LetterAllocationCategory> = {
   46: "ai", 47: "ai", 48: "aerospace", 49: "applications", 50: "applications",
   51: "ai", 52: "applications", 53: "ai", 54: "ai", 55: "robotics",
   56: "robotics", 57: "applications", 58: "aerospace", 59: "energy", 60: "robotics",
-  61: "robotics", 62: "applications",
+  61: "robotics", 62: "applications", 63: "ai",
 };
 
 // Entry valuation as reported at the time of investment. These are entry prices,
@@ -81,6 +81,8 @@ const ENTRY_VALUATION_BY_CHRONOLOGY: Record<number, number> = {
   40: 50e6, 41: 15.9e9, 42: 180e6, 43: 130e9, 44: 4.5e9,
   45: 180e6, 46: 5e9, 47: 25e6, 48: 130e9, 55: 2.15e9,
   56: 50e6, 57: 50e6, 58: 500e6, 59: 125e6,
+  // Anthropic was bought at the Nasdaq open: ~$2.01T fully diluted at $111.50.
+  63: 2.01e12,
 };
 
 export type LetterEntryRound =
@@ -248,6 +250,7 @@ export const LETTER_REMAINDER_AVERAGE =
 const SECURITY_TYPE_LABELS: Record<SecurityAllocation["securityType"], string> = {
   "Convertible Notes": "Convertible note",
   Equity: "Equity",
+  "Public Equity": "Public equity",
   SAFE: "SAFE",
   Secondary: "Secondary",
   "Not specified": "Not specified",

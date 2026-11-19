@@ -3,12 +3,14 @@ export type InvestmentPlatform =
   | "Capital Company"
   | "Direct"
   | "Echo"
+  | "Fidelity"
   | "Sydecar"
   | "Not specified";
 
 export type InvestmentInstrument =
   | "Convertible Notes"
   | "Equity"
+  | "Public Equity"
   | "SAFE"
   | "Secondary"
   | "SPV"
@@ -23,6 +25,7 @@ const INVESTMENT_ACCESS_LABELS: Record<InvestmentPlatform, string> = {
   "Capital Company": "Invested with a group",
   Direct: "Invested directly",
   Echo: "Invested with a group",
+  Fidelity: "Bought on the public market",
   Sydecar: "Invested with a group",
   "Not specified": "Investment route not yet documented",
 };
@@ -30,6 +33,7 @@ const INVESTMENT_ACCESS_LABELS: Record<InvestmentPlatform, string> = {
 const OWNERSHIP_LABELS: Record<InvestmentInstrument, string> = {
   "Convertible Notes": "Loan that may become shares",
   Equity: "Shares in the company",
+  "Public Equity": "Publicly traded shares",
   SAFE: "Right to future shares",
   Secondary: "Existing company shares",
   SPV: "Investment held through a dedicated company",
@@ -60,6 +64,7 @@ export function formatLpValuation(value: string) {
 
 export function formatLpRound(value: string) {
   if (value === "N/A") return "Not applicable";
+  if (value.startsWith("Public (")) return value.replace(/^Public \(/, "Public market (");
   if (value === "Class A Preferred Units") return "Class A preferred ownership units";
   return value;
 }
