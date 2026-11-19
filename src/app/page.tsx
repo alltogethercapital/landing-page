@@ -6,7 +6,7 @@ import {
   CognitionSection,
   CognitionStrip,
 } from "@/components/cognition-layout";
-import { PublicListingMark } from "@/components/public-listing-mark";
+import { MarketTag } from "@/components/market-tag";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { UpdatesCarousel } from "@/components/updates-carousel";
@@ -81,12 +81,10 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="cog-logo-cell"
                 aria-label={company.name}
-                aria-describedby={company.publicListing ? `${slugify(company.name)}-listing` : undefined}
+                aria-describedby={`${slugify(company.name)}-market`}
               >
                 <CompanyLogo name={company.name} src={logo} label={company.logoLabel} decorative />
-                {company.publicListing ? (
-                  <PublicListingMark listing={company.publicListing} id={`${slugify(company.name)}-listing`} />
-                ) : null}
+                <MarketTag company={company} id={`${slugify(company.name)}-market`} />
               </a>
             );
           })}
