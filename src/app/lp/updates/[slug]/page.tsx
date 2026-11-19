@@ -119,6 +119,11 @@ function OctoberUpdateCopy() {
       </p>
 
       <p>
+        <strong>Restated Nov 16, 2026:</strong> Atomarine allocation reduced to $9,303.06 after the SPV was
+        oversubscribed; $696.94 was returned to cash.
+      </p>
+
+      <p>
         Since the September portfolio snapshot, we added {snapshot.newPositionsSinceSeptember} positions at {" "}
         {currency(snapshot.newInvestedCostSinceSeptember)} of recorded cost. Chef Robotics and Standard Bots
         remain at cost in the estimate. Standard Bots&apos; $15,000 position and $1 billion entry valuation are
@@ -272,10 +277,15 @@ function SeptemberUpdateCopy() {
       </p>
 
       <p>
+        <strong>Restated Nov 16, 2026:</strong> Atomarine allocation reduced to $9,303.06 after the SPV was
+        oversubscribed; $696.94 was returned to cash.
+      </p>
+
+      <p>
         The change from the August letter includes {currency(snapshot.newInvestedCostSinceAugust)} across the
         fourteen additions and a {currency(snapshot.reconciliationAdjustmentSinceAugust)}{" "}correction to
         Positron&apos;s recorded cost. Those additions and the correction remain at cost in the current estimate.
-        That is why gross value increased while the current value multiple moved from 1.12× to 1.09×: the
+        That is why gross value increased while the current value multiple moved from 1.12× to 1.10×: the
         denominator grew, not because an existing mark was reduced.
       </p>
 
