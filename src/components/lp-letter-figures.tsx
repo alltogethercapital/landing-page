@@ -6,14 +6,12 @@ import {
   LETTER_DEPLOYMENT,
   LETTER_ENTRY_BUCKETS,
   LETTER_ENTRY_ROUND_SPLIT,
-  LETTER_H256_DEPLOYED_AMOUNT,
   LETTER_H256_PENDING_AMOUNT,
   LETTER_INVESTED_TOTAL,
   LETTER_SECURITY_TYPE_SPLIT,
   type LetterShare,
 } from "@/data/lp-letter-figures";
 import {
-  H256_VEHICLE_ALLOCATION,
   LP_PROJECTED_VALUATION_MARKS,
   LP_INVESTMENTS,
 } from "@/data/lp-investments";
@@ -176,13 +174,6 @@ function PortfolioAtAGlance() {
             share={row.share}
             scale={allocationScale}
             amount={row.amount}
-            detail={
-              row.key === "aerospace"
-                ? `Includes ${dollars(LETTER_H256_DEPLOYED_AMOUNT)} deployed to ${H256_VEHICLE_ALLOCATION.deployedCompany} in its ${H256_VEHICLE_ALLOCATION.deployedRound} through H256`
-                : row.key === "pending"
-                  ? `H256 decision between Atoms and Applied Intuition · ${dollars(LETTER_H256_PENDING_AMOUNT)}`
-                : undefined
-            }
           />
         ))}
       </div>
@@ -303,11 +294,6 @@ function ValuationEvidence() {
               <tr key={position.id} className={hasGain ? "has-gain" : undefined}>
                 <th scope="row">
                   <strong>{position.company}</strong>
-                  <small>
-                    {mark?.positionLabel && mark.positionLabel !== position.company
-                      ? `${mark.positionLabel} mark`
-                      : mark?.source ?? position.round}
-                  </small>
                 </th>
                 <td>
                   {mark?.entryValuation ?? position.entryValuation}
@@ -342,17 +328,14 @@ function ValuationEvidence() {
             <tr className="lp-performance-pending-row">
               <th scope="row">
                 <strong>Finalizing allocation</strong>
-                <small>H256 · Atoms or Applied Intuition</small>
               </th>
               <td>Atoms or Applied Intuition</td>
               <td>
                 Included at cost
-                <small>In recorded cost and projected gross value</small>
               </td>
               <td className="is-number">{currency(LETTER_H256_PENDING_AMOUNT)}</td>
               <td className="is-number lp-performance-change">
                 <strong>—</strong>
-                <small>No performance</small>
               </td>
               <td className="is-number">{currency(LETTER_H256_PENDING_AMOUNT)}</td>
             </tr>

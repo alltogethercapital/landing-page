@@ -85,10 +85,6 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
         <div><dt>Company valuation when invested</dt><dd>{investment.valuationWhenInvested}</dd></div>
       </dl>
 
-      {investment.reviewNote ? (
-        <p className="lp-detail-note">{investment.reviewNote}</p>
-      ) : null}
-
       {investment.vehicleAllocation ? (
         <section className="lp-vehicle-allocation" aria-labelledby="lp-vehicle-allocation-heading">
           <header>
@@ -112,11 +108,6 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
               </span>
             </div>
           </div>
-          <p>
-            This {currency(investment.investedCost)} vehicle investment remains one legal portfolio
-            position. The remaining {currency(investment.vehicleAllocation.pendingAmount)} allocation
-            is being finalized between Atoms and Applied Intuition.
-          </p>
         </section>
       ) : null}
 
@@ -128,7 +119,6 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
         <h3>{investment.companyUpdate.headline}</h3>
         {investment.companyUpdate.sourceDate && <p className="lp-company-update-date">Source date: {date(investment.companyUpdate.sourceDate)}</p>}
         <p>{investment.companyUpdate.summary}</p>
-        {investment.companyUpdate.valuationNote && <p className="lp-company-update-valuation">{investment.companyUpdate.valuationNote}</p>}
         <a className="lp-company-update-source" href={investment.companyUpdate.sourceUrl} target="_blank" rel="noreferrer">{investment.companyUpdate.source} ↗</a>
       </section>
 
@@ -141,40 +131,26 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
           <div>
             <dt>Projected value</dt>
             <dd>{currency(projection.projectedValue)}</dd>
-            <small>
-              {projection.basis === "cost"
-                ? "Held at invested cost"
-                : projection.basis === "assumption"
-                  ? "Based on a stated scenario assumption"
-                  : "Based on valuation reference"}
-            </small>
           </div>
           <div>
             <dt>Valuation reference</dt>
             <dd>{projection.latestCompanyValuation}</dd>
-            <small>
-              {projection.basis === "cost"
-                ? "Entry terms; no newer comparable mark"
-                : `${projection.basis === "assumption" ? "Scenario" : "As of"} ${date(projection.valuationAsOf)}`}
-            </small>
+            {projection.basis !== "cost" && <small>As of {date(projection.valuationAsOf)}</small>}
           </div>
           <div>
             <dt>Distributions</dt>
             <dd>{currency(projection.distributions)}</dd>
-            <small>Assumed in this projection</small>
           </div>
           <div>
             <dt>Current value multiple</dt>
             <dd>{projection.grossMultiple.toFixed(2)}×</dd>
-            <small>Before fund fees, profit share, taxes, and ownership dilution</small>
           </div>
         </dl>
         <p className="lp-projection-source">
-          Estimate based on: {projection.source}
+          Source: {projection.source}
           {projection.sourceUrl && (
             <> · <a href={projection.sourceUrl} target="_blank" rel="noreferrer">View source <UIIcon name="arrow-up-right" /></a></>
           )}
-          . This is an unaudited estimate, not the fund&apos;s official net asset value.
         </p>
       </section>
 

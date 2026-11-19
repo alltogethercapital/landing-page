@@ -13,13 +13,11 @@ test("publishes the November 19 portfolio with complete coverage and reconciled 
   await expect(summary).toContainText("$984,540");
   await expect(summary).toContainText("$1,099,198");
   await expect(summary).not.toContainText("Projected gross scenario");
-  await page.locator(".lp-valuation-review summary").click();
-  await expect(page.locator(".lp-valuation-review")).toContainText("$58,667");
-  await expect(page.locator(".lp-valuation-review")).toContainText("$1,040,532");
+  await expect(page.locator(".lp-valuation-review")).toHaveCount(0);
   await page.getByRole("link", { name: "Company updates", exact: true }).click();
   await expect(page.locator(".lp-company-update-list > article")).toHaveCount(61);
   await expect(page.locator(".lp-company-update-list .lp-company-update-source")).toHaveCount(61);
-  await expect(page.locator(".lp-company-updates-heading")).toContainText("All 63 positions covered across 61 issuers and vehicles");
+  await expect(page.locator(".lp-company-updates-heading p")).toHaveCount(0);
   await expect(page.locator(".lp-company-updates-related > article")).toHaveCount(2);
   expect(await page.content()).not.toContain("driveFolderId");
   await page.screenshot({ path: "output/playwright/lp-portal/company-review-desktop.png" });
@@ -35,36 +33,31 @@ test("publishes the November 19 portfolio with complete coverage and reconciled 
   expect(total).toBe(109919849);
   await page.goto("/lp/investments/59-atomarine");
   await expect(page.getByText("$9,303.06", { exact: true })).toHaveCount(2);
-  await expect(page.locator(".lp-detail-note")).toContainText("final allocation of $9,303.06");
-  await expect(page.locator(".lp-detail-note")).toContainText("$696.94 difference was returned to the AngelList cash balance (Investor Account)");
-  await expect(page.locator(".lp-detail-note")).toContainText("cash-movement evidence for the original wire remains pending");
+  await expect(page.locator(".lp-detail-note")).toHaveCount(0);
   await expect(page.locator(".lp-detail-facts")).toContainText("$125M valuation cap");
-  await expect(page.locator(".lp-performance")).toContainText("Held at invested cost");
+  await expect(page.locator(".lp-performance")).toContainText("1.00×");
   await page.goto("/lp/investments/62-summer-engine");
   await expect(page.getByRole("heading", { name: "Summer Engine" })).toBeVisible();
   await expect(page.getByText("Uncapped", { exact: true })).toHaveCount(2);
-  await expect(page.getByText(/owner confirmed.*uncapped valuation terms/i)).toBeVisible();
   await page.goto("/lp/investments/63-anthropic");
   await expect(page.getByRole("heading", { name: "Anthropic" })).toBeVisible();
   await expect(page.locator(".lp-performance")).toContainText("$100,000");
-  await expect(page.locator(".lp-performance")).toContainText("Held at invested cost");
+  await expect(page.locator(".lp-performance")).toContainText("1.00×");
   await expect(page.locator("main")).toContainText(/Bought on the public market · Publicly traded shares/i);
   await expect(page.locator("main")).toContainText("Public market (Nasdaq: ANT)");
-  await expect(page.locator(".lp-detail-note")).toContainText("896.86 shares");
   await page.goto("/lp/investments/21-corgi");
   await expect(page.locator(".lp-performance")).toContainText("$20,000");
   await expect(page.locator(".lp-performance")).toContainText("$5B reported valuation");
   for (const id of ["44-positron", "46-higgsfield", "10-starcloud"]) {
     await page.goto(`/lp/investments/${id}`);
-    await expect(page.locator(".lp-performance")).toContainText("Held at invested cost");
-    await expect(page.locator(".lp-company-update--detail")).toContainText("Retained at cost");
+    await expect(page.locator(".lp-performance")).toContainText("1.00×");
+    await expect(page.locator(".lp-company-update-valuation")).toHaveCount(0);
   }
   await page.goto("/lp/investments/45-longshot-space");
   await expect(page.getByRole("heading", { name: "Longshot Space" })).toBeVisible();
   await expect(page.locator(".lp-performance")).toContainText("$5,000");
-  await expect(page.locator(".lp-performance")).toContainText("Held at invested cost");
+  await expect(page.locator(".lp-performance")).toContainText("1.00×");
   await expect(page.locator(".lp-detail-facts")).toContainText("$180M after the round");
-  await expect(page.locator(".lp-detail-note")).toContainText("Cash route, transfer date, and completed movement remain unevidenced");
   await page.goto("/lp?section=analysis");
   await expect(page.locator(".lp-portal-shell")).not.toContainText("NaN");
   await expect(page.locator(".lp-portal-shell")).not.toContainText("undefined");
@@ -237,11 +230,9 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(allocationFigure).toContainText("Defense and aerospace");
   await expect(allocationFigure).toContainText("$214,561");
   await expect(allocationFigure).toContainText("24.3%");
-  await expect(allocationFigure).toContainText("Includes $88,000 deployed to Anduril in its Series H at a $60B entry valuation through H256");
   await expect(allocationFigure).toContainText("Finalizing allocation");
   await expect(allocationFigure).toContainText("$112,000");
   await expect(allocationFigure).toContainText("12.7%");
-  await expect(allocationFigure).toContainText("H256 decision between Atoms and Applied Intuition · $112,000");
   await expect(allocationFigure).not.toContainText("Diversified frontier vehicle");
   const figureHeadingInsets = await allocationFigure.locator(".lp-figure-heading").first().evaluate((element) => {
     const styles = getComputedStyle(element);
@@ -315,7 +306,6 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(performanceRows).toHaveCount(63);
   const h256AndurilMark = performanceRows.filter({ hasText: "Anduril" });
   await expect(h256AndurilMark.getByRole("rowheader")).toContainText("Anduril");
-  await expect(h256AndurilMark).toContainText("H256 → Anduril mark");
   await expect(h256AndurilMark).toContainText("$60B entry valuation");
   await expect(h256AndurilMark).toContainText("$100B assumed valuation");
   await expect(h256AndurilMark).toContainText("$88,000.00");
@@ -344,8 +334,6 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(pendingPerformanceRow).toContainText("Finalizing allocation");
   await expect(pendingPerformanceRow).toContainText("Atoms or Applied Intuition");
   await expect(pendingPerformanceRow).toContainText("$112,000.00");
-  await expect(pendingPerformanceRow).toContainText("No performance");
-  await expect(pendingPerformanceRow).toContainText("In recorded cost and projected gross value");
   const performanceTotal = page.locator(".lp-performance-total-row");
   await expect(performanceTotal).toContainText("$984,539.79");
   await expect(performanceTotal).toContainText("1.12×");
@@ -359,7 +347,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   expect(updatesResponse?.headers()["x-robots-tag"]).toBe("noindex, nofollow, noarchive");
   await expect(page.getByRole("heading", { name: "Investor Updates" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Investor Updates" })).toHaveAttribute("aria-current", "page");
-  await expect(page.getByText(/at least twice per year/i)).toBeVisible();
+  await expect(page.getByText(/at least twice per year/i)).toHaveCount(0);
   const augustUpdateLink = page.getByRole("link", { name: /Beyond the Anthropocene: Betting Together on the Post-Labor AI Economy/ });
   await expect(augustUpdateLink).toHaveAttribute("href", "/lp/updates/august-2026");
   await expect(page.getByText("Investor Update #1", { exact: true })).toBeVisible();
@@ -481,7 +469,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(summaryGrid.getByText("Multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(page.getByText("1.00×", { exact: true })).toBeVisible();
-  await expect(page.getByText(/not the fund's official net asset value/i)).toBeVisible();
+  await expect(page.getByText(/not the fund's official net asset value/i)).toHaveCount(0);
   await expect(page.getByText(/All Together Drive · Schedule of Investments/i)).toHaveCount(0);
   await expect(page.locator(".lp-portal-footer > span")).toHaveCount(1);
   await page.screenshot({ path: "output/playwright/lp-portal/detail-desktop.png", fullPage: true });
@@ -490,9 +478,6 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page).toHaveURL(/48-blue-origin-series-a$/);
   await expect(page.getByRole("heading", { name: "Blue Origin" })).toBeVisible();
   await expect(page.getByText("$24,975.00", { exact: true })).toHaveCount(2);
-  await expect(page.getByText(/final allocation is \$24,975\.00/i)).toBeVisible();
-  await expect(page.getByText(/actual \$25,000\.00 outbound transfer to AngelList/i)).toBeVisible();
-  await expect(page.getByText(/no separate refund or AngelList account credit/i)).toBeVisible();
 
   await page.goto("/lp/investments/44-positron");
   await expect(page).toHaveURL(/44-positron$/);
@@ -513,9 +498,6 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await page.goto("/lp/investments/12-apptronik");
   await expect(page.getByRole("heading", { name: "Apptronik" })).toBeVisible();
   await expect(page.getByText("$20,766.24", { exact: true })).toBeVisible();
-  await expect(page.getByText(/final allocation is \$20,766\.24/i)).toBeVisible();
-  await expect(page.getByText(/original \$30,000\.00 outbound investment remains in the bank ledger/i)).toBeVisible();
-  await expect(page.getByText(/additional \$8,455\.76 reduction is not recorded as a refund or platform credit/i)).toBeVisible();
 
   await page.goto("/lp/investments/46-higgsfield");
   await expect(page.getByRole("heading", { name: "Higgsfield" })).toBeVisible();
@@ -525,15 +507,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await page.goto("/lp/investments/56-ultrasonium");
   await expect(page.getByRole("heading", { name: "Ultrasonium" })).toBeVisible();
   await expect(page.getByText("$9,914.97", { exact: true })).toHaveCount(2);
-  await expect(page.getByText(/final allocation was reduced from \$10,000\.00 to \$9,914\.97/i)).toBeVisible();
-  await expect(page.getByText(/no separate refund or cash movement is recorded without transaction evidence/i)).toBeVisible();
 
   await page.goto("/lp/investments/54-rasyn");
   await expect(page.getByRole("heading", { name: "Rasyn" })).toBeVisible();
   await expect(page.getByText("$9,994", { exact: true })).toHaveCount(2);
-  await expect(page.getByText(/final allocation is \$9,994\.00/i)).toBeVisible();
-  await expect(page.getByText(/original \$10,000\.00 outbound investment.*remains in the bank ledger/i)).toBeVisible();
-  await expect(page.getByText(/no separate refund or AngelList account-balance credit is recorded without transaction evidence/i)).toBeVisible();
 
   await page.goto("/lp/investments/09-h256-series-3");
   await expect(page.getByRole("heading", { name: "H256 LLC Series 3" })).toBeVisible();
@@ -542,12 +519,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.locator(".lp-vehicle-allocation")).toContainText("44% deployed to Anduril in its Series H at a $60B entry valuation");
   await expect(page.locator(".lp-vehicle-allocation")).toContainText("$112,000");
   await expect(page.locator(".lp-vehicle-allocation")).toContainText("Finalizing allocation · 56% of the vehicle · Atoms or Applied Intuition");
-  await expect(page.locator(".lp-vehicle-allocation")).toContainText("$200,000 vehicle investment remains one legal portfolio position");
-  await expect(page.locator(".lp-vehicle-allocation")).toContainText("The remaining $112,000 allocation is being finalized between Atoms and Applied Intuition");
+  await expect(page.locator(".lp-vehicle-allocation > p")).toHaveCount(0);
   await expect(page.getByText("$200,000", { exact: true })).toHaveCount(1);
   await expect(page.getByText("$258,666.67", { exact: true })).toBeVisible();
   await expect(page.getByText("$100B assumed valuation", { exact: true })).toBeVisible();
-  await expect(page.getByText("Based on a stated scenario assumption", { exact: true })).toBeVisible();
 
   await page.goto("/lp/investments/41-atoms");
   await expect(page.getByRole("heading", { name: "Atoms" })).toBeVisible();
@@ -566,10 +541,6 @@ test("shows the reconciled Rasyn allocation and cash-evidence boundary", async (
   await page.goto("/lp/investments/54-rasyn");
   await expect(page.getByRole("heading", { name: "Rasyn" })).toBeVisible();
   await expect(page.getByText("$9,994", { exact: true })).toHaveCount(2);
-  await expect(page.getByText(/final allocation is \$9,994\.00/i)).toBeVisible();
-  await expect(page.getByText(/original \$10,000\.00 outbound investment.*remains in the bank ledger/i)).toBeVisible();
-  await expect(page.getByText(/\$6\.00 difference is an allocation reduction/i)).toBeVisible();
-  await expect(page.getByText(/no separate refund or AngelList account-balance credit is recorded without transaction evidence/i)).toBeVisible();
 });
 
 test("shows the reconciled second Blue Origin allocation and cash-evidence boundary", async ({ page }) => {
@@ -581,10 +552,6 @@ test("shows the reconciled second Blue Origin allocation and cash-evidence bound
   await page.goto("/lp/investments/48-blue-origin-series-a");
   await expect(page.getByRole("heading", { name: "Blue Origin" })).toBeVisible();
   await expect(page.getByText("$24,975.00", { exact: true })).toHaveCount(2);
-  await expect(page.getByText(/final allocation is \$24,975\.00/i)).toBeVisible();
-  await expect(page.getByText(/actual \$25,000\.00 outbound transfer to AngelList/i)).toBeVisible();
-  await expect(page.getByText(/\$25\.00 difference is an allocation reduction/i)).toBeVisible();
-  await expect(page.getByText(/no separate refund or AngelList account credit is recorded without transaction evidence/i)).toBeVisible();
 });
 
 test("shows the final Apptronik allocation and restated August snapshot", async ({ page }) => {
@@ -596,9 +563,6 @@ test("shows the final Apptronik allocation and restated August snapshot", async 
   await page.goto("/lp/investments/12-apptronik");
   await expect(page.getByRole("heading", { name: "Apptronik" })).toBeVisible();
   await expect(page.getByText("$20,766.24", { exact: true })).toBeVisible();
-  await expect(page.getByText(/final allocation is \$20,766\.24/i)).toBeVisible();
-  await expect(page.getByText(/original \$30,000\.00 outbound investment remains in the bank ledger/i)).toBeVisible();
-  await expect(page.getByText(/additional \$8,455\.76 reduction is not recorded as a refund or platform credit/i)).toBeVisible();
 
   await page.goto("/lp/updates/august-2026");
   const updateCopy = page.locator(".lp-update-article-copy");

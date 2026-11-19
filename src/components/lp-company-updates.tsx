@@ -1,8 +1,5 @@
 import Link from "next/link";
-import {
-  LP_COMPANY_REVIEW_AS_OF,
-  LP_RELATED_COMPANY_UPDATES,
-} from "@/data/lp-company-updates";
+import { LP_RELATED_COMPANY_UPDATES } from "@/data/lp-company-updates";
 import type { LpInvestmentDto } from "@/lib/lp-data";
 
 export function companyUpdateDate(value: string) {
@@ -19,8 +16,6 @@ export function LpCompanyUpdates({ investments }: { investments: LpInvestmentDto
     <section className="lp-company-updates" aria-labelledby="lp-company-updates-heading">
       <header className="lp-company-updates-heading">
         <h2 id="lp-company-updates-heading">Company updates</h2>
-        <p>Reviewed {companyUpdateDate(LP_COMPANY_REVIEW_AS_OF)} · All {investments.length} positions covered across {companies.length} issuers and vehicles.</p>
-        <p>Dated announcements and current product checks are labeled separately. Company claims are attributed to their sources. An operating milestone or financing amount alone does not change a position&apos;s value.</p>
       </header>
       <div className="lp-company-update-list">
         {companies.map((investment) => {
@@ -37,7 +32,6 @@ export function LpCompanyUpdates({ investments }: { investments: LpInvestmentDto
               </header>
               <h3>{update.headline}</h3>
               <p>{update.summary}</p>
-              {update.valuationNote && <p className="lp-company-update-valuation">{update.valuationNote}</p>}
               <a className="lp-company-update-source" href={update.sourceUrl} target="_blank" rel="noreferrer">{update.source} ↗</a>
             </article>
           );
@@ -45,10 +39,9 @@ export function LpCompanyUpdates({ investments }: { investments: LpInvestmentDto
       </div>
       <section className="lp-company-updates-related" aria-labelledby="lp-related-updates-heading">
         <h2 id="lp-related-updates-heading">Other portfolio relationships</h2>
-        <p>These public portfolio names have no separate funded row in the Schedule of Investments. They add no cost or projected value to this snapshot.</p>
         {LP_RELATED_COMPANY_UPDATES.map((update) => (
           <article className="lp-company-update" key={update.company}>
-            <header><strong>{update.company}</strong><span>Outside the financial snapshot</span></header>
+            <header><strong>{update.company}</strong><span>Not in the Schedule of Investments</span></header>
             <h3>{update.headline}</h3>
             <p>{update.summary}</p>
             <a className="lp-company-update-source" href={update.sourceUrl} target="_blank" rel="noreferrer">{update.source} ↗</a>

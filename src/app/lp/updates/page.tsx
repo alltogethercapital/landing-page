@@ -21,10 +21,6 @@ export default async function LpInvestorUpdatesPage() {
     <section className="lp-portal-shell lp-updates-index">
       <header className="lp-updates-index-header">
         <h1 className="sr-only">Investor Updates</h1>
-        <p>
-          Notes on the portfolio, our investment thinking, and what we are learning. We publish at least
-          twice per year, with shorter updates when something material changes.
-        </p>
       </header>
 
       <ol className="lp-updates-list" aria-label="Investor updates, newest first">
