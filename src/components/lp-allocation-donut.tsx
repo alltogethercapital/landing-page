@@ -136,7 +136,7 @@ export function LpAllocationDonut({ views, positionCount }: { views: LpAllocatio
                 aria-hidden="true"
                 style={{ "--lp-allocation-tone": `${arc.tone}%` } as CSSProperties}
               />
-              <span className="lp-allocation-name">{arc.label}</span>
+              <span className="lp-allocation-name" title={arc.label}>{arc.label}</span>
               <span className="lp-allocation-amount">{currency(arc.amount)}</span>
               <span className="lp-allocation-share">{percent(arc.share)}</span>
             </li>

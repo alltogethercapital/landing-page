@@ -13,6 +13,7 @@ import "./site-typography.css";
 import "./landing.css";
 import "./company-logos.css";
 import "./site-identity.css";
+import "./compact.css";
 
 const atlasTypewriter = localFont({
   variable: "--font-atlas-typewriter",

@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import Link from "next/link";
 import type { LpInvestmentDto } from "@/lib/lp-data";
 
@@ -6,7 +5,8 @@ type CompanyAllocationRow = {
   id: string;
   label: string;
   amount: number;
-  detail?: ReactNode;
+  detail?: string;
+  title?: string;
   href: string;
   searchText: string;
 };
@@ -37,7 +37,7 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
         id: `${investment.id}-deployed`,
         label: allocation.deployedCompany,
         amount: allocation.deployedAmount,
-        detail: `Through H256 · ${formatWholePercent(allocation.deployedShare)} of vehicle`,
+        detail: `via H256 · ${formatWholePercent(allocation.deployedShare)}`,
         href: `/lp/investments/${investment.id}`,
         searchText: `${allocation.deployedCompany} H256 deployed`.toLocaleLowerCase(),
         positionCount: 1,
@@ -46,14 +46,8 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
         id: `${investment.id}-pending`,
         label: "Finalizing allocation",
         amount: allocation.pendingAmount,
-        detail: (
-          <>
-            H256 · Will go to Applied Intuition
-            {" or "}
-            <Link href="/lp/investments/42-atoms">Atoms</Link>
-            {` · ${formatWholePercent(allocation.awaitingShare)} of vehicle`}
-          </>
-        ),
+        detail: `H256 · ${formatWholePercent(allocation.awaitingShare)}`,
+        title: `H256 · Atoms or Applied Intuition · ${formatWholePercent(allocation.awaitingShare)} of vehicle`,
         href: `/lp/investments/${investment.id}`,
         searchText: "H256 finalizing allocation Atoms Applied Intuition",
         positionCount: 1,
@@ -88,6 +82,7 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
       label: row.label,
       amount: row.amount,
       detail: row.detail,
+      title: row.title,
       href: row.href,
       searchText: row.searchText,
     }))
@@ -127,7 +122,7 @@ export function LpPortfolioTable({
                 role="listitem"
                 aria-label={`${row.label}: ${formatWholeCurrency(row.amount)}, ${formatPercent(row.amount / totalCapital)} of total capital`}
               >
-                <span className="lp-figure-bar-label">
+                <span className="lp-figure-bar-label" title={row.title ?? (row.detail ? `${row.label} · ${row.detail}` : row.label)}>
                   <Link href={row.href}>{row.label}</Link>
                   {row.detail ? <small>{row.detail}</small> : null}
                 </span>

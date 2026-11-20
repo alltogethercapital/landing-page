@@ -7,7 +7,7 @@ html :is(h1, h2, h3, h4, h5, h6, .cog-title, .cog-strip-heading, .cog-article-ti
   font-family: var(--cog-text);
 }
 
-html :is(.cog-nav-link, .cog-mobile-menu-link, .cog-nav-contact-link, .lp-portal-nav nav a, .lp-portal-home, .lp-portfolio-tabs a) {
+html :is(.cog-nav-link, .cog-mobile-menu-link, .cog-nav-contact-link, .lp-portal-nav nav a, .lp-portal-home) {
   font-family: var(--cog-nav);
 }
 

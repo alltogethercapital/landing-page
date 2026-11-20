@@ -12,8 +12,8 @@ test("publishes the October investor update with the current portfolio snapshot"
   });
   await expect(octoberUpdate).toBeVisible();
   await expect(octoberUpdate).toHaveAttribute("href", "/lp/updates/october-2026");
-  await expect(page.getByText("Investor Update #3", { exact: true })).toBeVisible();
-  await expect(page.getByText("October 16, 2026", { exact: true })).toBeVisible();
+  await expect(octoberUpdate.getByText("#3", { exact: true })).toBeVisible();
+  await expect(octoberUpdate.getByText("Oct 16, 2026", { exact: true })).toBeVisible();
 
   await octoberUpdate.click();
   await expect(page).toHaveURL(/\/lp\/updates\/october-2026$/);

@@ -56,6 +56,12 @@ function monthLabel(date: string) {
   );
 }
 
+function monthYearLabel(date: string) {
+  return new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" }).format(
+    new Date(`${date}T00:00:00Z`),
+  );
+}
+
 /* Shared pieces ------------------------------------------------------------- */
 
 function FigureSection({
@@ -104,7 +110,7 @@ function BarRow({
   const reserve = amount === undefined ? 1 : 0.8;
   return (
     <div className="lp-figure-bar-row">
-      <span className="lp-figure-bar-label">
+      <span className="lp-figure-bar-label" title={label}>
         {label}
         {detail ? <small>{detail}</small> : null}
       </span>
@@ -130,7 +136,7 @@ function CompactBars({ title, rows }: { title: string; rows: LetterShare[] }) {
       <dl>
         {rows.map((row) => (
           <div key={row.key}>
-            <dt>{row.label}</dt>
+            <dt title={row.label}>{row.label}</dt>
             <dd>
               <span className="lp-figure-compact-track">
                 <span
@@ -155,13 +161,22 @@ function PortfolioAtAGlance() {
   const allocationScale = Math.max(...LETTER_ALLOCATION.map((row) => row.share));
 
   const deploymentMax = LETTER_DEPLOYMENT[LETTER_DEPLOYMENT.length - 1].cumulative;
-  const start = Date.UTC(2025, 9, 1);
-  const end = Date.UTC(2026, 7, 31);
+  // The x-axis spans the first month of deployment to the latest investment, so
+  // the line always ends exactly at the chart's right edge as positions are added.
+  const firstDate = new Date(`${LETTER_DEPLOYMENT[0].date}T00:00:00Z`);
+  const lastDate = LETTER_DEPLOYMENT[LETTER_DEPLOYMENT.length - 1].date;
+  const start = Date.UTC(firstDate.getUTCFullYear(), firstDate.getUTCMonth(), 1);
+  const end = new Date(`${lastDate}T00:00:00Z`).getTime();
   const chartX = (date: string) =>
-    ((new Date(`${date}T00:00:00Z`).getTime() - start) / (end - start)) * 100;
+    Math.min(100, Math.max(0, ((new Date(`${date}T00:00:00Z`).getTime() - start) / (end - start)) * 100));
   const chartY = (value: number) => 100 - (value / deploymentMax) * 100;
   const gridValues = [0, 0.25, 0.5, 0.75, 1];
-  const axisMonths = ["2025-10-01", "2025-12-01", "2026-02-01", "2026-04-01", "2026-06-01", "2026-08-01"];
+  const axisMonths: string[] = [];
+  for (let month = new Date(start); month.getTime() <= end; month.setUTCMonth(month.getUTCMonth() + 2)) {
+    axisMonths.push(month.toISOString().slice(0, 10));
+  }
+  // Edge labels hug the chart bounds instead of centring past them.
+  const axisLabelShift = (x: number) => (x < 4 ? "0%" : x > 92 ? "-100%" : "-50%");
 
   return (
     <FigureSection id="portfolio-at-a-glance" title="Portfolio at a glance">
@@ -200,8 +215,8 @@ function PortfolioAtAGlance() {
           />
         </svg>
         <span className="sr-only">
-          Cumulative invested capital rising from {currency(LETTER_DEPLOYMENT[0].cumulative)} in October
-          2025 to {currency(deploymentMax)} in August 2026.
+          Cumulative invested capital rising from {currency(LETTER_DEPLOYMENT[0].cumulative)} in{" "}
+          {monthYearLabel(LETTER_DEPLOYMENT[0].date)} to {currency(deploymentMax)} in {monthYearLabel(lastDate)}.
         </span>
         <div className="lp-figure-chart-y" aria-hidden="true">
           {[...gridValues].reverse().map((value) => (
@@ -210,7 +225,13 @@ function PortfolioAtAGlance() {
         </div>
         <div className="lp-figure-chart-x" aria-hidden="true">
           {axisMonths.map((month) => (
-            <span key={month} style={{ insetInlineStart: `${chartX(month).toFixed(2)}%` }}>
+            <span
+              key={month}
+              style={{
+                insetInlineStart: `${chartX(month).toFixed(2)}%`,
+                transform: `translateX(${axisLabelShift(chartX(month))})`,
+              }}
+            >
               {monthLabel(month)}
             </span>
           ))}
@@ -292,16 +313,17 @@ function ValuationEvidence() {
           <tbody>
             {positions.map(({ position, mark, carried, delta, multiple, hasGain, hasLoss }) => (
               <tr key={position.id} className={hasGain ? "has-gain" : undefined}>
-                <th scope="row">
+                <th scope="row" title={position.company}>
                   <strong>{position.company}</strong>
                 </th>
-                <td>
+                <td
+                  title={mark?.costBasisAmount && position.investedCost !== mark.costBasisAmount
+                    ? `${currency(mark.costBasisAmount)} marked slice`
+                    : undefined}
+                >
                   {mark?.entryValuation ?? position.entryValuation}
-                  {mark?.costBasisAmount && position.investedCost !== mark.costBasisAmount ? (
-                    <small>{currency(mark.costBasisAmount)} marked slice</small>
-                  ) : null}
                 </td>
-                <td>
+                <td title={mark ? `As of ${mark.asOf}` : undefined}>
                   {mark?.sourceUrl ? (
                     <a href={mark.sourceUrl} target="_blank" rel="noreferrer">
                       {mark.latestValuation}
@@ -309,9 +331,8 @@ function ValuationEvidence() {
                   ) : mark ? (
                     mark.latestValuation
                   ) : (
-                    "Held at cost"
+                    "At cost"
                   )}
-                  <small>{mark?.asOf ?? "No approved mark"}</small>
                 </td>
                 <td className="is-number">{currency(position.investedCost)}</td>
                 <td className={`is-number lp-performance-change${hasGain ? " is-gain" : hasLoss ? " is-loss" : ""}`}>

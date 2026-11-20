@@ -14,16 +14,10 @@ test("publishes the November 19 portfolio with complete coverage and reconciled 
   await expect(summary).toContainText("$1,099,198");
   await expect(summary).not.toContainText("Projected gross scenario");
   await expect(page.locator(".lp-valuation-review")).toHaveCount(0);
-  await page.getByRole("link", { name: "Company updates", exact: true }).click();
-  await expect(page.locator(".lp-company-update-list > article")).toHaveCount(61);
-  await expect(page.locator(".lp-company-update-list .lp-company-update-source")).toHaveCount(61);
-  await expect(page.locator(".lp-company-updates-heading p")).toHaveCount(0);
-  await expect(page.locator(".lp-company-updates-related > article")).toHaveCount(2);
+  await expect(page.getByRole("tab", { name: "Company updates" })).toHaveCount(0);
+  await page.goto("/lp?section=updates");
+  await expect(page).toHaveURL(/\/lp$/);
   expect(await page.content()).not.toContain("driveFolderId");
-  await page.screenshot({ path: "output/playwright/lp-portal/company-review-desktop.png" });
-  await page.setViewportSize({ width: 390, height: 844 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
-  await page.screenshot({ path: "output/playwright/lp-portal/company-review-phone.png" });
   await page.goto("/lp?section=performance");
   const toCents = (value: string) => Math.round(Number(value.replace(/[^\d.-]/g, "")) * 100);
   const rows = await page.locator(".lp-figure-table--marks tbody tr td:last-child").allTextContents();
@@ -81,13 +75,13 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await page.getByLabel("Access password").fill(password);
   await page.getByRole("button", { name: /Sign in/ }).click();
   await expect(page).toHaveURL(/\/lp$/);
-  const portfolioSections = page.getByRole("navigation", { name: "Portfolio sections" });
-  const investmentsSectionLink = portfolioSections.getByRole("link", { name: "Investments", exact: true });
-  const insightsLink = portfolioSections.getByRole("link", { name: "Insights", exact: true });
-  const performanceLink = portfolioSections.getByRole("link", { name: "Performance", exact: true });
-  await expect(investmentsSectionLink).toHaveAttribute("aria-current", "page");
-  await expect(insightsLink).not.toHaveAttribute("aria-current");
-  await expect(performanceLink).not.toHaveAttribute("aria-current");
+  const portfolioSections = page.getByRole("tablist", { name: "Portfolio sections" });
+  const investmentsSectionLink = portfolioSections.getByRole("tab", { name: "Investments", exact: true });
+  const insightsLink = portfolioSections.getByRole("tab", { name: "Insights", exact: true });
+  const performanceLink = portfolioSections.getByRole("tab", { name: "Performance", exact: true });
+  await expect(investmentsSectionLink).toHaveAttribute("aria-selected", "true");
+  await expect(insightsLink).toHaveAttribute("aria-selected", "false");
+  await expect(performanceLink).toHaveAttribute("aria-selected", "false");
   await expect(page.locator("#lp-portfolio-heading")).toHaveClass(/sr-only/);
   await expect(page.getByRole("button", { name: "Graph view" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Table view" })).toHaveCount(0);
@@ -125,7 +119,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.getByText("$1,099,198", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("Multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("1.12×", { exact: true })).toBeVisible();
+  await expect(summaryGrid.getByText("1.12×", { exact: true })).toBeVisible();
   await expect(page.getByText("1.15×", { exact: true })).toHaveCount(0);
   await expect(page.getByText(/Projection as of 2026-08-18/i)).toHaveCount(0);
   const portalLogoBox = await page.locator(".lp-portal-nav-logo").boundingBox();
@@ -133,13 +127,13 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   expect(Math.abs(portalLogoBox!.x - publicLogoBox!.x)).toBeLessThanOrEqual(1);
   expect(Math.abs(portalLogoBox!.y - publicLogoBox!.y)).toBeLessThanOrEqual(1);
   await expect(page.getByText(/not the fund's audited net asset value/i)).toHaveCount(0);
-  await expect(page.getByText("Stripe", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("AngelList", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("Sydecar", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("Capital Company", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("Equity", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("SAFE", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("SPV", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Stripe", { exact: true }).filter({ visible: true })).toHaveCount(0);
+  await expect(page.getByText("AngelList", { exact: true }).filter({ visible: true })).toHaveCount(0);
+  await expect(page.getByText("Sydecar", { exact: true }).filter({ visible: true })).toHaveCount(0);
+  await expect(page.getByText("Capital Company", { exact: true }).filter({ visible: true })).toHaveCount(0);
+  await expect(page.getByText("Equity", { exact: true }).filter({ visible: true })).toHaveCount(0);
+  await expect(page.getByText("SAFE", { exact: true }).filter({ visible: true })).toHaveCount(0);
+  await expect(page.getByText("SPV", { exact: true }).filter({ visible: true })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "All companies" })).toHaveCount(0);
   await expect(page.getByRole("group", { name: "Investment view" })).toHaveCount(0);
   await expect(page.getByPlaceholder("Search investments…")).toHaveCount(0);
@@ -204,8 +198,8 @@ test("protects, authenticates, shows the investment graph, and opens an investme
 
   await insightsLink.click();
   await expect(page).toHaveURL(/\/lp\?section=analysis$/);
-  await expect(insightsLink).toHaveAttribute("aria-current", "page");
-  await expect(investmentsSectionLink).not.toHaveAttribute("aria-current");
+  await expect(insightsLink).toHaveAttribute("aria-selected", "true");
+  await expect(investmentsSectionLink).toHaveAttribute("aria-selected", "false");
   await expect(page.locator("#lp-figure-portfolio-at-a-glance")).toHaveClass(/sr-only/);
   await expect(page.locator("#lp-figure-concentration-and-structure")).toHaveClass(/sr-only/);
   await expect(page.locator(".lp-figure-section-head")).toHaveCount(0);
@@ -276,9 +270,9 @@ test("protects, authenticates, shows the investment graph, and opens an investme
 
   await performanceLink.click();
   await expect(page).toHaveURL(/\/lp\?section=performance$/);
-  await expect(performanceLink).toHaveAttribute("aria-current", "page");
-  await expect(investmentsSectionLink).not.toHaveAttribute("aria-current");
-  await expect(insightsLink).not.toHaveAttribute("aria-current");
+  await expect(performanceLink).toHaveAttribute("aria-selected", "true");
+  await expect(investmentsSectionLink).toHaveAttribute("aria-selected", "false");
+  await expect(insightsLink).toHaveAttribute("aria-selected", "false");
   await expect(page.locator("#lp-performance-section-title")).toHaveClass(/sr-only/);
   await expect(page.getByRole("heading", { name: "Allocated positions" })).toHaveCount(0);
   await expect(page.getByText("Green delta = gain vs. cost", { exact: true })).toHaveCount(0);
@@ -606,11 +600,11 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page).toHaveURL(/\/lp$/);
     await expect(page.locator("#lp-portfolio-heading")).toHaveClass(/sr-only/);
     await expect(page.getByRole("button", { name: "Sign out" })).toHaveCount(0);
-    const portfolioSections = page.getByRole("navigation", { name: "Portfolio sections" });
-    await expect(portfolioSections.getByRole("link", { name: "Investments", exact: true })).toHaveAttribute("aria-current", "page");
-    await expect(portfolioSections.getByRole("link", { name: "Insights", exact: true })).toBeVisible();
-    await expect(portfolioSections.getByRole("link", { name: "Performance", exact: true })).toBeVisible();
-    const tabLinkBoxes = await portfolioSections.locator("a").evaluateAll((links) => links.map((link) => {
+    const portfolioSections = page.getByRole("tablist", { name: "Portfolio sections" });
+    await expect(portfolioSections.getByRole("tab", { name: "Investments", exact: true })).toHaveAttribute("aria-selected", "true");
+    await expect(portfolioSections.getByRole("tab", { name: "Insights", exact: true })).toBeVisible();
+    await expect(portfolioSections.getByRole("tab", { name: "Performance", exact: true })).toBeVisible();
+    const tabLinkBoxes = await portfolioSections.getByRole("tab").evaluateAll((links) => links.map((link) => {
       const box = link.getBoundingClientRect();
       return { top: box.top, bottom: box.bottom };
     }));
@@ -665,7 +659,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
       });
     }
 
-    await portfolioSections.getByRole("link", { name: "Insights", exact: true }).click();
+    await portfolioSections.getByRole("tab", { name: "Insights", exact: true }).click();
     await expect(page).toHaveURL(/\/lp\?section=analysis$/);
     await expect(page.locator("#lp-figure-portfolio-at-a-glance")).toHaveClass(/sr-only/);
     await expect(page.locator("#lp-figure-concentration-and-structure")).toHaveClass(/sr-only/);
@@ -682,8 +676,8 @@ test("renders the login, portfolio, and detail views at every supported layout",
       path: `output/playwright/lp-portal/portfolio-analysis-${viewport.name}.png`,
       fullPage: true,
     });
-    await page.getByRole("navigation", { name: "Portfolio sections" })
-      .getByRole("link", { name: "Performance", exact: true })
+    await page.getByRole("tablist", { name: "Portfolio sections" })
+      .getByRole("tab", { name: "Performance", exact: true })
       .click();
     await expect(page).toHaveURL(/\/lp\?section=performance$/);
     await expect(page.getByRole("heading", { name: "Allocated positions" })).toHaveCount(0);
@@ -692,7 +686,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page.locator(".lp-performance-pending-row")).toContainText("Finalizing allocation");
     await expect(page.locator(".lp-performance-pending-row")).toContainText("Atoms or Applied Intuition");
     await expect(page.locator("#lp-performance-section-title")).toHaveClass(/sr-only/);
-    const performanceTabsBox = await page.getByRole("navigation", { name: "Portfolio sections" }).boundingBox();
+    const performanceTabsBox = await page.getByRole("tablist", { name: "Portfolio sections" }).boundingBox();
     const performanceTableBox = await page.locator(".lp-figure-table-wrap").boundingBox();
     expect(performanceTabsBox).not.toBeNull();
     expect(performanceTableBox).not.toBeNull();
@@ -704,8 +698,8 @@ test("renders the login, portfolio, and detail views at every supported layout",
       path: `output/playwright/lp-portal/portfolio-performance-${viewport.name}.png`,
       fullPage: true,
     });
-    await page.getByRole("navigation", { name: "Portfolio sections" })
-      .getByRole("link", { name: "Investments", exact: true })
+    await page.getByRole("tablist", { name: "Portfolio sections" })
+      .getByRole("tab", { name: "Investments", exact: true })
       .click();
     await expect(page).toHaveURL(/\/lp$/);
 

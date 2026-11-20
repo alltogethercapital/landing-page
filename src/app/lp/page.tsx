@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { redirect } from "next/navigation";
 import { UIIcon } from "@/components/icons";
 import {
   LpPortfolioInsights,
   LpPortfolioPerformance,
 } from "@/components/lp-letter-figures";
 import { LpPortfolioTable } from "@/components/lp-portfolio-table";
-import { LpCompanyUpdates } from "@/components/lp-company-updates";
+import { LpSectionTabs } from "@/components/lp-section-tabs";
 import { LpAllocationDonut, type LpAllocationSlice } from "@/components/lp-allocation-donut";
 import { LETTER_ALLOCATION } from "@/data/lp-letter-figures";
 import { getLpPortfolio, type LpInvestmentDto } from "@/lib/lp-data";
@@ -22,9 +22,7 @@ export async function generateMetadata({ searchParams }: LpPortfolioPageProps): 
     ? "Performance"
     : params.section === "analysis"
       ? "Insights"
-      : params.section === "updates"
-        ? "Company updates"
-        : "Portfolio";
+      : "Portfolio";
   return {
     title: pageTitle(section),
     robots: { index: false, follow: false, nocache: true },
@@ -98,13 +96,12 @@ function MetricLabel({
 export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageProps) {
   const [investments, params] = await Promise.all([getLpPortfolio(), searchParams]);
   const value = (key: string) => typeof params[key] === "string" ? params[key] : undefined;
+  if (value("section") === "updates") redirect("/lp");
   const section = value("section") === "analysis"
     ? "analysis"
     : value("section") === "performance"
       ? "performance"
-      : value("section") === "updates"
-        ? "updates"
-        : "investments";
+      : "investments";
   const investedCost = investments.reduce((total, item) => total + item.investedCost, 0);
   const pendingAllocation = investments.reduce(
     (total, item) => total + (item.vehicleAllocation?.pendingAmount ?? 0),
@@ -162,58 +159,46 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         </div>
       </dl>
 
-      {section === "investments" && (
-        <LpAllocationDonut
-          positionCount={investments.length}
-          views={[
-            { key: "company", label: "By company", slices: companySlices(investments) },
-            {
-              key: "sector",
-              label: "By sector",
-              slices: LETTER_ALLOCATION.map(({ key, label, amount }) => ({ key, label, amount })),
-            },
-          ]}
-        />
-      )}
+      <LpAllocationDonut
+        positionCount={investments.length}
+        views={[
+          { key: "company", label: "By company", slices: companySlices(investments) },
+          {
+            key: "sector",
+            label: "By sector",
+            slices: LETTER_ALLOCATION.map(({ key, label, amount }) => ({ key, label, amount })),
+          },
+        ]}
+      />
 
-      <nav className="lp-portfolio-tabs" aria-label="Portfolio sections">
-        <Link
-          href="/lp"
-          aria-current={section === "investments" ? "page" : undefined}
-        >
-          Investments
-        </Link>
-        <Link
-          href="/lp?section=analysis"
-          aria-current={section === "analysis" ? "page" : undefined}
-        >
-          Insights
-        </Link>
-        <Link
-          href="/lp?section=performance"
-          aria-current={section === "performance" ? "page" : undefined}
-        >
-          Performance
-        </Link>
-        <Link href="/lp?section=updates" aria-current={section === "updates" ? "page" : undefined}>
-          Company updates
-        </Link>
-      </nav>
-
-      {section === "investments" && (
-        <LpPortfolioTable investments={investments} query={value("query")} />
-      )}
-      {section === "analysis" && (
-        <div className="lp-portfolio-analysis">
-          <LpPortfolioInsights />
-        </div>
-      )}
-      {section === "performance" && (
-        <div className="lp-portfolio-analysis">
-          <LpPortfolioPerformance />
-        </div>
-      )}
-      {section === "updates" && <LpCompanyUpdates investments={investments} />}
+      <LpSectionTabs
+        initial={section}
+        tabs={[
+          {
+            key: "investments",
+            label: "Investments",
+            content: <LpPortfolioTable investments={investments} query={value("query")} />,
+          },
+          {
+            key: "analysis",
+            label: "Insights",
+            content: (
+              <div className="lp-portfolio-analysis">
+                <LpPortfolioInsights />
+              </div>
+            ),
+          },
+          {
+            key: "performance",
+            label: "Performance",
+            content: (
+              <div className="lp-portfolio-analysis">
+                <LpPortfolioPerformance />
+              </div>
+            ),
+          },
+        ]}
+      />
 
       <footer className="lp-portal-footer">
         <span>Private and confidential</span>
