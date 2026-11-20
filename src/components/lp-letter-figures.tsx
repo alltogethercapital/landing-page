@@ -110,7 +110,7 @@ function BarRow({
   const reserve = amount === undefined ? 1 : 0.8;
   return (
     <div className="lp-figure-bar-row">
-      <span className="lp-figure-bar-label">
+      <span className="lp-figure-bar-label" title={label}>
         {label}
         {detail ? <small>{detail}</small> : null}
       </span>
@@ -136,7 +136,7 @@ function CompactBars({ title, rows }: { title: string; rows: LetterShare[] }) {
       <dl>
         {rows.map((row) => (
           <div key={row.key}>
-            <dt>{row.label}</dt>
+            <dt title={row.label}>{row.label}</dt>
             <dd>
               <span className="lp-figure-compact-track">
                 <span
@@ -313,16 +313,17 @@ function ValuationEvidence() {
           <tbody>
             {positions.map(({ position, mark, carried, delta, multiple, hasGain, hasLoss }) => (
               <tr key={position.id} className={hasGain ? "has-gain" : undefined}>
-                <th scope="row">
+                <th scope="row" title={position.company}>
                   <strong>{position.company}</strong>
                 </th>
-                <td>
+                <td
+                  title={mark?.costBasisAmount && position.investedCost !== mark.costBasisAmount
+                    ? `${currency(mark.costBasisAmount)} marked slice`
+                    : undefined}
+                >
                   {mark?.entryValuation ?? position.entryValuation}
-                  {mark?.costBasisAmount && position.investedCost !== mark.costBasisAmount ? (
-                    <small>{currency(mark.costBasisAmount)} marked slice</small>
-                  ) : null}
                 </td>
-                <td>
+                <td title={mark ? `As of ${mark.asOf}` : undefined}>
                   {mark?.sourceUrl ? (
                     <a href={mark.sourceUrl} target="_blank" rel="noreferrer">
                       {mark.latestValuation}
@@ -330,9 +331,8 @@ function ValuationEvidence() {
                   ) : mark ? (
                     mark.latestValuation
                   ) : (
-                    "Held at cost"
+                    "At cost"
                   )}
-                  <small>{mark?.asOf ?? "No approved mark"}</small>
                 </td>
                 <td className="is-number">{currency(position.investedCost)}</td>
                 <td className={`is-number lp-performance-change${hasGain ? " is-gain" : hasLoss ? " is-loss" : ""}`}>
