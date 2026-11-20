@@ -186,9 +186,24 @@ html[data-site-theme="dark"] .lp-portal-page {
   visibility: visible;
 }
 
-.lp-summary-grid > div:last-child .lp-summary-tooltip {
-  right: 0;
+/* Tooltips anchor to their stat cell, not the icon, so they never run past the
+   content column's right edge: right-half cells open leftward. */
+.lp-summary-grid > div { position: relative; }
+.lp-summary-term { position: static; }
+.lp-summary-tooltip { left: var(--lp-component-inset); max-width: calc(100% - 2 * var(--lp-component-inset)); }
+@media (min-width: 1101px) { .lp-summary-tooltip { max-width: none; } }
+
+.lp-summary-grid > div:nth-child(n + 3) .lp-summary-tooltip {
+  right: var(--lp-component-inset);
   left: auto;
+}
+
+@media (max-width: 1100px) {
+  .lp-summary-tooltip,
+  .lp-summary-grid > div:nth-child(n + 3) .lp-summary-tooltip {
+    right: auto;
+    left: var(--lp-component-inset);
+  }
 }
 
 .lp-summary-grid dd {
