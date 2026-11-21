@@ -33,6 +33,7 @@ function Label({ row }: { row: LpStatement["rows"][number] }) {
 
 function Statement({ statement }: { statement: LpStatement }) {
   const firstAmountIndex = statement.rows.findIndex((row) => row.amount !== undefined);
+  const dateShort = statement.key === "balance-sheet" ? "As of Nov 20, 2026" : "Period ended Nov 20, 2026";
   return (
     <section className="lp-fin-statement" aria-label={`${statement.title}, ${LP_FIN_ENTITY}`}>
       <table className="lp-fin-table">
@@ -40,15 +41,6 @@ function Statement({ statement }: { statement: LpStatement }) {
           <col />
           <col className="lp-fin-col-amount" />
         </colgroup>
-        <thead>
-          <tr>
-            <th scope="col" className="lp-fin-asof" title={statement.key === "balance-sheet" ? statement.dateLine : LP_FIN_PERIOD_DETAIL}>
-              <span className="lp-fin-full">{statement.dateLine}</span>
-              <span className="lp-fin-short" aria-hidden="true">{statement.key === "balance-sheet" ? "As of Nov 20, 2026" : "Period ended Nov 20, 2026"}</span>
-            </th>
-            <th scope="col" className="is-number">USD</th>
-          </tr>
-        </thead>
         <tbody>
           {statement.rows.map((row, index) => {
             const kind = row.kind ?? "item";
@@ -74,6 +66,10 @@ function Statement({ statement }: { statement: LpStatement }) {
           })}
         </tbody>
       </table>
+      <p className="lp-fin-note" title={`${statement.key === "balance-sheet" ? statement.dateLine : LP_FIN_PERIOD_DETAIL}. Amounts in USD. Unaudited. Investments at latest comparable valuations (positions without one at cost); not NAV. Gifted positions held outside the fund are excluded.`}>
+        <span className="lp-fin-full">{dateShort} · USD · Unaudited · Investments at latest comparable valuations, not NAV</span>
+        <span className="lp-fin-short" aria-hidden="true">{dateShort} · USD · Unaudited</span>
+      </p>
     </section>
   );
 }
@@ -92,9 +88,6 @@ export function LpFinancialStatements({ initial }: { initial: LpStatementKey }) 
           content: <Statement statement={statement} />,
         }))}
       />
-      <p className="lp-fin-note" title="Unaudited. Investments at latest comparable valuations (positions without one at cost); not NAV. Gifted positions held outside the fund are excluded.">
-        Unaudited · Investments at latest comparable valuations, not NAV
-      </p>
     </div>
   );
 }
