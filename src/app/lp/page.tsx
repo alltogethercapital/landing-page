@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { UIIcon } from "@/components/icons";
+import { LpMetricLabel } from "@/components/lp-metric-label";
 import {
   LpPortfolioInsights,
   LpPortfolioPerformance,
@@ -67,33 +67,6 @@ function companySlices(investments: LpInvestmentDto[]): LpAllocationSlice[] {
   return top;
 }
 
-function MetricLabel({
-  label,
-  description,
-  tooltipId,
-}: {
-  label: string;
-  description: string;
-  tooltipId: string;
-}) {
-  return (
-    <span className="lp-summary-label">
-      <span>{label}</span>
-      <span
-        className="lp-summary-term"
-        tabIndex={0}
-        aria-label={`About ${label}`}
-        aria-describedby={tooltipId}
-      >
-        <span className="lp-summary-info" aria-hidden="true"><UIIcon name="info" /></span>
-        <span className="lp-summary-tooltip" id={tooltipId} role="tooltip">
-          {description}
-        </span>
-      </span>
-    </span>
-  );
-}
-
 export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageProps) {
   const [investments, params] = await Promise.all([getLpPortfolio(), searchParams]);
   const value = (key: string) => typeof params[key] === "string" ? params[key] : undefined;
@@ -132,17 +105,17 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
       <dl className="lp-summary-grid lp-summary-grid--four" aria-label="Portfolio summary">
         <div className="lp-summary-metric--primary">
           <dt>
-            <MetricLabel
+            <LpMetricLabel
               label="AUM"
               tooltipId="lp-aum-tooltip"
-              description="Capital contributed by LPs."
+              description="Capital contributed by LPs: $925,000 cash. Excludes the $4,145 expense deposits and gifted positions."
             />
           </dt>
           <dd>{currency(LP_AUM)}</dd>
         </div>
         <div className="lp-summary-metric--primary">
           <dt>
-            <MetricLabel
+            <LpMetricLabel
               label="Projected"
               tooltipId="lp-nav-tooltip"
               description={`Estimated gross value from latest comparable valuations: fund-purchased ${currency(fundProjectedValue)} + gifted ${currency(giftedValue)} ($0 cost). Positions without one at cost. Gross, not NAV.`}
@@ -152,7 +125,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         </div>
         <div>
           <dt>
-            <MetricLabel
+            <LpMetricLabel
               label="Pending"
               tooltipId="lp-pending-allocation-tooltip"
               description={`${currency(pendingAllocation)} of H256 being finalized between Atoms and Applied Intuition. Held at cost in Projected until deployed.`}
@@ -162,7 +135,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
         </div>
         <div>
           <dt>
-            <MetricLabel
+            <LpMetricLabel
               label="Multiple"
               tooltipId="lp-gross-value-multiple-tooltip"
               description={`Projected ÷ cost basis: (fund-purchased ${currency(fundProjectedValue)} + gifted ${currency(giftedValue)}) ÷ fund cost ${currency(investedCost)}. Gifts at $0 cost; excluded from AUM.`}
