@@ -851,6 +851,19 @@ test("financial statements tab balances and ties to the SOI", async ({ page }) =
     await page.getByRole("navigation", { name: "Investor portal" }).getByRole("link", { name: "Financials" }).click();
     await expect(page).toHaveURL(/\/lp\/financials$/);
     await expect(page.getByRole("link", { name: "Financials" })).toHaveAttribute("aria-current", "page");
+    await expect(page.getByRole("navigation", { name: "Investor portal" }).getByRole("link"))
+      .toHaveText(["Portfolio", "Financials", "Investor Updates"]);
+    await expect(page.locator(".lp-fin-header")).toHaveCount(0);
+    await expect(page.locator(".lp-portal-home")).toHaveCount(0);
+    const logo = page.getByRole("link", { name: "Machine Spirit Capital home" });
+    await expect(logo).toBeVisible();
+    await expect(logo).toHaveAttribute("href", "/");
+    await expect(page.getByText("Outer Rim Ventures LLC · Machine Spirit Capital")).toHaveCount(0);
+    const usd = page.locator("#lp-panel-balance-sheet thead th.is-number");
+    await expect(usd).toHaveText("USD");
+    const usdBox = await usd.boundingBox();
+    const firstRowBox = await page.locator("#lp-panel-balance-sheet tbody tr").first().boundingBox();
+    expect(usdBox!.y + usdBox!.height).toBeLessThanOrEqual(firstRowBox!.y + 1);
     await expect(page.locator(".lp-summary-grid")).toHaveCount(0);
     await page.waitForLoadState("networkidle");
     const sub = page.getByRole("tablist", { name: "Financial statements" });

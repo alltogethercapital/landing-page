@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoMark } from "@/components/cognition-layout";
-import { UIIcon } from "@/components/icons";
 
 export function LpPortalNav() {
   const pathname = usePathname();
@@ -14,20 +13,16 @@ export function LpPortalNav() {
   return (
     <aside className="lp-portal-nav" aria-label="Investor portal navigation">
       <Link
-        href="/lp"
-        aria-label="Machine Spirit Capital investor portal home"
+        href="/"
+        aria-label="Machine Spirit Capital home"
         className="lp-portal-nav-logo"
       >
         <LogoMark />
       </Link>
-      <Link href="/" aria-label="Home" className="lp-portal-home">
-        <UIIcon name="arrow-left" />
-        <span className="lp-portal-home-label">Home</span>
-      </Link>
       <nav aria-label="Investor portal">
         <Link href="/lp" aria-current={isPortfolio ? "page" : undefined} className={isPortfolio ? "is-active" : undefined}>Portfolio</Link>
-        <Link href="/lp/updates" aria-current={isUpdate ? "page" : undefined} className={isUpdate ? "is-active" : undefined}>Investor Updates</Link>
         <Link href="/lp/financials" aria-current={isFinancials ? "page" : undefined} className={isFinancials ? "is-active" : undefined}>Financials</Link>
+        <Link href="/lp/updates" aria-current={isUpdate ? "page" : undefined} className={isUpdate ? "is-active" : undefined}>Investor Updates</Link>
       </nav>
       <form action="/api/lp/logout" method="post">
         <button type="submit">Sign out</button>
