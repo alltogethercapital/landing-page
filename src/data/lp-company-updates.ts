@@ -26,7 +26,7 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
   },
   "Summer Engine": {
     headline: "AI-native game engine joins Y Combinator's Fall 2026 batch",
-    summary: "Summer Engine presents a full 2D and 3D game engine for people and coding agents, with multiplayer, publishing, analytics, and a large asset library. The $25,000 position is uncapped and remains at cost because investor-specific execution evidence and other closing terms have not been supplied.",
+    summary: "Summer Engine presents a full 2D and 3D game engine for people and coding agents, with multiplayer, publishing, analytics, and a large asset library. The $25,000 uncapped MFN SAFE was signed through the YC Investors portal and wired November 19; it is held at cost.",
     source: "Summer Engine company and Y Combinator profiles",
     sourceUrl: "https://www.summerengine.com/press",
     sourceDate: "2026-11-13",
@@ -174,14 +174,6 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
     sourceUrl: "https://www.arraylabs.io/updates/1",
     sourceDate: "2026-07-27", kind: "announcement",
   },
-  Corgi: {
-    headline: "Latest reported financing values Corgi at $5B",
-    summary: "Forbes reported a closed $64M Series B extension at a $5B valuation in September, following July's $4B financing. This is a reported company comparison, not a fund-administrator valuation of our SAFE.",
-    source: "Forbes reporting",
-    sourceUrl: "https://tollbit.forbes.com/sites/richardnieva/2026/09/26/corgi-5-billion-valuation/",
-    sourceDate: "2026-09-26", kind: "announcement",
-    valuationNote: "Updates the existing gross comparison from $4B to $5B against the $2.5B recorded cap. The resulting 2.00× estimate excludes SAFE conversion terms, dilution, fees and carry.",
-  },
   Aformic: {
     headline: "Automotive intralogistics and Qursor software",
     summary: "Aformic's latest dated company posts describe its BMW Supplier XChange and MODEX 2026 participation, showcasing autonomous mobile robots and fleet software. No newer position-level valuation was verified.",
@@ -267,12 +259,6 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
     source: "Decart event announcement",
     sourceUrl: "https://decart.ai/events/nvidia-gtc-emea-2026",
     sourceDate: "2026-10-22", kind: "announcement",
-  },
-  Sourcerer: {
-    headline: "AI-native distribution combines quoting and fulfillment",
-    summary: "Sourcerer's current service offers industrial sourcing, quoting, shipping and financing through AI agents. No newer dated financing or valuation disclosure was verified in this review.",
-    source: "Sourcerer product website",
-    sourceUrl: "https://sourcererai.com/get-a-quote", kind: "current-status",
   },
   "MAV Unlimited": {
     headline: "Selected for MassChallenge's Security & Resiliency program",
@@ -393,12 +379,6 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
     source: "Ultrasonium company news",
     sourceUrl: "https://ultrasonium.com/news", kind: "current-status",
   },
-  "Allia Health": {
-    headline: "Payer-rate transparency initiative and clinician network waitlist",
-    summary: "Allia publishes readable payer reimbursement data and is taking interest in a clinician integrated network. The initiative complements its behavioral-health software; network plans are not evidence of booked revenue or a new valuation.",
-    source: "Allia Health transparency initiative",
-    sourceUrl: "https://transparency.allia.health/", kind: "current-status",
-  },
   "Astro Mechanica": {
     headline: "United engine discussions and new aerospace concepts",
     summary: "Astro Mechanica's newsroom reports potential engine-agreement discussions with United in August and September coverage of an airborne-laser UAS concept. Discussions and concepts are not signed customer revenue or evidence of a new investment price.",
@@ -413,7 +393,7 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
   },
   "Chef Robotics": {
     headline: "NVIDIA Isaac tools support food-manipulation development",
-    summary: "Chef describes using NVIDIA Isaac Sim, Omniverse libraries and cuMotion to accelerate food-manipulation robot development and deployment. The $18,590.75 position remains at cost because investor-specific entry terms are still not evidenced.",
+    summary: "Chef describes using NVIDIA Isaac Sim, Omniverse libraries and cuMotion to accelerate food-manipulation robot development and deployment. The $18,590.75 AngelList convertible note ($115 million valuation cap) is held at cost.",
     source: "Chef Robotics company resources",
     sourceUrl: "https://www.chefrobotics.ai/resources",
     sourceDate: "2026-10-07", kind: "announcement",
@@ -432,6 +412,13 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
     sourceUrl: "https://longshotspace.com/company",
     kind: "current-status",
   },
+  "Commons Clinic": {
+    headline: "Orthopedic and outpatient care platform",
+    summary: "Commons continues publishing updates on orthopedic care and recovery. The fund holds a $10,000 AngelList position in its Series B+ round at a $40 million pre-money valuation, recorded at cost.",
+    source: "Commons Clinic company blog",
+    sourceUrl: "https://commonsclinic.com/blog/",
+    kind: "current-status",
+  },
 };
 
 // Names on the public portfolio without a separately funded SOI position.
@@ -444,12 +431,5 @@ export const LP_RELATED_COMPANY_UPDATES = [
     source: "Applied Intuition announcement",
     sourceUrl: "https://www.appliedintuition.com/press-releases/navy-selects-applied-intuition-field-ai-perception",
     sourceDate: "2026-10-22",
-  },
-  {
-    company: "Commons Clinic",
-    headline: "Orthopedic and outpatient care platform",
-    summary: "Commons continues publishing updates on orthopedic care and recovery. It appears on the public portfolio but has no funded SOI row; no cost or NAV amount is added without investment evidence.",
-    source: "Commons Clinic company blog",
-    sourceUrl: "https://commonsclinic.com/blog/",
   },
 ];

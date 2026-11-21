@@ -28,7 +28,6 @@ const NEW_INVESTMENT_ARTICLES: Article[] = [
   ["compresr", "Compresr", "context compression for AI systems", "question-aware compression that removes tokens an AI model does not need while preserving the evidence that determines the answer", "lower inference cost and latency without forcing teams to rebuild their model or application stack"],
   ["atomarine", "Atomarine", "floating data center campuses at sea", "standardized compute barges built in shipyards, towed to site, and paired with standalone power vessels", "infrastructure that can expand without waiting for a grid connection or rebuilding the data halls around each new power source"],
   ["astro-mechanica", "Astro Mechanica", "the next generation of flight", "turboelectric adaptive engines engineered for efficiency across subsonic and supersonic speeds", "a vertically integrated aerospace platform spanning propulsion, airframes, and flight systems"],
-  ["allia-health", "Allia Health", "connected infrastructure for behavioral health practices", "a modern EHR that brings intake, scheduling, documentation, referrals, outcomes, and billing into one place", "a shared operating system that gives clinicians more time for patient care and helps independent practices coordinate care"],
   ["path-robotics", "Path Robotics", "physical AI for manufacturing", "adaptive autonomous welding cells powered by a purpose-built foundation model", "a manufacturing platform that learns from production work and expands the capacity of skilled teams"],
   ["molagri", "Molagri", "precision biological crop protection", "species-specific biopesticides engineered from biology's own blueprints", "crop protection that can remain effective as pests evolve while reducing unnecessary impact on pollinators and the wider environment"],
   ["trynearby", "TryNearby", "word-of-mouth discovery for local businesses", "a recurring network that matches nearby creators with restaurants and coordinates each visit", "a distribution system built around authentic local recommendations rather than another advertising dashboard"],
@@ -39,8 +38,8 @@ const NEW_INVESTMENT_ARTICLES: Article[] = [
 ].map(([slug, title, excerpt, product, thesis]) => ({
   slug,
   title: `${title}.`,
-  date: slug === "summer-engine" ? "November 13, 2026" : slug === "standard-bots" ? "October 29, 2026" : slug === "chef-robotics" ? "October 16, 2026" : slug === "atomarine" ? "September 16, 2026" : slug === "astro-mechanica" ? "September 14, 2026" : slug === "allia-health" ? "September 12, 2026" : slug === "ultrasonium" ? "September 9, 2026" : slug === "path-robotics" ? "September 8, 2026" : slug === "positron" ? "August 13, 2026" : slug === "matforge" ? "June 17, 2026" : slug === "raspire" ? "June 14, 2026" : slug === "rendezvous-robotics" || slug === "compresr" ? "June 11, 2026" : "September 7, 2026",
-  dateISO: slug === "summer-engine" ? "2026-11-13" : slug === "standard-bots" ? "2026-10-29" : slug === "chef-robotics" ? "2026-10-16" : slug === "atomarine" ? "2026-09-16" : slug === "astro-mechanica" ? "2026-09-14" : slug === "allia-health" ? "2026-09-12" : slug === "ultrasonium" ? "2026-09-09" : slug === "path-robotics" ? "2026-09-08" : slug === "positron" ? "2026-08-13" : slug === "matforge" ? "2026-06-17" : slug === "raspire" ? "2026-06-14" : slug === "rendezvous-robotics" || slug === "compresr" ? "2026-06-11" : "2026-09-07",
+  date: slug === "summer-engine" ? "November 13, 2026" : slug === "standard-bots" ? "October 29, 2026" : slug === "chef-robotics" ? "October 16, 2026" : slug === "atomarine" ? "September 16, 2026" : slug === "astro-mechanica" ? "September 14, 2026" : slug === "ultrasonium" ? "September 9, 2026" : slug === "path-robotics" ? "September 8, 2026" : slug === "positron" ? "August 13, 2026" : slug === "matforge" ? "June 17, 2026" : slug === "raspire" ? "June 14, 2026" : slug === "rendezvous-robotics" || slug === "compresr" ? "June 11, 2026" : "September 7, 2026",
+  dateISO: slug === "summer-engine" ? "2026-11-13" : slug === "standard-bots" ? "2026-10-29" : slug === "chef-robotics" ? "2026-10-16" : slug === "atomarine" ? "2026-09-16" : slug === "astro-mechanica" ? "2026-09-14" : slug === "ultrasonium" ? "2026-09-09" : slug === "path-robotics" ? "2026-09-08" : slug === "positron" ? "2026-08-13" : slug === "matforge" ? "2026-06-17" : slug === "raspire" ? "2026-06-14" : slug === "rendezvous-robotics" || slug === "compresr" ? "2026-06-11" : "2026-09-07",
   category: "Portfolio",
   author: "Machine Spirit Capital",
   excerpt: `We invested in ${title}, building ${excerpt}.`,
@@ -54,7 +53,7 @@ const NEW_INVESTMENT_ARTICLES: Article[] = [
       ? "/updates/covers/chef-robotics.jpg"
       : slug === "ultrasonium"
       ? "/logos/cards/ultrasonium.png"
-      : `/updates/covers/${slug}.${slug === "molagri" || slug === "rasyn" ? "webp" : slug === "atomarine" || slug === "path-robotics" || slug === "allia-health" || slug === "astro-mechanica" ? "jpg" : "png"}`,
+      : `/updates/covers/${slug}.${slug === "molagri" || slug === "rasyn" ? "webp" : slug === "atomarine" || slug === "path-robotics" || slug === "astro-mechanica" ? "jpg" : "png"}`,
   sections: [
     { body: [`We invested in ${title}. The company is building ${excerpt}.`, `The work starts from a specific customer problem and carries new technical capability into a product people can use.`] },
     { heading: "What they are building", body: [`${title} is building ${product}.`, `The result is ${thesis}.`] },

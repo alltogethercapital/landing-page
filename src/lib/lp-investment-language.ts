@@ -5,6 +5,7 @@ export type InvestmentPlatform =
   | "Echo"
   | "Fidelity"
   | "Sydecar"
+  | "YC"
   | "Not specified";
 
 export type InvestmentInstrument =
@@ -27,6 +28,7 @@ const INVESTMENT_ACCESS_LABELS: Record<InvestmentPlatform, string> = {
   Echo: "Invested with a group",
   Fidelity: "Bought on the public market",
   Sydecar: "Invested with a group",
+  YC: "Invested directly",
   "Not specified": "Investment route not yet documented",
 };
 

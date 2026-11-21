@@ -14,16 +14,14 @@ test("lists every public portfolio company exactly once", async ({ page }) => {
   }
 });
 
-test("publishes Prometheus without retaining Applied Intuition as a public investment", async ({ page }) => {
+test("keeps refunded and pending names off the public portfolio", async ({ page }) => {
   await page.goto("/companies");
 
-  const prometheus = page.locator("#prometheus");
-  await expect(prometheus.getByRole("link", { name: "Visit Prometheus" })).toHaveAttribute(
-    "href",
-    "https://www.prometheus.ai/",
-  );
-  await expect(prometheus.getByText("Prometheus", { exact: true })).toBeVisible();
-  await expect(page.locator("#applied-intuition")).toHaveCount(0);
+  // Corgi, Sourcerer and Allia Health were refunded before closing; Prometheus
+  // is pending inside H256 and Applied Intuition is not a fund position.
+  for (const id of ["corgi", "sourcerer", "allia-health", "prometheus", "applied-intuition"]) {
+    await expect(page.locator(`#${id}`)).toHaveCount(0);
+  }
 });
 
 test("keeps every sourced logo monochrome at rest and reveals source color on engagement", async ({ page }) => {
@@ -76,7 +74,6 @@ test("keeps icon-only company marks readable as complete lockups", async ({ page
   await page.goto("/companies");
 
   for (const company of [
-    "Allia Health",
     "Raspire",
     "Rendezvous Robotics",
     "Compresr",

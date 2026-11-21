@@ -27,7 +27,6 @@ export const PORTFOLIO: Company[] = [
   { name: "Molagri", href: "https://molagri.com/", sectors: ["Bio", "Agriculture"], blurb: "Precision biopesticides engineered to protect crops while sparing beneficial species.", logo: "/logos/molagri.svg", cardLogo: "/logos/cards/molagri.svg" },
   { name: "Atomarine", href: "https://atomarine.co/", sectors: ["Energy", "Infrastructure", "AI"], blurb: "Floating data center campuses with standalone power and seawater cooling.", logo: "/logos/atomarine.png", cardLogo: "/logos/cards/atomarine.png", logoLabel: "Atomarine", image: "/work/cards/atomarine.jpg", cardImage: "/work/cards/atomarine.jpg" },
   { name: "Astro Mechanica", href: "https://www.astromecha.co/", sectors: ["Aerospace", "Energy", "Defense"], blurb: "Turboelectric adaptive engines, airframes, and flight systems for the next generation of flight.", logo: "/logos/astro-mechanica.png", cardLogo: "/logos/cards/astro-mechanica.png", logoLabel: "Astro Mechanica", image: "/work/cards/astro-mechanica.jpg", cardImage: "/work/cards/astro-mechanica.jpg" },
-  { name: "Allia Health", href: "https://allia.health/", sectors: ["Healthcare", "AI", "Software"], blurb: "A modern EHR connecting intake, care, documentation, prescribing, and billing for behavioral health practices.", logo: "/logos/allia-health.png", cardLogo: "/logos/cards/allia-health.png", logoLabel: "Allia Health", image: "/work/cards/allia-health.jpg", cardImage: "/work/cards/allia-health.jpg" },
   { name: "TryNearby", href: "https://trynearby.com/", sectors: ["Software", "AI"], blurb: "Connects local businesses with nearby creators to build word-of-mouth discovery.", logo: "/logos/trynearby.svg", cardLogo: "/logos/cards/trynearby.svg" },
   { name: "Familiar Labs", href: "https://www.thefamiliarlab.com/", sectors: ["AI", "Video"], blurb: "AI dubbing that preserves voice, performance, and lip sync across languages.", logo: "/logos/familiar-labs.svg", cardLogo: "/logos/cards/familiar-labs.svg" },
   { name: "CarSignal", href: "https://trycarsignal.com/", sectors: ["AI", "Software"], blurb: "An AI operating system connecting every step of an auto repair shop.", logo: "/logos/carsignal.png", cardLogo: "/logos/cards/carsignal.png", logoLabel: "CarSignal" },
@@ -222,20 +221,6 @@ export const PORTFOLIO: Company[] = [
     image: "/work/replit.jpg",
     cardImage: "/work/cards/replit.jpg",
     video: "-2xHmkpmCBM", // Replit Agent 4 Launch Announcement (Replit)
-  },
-  {
-    name: "Sourcerer",
-    href: "https://sourcererai.com/",
-    sectors: ["AI", "Supply Chain"],
-    blurb: "AI-native distributor automating sourcing, freight, and trade finance.",
-    cardLogo: "/logos/cards/sourcerer-color.svg",
-    cardImage: "/work/cards/sourcerer.jpg",
-  },
-  {
-    name: "Prometheus",
-    href: "https://www.prometheus.ai/",
-    sectors: ["AI", "Engineering", "Manufacturing"],
-    blurb: "AI tools designed to accelerate engineering and invention across the physical economy.",
   },
   {
     name: "Figure AI",
@@ -447,14 +432,6 @@ export const PORTFOLIO: Company[] = [
     blurb: "The AI operating system for specialty medical practices.",
     cardLogo: "/logos/cards/plena-health-wordmark.png",
     cardImage: "/work/cards/plena-health.jpg",
-  },
-  {
-    name: "Corgi",
-    href: "https://www.corgi.insure/",
-    sectors: ["Insurance", "AI"],
-    blurb: "AI-native, full-stack insurance built for startups.",
-    cardLogo: "/logos/cards/corgi.svg",
-    cardImage: "/work/cards/corgi.jpg",
   },
   {
     name: "Aformic",
