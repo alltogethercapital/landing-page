@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type CSSProperties } from "react";
+import { formatCompactUsd, formatWholeUsd } from "@/lib/lp-format";
 
 export type LpAllocationSlice = {
   key: string;
@@ -18,14 +19,6 @@ const RADIUS = 42;
 const STROKE = 16;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const GAP = 0.5;
-
-function currency(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(value);
-}
 
 function percent(value: number) {
   return `${(value * 100).toFixed(1)}%`;
@@ -99,7 +92,7 @@ export function LpAllocationDonut({ views, positionCount }: { views: LpAllocatio
                   onMouseLeave={() => setActive(null)}
                   onClick={() => setActive(active === arc.key ? null : arc.key)}
                 >
-                  <title>{`${arc.label} · ${currency(arc.amount)} · ${percent(arc.share)}`}</title>
+                  <title>{`${arc.label} · ${formatWholeUsd(arc.amount)} · ${percent(arc.share)}`}</title>
                 </circle>
               ))}
             </g>
@@ -108,7 +101,7 @@ export function LpAllocationDonut({ views, positionCount }: { views: LpAllocatio
             {activeSlice ? (
               <>
                 <span className="lp-allocation-center-label">{activeSlice.label}</span>
-                <strong>{currency(activeSlice.amount)}</strong>
+                <strong title={formatWholeUsd(activeSlice.amount)}>{formatCompactUsd(activeSlice.amount)}</strong>
                 <span className="lp-allocation-center-share">{percent(activeSlice.amount / total)}</span>
               </>
             ) : (
@@ -137,7 +130,7 @@ export function LpAllocationDonut({ views, positionCount }: { views: LpAllocatio
                 style={{ "--lp-allocation-tone": `${arc.tone}%` } as CSSProperties}
               />
               <span className="lp-allocation-name" title={arc.label}>{arc.label}</span>
-              <span className="lp-allocation-amount">{currency(arc.amount)}</span>
+              <span className="lp-allocation-amount" title={formatWholeUsd(arc.amount)}>{formatCompactUsd(arc.amount)}</span>
               <span className="lp-allocation-share">{percent(arc.share)}</span>
             </li>
           ))}
