@@ -89,25 +89,20 @@ function MemberCard({ member, eager = false }: { member: Member; eager?: boolean
           )}
         </div>
 
-        <div className="cog-person-links">
-          {member.website && (
-            <a href={member.website.href} target="_blank" rel="noopener noreferrer">
-              {member.website.label}
-            </a>
-          )}
-          {member.linkedin && (
-            <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
-              <LinkedInIcon />
-              LinkedIn
-            </a>
-          )}
-          {member.email && (
-            <a href={`mailto:${member.email}`}>
-              <MailIcon />
-              Email
-            </a>
-          )}
-        </div>
+        {(member.linkedin || member.email) && (
+          <div className="cog-person-links">
+            {member.linkedin && (
+              <a href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on LinkedIn`}>
+                <LinkedInIcon />
+              </a>
+            )}
+            {member.email && (
+              <a href={`mailto:${member.email}`} aria-label={`Email ${member.name}`}>
+                <MailIcon />
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </article>
   );
@@ -121,7 +116,7 @@ export default function TeamPage() {
       <CognitionStrip className="cog-strip--inset cog-strip--page-start">
         <h1 className="sr-only">Our team</h1>
         <PortraitRevealSession page="/team">
-          <div className="cog-person-grid cog-person-grid--short">
+          <div className="cog-person-grid">
             {MEMBERS.map((member) => (
               <MemberCard key={member.name} member={member} eager />
             ))}

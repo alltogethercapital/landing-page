@@ -1978,6 +1978,8 @@ html[data-site-theme="dark"] .cog-wordmark-name {
 
 .cog-person-links {
   display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
   gap: 10px;
   margin-top: 14px;
   color: var(--cog-muted);
@@ -1985,16 +1987,24 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   font-size: 15px;
   line-height: 1.18;
   letter-spacing: -0.015em;
+  white-space: nowrap;
 }
 
 .cog-person-links a {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 28px;
   height: 28px;
   color: inherit;
   text-decoration: none;
+}
+
+.cog-person-links a svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
 }
 
 .cog-person-links a:hover {
@@ -2392,10 +2402,6 @@ html[data-site-theme="dark"] .cog-wordmark-name {
 
   .cog-updates-track .cog-article-card {
     flex-basis: min(86%, 320px);
-  }
-
-  .cog-person-grid--short {
-    gap: 30px 18px;
   }
 
   .cog-company-card {
