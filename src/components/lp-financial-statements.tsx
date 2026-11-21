@@ -1,4 +1,5 @@
 import { LpSectionTabs } from "@/components/lp-section-tabs";
+import { LpTip } from "@/components/lp-tip";
 import {
   LP_FIN_ENTITY,
   LP_FIN_PERIOD_DETAIL,
@@ -22,11 +23,17 @@ function statementAmount(value: number, currency: boolean) {
 }
 
 function Label({ row }: { row: LpStatement["rows"][number] }) {
-  if (!row.shortLabel) return <>{row.label}</>;
-  return (
+  const text = !row.shortLabel ? row.label : (
     <>
       <span className="lp-fin-full">{row.label}</span>
       <span className="lp-fin-short" aria-hidden="true">{row.shortLabel}</span>
+    </>
+  );
+  if (!row.tip) return <>{text}</>;
+  return (
+    <>
+      <span className="lp-fin-label">{text}</span>
+      <LpTip text={row.tip} label={row.label} />
     </>
   );
 }
@@ -49,14 +56,14 @@ function Statement({ statement }: { statement: LpStatement }) {
             if (kind === "heading" || kind === "label") {
               return (
                 <tr key={`${row.label}-${index}`} className={className}>
-                  <th scope={kind === "heading" ? "rowgroup" : "row"} colSpan={2} title={row.title ?? row.label}><Label row={row} /></th>
+                  <th scope={kind === "heading" ? "rowgroup" : "row"} colSpan={2} title={row.tip ? undefined : row.title ?? row.label}><Label row={row} /></th>
                 </tr>
               );
             }
             const amount = row.amount ?? 0;
             const currency = index === firstAmountIndex || kind === "total";
             return (
-              <tr key={`${row.label}-${index}`} className={className} title={row.title ?? exact(amount)} data-label={row.label}>
+              <tr key={`${row.label}-${index}`} className={className} title={row.tip ? undefined : row.title ?? exact(amount)} data-label={row.label}>
                 <th scope="row"><Label row={row} /></th>
                 <td className="is-number" data-cents={Math.round(amount * 100)}>
                   <span>{statementAmount(amount, currency)}</span>

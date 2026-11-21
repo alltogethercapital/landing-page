@@ -185,6 +185,8 @@ export type LpStatementRow = {
   // item: line item · subtotal: single rule above · total: grand total,
   // single rule above and double rule below.
   kind?: "heading" | "label" | "item" | "subtotal" | "total";
+  // Short calculation note shown in an info tip (hover, focus or tap).
+  tip?: string;
   indent?: 0 | 1 | 2;
 };
 
@@ -323,6 +325,62 @@ const cashFlow: LpStatement = {
   ],
 };
 
+// Calculation tips, one short line each, keyed by statement and row label.
+const w = whole;
+const q3 = feeQuarters[1];
+const q4 = feeQuarters[2];
+const residualDeposits = round2(investmentsCost - contributions);
+const TIPS: Record<LpStatement["key"], Record<string, string>> = {
+  "balance-sheet": {
+    [`Fund-purchased investments (cost ${whole(investmentsCost)})`]: `Cost incl. deal & platform fees: ${w(contributions)} LP capital + ${w(residualDeposits)} of the ${w(expenseDeposits)} expense deposits (not LP capital). Rest: ${w(bankFees)} bank fees, ${w(cashTotal)} cash.`,
+    ...Object.fromEntries(investmentsByRoute.map((item) => [item.route, `${item.count} position${item.count === 1 ? "" : "s"} · cost ${exact(item.cost)} · value ${exact(item.fairValue)}`])),
+    "Investments at value": `Each position: cost × latest post-money ÷ entry post-money (ASC 820); no newer round = cost.`,
+    "Gifted positions, at value": `${giftDetail}. $0 cost, at fair value, excluded from AUM.`,
+    "Total investments, at value": `Fund-purchased ${w(fundFairValue)} + gifted ${w(giftFairValue)}.`,
+    "Cash": `Chase ••2128 ${exact(CASH.chase)} · AngelList ${exact(CASH.angellist)} · Fidelity ${exact(CASH.fidelity)}`,
+    "Total assets": `Investments ${w(investmentsFairValue)} + cash ${w(cashTotal)}.`,
+    "Expense deposits": `For accounting & expenses; not LP capital, not AUM: ${EXPENSE_DEPOSITS.map((item) => `${item.source} ${exact(item.amount)}`).join(" · ")}.`,
+    "Due to manager (Joint Chancellery)": `Fee ${exact(managementFee)} (§4.6) + JC fund expenses ${exact(managerPaidExpenses)} (§3.8); unpaid.`,
+    "Total liabilities": `Expense deposits ${w(expenseDeposits)} + due to manager ${w(dueToManager)}.`,
+    "Contributed capital": `LP cash = AUM: Galactic Imperium $400,000 · Hisham $425,000 · Paul R Neir $100,000.`,
+    "Contributed in kind (gifted positions)": `${giftPositions.length} gifts at $0 contributed value; their ${w(giftFairValue)} fair value is in unrealized. Not AUM.`,
+    "Accumulated net investment loss": `Expenses to date: bank fees ${w(bankFees)} + fee ${w(managementFee)} + JC expenses ${w(managerPaidExpenses)}.`,
+    "Net unrealized appreciation": `Value ${w(investmentsFairValue)} − cost ${w(investmentsCost)}: fund-purchased ${w(fundFairValue - investmentsCost)} + gifted ${w(giftFairValue)}.`,
+    "Total partners' capital": `LP capital ${w(contributions)} − net investment loss ${w(-netInvestmentLoss)} + unrealized ${w(unrealized)}.`,
+    "Total liabilities and partners' capital": `Liabilities ${w(totalLiabilities)} + partners' capital ${w(netAssets)} = total assets.`,
+  },
+  operations: {
+    "Bank and wire fees, net": `Chase wire & service fees ${exact(BANK_FEES_GROSS)} less ${exact(BANK_FEE_REVERSALS)} reversal.`,
+    "Management fee": `§4.6: 0.5%/qtr of prior quarter-end AUM. Q3 0.5% × ${exact(q3.aum)} = ${exact(q3.accrued)} · Q4 0.5% × ${exact(q4.aum)} × ${q4.accruedDays}/${q4.quarterDays} days = ${exact(q4.accrued)}. Q2 $0.`,
+    "Fund expenses paid by manager (Joint Chancellery)": `§3.8, reimbursable: legal ${exact(16_956.68)} · CSC formation ${exact(1_111.94)} · registered agent ${exact(49)}.`,
+    "Total expenses": `Bank fees ${w(bankFees)} + fee ${w(managementFee)} + JC expenses ${w(managerPaidExpenses)}.`,
+    "Net investment loss": `No investment income, so −total expenses.`,
+    "Net change in unrealized appreciation": `Value ${w(investmentsFairValue)} − cost ${w(investmentsCost)}; gifts at $0 cost.`,
+    "Net realized and unrealized gain": `No realizations yet; equals unrealized.`,
+    "Net increase in partners' capital from operations": `Net investment loss (${w(-netInvestmentLoss)}) + unrealized ${w(unrealized)}.`,
+  },
+  "cash-flow": {
+    "Net increase in partners' capital from operations": `From the Statement of Operations.`,
+    "Net change in unrealized appreciation": `Non-cash, so backed out.`,
+    "Increase in due to manager": `Fee + JC expenses accrued, not paid in cash.`,
+    "Purchases of investments, net": `${exact(investmentsCost)} deployed, net of ${exact(RETURNED_COMMITMENTS)} returned (AngelList refunds, Stripe, Nous).`,
+    "Net cash used in operating activities": `Purchases ${w(investmentsCost)} + bank fees ${w(bankFees)} paid.`,
+    "Capital contributions": `LP cash = AUM.`,
+    "Expense deposits received": `Not LP capital.`,
+    "Net cash provided by financing activities": `LP capital ${w(contributions)} + expense deposits ${w(expenseDeposits)}.`,
+    "Net increase in cash": `Financing ${w(financing)} − operating ${w(-operatingCash)}.`,
+    "Cash, beginning of period": `Fund opened April 2026.`,
+    "Cash, end of period": `Chase ${exact(CASH.chase)} · AngelList ${exact(CASH.angellist)} · Fidelity ${exact(CASH.fidelity)}; ties to the balance sheet.`,
+    "Investments contributed in kind (gifted at $0 cost)": `Non-cash: ${giftPositions.length} gifts at $0 cost; fair value ${w(giftFairValue)}.`,
+  },
+};
+for (const statement of [balanceSheet, operations, cashFlow]) {
+  for (const row of statement.rows) {
+    const tip = TIPS[statement.key][row.label];
+    if (tip) row.tip = tip;
+  }
+}
+
 // Build-time ties. A failure here stops the build rather than publishing
 // statements that disagree with each other or with the SOI.
 function assertFinancials() {
@@ -331,6 +389,9 @@ function assertFinancials() {
   }
   if (cents(GIFT_COST) !== 0 || giftPositions.length !== 3 || !(giftFairValue > 0)) {
     throw new Error(`Financials: gifted positions must carry $0 cost and a positive fair value (${giftFairValue})`);
+  }
+  if (cents(contributions + expenseDeposits - investmentsCost - bankFees) !== cents(cashTotal)) {
+    throw new Error("Financials: deposits less cost and bank fees do not equal cash");
   }
   if (cents(investmentsCost) !== cents(927_350.74)) {
     throw new Error(`Financials: fund cost ${investmentsCost} ≠ $927,350.74 (gifts add $0)`);
@@ -379,6 +440,9 @@ function assertFinancials() {
   }
   for (const statement of [balanceSheet, operations, cashFlow]) {
     for (const row of statement.rows) {
+      if (row.amount !== undefined && !row.tip) {
+        throw new Error(`Financials: missing calculation tip for ${statement.key} · ${row.label}`);
+      }
       if (row.kind !== "heading" && row.kind !== "label" && (row.amount === undefined || !Number.isFinite(row.amount))) {
         throw new Error(`Financials: missing amount for ${statement.key} · ${row.label}`);
       }

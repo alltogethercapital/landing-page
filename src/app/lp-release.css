@@ -130,7 +130,8 @@ html[data-site-theme="dark"] .lp-portal-page {
 }
 
 .lp-summary-term:hover .lp-summary-tooltip,
-.lp-summary-term:focus .lp-summary-tooltip {
+.lp-summary-term:focus .lp-summary-tooltip,
+.lp-summary-term.is-open .lp-summary-tooltip {
   opacity: 1;
   transform: translateY(0);
   visibility: visible;
@@ -1324,3 +1325,68 @@ html[data-site-theme="dark"] .lp-portal-page {
   text-transform: uppercase;
   color: var(--lp-muted);
 }
+
+/* Calculation tips ---------------------------------------------------------
+   A small circled "i" after a label; the bubble opens on hover, focus or tap
+   and anchors to the row so table-cell overflow does not clip it. */
+.lp-fin-table tr,
+.lp-figure-table--marks tr { position: relative; }
+.lp-tip { display: inline; }
+.lp-tip-trigger {
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  margin: -6px -5px -6px 0;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--lp-muted);
+  cursor: help;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+}
+.lp-tip-dot {
+  display: inline-flex;
+  width: 12px;
+  height: 12px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font: italic 600 8px/1 var(--cog-support, serif);
+}
+.lp-tip:hover .lp-tip-trigger,
+.lp-tip-trigger:focus-visible,
+.lp-tip.is-open .lp-tip-trigger { color: var(--lp-ink); outline: 0; }
+.lp-tip-bubble {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 2px);
+  left: var(--lp-component-inset);
+  width: max-content;
+  max-width: min(360px, calc(100% - 2 * var(--lp-component-inset)));
+  padding: 8px 10px;
+  background: var(--lp-ink);
+  color: var(--lp-paper);
+  font-family: var(--cog-support);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 120ms ease, visibility 120ms;
+}
+.lp-tip--up .lp-tip-bubble { top: auto; bottom: calc(100% + 2px); }
+.lp-tip:hover .lp-tip-bubble,
+.lp-tip:focus-within .lp-tip-bubble,
+.lp-tip.is-open .lp-tip-bubble { opacity: 1; visibility: visible; }
+.lp-fin-label { display: inline-block; max-width: calc(100% - 22px); overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; }
+.lp-figure-table--marks .lp-tip-bubble { left: auto; right: var(--lp-component-inset); max-width: min(320px, calc(100vw - 72px)); }

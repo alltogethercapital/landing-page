@@ -1,3 +1,4 @@
+import { LpTip } from "@/components/lp-tip";
 import { requireLpSession } from "@/lib/lp-auth";
 import { projectedPositionValue } from "@/lib/lp-projection";
 import {
@@ -331,6 +332,7 @@ function ValuationEvidence() {
                 title="Entry valuation → current mark. Post-money, cap, assumed, reported, and at-cost detail is in each row tooltip."
               >
                 Entry → Mark
+                <LpTip label="Entry → Mark" text="Entry post-money → latest documented round. Value = cost × latest ÷ entry (ASC 820); no newer round = at cost." />
               </th>
               <th scope="col" className="is-number">Cost</th>
               <th
@@ -339,6 +341,7 @@ function ValuationEvidence() {
                 title="Gross multiple of projected value to cost. Projected value and dollar change are in each row tooltip."
               >
                 Multiple
+                <LpTip label="Multiple" text="Projected value ÷ cost. Gifts show their value instead ($0 cost)." />
               </th>
             </tr>
           </thead>
@@ -435,6 +438,11 @@ function ValuationEvidence() {
                 data-carried={Math.round(totalCarried * 100)}
               >
                 {totalMultiple.toFixed(2)}×
+                <LpTip
+                  up
+                  label="Total multiple"
+                  text={`(Fund-purchased ${formatWholeUsd(fundCarried)} + gifted ${formatWholeUsd(giftCarried)}) ÷ fund cost ${formatWholeUsd(LETTER_INVESTED_TOTAL)} = ${totalMultiple.toFixed(2)}×. Pending H256 ${formatCompactUsd(LETTER_H256_PENDING_AMOUNT)} at cost.`}
+                />
               </td>
             </tr>
           </tfoot>
