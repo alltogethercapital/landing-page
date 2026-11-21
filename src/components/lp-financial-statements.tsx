@@ -42,7 +42,10 @@ function Statement({ statement }: { statement: LpStatement }) {
         </colgroup>
         <thead>
           <tr>
-            <th scope="col" className="lp-fin-asof" title={statement.key === "balance-sheet" ? statement.dateLine : LP_FIN_PERIOD_DETAIL}>{statement.dateLine}</th>
+            <th scope="col" className="lp-fin-asof" title={statement.key === "balance-sheet" ? statement.dateLine : LP_FIN_PERIOD_DETAIL}>
+              <span className="lp-fin-full">{statement.dateLine}</span>
+              <span className="lp-fin-short" aria-hidden="true">{statement.key === "balance-sheet" ? "As of Nov 20, 2026" : "Period ended Nov 20, 2026"}</span>
+            </th>
             <th scope="col" className="is-number">USD</th>
           </tr>
         </thead>

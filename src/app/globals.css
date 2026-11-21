@@ -2672,7 +2672,7 @@ html[data-site-theme="dark"] .cog-wordmark-name {
 
 .lp-portal-nav-logo {
   display: block;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   margin-left: -53px;
 }
 
@@ -3573,7 +3573,15 @@ html[data-site-theme="light"] .lp-logo--inverse img {
     box-shadow: none;
   }
 
-  .lp-portal-nav-logo { display: none; margin: 0; }
+  .lp-portal-nav-logo {
+    display: flex;
+    align-items: center;
+    justify-self: start;
+    min-height: 44px;
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+  }
   .lp-portal-home {
     flex: none;
     justify-self: start;

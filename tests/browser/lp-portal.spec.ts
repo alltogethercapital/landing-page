@@ -854,6 +854,10 @@ test("financial statements tab balances and ties to the SOI", async ({ page }) =
     await expect(page.getByRole("navigation", { name: "Investor portal" }).getByRole("link"))
       .toHaveText(["Portfolio", "Financials", "Investor Updates"]);
     await expect(page.locator(".lp-fin-header")).toHaveCount(0);
+    await expect(page.locator(".lp-portal-home")).toHaveCount(0);
+    const logo = page.getByRole("link", { name: "Machine Spirit Capital home" });
+    await expect(logo).toBeVisible();
+    await expect(logo).toHaveAttribute("href", "/");
     await expect(page.getByText("Outer Rim Ventures LLC · Machine Spirit Capital")).toHaveCount(0);
     const usd = page.locator("#lp-panel-balance-sheet thead th.is-number");
     await expect(usd).toHaveText("USD");
