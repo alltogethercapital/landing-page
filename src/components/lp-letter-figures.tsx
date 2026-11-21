@@ -15,6 +15,13 @@ import {
   LP_PROJECTED_VALUATION_MARKS,
   LP_INVESTMENTS,
 } from "@/data/lp-investments";
+import { LpScrollArea } from "@/components/lp-scroll-area";
+import {
+  abbreviateLpValuation,
+  formatCompactUsd,
+  formatSignedWholeUsd,
+  formatWholeUsd,
+} from "@/lib/lp-format";
 
 /* Formatting ---------------------------------------------------------------- */
 
@@ -25,10 +32,6 @@ function currency(value: number, fractionDigits = 2) {
     minimumFractionDigits: fractionDigits,
     maximumFractionDigits: fractionDigits,
   }).format(value);
-}
-
-function signedCurrency(value: number) {
-  return `${value > 0 ? "+" : ""}${currency(value)}`;
 }
 
 function dollars(value: number) {
@@ -258,6 +261,17 @@ function ConcentrationAndStructure() {
 
 /* 03 — Performance ---------------------------------------------------------- */
 
+function formatMarkCell(entry: string, latest?: string) {
+  const from = abbreviateLpValuation(entry);
+  if (!latest) return { label: from.label, title: from.detail };
+  const to = abbreviateLpValuation(latest);
+  if (from.label === to.label) return { label: from.label, title: to.detail };
+  return {
+    label: `${from.label} → ${to.label}`,
+    title: `${from.detail} → ${to.detail}`,
+  };
+}
+
 function ValuationEvidence() {
   const positions = LP_INVESTMENTS.filter((recordedPosition) => !recordedPosition.gift).map((recordedPosition) => {
     const mark = LP_PROJECTED_VALUATION_MARKS[recordedPosition.id];
@@ -291,6 +305,7 @@ function ValuationEvidence() {
   const totalCarried = positions.reduce((sum, position) => sum + position.carried, 0)
     + LETTER_H256_PENDING_AMOUNT;
   const totalDelta = totalCarried - LETTER_INVESTED_TOTAL;
+  const totalMultiple = totalCarried / LETTER_INVESTED_TOTAL;
 
   return (
     <section
@@ -298,82 +313,99 @@ function ValuationEvidence() {
       aria-labelledby="lp-performance-section-title"
     >
       <h2 id="lp-performance-section-title" className="sr-only">Performance</h2>
-      <div className="lp-figure-table-wrap">
+      <LpScrollArea className="lp-figure-table-wrap">
         <table className="lp-figure-table lp-figure-table--marks">
           <thead>
             <tr>
-              <th scope="col">Position</th>
-              <th scope="col">Entry price</th>
-              <th scope="col">Marked to</th>
+              <th scope="col">Company</th>
+              <th
+                scope="col"
+                title="Entry valuation → current mark. Post-money, cap, assumed, reported, and at-cost detail is in each row tooltip."
+              >
+                Entry → Mark
+              </th>
               <th scope="col" className="is-number">Cost</th>
-              <th scope="col" className="is-number">Multiple</th>
-              <th scope="col" className="is-number">Carried</th>
+              <th
+                scope="col"
+                className="is-number"
+                title="Gross multiple of projected value to cost. Projected value and dollar change are in each row tooltip."
+              >
+                Multiple
+              </th>
             </tr>
           </thead>
           <tbody>
-            {positions.map(({ position, mark, carried, delta, multiple, hasGain, hasLoss }) => (
-              <tr key={position.id} className={hasGain ? "has-gain" : undefined}>
-                <th scope="row" title={position.company}>
-                  <strong>{position.company}</strong>
-                </th>
-                <td
-                  title={mark?.costBasisAmount && position.investedCost !== mark.costBasisAmount
-                    ? `${currency(mark.costBasisAmount)} marked slice`
-                    : undefined}
-                >
-                  {mark?.entryValuation ?? position.entryValuation}
-                </td>
-                <td title={mark ? `As of ${mark.asOf}` : undefined}>
-                  {mark?.sourceUrl ? (
-                    <a href={mark.sourceUrl} target="_blank" rel="noreferrer">
-                      {mark.latestValuation}
-                    </a>
-                  ) : mark ? (
-                    mark.latestValuation
-                  ) : (
-                    "At cost"
-                  )}
-                </td>
-                <td className="is-number">{currency(position.investedCost)}</td>
-                <td className={`is-number lp-performance-change${hasGain ? " is-gain" : hasLoss ? " is-loss" : ""}`}>
-                  <strong>{multiple.toFixed(2)}×</strong>
-                  <small>
-                    {hasGain ? `↑ ${signedCurrency(delta)}` : hasLoss ? `↓ ${signedCurrency(delta)}` : "At cost"}
-                  </small>
-                </td>
-                <td className="is-number">{currency(carried)}</td>
-              </tr>
-            ))}
+            {positions.map(({ position, mark, carried, delta, multiple, hasGain, hasLoss }) => {
+              const markCell = formatMarkCell(mark?.entryValuation ?? position.entryValuation, mark?.latestValuation);
+              const markTitle = [
+                markCell.title,
+                mark ? `As of ${mark.asOf}` : "Held at cost · No approved mark",
+                mark?.costBasisAmount && position.investedCost !== mark.costBasisAmount
+                  ? `${formatWholeUsd(mark.costBasisAmount)} marked slice`
+                  : null,
+              ].filter(Boolean).join(" · ");
+              const multipleTitle = `${formatWholeUsd(carried)} projected · ${
+                hasGain || hasLoss ? formatSignedWholeUsd(delta) : "at cost"
+              }`;
+              const markContent = mark?.sourceUrl ? (
+                <a href={mark.sourceUrl} target="_blank" rel="noreferrer">{markCell.label}</a>
+              ) : (
+                markCell.label
+              );
+              return (
+                <tr key={position.id} className={hasGain ? "has-gain" : undefined}>
+                  <th scope="row" title={position.company}>
+                    <strong>{position.company}</strong>
+                  </th>
+                  <td title={markTitle}>{markContent}</td>
+                  <td className="is-number" title={formatWholeUsd(position.investedCost)}>
+                    {formatCompactUsd(position.investedCost)}
+                  </td>
+                  <td
+                    className={`is-number lp-performance-change${hasGain ? " is-gain" : hasLoss ? " is-loss" : " is-flat"}`}
+                    title={multipleTitle}
+                    data-carried={Math.round(carried * 100)}
+                  >
+                    {multiple.toFixed(2)}×
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
           <tfoot>
             <tr className="lp-performance-pending-row">
               <th scope="row">
                 <strong>Finalizing allocation</strong>
               </th>
-              <td>Atoms or Applied Intuition</td>
-              <td>
-                Included at cost
+              <td title="H256 · Atoms or Applied Intuition · included at cost">—</td>
+              <td className="is-number" title={formatWholeUsd(LETTER_H256_PENDING_AMOUNT)}>
+                {formatCompactUsd(LETTER_H256_PENDING_AMOUNT)}
               </td>
-              <td className="is-number">{currency(LETTER_H256_PENDING_AMOUNT)}</td>
-              <td className="is-number lp-performance-change">
-                <strong>—</strong>
+              <td
+                className="is-number lp-performance-change is-flat"
+                title={`${formatWholeUsd(LETTER_H256_PENDING_AMOUNT)} projected · at cost`}
+                data-carried={Math.round(LETTER_H256_PENDING_AMOUNT * 100)}
+              >
+                1.00×
               </td>
-              <td className="is-number">{currency(LETTER_H256_PENDING_AMOUNT)}</td>
             </tr>
             <tr className="lp-performance-total-row">
               <th scope="row">Total</th>
               <td />
-              <td />
-              <td className="is-number">{currency(LETTER_INVESTED_TOTAL)}</td>
-              <td className="is-number lp-performance-change is-gain">
-                <strong>{(totalCarried / LETTER_INVESTED_TOTAL).toFixed(2)}×</strong>
-                <small>↑ {signedCurrency(totalDelta)}</small>
+              <td className="is-number" title={formatWholeUsd(LETTER_INVESTED_TOTAL)}>
+                {formatCompactUsd(LETTER_INVESTED_TOTAL)}
               </td>
-              <td className="is-number">{currency(totalCarried)}</td>
+              <td
+                className={`is-number lp-performance-change${totalDelta > 0.005 ? " is-gain" : totalDelta < -0.005 ? " is-loss" : " is-flat"}`}
+                title={`${formatWholeUsd(totalCarried)} projected · ${formatSignedWholeUsd(totalDelta)}`}
+                data-carried={Math.round(totalCarried * 100)}
+              >
+                {totalMultiple.toFixed(2)}×
+              </td>
             </tr>
           </tfoot>
         </table>
-      </div>
+      </LpScrollArea>
     </section>
   );
 }

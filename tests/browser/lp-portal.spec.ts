@@ -2,6 +2,32 @@ import { expect, test } from "@playwright/test";
 
 const password = process.env.LP_TEST_PASSWORD || "StagingPortalPassphrase-2026";
 
+async function expectPerformanceTableFitsViewport(
+  page: import("@playwright/test").Page,
+  width: number,
+) {
+  const wrap = page.locator(".lp-figure-table-wrap");
+  const view = wrap.locator(".lp-scroll-area-view");
+  await expect(view).toBeVisible();
+  expect(await view.evaluate((element) => element.scrollLeft)).toBe(0);
+  const fits = await view.evaluate((element) => element.scrollWidth <= element.clientWidth + 1);
+  const name = page.locator(".lp-figure-table--marks tbody tr").filter({ hasText: "Anduril" }).getByRole("rowheader");
+  const nameBox = await name.boundingBox();
+  const wrapBox = await wrap.boundingBox();
+  expect(nameBox).not.toBeNull();
+  expect(wrapBox).not.toBeNull();
+  expect(nameBox!.x).toBeGreaterThanOrEqual(wrapBox!.x - 1);
+  expect(nameBox!.x + Math.min(48, nameBox!.width)).toBeLessThanOrEqual(wrapBox!.x + wrapBox!.width + 1);
+  if (width >= 1280) {
+    expect(fits).toBe(true);
+    await expect(wrap).not.toHaveAttribute("data-overflow-end");
+    await expect(wrap).not.toHaveAttribute("data-overflow-start");
+  } else if (!fits) {
+    await expect(wrap).toHaveAttribute("data-overflow-end", "true");
+  }
+}
+
+
 test("publishes the November 19 portfolio with complete coverage and reconciled scenario totals", async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto("/lp?section=updates");
@@ -19,12 +45,14 @@ test("publishes the November 19 portfolio with complete coverage and reconciled 
   await expect(page).toHaveURL(/\/lp$/);
   expect(await page.content()).not.toContain("driveFolderId");
   await page.goto("/lp?section=performance");
-  const toCents = (value: string) => Math.round(Number(value.replace(/[^\d.-]/g, "")) * 100);
-  const rows = await page.locator(".lp-figure-table--marks tbody tr td:last-child").allTextContents();
-  const pending = toCents(await page.locator(".lp-performance-pending-row td:last-child").innerText());
-  const total = toCents(await page.locator(".lp-performance-total-row td:last-child").innerText());
-  expect(rows.reduce((sum, value) => sum + toCents(value), pending)).toBe(total);
+  const rows = await page.locator(".lp-figure-table--marks tbody tr [data-carried]").evaluateAll(
+    (elements) => elements.map((element) => Number(element.getAttribute("data-carried"))),
+  );
+  const pending = Number(await page.locator(".lp-performance-pending-row [data-carried]").getAttribute("data-carried"));
+  const total = Number(await page.locator(".lp-performance-total-row [data-carried]").getAttribute("data-carried"));
+  expect(rows.reduce((sum, value) => sum + value, pending)).toBe(total);
   expect(total).toBe(105395185);
+
   await page.goto("/lp/investments/59-atomarine");
   await expect(page.getByText("$9,303.06", { exact: true })).toHaveCount(2);
   await expect(page.locator(".lp-detail-note")).toHaveCount(0);
@@ -159,15 +187,20 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(finalizingAllocationRow.getByRole("link", { name: "Applied Intuition", exact: true })).toHaveCount(0);
   await expect(finalizingAllocationRow.getByRole("link", { name: "Atoms", exact: true }))
     .toHaveAttribute("href", "/lp/investments/41-atoms");
-  await expect(finalizingAllocationRow).toContainText("$112,000");
+  await expect(finalizingAllocationRow).toContainText("$112K");
   await expect(finalizingAllocationRow).toContainText("11.8%");
   await expect(companyAllocationRows.nth(2)).toContainText("Anduril");
-  await expect(companyAllocationRows.nth(2)).toContainText("$88,000");
+  await expect(companyAllocationRows.nth(2)).toContainText("$88K");
   await expect(companyAllocationRows.nth(2)).toContainText("9.3%");
   const oneXAllocationRow = companyAllocationRows.filter({ hasText: "1X" });
   await expect(oneXAllocationRow).toContainText("Gift");
   await expect(oneXAllocationRow).toContainText("—");
   await expect(oneXAllocationRow).not.toContainText("$24,120");
+  await expect(oneXAllocationRow).not.toContainText("$24.1K");
+  const figureGiftRow = companyAllocationRows.filter({ hasText: "Figure AI" });
+  await expect(figureGiftRow).toContainText("Gift");
+  await expect(figureGiftRow).toContainText("—");
+
   await expect(page.locator(".lp-company-allocation-view")).not.toContainText("H256 LLC Series 3");
   await expect(page.getByText(/This view combines multiple investments/i)).toHaveCount(0);
   const allocationViewBox = await page.locator(".lp-company-allocation-view").boundingBox();
@@ -283,7 +316,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   const performanceContentGap = performanceTableBox!.y - (performanceTabsBox!.y + performanceTabsBox!.height);
   expect(performanceContentGap).toBeGreaterThanOrEqual(16);
   expect(performanceContentGap).toBeLessThanOrEqual(32);
-  const performanceColumnTitleStyle = await page.getByRole("columnheader", { name: "Position" }).evaluate((element) => {
+  const performanceColumnTitleStyle = await page.getByRole("columnheader", { name: "Company" }).evaluate((element) => {
     const styles = getComputedStyle(element);
     return {
       color: styles.color,
@@ -300,38 +333,55 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(performanceRows).toHaveCount(60);
   const h256AndurilMark = performanceRows.filter({ hasText: "Anduril" });
   await expect(h256AndurilMark.getByRole("rowheader")).toContainText("Anduril");
-  await expect(h256AndurilMark).toContainText("$60B entry valuation");
-  await expect(h256AndurilMark).toContainText("$100B assumed valuation");
-  await expect(h256AndurilMark).toContainText("$88,000.00");
+  await expect(h256AndurilMark).toContainText("$60B → $100B");
+  await expect(h256AndurilMark).toContainText("$88K");
   await expect(h256AndurilMark).toContainText("1.67×");
-  await expect(h256AndurilMark).toContainText("+$58,666.67");
-  await expect(h256AndurilMark).toContainText("$146,666.67");
+  await expect(h256AndurilMark).not.toContainText("entry valuation");
+  await expect(h256AndurilMark).not.toContainText("assumed valuation");
+  await expect(h256AndurilMark).not.toContainText("+$58,666.67");
+  await expect(h256AndurilMark).not.toContainText("$146,666.67");
+  await expect(h256AndurilMark.locator(".lp-performance-change")).toHaveClass(/is-gain/);
+  await expect(h256AndurilMark.getByRole("cell").first()).toHaveAttribute("title", /entry valuation/i);
+  await expect(h256AndurilMark.locator("[data-carried]")).toHaveAttribute("title", /\$146,667/);
   await expect(performanceRows.filter({ hasText: "H256 LLC Series 3" })).toHaveCount(0);
+  await expect(performanceRows.filter({ hasText: "1X" })).toHaveCount(0);
+  await expect(performanceRows.filter({ hasText: "Figure AI" })).toHaveCount(0);
   const valuationRows = page.locator(".lp-figure-table--marks tbody tr.has-gain");
   await expect(valuationRows).toHaveCount(7);
   await expect(valuationRows.first().getByRole("rowheader")).toHaveCSS("box-shadow", "none");
-  for (const [company, carried] of [
-    ["Replit", "$10,465.12"],
-    ["Hark", "$10,389.61"],
-    ["Corgi", "$20,000.00"],
-    ["Decart.ai", "$10,526.32"],
-  ]) {
-    await expect(valuationRows.filter({ hasText: company })).toContainText(carried);
+  for (const [company, cost, carriedTitle] of [
+    ["Replit", "$10K", "$10,465"],
+    ["Hark", "$10K", "$10,390"],
+    ["Corgi", "$10K", "$20,000"],
+    ["Decart.ai", "$10K", "$10,526"],
+  ] as const) {
+    const row = valuationRows.filter({ hasText: company });
+    await expect(row).toContainText(cost);
+    await expect(row.locator("[data-carried]")).toHaveAttribute("title", new RegExp(carriedTitle.replace("$", "\\$")));
+
   }
   const positronPerformance = performanceRows.filter({ hasText: "Positron" });
-  await expect(positronPerformance).toContainText("Held at cost");
-  await expect(positronPerformance).toContainText("No approved mark");
+  await expect(positronPerformance).toContainText("$4.5B");
+  await expect(positronPerformance).not.toContainText("pre-money");
+  await expect(positronPerformance).not.toContainText("At cost");
   await expect(positronPerformance).toContainText("1.00×");
-  await expect(positronPerformance).toContainText("At cost");
+  await expect(positronPerformance.locator(".lp-performance-change")).toHaveClass(/is-flat/);
+  await expect(positronPerformance.getByRole("cell").first()).toHaveAttribute("title", /Held at cost · No approved mark/);
   const pendingPerformanceRow = page.locator(".lp-performance-pending-row");
   await expect(pendingPerformanceRow).toContainText("Finalizing allocation");
-  await expect(pendingPerformanceRow).toContainText("Atoms or Applied Intuition");
-  await expect(pendingPerformanceRow).toContainText("$112,000.00");
+  await expect(pendingPerformanceRow).not.toContainText("Atoms or Applied Intuition");
+  await expect(pendingPerformanceRow.getByRole("cell").first()).toHaveAttribute("title", /Atoms or Applied Intuition/);
+  await expect(pendingPerformanceRow).toContainText("$112K");
+  await expect(pendingPerformanceRow).toContainText("1.00×");
   const performanceTotal = page.locator(".lp-performance-total-row");
-  await expect(performanceTotal).toContainText("$947,351.79");
+  await expect(performanceTotal).toContainText("$947.4K");
   await expect(performanceTotal).toContainText("1.11×");
-  await expect(performanceTotal).toContainText("+$106,600.06");
-  await expect(performanceTotal).toContainText("$1,053,951.85");
+  await expect(performanceTotal).not.toContainText("+$106,600.06");
+  await expect(performanceTotal).not.toContainText("$1,053,951.85");
+  await expect(performanceTotal.locator("[data-carried]")).toHaveAttribute("title", /\$1,053,952/);
+  await expect(performanceTotal.locator(".lp-performance-change")).toHaveClass(/is-gain/);
+  await expectPerformanceTableFitsViewport(page, page.viewportSize()?.width ?? 1280);
+
   await expect(page.getByRole("heading", { name: "Valuation evidence" })).toHaveCount(0);
   await page.screenshot({ path: "output/playwright/lp-portal/portfolio-performance-desktop.png", fullPage: true });
 
@@ -683,7 +733,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await expect(page.getByText("Green delta = gain vs. cost", { exact: true })).toHaveCount(0);
     await expect(page.locator(".lp-figure-table--marks tbody tr")).toHaveCount(60);
     await expect(page.locator(".lp-performance-pending-row")).toContainText("Finalizing allocation");
-    await expect(page.locator(".lp-performance-pending-row")).toContainText("Atoms or Applied Intuition");
+    await expect(page.locator(".lp-performance-pending-row").getByRole("cell").first()).toHaveAttribute("title", /Atoms or Applied Intuition/);
     await expect(page.locator("#lp-performance-section-title")).toHaveClass(/sr-only/);
     const performanceTabsBox = await page.getByRole("tablist", { name: "Portfolio sections" }).boundingBox();
     const performanceTableBox = await page.locator(".lp-figure-table-wrap").boundingBox();
@@ -693,6 +743,7 @@ test("renders the login, portfolio, and detail views at every supported layout",
     expect(viewportPerformanceGap).toBeGreaterThanOrEqual(16);
     expect(viewportPerformanceGap).toBeLessThanOrEqual(32);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+    await expectPerformanceTableFitsViewport(page, viewport.width);
     await page.screenshot({
       path: `output/playwright/lp-portal/portfolio-performance-${viewport.name}.png`,
       fullPage: true,

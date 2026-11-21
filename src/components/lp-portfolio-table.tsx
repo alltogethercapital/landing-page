@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { LpInvestmentDto } from "@/lib/lp-data";
+import { formatCompactUsd, formatWholeUsd } from "@/lib/lp-format";
 
 type CompanyAllocationRow = {
   id: string;
@@ -18,14 +19,6 @@ function formatWholePercent(value: number) {
 
 function formatPercent(value: number) {
   return `${(value * 100).toFixed(1)}%`;
-}
-
-function formatWholeCurrency(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(value);
 }
 
 function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllocationRow[] {
@@ -145,7 +138,7 @@ export function LpPortfolioTable({
                 key={row.id}
                 className="lp-figure-bar-row"
                 role="listitem"
-                aria-label={`${row.label}: ${formatWholeCurrency(row.amount)}, ${formatPercent(row.amount / totalCapital)} of total capital`}
+                aria-label={`${row.label}: ${formatWholeUsd(row.amount)}, ${formatPercent(row.amount / totalCapital)} of total capital`}
               >
                 <span className="lp-figure-bar-label" title={row.title ?? (row.detail ? `${row.label} · ${row.detail}` : row.label)}>
                   <Link href={row.href}>{row.label}</Link>
@@ -156,7 +149,7 @@ export function LpPortfolioTable({
                     className="lp-figure-bar-fill"
                     style={{ inlineSize: `${(row.amount / allocationScale) * 80}%` }}
                   />
-                  <span className="lp-figure-bar-amount">{formatWholeCurrency(row.amount)}</span>
+                  <span className="lp-figure-bar-amount" title={formatWholeUsd(row.amount)}>{formatCompactUsd(row.amount)}</span>
                 </span>
                 <span className="lp-figure-bar-value">{formatPercent(row.amount / totalCapital)}</span>
               </div>

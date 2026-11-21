@@ -542,7 +542,67 @@ html[data-site-theme="dark"] .lp-portal-page {
 
 .lp-figure-table-wrap {
   margin-top: 26px;
+}
+
+.lp-scroll-area {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.lp-scroll-area-view {
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+
+.lp-scroll-area::before,
+.lp-scroll-area::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.lp-scroll-area::before {
+  left: 0;
+  background: linear-gradient(to right, var(--lp-paper), transparent);
+}
+
+.lp-scroll-area::after {
+  right: 0;
+  background: linear-gradient(to left, var(--lp-paper), transparent);
+}
+
+.lp-scroll-area[data-overflow-end="true"]::after {
+  opacity: 1;
+}
+
+/* Left-edge fade would cover the sticky company column; use a shadow instead. */
+.lp-scroll-area[data-overflow-start="true"] :is(thead, tbody, tfoot) > tr > :first-child {
+  box-shadow: 8px 0 12px -8px color-mix(in srgb, var(--lp-ink) 30%, transparent);
+}
+
+@media (min-width: 1280px) {
+  .lp-scroll-area-view,
+  .lp-figure-table-wrap,
+  .lp-table-wrap {
+    overflow-x: hidden;
+  }
+
+  .lp-figure-table,
+  .lp-portfolio-table {
+    width: 100%;
+    min-width: 0;
+  }
 }
 
 .lp-figure-table {
@@ -636,8 +696,19 @@ html[data-site-theme="dark"] .lp-portal-page {
   font-size: var(--lp-data);
 }
 
+.lp-figure-table--marks thead th:first-child,
+.lp-figure-table--marks tbody th:first-child,
+.lp-figure-table--marks tfoot th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--lp-paper);
+  min-width: 9.5rem;
+}
+
 .lp-figure-table--marks tbody tr.has-gain th {
   padding-left: var(--lp-component-inset);
+  background: color-mix(in srgb, var(--lp-gain) 5%, var(--lp-paper));
 }
 
 .lp-figure-table--marks tbody tr.has-gain {
@@ -657,6 +728,7 @@ html[data-site-theme="dark"] .lp-portal-page {
   box-shadow: inset 2px 0 0 var(--lp-accent);
   padding-left: var(--lp-component-inset);
   color: var(--lp-ink);
+  background: color-mix(in srgb, var(--lp-accent) 5%, var(--lp-paper));
 }
 
 .lp-figure-table--marks .lp-performance-pending-row strong,
@@ -667,6 +739,10 @@ html[data-site-theme="dark"] .lp-portal-page {
 .lp-figure-table--marks .lp-performance-total-row th,
 .lp-figure-table--marks .lp-performance-total-row td {
   border-top: 1px solid var(--lp-ink);
+}
+
+.lp-figure-table--marks .lp-performance-total-row th {
+  background: var(--lp-paper);
 }
 
 .lp-figure-table--marks a {
@@ -688,6 +764,14 @@ html[data-site-theme="dark"] .lp-portal-page {
 .lp-performance-change.is-gain,
 .lp-performance-change.is-gain small {
   color: var(--lp-gain);
+}
+
+.lp-performance-change.is-flat {
+  color: var(--lp-muted);
+}
+
+.lp-performance-change.is-loss {
+  color: color-mix(in srgb, var(--lp-ink) 70%, #8a2a2a);
 }
 
 .lp-figure-table--schedule tbody tr:hover {
@@ -720,7 +804,7 @@ html[data-site-theme="dark"] .lp-portal-page {
   }
 
   .lp-figure-table--marks {
-    min-width: 680px;
+    min-width: 0;
   }
 }
 
@@ -1083,10 +1167,10 @@ html[data-site-theme="dark"] .lp-portal-page {
   margin: 0 0 0 6px;
 }
 
-.lp-figure-table--marks tbody th {
-  max-width: 190px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.lp-figure-table--marks tbody th,
+.lp-figure-table--marks tfoot th {
+  max-width: none;
+  overflow: visible;
 }
 
 /* Investor updates index: one line per update. */
