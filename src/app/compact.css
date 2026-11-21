@@ -29,7 +29,7 @@ html .cog-person-heading > div { min-width: 0; }
 html .cog-person-links { margin-top: 6px; }
 
 /* Grids: less air between rows and columns. */
-html .cog-person-grid:not(.cog-person-grid--short) { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+html .cog-person-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 html .cog-person-grid { gap: 20px 20px; }
 html .cog-article-grid { gap: 20px 20px; }
 
@@ -46,7 +46,7 @@ html .company-public-pill { margin-top: 10px; }
 @media (max-width: 599px) {
   html .cog-company-card { min-height: 0; }
   html .cog-company-card-content { grid-template-rows: 48px auto; row-gap: 8px; }
-  html .cog-person-grid:not(.cog-person-grid--short) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  html .cog-person-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   html .cog-person-grid { gap: 16px 12px; }
   html .cog-article-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; }
   html :is(.cog-person-title, .cog-article-title) { font-size: 15px; }
