@@ -201,9 +201,7 @@ function SeptemberUpdateCopy() {
 
       <p>
         Several additions apply that operating-system idea to specific industries. CarSignal connects intake,
-        diagnosis, estimates, scheduling, payments, and follow-up for independent auto shops. Allia Health
-        brings intake, documentation, referrals, outcomes, scheduling, and billing into one behavioral-health
-        workflow. TryNearby coordinates local creators and local businesses as a recurring distribution
+        diagnosis, estimates, scheduling, payments, and follow-up for independent auto shops. TryNearby coordinates local creators and local businesses as a recurring distribution
         network. These are attractive when the product becomes the place where the job is completed, not a
         feature a system of record can absorb without consequence.
       </p>

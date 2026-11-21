@@ -64,7 +64,7 @@ const CATEGORY_BY_CHRONOLOGY: Record<number, LetterAllocationCategory> = {
   46: "ai", 47: "ai", 48: "aerospace", 49: "applications", 50: "applications",
   51: "ai", 52: "applications", 53: "ai", 54: "ai", 55: "robotics",
   56: "robotics", 57: "applications", 58: "aerospace", 59: "energy", 60: "robotics",
-  61: "robotics", 62: "applications", 63: "ai",
+  61: "robotics", 62: "applications", 63: "ai", 64: "applications",
 };
 
 // Entry valuation as reported at the time of investment. These are entry prices,
@@ -83,6 +83,7 @@ const ENTRY_VALUATION_BY_CHRONOLOGY: Record<number, number> = {
   56: 50e6, 57: 50e6, 58: 500e6, 59: 125e6,
   // Anthropic was bought at the Nasdaq open: ~$2.01T fully diluted at $111.50.
   63: 2.01e12,
+  64: 40e6,
 };
 
 export type LetterEntryRound =

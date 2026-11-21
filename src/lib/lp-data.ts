@@ -7,6 +7,7 @@ import {
   LP_INVESTMENTS,
   LP_PROJECTED_VALUATION_MARKS,
   LP_PROJECTION_AS_OF,
+  LP_REFUNDED_CHRONOLOGIES,
   LP_SNAPSHOT,
 } from "@/data/lp-investments";
 import {
@@ -152,8 +153,13 @@ function assertLpData() {
       `LP snapshot count mismatch: expected ${LP_SNAPSHOT.recordCount}, received ${LP_INVESTMENTS.length}`,
     );
   }
-  for (let chronology = 1; chronology <= LP_SNAPSHOT.recordCount; chronology += 1) {
-    if (!chronologies.has(chronology)) throw new Error(`Missing LP chronology: ${chronology}`);
+  const maxChronology = LP_SNAPSHOT.recordCount + LP_REFUNDED_CHRONOLOGIES.length;
+  for (let chronology = 1; chronology <= maxChronology; chronology += 1) {
+    const refunded = LP_REFUNDED_CHRONOLOGIES.includes(chronology);
+    if (refunded && chronologies.has(chronology)) {
+      throw new Error(`Refunded LP chronology is listed as held: ${chronology}`);
+    }
+    if (!refunded && !chronologies.has(chronology)) throw new Error(`Missing LP chronology: ${chronology}`);
   }
   if (Math.round(investedCostTotal * 100) !== Math.round(LP_SNAPSHOT.investedCostTotal * 100)) {
     throw new Error(

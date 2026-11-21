@@ -554,38 +554,6 @@ export const COMPANY_ARTICLES: Article[] = [
     ],
   },
   {
-    slug: "sourcerer",
-    title: "Sourcerer.",
-    date: "July 9, 2026",
-    dateISO: "2026-07-09",
-    category: "Portfolio",
-    author: "Machine Spirit Capital",
-    excerpt: "Sourcerer is building an AI-native distributor that automates sourcing, supplier quotes, freight, and trade finance.",
-    image: "/updates/covers/sourcerer.jpg",
-    sections: [
-    {
-      body: [
-        "Sourcerer is building an AI-native distributor for global trade. The company starts with a basic customer problem: a business needs parts, products, or materials, and the process of finding suppliers, comparing quotes, arranging freight, and financing the order is still slow and fragmented.",
-        "Most software in procurement helps a human manage the work. Sourcerer is aiming at the work itself. Its agents identify suppliers, negotiate quotes, arrange logistics, and package the result into a single buying flow.",
-      ],
-    },
-    {
-      heading: "What they're building",
-      body: [
-        "The product combines AI agents with operational infrastructure. A customer can bring a product spec, invoice, or description, and Sourcerer handles the search across suppliers, price comparison, freight, and credit terms. The company is not trying to be another dashboard that watches the supply chain from the side. It wants to become the supplier of record, which means owning the outcome instead of only routing the task.",
-        "That is a harder shape, but a more useful one. Procurement is not one workflow. It is tariffs, logistics, supplier reliability, currency, trade credit, shipping schedules, and documentation, all changing while the buyer is trying to make a decision. Agents are useful here only if they are connected to the operating rails that can actually move goods and money.",
-      ],
-    },
-    {
-      heading: "Why we backed the founders and team",
-      body: [
-        "Peter and Robert are going after a market where the software surface has been underbuilt because the physical world is messy. The opportunity is not merely to make procurement prettier. It is to collapse the distance between needing something and getting a committed, financed, shippable quote.",
-        "We like companies that take responsibility for the real transaction. Sourcerer is doing that in global trade, where a better interface is not enough and the winner has to combine software, operations, and trust into one machine.",
-      ],
-    },
-    ],
-  },
-  {
     slug: "figure-ai",
     title: "Figure AI.",
     date: "May 8, 2026",
@@ -1252,38 +1220,6 @@ export const COMPANY_ARTICLES: Article[] = [
       body: [
         "We like companies that choose the ugly, operationally real version of a market. Healthcare AI is full of demos. Plena is focused on the back office: faxes, portals, phone calls, insurance checks, and the exact handoffs that decide whether a clinic runs smoothly. Those are not glamorous workflows, but they are where labor, revenue, and patient access actually get stuck.",
         "Eyad and Ahmed grew up around medicine and then built in serious engineering environments: Datadog, Shopify, AWS, and nuclear systems. That combination matters. Selling into specialty practices requires empathy for clinical operations, and building the product requires infrastructure that does not fall over. Plena is taking on both.",
-      ],
-    },
-    ],
-  },
-  {
-    slug: "corgi",
-    title: "Corgi.",
-    date: "March 12, 2026",
-    dateISO: "2026-03-12",
-    category: "Portfolio",
-    author: "Machine Spirit Capital",
-    excerpt: "Corgi is rebuilding business insurance for startups as one full-stack machine, with underwriting, policy design, and claims under one roof.",
-    image: "/updates/covers/corgi.jpg",
-    sections: [
-    {
-      body: [
-        "Corgi sells business insurance to startups. A founder fills out an application and gets a quote in minutes. Coverage can be bound the same day. Policies are modular (general liability, cyber, directors and officers, tech and AI liability) and packaged by stage, from pre-seed through growth, so coverage grows with the company instead of getting renegotiated around it.",
-        "The company is full-stack rather than a broker sitting on someone else's paper. Corgi controls underwriting, policy design, and claims in one place; its policies are underwritten through Technology Risk Retention Group and administered by its own licensed producer. Customers include Deel, Bland, and Origami. The company has announced $108 million in funding across its seed and Series A.",
-      ],
-    },
-    {
-      heading: "What they're building",
-      body: [
-        "Legacy commercial insurance runs a startup through broker review, manual risk audits, and underwriting cycles measured in days or weeks. Corgi replaces that pipeline with a self-serve application and underwriting software it owns end to end, so the product is the whole machine rather than a storefront. Owning the stack is what makes the speed real, because there is no outside carrier waiting on the other side of the quote.",
-        "That ownership also lets Corgi write lines that older carriers handle badly. Tech and AI liability covers products that did not exist when standard policy forms were drafted. An underwriter that designs its own policies and handles its own claims can price that risk from data instead of precedent, and tighten the loop with every policy written.",
-      ],
-    },
-    {
-      heading: "Why we backed the founders and team",
-      body: [
-        "Insurance is a trillion-dollar industry held together by paper, and rebuilding it does not look like a software demo. The work is licenses, state filings, policy forms, reserves, and claims handling, the long middle where nothing demos well. Corgi could have rented a carrier's balance sheet and called the markup a product. It chose to own all of it. That is the pattern we look for, because assembling the hard, regulated parts into one machine is where the durable advantage sits.",
-        "There is a second reason. We back companies in AI, defense, energy, and robotics, and they generate risks no standard form anticipated. Someone has to underwrite the frontier, and Corgi is building the insurer that can.",
       ],
     },
     ],

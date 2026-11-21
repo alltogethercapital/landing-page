@@ -35,9 +35,6 @@ const FOUNDER_CATALOG: Founder[] = [
   { name: "Dimitris Koutentakis", headshot: "/founders/portraits/dimitris-koutentakis.webp", companyName: "Atomarine", linkedin: "https://www.linkedin.com/in/dkoutentakis/" },
   { name: "Emile Germonpre", headshot: "/founders/portraits/emile-germonpre.webp", companyName: "Atomarine", linkedin: "https://www.linkedin.com/in/emile-germonpr%C3%A9-766045245/" },
   { name: "Ian Brooke", headshot: "/founders/portraits/ian-brooke.webp", companyName: "Astro Mechanica", linkedin: "https://www.linkedin.com/in/ian-brooke-b7496325/" },
-  { name: "Amie Leighton", headshot: "/founders/portraits/amie-leighton.webp", companyName: "Allia Health", linkedin: "https://www.linkedin.com/in/amieleighton/" },
-  { name: "Saroosh Khan", headshot: "/founders/portraits/saroosh-khan.webp", companyName: "Allia Health", linkedin: "https://www.linkedin.com/in/saroosh-khan/" },
-  { name: "Lucas Volini", headshot: "/founders/portraits/lucas-volini.webp", companyName: "Allia Health" },
   { name: "Andy Lonsberry", headshot: "/founders/portraits/andy-lonsberry.webp", companyName: "Path Robotics", linkedin: "https://www.linkedin.com/in/andrew-lonsberry-32154448/" },
   { name: "Alex Lonsberry", headshot: "/founders/portraits/alex-lonsberry.webp", companyName: "Path Robotics", linkedin: "https://www.linkedin.com/in/alex-lonsberry-a41020a8/" },
   { name: "Zaky Hassan", headshot: "/founders/portraits/zaky-hassan.webp", companyName: "Molagri" },
@@ -243,12 +240,6 @@ const FOUNDER_CATALOG: Founder[] = [
     x: "https://x.com/juliacvillagra",
   },
   {
-    name: "Peter Cetale",
-    companyName: "Sourcerer",
-    headshot: "/founders/cutouts/peter-cetale.png",
-    linkedin: "https://www.linkedin.com/in/petercetale",
-  },
-  {
     name: "Brett Adcock",
     companyName: "Figure AI",
     headshot: "/founders/cutouts/brett-adcock.png",
@@ -418,19 +409,6 @@ const FOUNDER_CATALOG: Founder[] = [
     linkedin: "https://www.linkedin.com/in/andrew-peterson-array-labs/",
   },
   {
-    // Corgi co-founders — Nico (CEO/CTO) first so the company card deep-links to him.
-    name: "Nico Laqua",
-    companyName: "Corgi",
-    headshot: "/founders/cutouts/nico-laqua.png",
-    linkedin: "https://www.linkedin.com/in/nico-laqua-302b17233/",
-  },
-  {
-    name: "Emily Yuan",
-    companyName: "Corgi",
-    headshot: "/founders/cutouts/emily-yuan.png",
-    linkedin: "https://www.linkedin.com/in/emilyyuan96",
-  },
-  {
     name: "Tade Oyerinde",
     companyName: "Campus",
     headshot: "/founders/cutouts/tade-oyerinde.png",
@@ -491,7 +469,7 @@ export function founderForCompany(companyName: string): Founder | undefined {
 }
 
 // Unique per-founder anchor/key: name + company, so multiple founders can share
-// a company (e.g. Corgi) without their card ids/keys colliding. Company cards
+// a company without their card ids/keys colliding. Company cards
 // deep-link to their (first) founder's card via this same scheme.
 export function founderAnchor(f: Founder): string {
   return slugify(`${f.name} ${f.companyName}`);
