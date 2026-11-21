@@ -318,6 +318,11 @@ function assertFinancials() {
   if (cents(netChangeInCash) !== cents(cashTotal)) {
     throw new Error(`Financials: ending cash ${netChangeInCash} ≠ balance sheet cash ${cashTotal}`);
   }
+  // The fee accrual is fixed at the quarter-end bases already billed; later
+  // marks must not move it.
+  if (cents(managementFee) !== cents(5_410.67)) {
+    throw new Error(`Financials: management fee ${managementFee} ≠ $5,410.67`);
+  }
   if (cents(managerPaidExpenses) !== cents(18_117.62)) {
     throw new Error(`Financials: manager-paid fund expenses ${managerPaidExpenses} ≠ $18,117.62`);
   }

@@ -184,7 +184,33 @@ export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark
     sourceUrl: "https://shield.ai/shield-to-acquire-echodyne-in-a-transaction-valued-at-5-3-billion-and-raise-2-5-billion-at-a-28-8-billion-valuation/",
     scope: "gross company-valuation comparison; the announced Series H supports Shield's pending Echodyne acquisition and is not a fund-administrator mark of the fund's position",
   },
+  "11-openai": {
+    entryValuationAmount: 852_000_000_000,
+    latestValuationAmount: 1_250_000_000_000,
+    latestValuation: "$1.25T valuation",
+    asOf: "2026-11-06",
+    source: "OpenAI priced primary round, first close of ~$11B (Bloomberg); treated as post-money",
+    sourceUrl: "https://www.bloomberg.com/news/articles/2026-11-06/openai-completes-11-billion-portion-of-funding-at-1-25-trillion-value",
+  },
   "12-apptronik": { entryValuationAmount: 4_900_000_000, latestValuationAmount: 5_300_000_000, latestValuation: "~$5.3B post-money", asOf: "2026-02-11", source: "Apptronik Series A extension", sourceUrl: "https://techcrunch.com/2026/02/11/humanoid-robot-startup-apptronik-has-now-raised-935m-at-a-5b-valuation/" },
+  "38-supabase": {
+    entryValuationAmount: 10_500_000_000,
+    latestValuationAmount: 10_650_000_000,
+    latestValuation: "$10.65B valuation",
+    asOf: "2026-10-02",
+    source: "Supabase Series F extension, $150M (NBR; Clarity/StockAnalysis)",
+    sourceUrl: "https://www.nbr.co.nz/tech/supabase-raises-another-us150m/",
+  },
+  "63-anthropic": {
+    entryValuationAmount: 111.5,
+    latestValuationAmount: 88.91,
+    latestValuation: "$88.91/share (Nasdaq: ANT close)",
+    entryValuation: "$111.50/share cost",
+    asOf: "2026-11-20",
+    source: "Nasdaq closing price, November 20, 2026; cost $111.50/share",
+    sourceUrl: "https://finance.yahoo.com/quote/ANT/history/",
+    scope: "public market price per share, not a company valuation; 896.86 shares",
+  },
   "17-hark": {
     entryValuationAmount: 5_775_000_000,
     latestValuationAmount: 6_000_000_000,
@@ -237,7 +263,7 @@ export const LP_CAPITAL_CONTRIBUTED = LP_CAPITAL_CONTRIBUTIONS.reduce(
 // closing (Corgi 2026-06-16, Sourcerer 2026-07-24, Allia Health 2026-09-24).
 export const LP_REFUNDED_CHRONOLOGIES: readonly number[] = [21, 36, 57];
 
-export const LP_PROJECTION_AS_OF = "2026-11-10";
+export const LP_PROJECTION_AS_OF = "2026-11-20";
 
 export const LP_SNAPSHOT = {
   source: "Machine Spirit Drive · Schedule of Investments",
@@ -250,5 +276,5 @@ export const LP_SNAPSHOT = {
   giftedCostTotal: 37188,
   fundCostTotal: 927350.74,
   capitalContributed: 925000,
-  status: "Reconciled November 20, 2026 to Chase ••2128 (95 transactions, $626.32 balance) and the AngelList, Sydecar, YC, Capital Company and Fidelity records: fund cost $927,350.74 against $925,000 of LP capital plus $4,145 of funds deposited for accounting & expenses (not LP capital); Corgi, Sourcerer and Allia Health were refunded and are excluded; Commons Clinic added; valuation evidence reviewed November 10",
+  status: "Reconciled November 20, 2026 to Chase ••2128 (95 transactions, $626.32 balance) and the AngelList, Sydecar, YC, Capital Company and Fidelity records: fund cost $927,350.74 against $925,000 of LP capital plus $4,145 of funds deposited for accounting & expenses (not LP capital); Corgi, Sourcerer and Allia Health were refunded and are excluded; Commons Clinic added; valuation evidence refreshed November 20 (OpenAI $1.25T, Supabase $10.65B, Anthropic $88.91 Nasdaq close)",
 } as const;

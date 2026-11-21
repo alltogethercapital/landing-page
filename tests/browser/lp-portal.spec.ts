@@ -37,7 +37,7 @@ test("publishes the November 19 portfolio with complete coverage and reconciled 
   await expect(page).toHaveURL(/\/lp$/);
   const summary = page.locator(".lp-summary-grid");
   await expect(summary).toContainText("$925,000");
-  await expect(summary).toContainText("$1,023,951");
+  await expect(summary).toContainText("$1,027,190");
   await expect(summary).not.toContainText("Projected gross scenario");
   await expect(page.locator(".lp-valuation-review")).toHaveCount(0);
   await expect(page.getByRole("tab", { name: "Company updates" })).toHaveCount(0);
@@ -51,7 +51,7 @@ test("publishes the November 19 portfolio with complete coverage and reconciled 
   const pending = Number(await page.locator(".lp-performance-pending-row [data-carried]").getAttribute("data-carried"));
   const total = Number(await page.locator(".lp-performance-total-row [data-carried]").getAttribute("data-carried"));
   expect(rows.reduce((sum, value) => sum + value, pending)).toBe(total);
-  expect(total).toBe(102395080);
+  expect(total).toBe(102719011);
 
   await page.goto("/lp/investments/59-atomarine");
   await expect(page.getByText("$9,303.06", { exact: true })).toHaveCount(2);
@@ -63,8 +63,9 @@ test("publishes the November 19 portfolio with complete coverage and reconciled 
   await expect(page.getByText("Uncapped", { exact: true })).toHaveCount(2);
   await page.goto("/lp/investments/63-anthropic");
   await expect(page.getByRole("heading", { name: "Anthropic" })).toBeVisible();
-  await expect(page.locator(".lp-performance")).toContainText("$100,000");
-  await expect(page.locator(".lp-performance")).toContainText("1.00×");
+  await expect(page.locator(".lp-performance")).toContainText("$79,739.91");
+  await expect(page.locator(".lp-performance")).toContainText("0.80×");
+  await expect(page.locator(".lp-performance")).toContainText("$88.91/share");
   await expect(page.locator("main")).toContainText(/Bought on the public market · Publicly traded shares/i);
   await expect(page.locator("main")).toContainText("Public market (Nasdaq: ANT)");
   for (const refunded of ["21-corgi", "36-sourcerer", "57-allia-health"]) {
@@ -148,10 +149,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(summaryGrid.getByText("Pending", { exact: true })).toBeVisible();
   await expect(summaryGrid.locator(".lp-summary-basis")).toHaveCount(0);
   await expect(summaryGrid.getByText("$112,000", { exact: true })).toBeVisible();
-  await expect(page.getByText("$1,023,951", { exact: true })).toBeVisible();
+  await expect(page.getByText("$1,027,190", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("Multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
-  await expect(summaryGrid.getByText("1.10×", { exact: true })).toBeVisible();
+  await expect(summaryGrid.getByText("1.11×", { exact: true })).toBeVisible();
   await expect(page.getByText("1.15×", { exact: true })).toHaveCount(0);
   await expect(page.getByText(/Projection as of 2026-08-18/i)).toHaveCount(0);
   const portalLogoBox = await page.locator(".lp-portal-nav-logo").boundingBox();
@@ -241,8 +242,8 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.locator("#lp-figure-concentration-and-structure")).toHaveClass(/sr-only/);
   await expect(page.locator(".lp-figure-section-head")).toHaveCount(0);
   await expect(page.locator(".lp-summary-grid")).toBeVisible();
-  await expect(page.locator(".lp-summary-grid").getByText("$1,023,951", { exact: true })).toBeVisible();
-  await expect(page.locator(".lp-summary-grid").getByText("1.10×", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("$1,027,190", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("1.11×", { exact: true })).toBeVisible();
   const analysisSummaryBox = await page.locator(".lp-summary-grid").boundingBox();
   const analysisTabsBox = await portfolioSections.boundingBox();
   expect(analysisSummaryBox).not.toBeNull();
@@ -351,18 +352,23 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(performanceRows.filter({ hasText: "1X" })).toHaveCount(0);
   await expect(performanceRows.filter({ hasText: "Figure AI" })).toHaveCount(0);
   const valuationRows = page.locator(".lp-figure-table--marks tbody tr.has-gain");
-  await expect(valuationRows).toHaveCount(6);
+  await expect(valuationRows).toHaveCount(8);
   await expect(valuationRows.first().getByRole("rowheader")).toHaveCSS("box-shadow", "none");
   for (const [company, cost, carriedTitle] of [
     ["Replit", "$10K", "$10,465"],
     ["Hark", "$10K", "$10,390"],
     ["Decart.ai", "$10K", "$10,526"],
+    ["OpenAI", "$50K", "$73,357"],
+    ["Supabase", "$10K", "$10,124"],
   ] as const) {
     const row = valuationRows.filter({ hasText: company });
     await expect(row).toContainText(cost);
     await expect(row.locator("[data-carried]")).toHaveAttribute("title", new RegExp(carriedTitle.replace("$", "\\$")));
 
   }
+  const anthropicPerformance = performanceRows.filter({ hasText: "Anthropic" });
+  await expect(anthropicPerformance.locator(".lp-performance-change")).toHaveClass(/is-loss/);
+  await expect(anthropicPerformance.locator("[data-carried]")).toHaveAttribute("title", /\$79,740/);
   const positronPerformance = performanceRows.filter({ hasText: "Positron" });
   await expect(positronPerformance).toContainText("$4.5B");
   await expect(positronPerformance).not.toContainText("pre-money");
@@ -378,10 +384,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(pendingPerformanceRow).toContainText("1.00×");
   const performanceTotal = page.locator(".lp-performance-total-row");
   await expect(performanceTotal).toContainText("$927.4K");
-  await expect(performanceTotal).toContainText("1.10×");
-  await expect(performanceTotal).not.toContainText("+$96,600.06");
-  await expect(performanceTotal).not.toContainText("$1,023,950.80");
-  await expect(performanceTotal.locator("[data-carried]")).toHaveAttribute("title", /\$1,023,951/);
+  await expect(performanceTotal).toContainText("1.11×");
+  await expect(performanceTotal).not.toContainText("+$99,839.37");
+  await expect(performanceTotal).not.toContainText("$1,027,190.11");
+  await expect(performanceTotal.locator("[data-carried]")).toHaveAttribute("title", /\$1,027,190/);
   await expect(performanceTotal.locator(".lp-performance-change")).toHaveClass(/is-gain/);
   await expectPerformanceTableFitsViewport(page, page.viewportSize()?.width ?? 1280);
 
@@ -876,11 +882,11 @@ test("financial statements tab balances and ties to the SOI", async ({ page }) =
     expect(await cents("balance-sheet", "Expense deposits")).toBe(414_500);
     expect(await cents("balance-sheet", "Due to manager (Joint Chancellery)")).toBe(2_352_829);
     expect(await cents("balance-sheet", "Total liabilities")).toBe(2_767_329);
-    expect(await cents("balance-sheet", "Total partners' capital")).toBe(99_761_177);
+    expect(await cents("balance-sheet", "Total partners' capital")).toBe(100_085_108);
     expect(await cents("operations", "Management fee")).toBe(541_067);
     expect(await cents("operations", "Fund expenses paid by manager (Joint Chancellery)")).toBe(1_811_762);
     expect(await cents("operations", "Net investment loss")).toBe(-2_398_829);
-    expect(await cents("operations", "Net increase in partners' capital from operations")).toBe(7_261_177);
+    expect(await cents("operations", "Net increase in partners' capital from operations")).toBe(7_585_108);
     expect(await cents("cash-flow", "Increase in due to manager")).toBe(2_352_829);
     expect(await cents("cash-flow", "Net cash used in operating activities")).toBe(-92_781_074);
     await expect(page.locator("#lp-panel-balance-sheet")).not.toContainText("top-up");
