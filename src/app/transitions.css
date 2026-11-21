@@ -1,0 +1,70 @@
+/* Page transitions (see components/page-transitions.tsx).
+   ~180ms ease-out: the old page fades away, the new one fades in with a 6px slide,
+   from the right when going deeper and from the left when heading back toward Home.
+   The logo and the sidebar are shared elements, so they hold still or morph in place
+   between the public site and the LP portal. */
+
+:root {
+  --page-transition-duration: 180ms;
+  --page-transition-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.cog-nav-logo,
+.lp-portal-nav-logo { view-transition-name: site-logo; }
+
+.cog-desktop-nav,
+.lp-portal-nav { view-transition-name: site-nav; }
+
+::view-transition-group(*) {
+  animation-duration: var(--page-transition-duration);
+  animation-timing-function: var(--page-transition-ease);
+}
+
+::view-transition-old(root),
+::view-transition-old(site-nav) {
+  animation: page-out 110ms ease-out both;
+}
+
+::view-transition-new(root),
+::view-transition-new(site-nav) {
+  animation: page-in-forward var(--page-transition-duration) var(--page-transition-ease) both;
+}
+
+html[data-nav-direction="back"]::view-transition-new(root),
+html[data-nav-direction="back"]::view-transition-new(site-nav) {
+  animation-name: page-in-back;
+}
+
+html[data-nav-direction="same"]::view-transition-new(root) {
+  animation-name: page-in-same;
+}
+
+/* The nav column stays put between sibling pages; only its active marker changes. */
+html[data-nav-direction="same"]::view-transition-old(site-nav),
+html[data-nav-direction="same"]::view-transition-new(site-nav) {
+  animation: none;
+}
+
+@keyframes page-out {
+  to { opacity: 0; }
+}
+
+@keyframes page-in-forward {
+  from { opacity: 0; transform: translateX(6px); }
+}
+
+@keyframes page-in-back {
+  from { opacity: 0; transform: translateX(-6px); }
+}
+
+@keyframes page-in-same {
+  from { opacity: 0; transform: translateY(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
