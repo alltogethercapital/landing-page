@@ -1,54 +1,80 @@
 import { LpSectionTabs } from "@/components/lp-section-tabs";
-import { LP_FINANCIAL_STATEMENTS, type LpStatement } from "@/data/lp-financials";
+import {
+  LP_FIN_ENTITY,
+  LP_FIN_MANAGER,
+  LP_FIN_PERIOD_DETAIL,
+  LP_FINANCIAL_STATEMENTS,
+  type LpStatement,
+} from "@/data/lp-financials";
 
 export type LpStatementKey = LpStatement["key"];
 
-const trim = (value: number, digits: number) =>
-  value.toFixed(digits).replace(/\.0+$/, "").replace(/(\.\d*?)0+$/, "$1");
-
-// Abbreviated, accounting style: negatives in parentheses, exact in the tooltip.
-function statementAmount(value: number) {
-  const abs = Math.abs(value);
-  const text = abs < 0.005
-    ? "—"
-    : abs < 1_000
-      ? `$${Math.round(abs).toLocaleString("en-US")}`
-      : abs < 1_000_000
-        ? `$${trim(abs / 1_000, 1)}K`
-        : `$${trim(abs / 1_000_000, 3)}M`;
-  return value < -0.005 ? `(${text})` : text;
-}
-
+const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
 const exact = (value: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
 
-function Statement({ statement }: { statement: LpStatement }) {
+// Whole dollars, accounting style: negatives in parentheses, zero as a dash,
+// a $ sign on the first amount and on grand totals only.
+function statementAmount(value: number, currency: boolean) {
+  const rounded = Math.round(value);
+  if (rounded === 0) return "—";
+  const text = `${currency ? "$" : ""}${number.format(Math.abs(rounded))}`;
+  return rounded < 0 ? `(${text})` : text;
+}
+
+function Label({ row }: { row: LpStatement["rows"][number] }) {
+  if (!row.shortLabel) return <>{row.label}</>;
   return (
-    <section className="lp-figure-section lp-figure-section--standalone" aria-labelledby={`lp-fin-${statement.key}`}>
-      <div className="lp-figure-heading">
-        <h3 id={`lp-fin-${statement.key}`}>{statement.title}</h3>
-        <span>{statement.period}</span>
-      </div>
+    <>
+      <span className="lp-fin-full">{row.label}</span>
+      <span className="lp-fin-short" aria-hidden="true">{row.shortLabel}</span>
+    </>
+  );
+}
+
+function Statement({ statement }: { statement: LpStatement }) {
+  const firstAmountIndex = statement.rows.findIndex((row) => row.amount !== undefined);
+  return (
+    <section className="lp-fin-statement" aria-labelledby={`lp-fin-${statement.key}`}>
+      <header className="lp-fin-header">
+        <p className="lp-fin-entity">{LP_FIN_ENTITY}<span className="lp-fin-manager"> · {LP_FIN_MANAGER}</span></p>
+        <h3 id={`lp-fin-${statement.key}`} title={statement.title} aria-label={statement.title}>
+          <span className="lp-fin-title-full">{statement.title}</span>
+          <span className="lp-fin-title-short" aria-hidden="true">{statement.shortTitle}</span>
+        </h3>
+        <p className="lp-fin-date" title={statement.key === "balance-sheet" ? statement.dateLine : LP_FIN_PERIOD_DETAIL}>{statement.dateLine}</p>
+      </header>
       <table className="lp-fin-table">
+        <colgroup>
+          <col />
+          <col className="lp-fin-col-amount" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th scope="col"><span className="sr-only">Line item</span></th>
+            <th scope="col" className="is-number">USD</th>
+          </tr>
+        </thead>
         <tbody>
           {statement.rows.map((row, index) => {
             const kind = row.kind ?? "item";
-            if (kind === "heading") {
+            const indent = row.indent ?? 0;
+            const className = `lp-fin-row lp-fin-row--${kind} lp-fin-indent-${indent}`;
+            if (kind === "heading" || kind === "label") {
               return (
-                <tr key={`${row.label}-${index}`} className="lp-fin-row lp-fin-row--heading">
-                  <th scope="rowgroup" colSpan={2}>{row.label}</th>
+                <tr key={`${row.label}-${index}`} className={className}>
+                  <th scope={kind === "heading" ? "rowgroup" : "row"} colSpan={2} title={row.title ?? row.label}><Label row={row} /></th>
                 </tr>
               );
             }
             const amount = row.amount ?? 0;
+            const currency = index === firstAmountIndex || kind === "total";
             return (
-              <tr
-                key={`${row.label}-${index}`}
-                className={`lp-fin-row lp-fin-row--${kind}${row.indent ? " is-indented" : ""}`}
-                title={row.title ?? exact(amount)}
-              >
-                <th scope="row">{row.label}</th>
-                <td className="is-number" data-cents={Math.round(amount * 100)}>{statementAmount(amount)}</td>
+              <tr key={`${row.label}-${index}`} className={className} title={row.title ?? exact(amount)} data-label={row.label}>
+                <th scope="row"><Label row={row} /></th>
+                <td className="is-number" data-cents={Math.round(amount * 100)}>
+                  <span>{statementAmount(amount, currency)}</span>
+                </td>
               </tr>
             );
           })}
@@ -72,7 +98,9 @@ export function LpFinancialStatements({ initial }: { initial: LpStatementKey }) 
           content: <Statement statement={statement} />,
         }))}
       />
-      <p className="lp-fin-note">Unaudited · USD · Outer Rim Ventures LLC · Investments at latest comparable valuations, not NAV</p>
+      <p className="lp-fin-note" title="Unaudited. Investments at latest comparable valuations (positions without one at cost); not NAV. Gifted positions held outside the fund are excluded.">
+        Unaudited · Investments at latest comparable valuations, not NAV
+      </p>
     </div>
   );
 }

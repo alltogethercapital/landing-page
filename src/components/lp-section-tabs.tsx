@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 
-export type LpSectionKey = "investments" | "analysis" | "performance" | "financials";
+export type LpSectionKey = "investments" | "analysis" | "performance";
 
 export type LpSectionTab<K extends string = LpSectionKey> = {
   key: K;

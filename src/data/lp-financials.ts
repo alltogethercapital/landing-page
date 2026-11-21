@@ -89,123 +89,131 @@ const totalAssets = investmentsFairValue + cashTotal;
 const totalLiabilities = expenseDeposits;
 const netAssets = contributions + netInvestmentLoss + unrealized;
 const financing = contributions + expenseDeposits;
-const netChangeInCash = financing - bankFees - investmentsCost;
+// Indirect method, investment-company presentation: purchases of investments
+// are operating activities; capital and expense deposits are financing.
+const operatingCash = netIncrease - unrealized - investmentsCost;
+const netChangeInCash = operatingCash + financing;
 
 export type LpStatementRow = {
   label: string;
+  // Phone-width label, so rows stay on one line without truncation.
+  shortLabel?: string;
   amount?: number;
   title?: string;
-  kind?: "heading" | "item" | "subtotal" | "total";
-  indent?: boolean;
+  // heading: section caption · label: sub-caption without an amount ·
+  // item: line item · subtotal: single rule above · total: grand total,
+  // single rule above and double rule below.
+  kind?: "heading" | "label" | "item" | "subtotal" | "total";
+  indent?: 0 | 1 | 2;
 };
 
 export type LpStatement = {
   key: "balance-sheet" | "operations" | "cash-flow";
   tab: string;
   title: string;
-  period: string;
+  shortTitle: string;
+  dateLine: string;
   rows: LpStatementRow[];
 };
 
+export const LP_FIN_ENTITY = "Outer Rim Ventures LLC";
+export const LP_FIN_MANAGER = "Machine Spirit Capital";
+const PERIOD_LINE = "For the period ended November 20, 2026";
+export const LP_FIN_PERIOD_DETAIL = "From April 3, 2026 (inception) to November 20, 2026";
+
 const exact = (value: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+const whole = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
 
 const balanceSheet: LpStatement = {
   key: "balance-sheet",
   tab: "Balance Sheet",
-  title: "Statement of assets and liabilities",
-  period: "Nov 20, 2026",
+  title: "Statement of Assets, Liabilities and Partners' Capital",
+  shortTitle: "Assets, Liabilities & Partners' Capital",
+  dateLine: "As of November 20, 2026",
   rows: [
     { label: "Assets", kind: "heading" },
+    { shortLabel: `Investments (cost ${whole(investmentsCost)})`, label: `Investments, at value (cost ${whole(investmentsCost)})`, kind: "label", indent: 1, title: `Cost ${exact(investmentsCost)}. Latest comparable valuations; positions without one at cost. Gross, not NAV. Excludes $37,188 of gifted positions held outside the fund.` },
     ...investmentsByRoute.map((item) => ({
       label: item.route,
       amount: item.fairValue,
-      indent: true,
+      indent: 2 as const,
       title: `${item.count} position${item.count === 1 ? "" : "s"} · cost ${exact(item.cost)} · value ${exact(item.fairValue)}`,
     })),
-    {
-      label: "Investments, at value",
-      amount: investmentsFairValue,
-      kind: "subtotal",
-      title: `Cost ${exact(investmentsCost)}. Latest comparable valuations; positions without one at cost. Gross, not NAV. Excludes $37,188 of gifted positions held outside the fund.`,
-    },
-    { label: "Cash, Chase ••2128", amount: CASH.chase, indent: true, title: exact(CASH.chase) },
-    { label: "Cash, AngelList", amount: CASH.angellist, indent: true, title: `${exact(CASH.angellist)} · Atomarine allocation credit, Nov 16` },
-    { label: "Cash, Fidelity", amount: CASH.fidelity, indent: true, title: `${exact(CASH.fidelity)} · test wire, Nov 17` },
-    { label: "Cash", amount: cashTotal, kind: "subtotal", title: exact(cashTotal) },
+    { shortLabel: "Total investments", label: "Total investments, at value", amount: investmentsFairValue, kind: "subtotal", indent: 1, title: exact(investmentsFairValue) },
+    { label: "Cash", amount: cashTotal, indent: 1, title: `Chase ••2128 ${exact(CASH.chase)} · AngelList ${exact(CASH.angellist)} · Fidelity ${exact(CASH.fidelity)}` },
     { label: "Total assets", amount: totalAssets, kind: "total", title: exact(totalAssets) },
     { label: "Liabilities", kind: "heading" },
     {
       label: "Expense deposits",
       amount: expenseDeposits,
-      indent: true,
+      indent: 1,
       title: `Funds deposited for accounting & expenses, not LP capital: ${EXPENSE_DEPOSITS.map((item) => `${item.source} ${exact(item.amount)}`).join(" · ")}`,
     },
     { label: "Total liabilities", amount: totalLiabilities, kind: "subtotal", title: exact(totalLiabilities) },
-    { label: "Net assets", kind: "heading" },
-    {
-      label: "Contributed capital",
-      amount: LP_CAPITAL_CONTRIBUTED,
-      indent: true,
-      title: "Galactic Imperium $400,000 · Hisham $425,000 · Paul R Neir $100,000",
-    },
-    { label: "Net investment loss", amount: netInvestmentLoss, indent: true, title: exact(netInvestmentLoss) },
-    { label: "Net unrealized appreciation", amount: unrealized, indent: true, title: exact(unrealized) },
-    { label: "Total net assets", amount: netAssets, kind: "subtotal", title: exact(netAssets) },
-    { label: "Total liabilities and net assets", amount: totalLiabilities + netAssets, kind: "total", title: exact(totalLiabilities + netAssets) },
+    { label: "Partners' capital", kind: "heading" },
+    { label: "Contributed capital", amount: contributions, indent: 1, title: "Galactic Imperium $400,000 · Hisham $425,000 · Paul R Neir $100,000" },
+    { shortLabel: "Net investment loss", label: "Accumulated net investment loss", amount: netInvestmentLoss, indent: 1, title: exact(netInvestmentLoss) },
+    { shortLabel: "Unrealized appreciation", label: "Net unrealized appreciation", amount: unrealized, indent: 1, title: exact(unrealized) },
+    { label: "Total partners' capital", amount: netAssets, kind: "subtotal", title: exact(netAssets) },
+    { shortLabel: "Total liabilities & capital", label: "Total liabilities and partners' capital", amount: totalLiabilities + netAssets, kind: "total", title: exact(totalLiabilities + netAssets) },
   ],
 };
 
 const operations: LpStatement = {
   key: "operations",
   tab: "P&L",
-  title: "Statement of operations",
-  period: "Inception to date",
+  title: "Statement of Operations",
+  shortTitle: "Statement of Operations",
+  dateLine: PERIOD_LINE,
   rows: [
     { label: "Expenses", kind: "heading" },
     {
-      label: "Bank fees, net",
-      amount: -bankFees,
-      indent: true,
+      label: "Bank and wire fees, net",
+      amount: bankFees,
+      indent: 1,
       title: `Chase wire and service fees ${exact(BANK_FEES_GROSS)} less ${exact(BANK_FEE_REVERSALS)} reversal. No investment income or management fee recorded.`,
     },
-    { label: "Total expenses", amount: -bankFees, kind: "subtotal", title: exact(bankFees) },
+    { label: "Total expenses", amount: bankFees, kind: "subtotal", title: exact(bankFees) },
     { label: "Net investment loss", amount: netInvestmentLoss, kind: "subtotal", title: exact(netInvestmentLoss) },
-    { label: "Unrealized gain on investments", kind: "heading" },
+    { label: "Realized and unrealized gain", kind: "heading" },
     {
-      label: "Net change in unrealized appreciation",
+      shortLabel: "Unrealized appreciation", label: "Net change in unrealized appreciation",
       amount: unrealized,
-      indent: true,
-      title: `Value ${exact(investmentsFairValue)} less cost ${exact(investmentsCost)}`,
+      indent: 1,
+      title: `Value ${exact(investmentsFairValue)} less cost ${exact(investmentsCost)}. No realizations to date.`,
     },
-    { label: "Net increase in net assets", amount: netIncrease, kind: "total", title: exact(netIncrease) },
+    { shortLabel: "Net gain on investments", label: "Net realized and unrealized gain", amount: unrealized, kind: "subtotal", title: exact(unrealized) },
+    { shortLabel: "Net increase from operations", label: "Net increase in partners' capital from operations", amount: netIncrease, kind: "total", title: exact(netIncrease) },
   ],
 };
 
 const cashFlow: LpStatement = {
   key: "cash-flow",
   tab: "Cash Flow",
-  title: "Statement of cash flows",
-  period: "Inception to date",
+  title: "Statement of Cash Flows",
+  shortTitle: "Statement of Cash Flows",
+  dateLine: PERIOD_LINE,
   rows: [
     { label: "Operating activities", kind: "heading" },
-    { label: "Bank fees paid, net", amount: -bankFees, indent: true, title: exact(-bankFees) },
-    { label: "Net cash, operating", amount: -bankFees, kind: "subtotal", title: exact(-bankFees) },
-    { label: "Investing activities", kind: "heading" },
+    { shortLabel: "Net increase from operations", label: "Net increase in partners' capital from operations", amount: netIncrease, indent: 1, title: exact(netIncrease) },
+    { shortLabel: "Adjustments:", label: "Adjustments to reconcile to net cash:", kind: "label", indent: 1 },
+    { shortLabel: "Unrealized appreciation", label: "Net change in unrealized appreciation", amount: -unrealized, indent: 2, title: exact(-unrealized) },
     {
-      label: "Investments purchased, net",
+      shortLabel: "Purchases, net", label: "Purchases of investments, net",
       amount: -investmentsCost,
-      indent: true,
+      indent: 2,
       title: `${exact(investmentsCost)} deployed, net of ${exact(RETURNED_COMMITMENTS)} returned (AngelList refunds, Stripe $30,000, Nous $10,000)`,
     },
-    { label: "Net cash, investing", amount: -investmentsCost, kind: "subtotal", title: exact(-investmentsCost) },
+    { shortLabel: "Net cash, operating", label: "Net cash used in operating activities", amount: operatingCash, kind: "subtotal", title: exact(operatingCash) },
     { label: "Financing activities", kind: "heading" },
-    { label: "LP contributions", amount: LP_CAPITAL_CONTRIBUTED, indent: true, title: exact(LP_CAPITAL_CONTRIBUTED) },
-    { label: "Expense deposits", amount: expenseDeposits, indent: true, title: "Funds deposited for accounting & expenses, not LP capital" },
-    { label: "Net cash, financing", amount: financing, kind: "subtotal", title: exact(financing) },
-    { label: "Net change in cash", amount: netChangeInCash, kind: "subtotal", title: exact(netChangeInCash) },
-    { label: "Cash, beginning", amount: 0, indent: true, title: "Fund opened April 2026" },
-    { label: "Cash, end", amount: netChangeInCash, kind: "total", title: "Chase $626.32 · AngelList $696.94 · Fidelity $11.00" },
+    { label: "Capital contributions", amount: contributions, indent: 1, title: "Galactic Imperium $400,000 · Hisham $425,000 · Paul R Neir $100,000" },
+    { label: "Expense deposits received", amount: expenseDeposits, indent: 1, title: "Funds deposited for accounting & expenses, not LP capital" },
+    { shortLabel: "Net cash, financing", label: "Net cash provided by financing activities", amount: financing, kind: "subtotal", title: exact(financing) },
+    { label: "Net increase in cash", amount: netChangeInCash, kind: "subtotal", title: exact(netChangeInCash) },
+    { label: "Cash, beginning of period", amount: 0, indent: 1, title: "Fund opened April 2026" },
+    { label: "Cash, end of period", amount: netChangeInCash, kind: "total", title: `Chase ${exact(CASH.chase)} · AngelList ${exact(CASH.angellist)} · Fidelity ${exact(CASH.fidelity)}` },
   ],
 };
 
@@ -224,6 +232,9 @@ function assertFinancials() {
   if (cents(netChangeInCash) !== cents(cashTotal)) {
     throw new Error(`Financials: ending cash ${netChangeInCash} ≠ balance sheet cash ${cashTotal}`);
   }
+  if (cents(operatingCash) !== cents(-bankFees - investmentsCost)) {
+    throw new Error("Financials: operating cash does not equal fees paid plus net purchases");
+  }
   if (cents(contributions) !== cents(925_000)) {
     throw new Error(`Financials: LP contributions ${contributions} ≠ $925,000`);
   }
@@ -235,7 +246,7 @@ function assertFinancials() {
   }
   for (const statement of [balanceSheet, operations, cashFlow]) {
     for (const row of statement.rows) {
-      if (row.kind !== "heading" && (row.amount === undefined || !Number.isFinite(row.amount))) {
+      if (row.kind !== "heading" && row.kind !== "label" && (row.amount === undefined || !Number.isFinite(row.amount))) {
         throw new Error(`Financials: missing amount for ${statement.key} · ${row.label}`);
       }
     }
