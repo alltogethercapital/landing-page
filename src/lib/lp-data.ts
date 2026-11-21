@@ -3,6 +3,7 @@ import "server-only";
 import { cache } from "react";
 import { LP_COMPANY_UPDATES, type LpCompanyUpdate } from "@/data/lp-company-updates";
 import {
+  LP_CAPITAL_CONTRIBUTED,
   LP_INVESTMENTS,
   LP_PROJECTED_VALUATION_MARKS,
   LP_PROJECTION_AS_OF,
@@ -63,6 +64,7 @@ function assertLpData() {
   const ids = new Set<string>();
   const chronologies = new Set<number>();
   let investedCostTotal = 0;
+  let giftedCostTotal = 0;
 
   for (const investment of LP_INVESTMENTS) {
     const companyUpdate = LP_COMPANY_UPDATES[investment.company];
@@ -126,6 +128,7 @@ function assertLpData() {
     ids.add(investment.id);
     chronologies.add(investment.chronology);
     investedCostTotal += investment.investedCost;
+    if (investment.gift) giftedCostTotal += investment.investedCost;
   }
 
   for (const [id, mark] of Object.entries(LP_PROJECTED_VALUATION_MARKS)) {
@@ -157,9 +160,20 @@ function assertLpData() {
       `LP snapshot cost mismatch: expected ${LP_SNAPSHOT.investedCostTotal}, received ${investedCostTotal}`,
     );
   }
+  if (Math.round(giftedCostTotal * 100) !== Math.round(LP_SNAPSHOT.giftedCostTotal * 100)) {
+    throw new Error(`LP gifted cost mismatch: expected ${LP_SNAPSHOT.giftedCostTotal}, received ${giftedCostTotal}`);
+  }
+  if (Math.round((investedCostTotal - giftedCostTotal) * 100) !== Math.round(LP_SNAPSHOT.fundCostTotal * 100)) {
+    throw new Error(`LP fund cost mismatch: expected ${LP_SNAPSHOT.fundCostTotal}`);
+  }
+  if (LP_CAPITAL_CONTRIBUTED !== LP_SNAPSHOT.capitalContributed) {
+    throw new Error(`LP capital contributed mismatch: expected ${LP_SNAPSHOT.capitalContributed}, received ${LP_CAPITAL_CONTRIBUTED}`);
+  }
 }
 
 assertLpData();
+
+export const LP_AUM = LP_CAPITAL_CONTRIBUTED;
 
 function toDto(investment: (typeof LP_INVESTMENTS)[number]): LpInvestmentDto {
   const {

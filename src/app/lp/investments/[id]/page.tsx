@@ -79,7 +79,7 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
       </header>
 
       <dl className="lp-detail-facts" aria-label="Investment facts">
-        <div><dt>Amount invested</dt><dd>{currency(investment.investedCost)}</dd></div>
+        <div><dt>Amount invested</dt><dd>{investment.gift ? "Gift" : currency(investment.investedCost)}</dd></div>
         <div><dt>Investment date</dt><dd>{date(investment.investmentDate)}</dd></div>
         <div><dt>Round</dt><dd>{investment.round}</dd></div>
         <div><dt>Company valuation when invested</dt><dd>{investment.valuationWhenInvested}</dd></div>
