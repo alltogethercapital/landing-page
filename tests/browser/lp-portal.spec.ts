@@ -847,10 +847,12 @@ test("financial statements tab balances and ties to the SOI", async ({ page }) =
     await page.getByRole("button", { name: /Sign in/ }).click();
     await expect(page).toHaveURL(/\/lp$/);
     await page.waitForLoadState("networkidle");
-    const sections = page.getByRole("tablist", { name: "Portfolio sections" });
-    expect(await sections.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
-    await page.getByRole("tab", { name: "Financials" }).click();
-    await expect(page).toHaveURL(/section=financials/);
+    await expect(page.getByRole("tab", { name: "Financials" })).toHaveCount(0);
+    await page.getByRole("navigation", { name: "Investor portal" }).getByRole("link", { name: "Financials" }).click();
+    await expect(page).toHaveURL(/\/lp\/financials$/);
+    await expect(page.getByRole("link", { name: "Financials" })).toHaveAttribute("aria-current", "page");
+    await expect(page.locator(".lp-summary-grid")).toHaveCount(0);
+    await page.waitForLoadState("networkidle");
     const sub = page.getByRole("tablist", { name: "Financial statements" });
     await expect(sub.getByRole("tab")).toHaveText(["Balance Sheet", "P&L", "Cash Flow"]);
     const cents = async (panel: string, label: string) => Number(
@@ -868,5 +870,9 @@ test("financial statements tab balances and ties to the SOI", async ({ page }) =
     expect(await page.locator("#lp-panel-cash-flow .lp-fin-row--total td span").evaluate((el) => getComputedStyle(el).backgroundImage.match(/linear-gradient/g)?.length)).toBe(3);
     const overflow = await page.locator(".lp-fin-table:visible").evaluate((el) => el.scrollWidth > el.clientWidth + 1);
     expect(overflow).toBe(false);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+    await page.goto("/lp?section=financials&statement=operations");
+    await expect(page).toHaveURL(/\/lp\/financials\?statement=operations$/);
+    await expect(page.getByRole("tab", { name: "P&L" })).toHaveAttribute("aria-selected", "true");
   }
 });

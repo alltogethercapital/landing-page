@@ -1368,11 +1368,3 @@ html[data-site-theme="dark"] .lp-portal-page {
   .lp-fin-indent-2 th { padding-left: calc(var(--lp-component-inset) + 20px); }
 }
 
-/* Phones: all four portfolio tabs (incl. Financials) fit without scrolling. */
-@media (max-width: 479px) {
-  .lp-tabs-list { gap: 0; padding-inline: calc(var(--lp-component-inset) - 6px); }
-  .lp-tab { padding: 0 6px; letter-spacing: 0.04em; }
-}
-@media (max-width: 379px) {
-  .lp-tab { padding: 0 4px; font-size: 11px; letter-spacing: 0.02em; }
-}
