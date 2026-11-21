@@ -3,7 +3,6 @@
 
 /* One line per item: names, roles, titles, metadata and descriptions. */
 html :is(
-  .cog-person-title,
   .cog-article-title,
   .cog-article-meta,
   .cog-company-card-title,
@@ -18,6 +17,16 @@ html :is(
   text-wrap: nowrap;
 }
 
+/* Person names must read in full on one line; the photo is already the link. */
+html .cog-person-title {
+  display: block;
+  min-width: 0;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+
 html :is(.cog-person-title, .cog-article-title, .cog-company-card-title) {
   margin-top: 8px;
   font-size: 17px;
@@ -25,7 +34,6 @@ html :is(.cog-person-title, .cog-article-title, .cog-company-card-title) {
 }
 
 html .cog-article-meta { margin-top: 2px; font-size: 13px; }
-html .cog-person-heading > div { min-width: 0; }
 html .cog-person-links { margin-top: 6px; }
 
 /* Grids: less air between rows and columns. */

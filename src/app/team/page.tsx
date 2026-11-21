@@ -4,7 +4,7 @@ import {
   CognitionStrip,
 } from "@/components/cognition-layout";
 import { AsciiReveal, PortraitRevealSession } from "@/components/ascii-reveal";
-import { ArrowUpRight, LinkedInIcon, MailIcon } from "@/components/icons";
+import { LinkedInIcon, MailIcon } from "@/components/icons";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { CONTACT_MAILTO } from "@/lib/site";
@@ -72,21 +72,8 @@ function MemberCard({ member, eager = false }: { member: Member; eager?: boolean
 
       <div className="cog-person-copy">
         <div className="cog-person-heading">
-          <div>
-            <h2 className="cog-person-title">{member.name}</h2>
-            <p className="cog-article-meta">{member.role}</p>
-          </div>
-          {profile && (
-            <a
-              href={profile}
-              target={profile.startsWith("mailto:") ? undefined : "_blank"}
-              rel={profile.startsWith("mailto:") ? undefined : "noopener noreferrer"}
-              aria-label={`${member.name} on ${profileLabel}`}
-              className="cog-arrow-icon"
-            >
-              <ArrowUpRight />
-            </a>
-          )}
+          <h2 className="cog-person-title">{member.name}</h2>
+          <p className="cog-article-meta">{member.role}</p>
         </div>
 
         {(member.linkedin || member.email) && (
