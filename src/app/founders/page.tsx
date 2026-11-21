@@ -4,7 +4,7 @@ import {
   CognitionStrip,
 } from "@/components/cognition-layout";
 import { AsciiReveal, PortraitRevealSession } from "@/components/ascii-reveal";
-import { ArrowUpRight, LinkedInIcon, XIcon } from "@/components/icons";
+import { LinkedInIcon, XIcon } from "@/components/icons";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { pageMetadata } from "@/lib/page-metadata";
@@ -51,25 +51,14 @@ function FounderCard({ founder, eager = false }: { founder: Founder; eager?: boo
 
       <div className="cog-person-copy">
         <div className="cog-person-heading">
-          <div>
-            <h2 className="cog-person-title">{founder.name}</h2>
-            <p className="cog-article-meta">
-              {company ? (
-                <a className="cog-person-company" href={company.href} target="_blank" rel="noopener noreferrer">
-                  {founder.companyName}
-                </a>
-              ) : founder.companyName}
-            </p>
-          </div>
-          <a
-            href={destination}
-            target={external ? "_blank" : undefined}
-            rel={external ? "noopener noreferrer" : undefined}
-            aria-label={`${founder.name}: ${destinationLabel}`}
-            className="cog-arrow-icon"
-          >
-            <ArrowUpRight />
-          </a>
+          <h2 className="cog-person-title">{founder.name}</h2>
+          <p className="cog-article-meta">
+            {company ? (
+              <a className="cog-person-company" href={company.href} target="_blank" rel="noopener noreferrer">
+                {founder.companyName}
+              </a>
+            ) : founder.companyName}
+          </p>
         </div>
 
         {(founder.linkedin || founder.x) && (
