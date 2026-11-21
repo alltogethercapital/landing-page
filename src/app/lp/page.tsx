@@ -7,6 +7,7 @@ import {
 } from "@/components/lp-letter-figures";
 import { LpPortfolioTable } from "@/components/lp-portfolio-table";
 import { LpSectionTabs } from "@/components/lp-section-tabs";
+import { LpFinancialStatements, type LpStatementKey } from "@/components/lp-financial-statements";
 import { LpAllocationDonut, type LpAllocationSlice } from "@/components/lp-allocation-donut";
 import { LETTER_ALLOCATION } from "@/data/lp-letter-figures";
 import { getLpPortfolio, LP_AUM, type LpInvestmentDto } from "@/lib/lp-data";
@@ -22,7 +23,9 @@ export async function generateMetadata({ searchParams }: LpPortfolioPageProps): 
     ? "Performance"
     : params.section === "analysis"
       ? "Insights"
-      : "Portfolio";
+      : params.section === "financials"
+        ? "Financial Statements"
+        : "Portfolio";
   return {
     title: pageTitle(section),
     robots: { index: false, follow: false, nocache: true },
@@ -102,7 +105,11 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
     ? "analysis"
     : value("section") === "performance"
       ? "performance"
-      : "investments";
+      : value("section") === "financials"
+        ? "financials"
+        : "investments";
+  const statementKeys: LpStatementKey[] = ["balance-sheet", "operations", "cash-flow"];
+  const statement = statementKeys.find((key) => key === value("statement")) ?? "balance-sheet";
   // Gifted positions are listed but carry no cost basis or projected value.
   const fundInvestments = investments.filter((item) => !item.gift);
   const investedCost = fundInvestments.reduce((total, item) => total + item.investedCost, 0);
@@ -199,6 +206,11 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
                 <LpPortfolioPerformance />
               </div>
             ),
+          },
+          {
+            key: "financials",
+            label: "Financials",
+            content: <LpFinancialStatements initial={statement} />,
           },
         ]}
       />

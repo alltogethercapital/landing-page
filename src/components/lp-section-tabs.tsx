@@ -2,18 +2,16 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 
-export type LpSectionKey = "investments" | "analysis" | "performance";
+export type LpSectionKey = "investments" | "analysis" | "performance" | "financials";
 
-export type LpSectionTab = {
-  key: LpSectionKey;
+export type LpSectionTab<K extends string = LpSectionKey> = {
+  key: K;
   label: string;
   content: ReactNode;
 };
 
-const SECTION_PARAM = "section";
-
-function sectionFromUrl(tabs: LpSectionTab[]): LpSectionKey {
-  const value = new URLSearchParams(window.location.search).get(SECTION_PARAM);
+function sectionFromUrl<K extends string>(tabs: LpSectionTab<K>[], param: string): K {
+  const value = new URLSearchParams(window.location.search).get(param);
   return tabs.find((tab) => tab.key === value)?.key ?? tabs[0].key;
 }
 
@@ -22,10 +20,22 @@ function sectionFromUrl(tabs: LpSectionTab[]): LpSectionKey {
  * stays mounted, so switching is instant and nothing above the tab bar moves.
  * The active tab is mirrored to `?section=` without a navigation or scroll.
  */
-export function LpSectionTabs({ tabs, initial }: { tabs: LpSectionTab[]; initial: LpSectionKey }) {
-  const [active, setActive] = useState<LpSectionKey>(initial);
+export function LpSectionTabs<K extends string = LpSectionKey>({
+  tabs,
+  initial,
+  param = "section",
+  label = "Portfolio sections",
+  variant,
+}: {
+  tabs: LpSectionTab<K>[];
+  initial: K;
+  param?: string;
+  label?: string;
+  variant?: "sub";
+}) {
+  const [active, setActive] = useState<K>(initial);
   const listRef = useRef<HTMLDivElement>(null);
-  const tabRefs = useRef(new Map<LpSectionKey, HTMLButtonElement>());
+  const tabRefs = useRef(new Map<K, HTMLButtonElement>());
   const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
 
   const measure = useCallback(() => {
@@ -43,21 +53,27 @@ export function LpSectionTabs({ tabs, initial }: { tabs: LpSectionTab[]; initial
   useEffect(() => {
     window.addEventListener("resize", measure);
     document.fonts?.ready.then(measure).catch(() => undefined);
-    return () => window.removeEventListener("resize", measure);
+    // Nested tab bars start inside a hidden panel; re-measure once shown.
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measure);
+    if (listRef.current) observer?.observe(listRef.current);
+    return () => {
+      window.removeEventListener("resize", measure);
+      observer?.disconnect();
+    };
   }, [measure]);
 
   useEffect(() => {
-    const onPopState = () => setActive(sectionFromUrl(tabs));
+    const onPopState = () => setActive(sectionFromUrl(tabs, param));
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, [tabs]);
+  }, [tabs, param]);
 
-  const select = (key: LpSectionKey, focus = false) => {
+  const select = (key: K, focus = false) => {
     setActive(key);
     if (focus) tabRefs.current.get(key)?.focus();
     const url = new URL(window.location.href);
-    if (key === tabs[0].key) url.searchParams.delete(SECTION_PARAM);
-    else url.searchParams.set(SECTION_PARAM, key);
+    if (key === tabs[0].key) url.searchParams.delete(param);
+    else url.searchParams.set(param, key);
     window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
   };
 
@@ -75,12 +91,12 @@ export function LpSectionTabs({ tabs, initial }: { tabs: LpSectionTab[]; initial
   };
 
   return (
-    <div className="lp-tabs">
+    <div className={variant ? `lp-tabs lp-tabs--${variant}` : "lp-tabs"}>
       <div
         ref={listRef}
         className="lp-tabs-list"
         role="tablist"
-        aria-label="Portfolio sections"
+        aria-label={label}
         onKeyDown={onKeyDown}
         onScroll={measure}
       >

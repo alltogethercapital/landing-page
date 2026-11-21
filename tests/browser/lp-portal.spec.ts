@@ -837,3 +837,34 @@ test("renders the login, portfolio, and detail views at every supported layout",
     await context.close();
   }
 });
+
+test("financial statements tab balances and ties to the SOI", async ({ page }) => {
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.context().clearCookies();
+    await page.goto("/lp-login");
+    await page.getByLabel("Access password").fill(password);
+    await page.getByRole("button", { name: /Sign in/ }).click();
+    await expect(page).toHaveURL(/\/lp$/);
+    await page.waitForLoadState("networkidle");
+    await page.getByRole("tab", { name: "Financials" }).click();
+    await expect(page).toHaveURL(/section=financials/);
+    const sub = page.getByRole("tablist", { name: "Financial statements" });
+    await expect(sub.getByRole("tab")).toHaveText(["Balance Sheet", "P&L", "Cash Flow"]);
+    const cents = async (panel: string, label: string) => Number(
+      await page.locator(`#lp-panel-${panel} tr`).filter({ has: page.getByRole("rowheader", { name: label, exact: true }) })
+        .locator("td").getAttribute("data-cents"),
+    );
+    expect(await cents("balance-sheet", "Total assets")).toBe(await cents("balance-sheet", "Total liabilities and net assets"));
+    expect(await cents("balance-sheet", "Contributed capital")).toBe(92_500_000);
+    expect(await cents("balance-sheet", "Expense deposits")).toBe(414_500);
+    await expect(page.locator("#lp-panel-balance-sheet")).not.toContainText("top-up");
+    const balanceSheetCash = await cents("balance-sheet", "Cash");
+    await sub.getByRole("tab", { name: "Cash Flow" }).click();
+    await expect(page).toHaveURL(/statement=cash-flow/);
+    expect(await cents("cash-flow", "Cash, end")).toBe(balanceSheetCash);
+    expect(await cents("cash-flow", "Investments purchased, net")).toBe(-92_735_074);
+    const overflow = await page.locator(".lp-fin-table:visible").evaluate((el) => el.scrollWidth > el.clientWidth + 1);
+    expect(overflow).toBe(false);
+  }
+});
