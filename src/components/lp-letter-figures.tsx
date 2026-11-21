@@ -302,8 +302,16 @@ function ValuationEvidence() {
       || right.delta - left.delta
       || left.position.chronology - right.position.chronology,
   );
-  const totalCarried = positions.reduce((sum, position) => sum + position.carried, 0)
+  // Gifted positions: $0 cost to the fund, carried at fair value on the same
+  // marks, excluded from AUM. Their whole value lifts the total multiple.
+  const gifts = LP_INVESTMENTS.filter((recordedPosition) => recordedPosition.gift).map((position) => {
+    const mark = LP_PROJECTED_VALUATION_MARKS[position.id];
+    return { position, mark, carried: projectedPositionValue(position.investedCost, mark, position.performance) };
+  });
+  const giftCarried = gifts.reduce((sum, gift) => sum + gift.carried, 0);
+  const fundCarried = positions.reduce((sum, position) => sum + position.carried, 0)
     + LETTER_H256_PENDING_AMOUNT;
+  const totalCarried = fundCarried + giftCarried;
   const totalDelta = totalCarried - LETTER_INVESTED_TOTAL;
   const totalMultiple = totalCarried / LETTER_INVESTED_TOTAL;
 
@@ -371,6 +379,32 @@ function ValuationEvidence() {
                 </tr>
               );
             })}
+            {gifts.map(({ position, mark, carried }) => {
+              const markCell = formatMarkCell(mark?.entryValuation ?? position.entryValuation, mark?.latestValuation);
+              const markContent = mark?.sourceUrl ? (
+                <a href={mark.sourceUrl} target="_blank" rel="noreferrer">{markCell.label}</a>
+              ) : (
+                markCell.label
+              );
+              return (
+                <tr key={position.id} className="is-gift">
+                  <th scope="row" title={`${position.company} · ${position.round} · gifted to the fund`}>
+                    <strong>{position.company}</strong>
+                  </th>
+                  <td title={[markCell.title, mark ? `As of ${mark.asOf}` : "Latest documented round"].join(" · ")}>{markContent}</td>
+                  <td className="is-number" title="Gifted: $0 cost to the fund">
+                    <small className="lp-gift-label">Gift</small>
+                  </td>
+                  <td
+                    className="is-number lp-performance-change is-gain"
+                    title={`${formatWholeUsd(carried)} at fair value · $0 cost · excluded from AUM`}
+                    data-carried={Math.round(carried * 100)}
+                  >
+                    {formatCompactUsd(carried)}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
           <tfoot>
             <tr className="lp-performance-pending-row">
@@ -397,7 +431,7 @@ function ValuationEvidence() {
               </td>
               <td
                 className={`is-number lp-performance-change${totalDelta > 0.005 ? " is-gain" : totalDelta < -0.005 ? " is-loss" : " is-flat"}`}
-                title={`${formatWholeUsd(totalCarried)} projected · ${formatSignedWholeUsd(totalDelta)}`}
+                title={`${formatWholeUsd(totalCarried)} projected (fund-purchased ${formatWholeUsd(fundCarried)} + gifted ${formatWholeUsd(giftCarried)} at $0 cost) · ${formatSignedWholeUsd(totalDelta)}`}
                 data-carried={Math.round(totalCarried * 100)}
               >
                 {totalMultiple.toFixed(2)}×

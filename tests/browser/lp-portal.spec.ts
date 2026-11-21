@@ -37,7 +37,7 @@ test("publishes the November 19 portfolio with complete coverage and reconciled 
   await expect(page).toHaveURL(/\/lp$/);
   const summary = page.locator(".lp-summary-grid");
   await expect(summary).toContainText("$925,000");
-  await expect(summary).toContainText("$1,024,114");
+  await expect(summary).toContainText("$1,069,361");
   await expect(summary).not.toContainText("Projected gross scenario");
   await expect(page.locator(".lp-valuation-review")).toHaveCount(0);
   await expect(page.getByRole("tab", { name: "Company updates" })).toHaveCount(0);
@@ -51,7 +51,7 @@ test("publishes the November 19 portfolio with complete coverage and reconciled 
   const pending = Number(await page.locator(".lp-performance-pending-row [data-carried]").getAttribute("data-carried"));
   const total = Number(await page.locator(".lp-performance-total-row [data-carried]").getAttribute("data-carried"));
   expect(rows.reduce((sum, value) => sum + value, pending)).toBe(total);
-  expect(total).toBe(102411386);
+  expect(total).toBe(106936050);
 
   await page.goto("/lp/investments/59-atomarine");
   await expect(page.getByText("$9,303.06", { exact: true })).toHaveCount(2);
@@ -149,11 +149,11 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(summaryGrid.getByText("Pending", { exact: true })).toBeVisible();
   await expect(summaryGrid.locator(".lp-summary-basis")).toHaveCount(0);
   await expect(summaryGrid.getByText("$112,000", { exact: true })).toBeVisible();
-  await expect(page.getByText("$1,024,114", { exact: true })).toBeVisible();
+  await expect(page.getByText("$1,069,361", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("Multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
-  await expect(summaryGrid.getByText("1.10×", { exact: true })).toBeVisible();
-  await expect(page.getByText("1.15×", { exact: true })).toHaveCount(0);
+  await expect(summaryGrid.getByText("1.15×", { exact: true })).toBeVisible();
+  // 1.15× is now the live multiple (gifts at fair value, $0 cost), so the old August-snapshot guard on that string no longer applies.
   await expect(page.getByText(/Projection as of 2026-08-18/i)).toHaveCount(0);
   const portalLogoBox = await page.locator(".lp-portal-nav-logo").boundingBox();
   expect(portalLogoBox).not.toBeNull();
@@ -242,8 +242,8 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(page.locator("#lp-figure-concentration-and-structure")).toHaveClass(/sr-only/);
   await expect(page.locator(".lp-figure-section-head")).toHaveCount(0);
   await expect(page.locator(".lp-summary-grid")).toBeVisible();
-  await expect(page.locator(".lp-summary-grid").getByText("$1,024,114", { exact: true })).toBeVisible();
-  await expect(page.locator(".lp-summary-grid").getByText("1.10×", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("$1,069,361", { exact: true })).toBeVisible();
+  await expect(page.locator(".lp-summary-grid").getByText("1.15×", { exact: true })).toBeVisible();
   const analysisSummaryBox = await page.locator(".lp-summary-grid").boundingBox();
   const analysisTabsBox = await portfolioSections.boundingBox();
   expect(analysisSummaryBox).not.toBeNull();
@@ -335,7 +335,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   });
   expect(investmentColumnTitleStyle).toEqual(performanceColumnTitleStyle);
   const performanceRows = page.locator(".lp-figure-table--marks tbody tr");
-  await expect(performanceRows).toHaveCount(58);
+  await expect(performanceRows).toHaveCount(61);
   const h256AndurilMark = performanceRows.filter({ hasText: "Anduril" });
   await expect(h256AndurilMark.getByRole("rowheader")).toContainText("Anduril");
   await expect(h256AndurilMark).toContainText("$60B → $100B");
@@ -349,8 +349,12 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(h256AndurilMark.getByRole("cell").first()).toHaveAttribute("title", /entry valuation/i);
   await expect(h256AndurilMark.locator("[data-carried]")).toHaveAttribute("title", /\$146,667/);
   await expect(performanceRows.filter({ hasText: "H256 LLC Series 3" })).toHaveCount(0);
-  await expect(performanceRows.filter({ hasText: "1X" })).toHaveCount(0);
-  await expect(performanceRows.filter({ hasText: "Figure AI" })).toHaveCount(0);
+  // Gifted positions: $0 cost, carried at fair value, tagged Gift.
+  await expect(performanceRows.filter({ hasText: "1X" })).toHaveCount(2);
+  await expect(page.locator(".lp-figure-table--marks tbody tr.is-gift")).toHaveCount(3);
+  const figureGift = page.locator(".lp-figure-table--marks tbody tr.is-gift").filter({ hasText: "Figure AI" });
+  await expect(figureGift).toContainText("Gift");
+  await expect(figureGift.locator("[data-carried]")).toHaveAttribute("data-carried", "1698840");
   const valuationRows = page.locator(".lp-figure-table--marks tbody tr.has-gain");
   await expect(valuationRows).toHaveCount(4);
   for (const company of ["Replit", "Hark", "Decart.ai", "Apptronik"]) {
@@ -386,10 +390,10 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(pendingPerformanceRow).toContainText("1.00×");
   const performanceTotal = page.locator(".lp-performance-total-row");
   await expect(performanceTotal).toContainText("$927.4K");
-  await expect(performanceTotal).toContainText("1.10×");
-  await expect(performanceTotal).not.toContainText("+$96,763.12");
-  await expect(performanceTotal).not.toContainText("$1,024,113.86");
-  await expect(performanceTotal.locator("[data-carried]")).toHaveAttribute("title", /\$1,024,114/);
+  await expect(performanceTotal).toContainText("1.15×");
+  await expect(performanceTotal).not.toContainText("+$142,009.76");
+  await expect(performanceTotal).not.toContainText("$1,069,360.50");
+  await expect(performanceTotal.locator("[data-carried]")).toHaveAttribute("title", /\$1,069,361/);
   await expect(performanceTotal.locator(".lp-performance-change")).toHaveClass(/is-gain/);
   await expectPerformanceTableFitsViewport(page, page.viewportSize()?.width ?? 1280);
 
@@ -882,13 +886,19 @@ test("financial statements tab balances and ties to the SOI", async ({ page }) =
     expect(await cents("balance-sheet", "Total assets")).toBe(await cents("balance-sheet", "Total liabilities and partners' capital"));
     expect(await cents("balance-sheet", "Contributed capital")).toBe(92_500_000);
     expect(await cents("balance-sheet", "Expense deposits")).toBe(414_500);
+    expect(await cents("balance-sheet", "Investments at value")).toBe(102_411_386);
+    expect(await cents("balance-sheet", "Gifted positions, at value")).toBe(4_524_664);
+    expect(await cents("balance-sheet", "Total investments, at value")).toBe(106_936_050);
+    expect(await cents("balance-sheet", "Contributed in kind (gifted positions)")).toBe(0);
+    expect(await cents("balance-sheet", "Net unrealized appreciation")).toBe(14_200_976);
+    await expect(page.locator("#lp-panel-balance-sheet .lp-fin-note")).toContainText("Gifted positions contributed at $0 cost; carried at fair value; excluded from AUM.");
     expect(await cents("balance-sheet", "Due to manager (Joint Chancellery)")).toBe(2_352_829);
     expect(await cents("balance-sheet", "Total liabilities")).toBe(2_767_329);
-    expect(await cents("balance-sheet", "Total partners' capital")).toBe(99_777_483);
+    expect(await cents("balance-sheet", "Total partners' capital")).toBe(104_302_147);
     expect(await cents("operations", "Management fee")).toBe(541_067);
     expect(await cents("operations", "Fund expenses paid by manager (Joint Chancellery)")).toBe(1_811_762);
     expect(await cents("operations", "Net investment loss")).toBe(-2_398_829);
-    expect(await cents("operations", "Net increase in partners' capital from operations")).toBe(7_277_483);
+    expect(await cents("operations", "Net increase in partners' capital from operations")).toBe(11_802_147);
     expect(await cents("cash-flow", "Increase in due to manager")).toBe(2_352_829);
     expect(await cents("cash-flow", "Net cash used in operating activities")).toBe(-92_781_074);
     await expect(page.locator("#lp-panel-balance-sheet")).not.toContainText("top-up");
@@ -897,6 +907,7 @@ test("financial statements tab balances and ties to the SOI", async ({ page }) =
     await expect(page).toHaveURL(/statement=cash-flow/);
     expect(await cents("cash-flow", "Cash, end of period")).toBe(balanceSheetCash);
     expect(await cents("cash-flow", "Purchases of investments, net")).toBe(-92_735_074);
+    expect(await cents("cash-flow", "Investments contributed in kind (gifted at $0 cost)")).toBe(0);
     expect(await page.locator("#lp-panel-cash-flow .lp-fin-row--total td span").evaluate((el) => getComputedStyle(el).backgroundImage.match(/linear-gradient/g)?.length)).toBe(3);
     const overflow = await page.locator(".lp-fin-table:visible").evaluate((el) => el.scrollWidth > el.clientWidth + 1);
     expect(overflow).toBe(false);
