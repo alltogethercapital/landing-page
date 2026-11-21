@@ -1548,7 +1548,7 @@ html[data-site-theme="dark"] .cog-wordmark-name {
   min-height: min(440px, 100vh);
   min-height: min(440px, 100svh);
   overflow: hidden;
-  background: #000;
+  background: transparent;
 }
 
 @media (min-width: 900px) and (max-width: 1180px) {

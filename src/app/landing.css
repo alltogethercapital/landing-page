@@ -11,7 +11,38 @@
   min-height: 0;
   height: 100%;
   margin: 0;
-  background: #0c0d0d;
+  background: transparent;
+}
+
+/* Dissolve the film into the page. Opacity and blend are GPU-compositor
+   work; avoid blur or other heavy filters on the large canvas. */
+.cog-landing .ascii-hero-canvas,
+.cog-landing .ascii-hero-fallback {
+  opacity: 0.72;
+  filter: saturate(0.84) contrast(0.92);
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
+    linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent);
+  mask-image:
+    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
+    linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+}
+
+html[data-site-theme="dark"] .cog-landing .ascii-hero-canvas,
+html[data-site-theme="dark"] .cog-landing .ascii-hero-fallback {
+  opacity: 0.68;
+}
+
+html[data-site-theme="light"] .cog-landing .ascii-hero-canvas,
+html[data-site-theme="light"] .cog-landing .ascii-hero-fallback {
+  opacity: 0.74;
+  mix-blend-mode: multiply;
 }
 
 .cog-manifesto-section {
