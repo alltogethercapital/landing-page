@@ -86,12 +86,12 @@ const MANAGEMENT_FEE_RATE = 0.02;
 const FEE_QUARTERS = [
   // Initial Closing 4/10/2026; AUM at 3/31/2026 was $0, so no Q2 fee.
   { quarter: "Q2 2026", baseDate: "2026-03-31", depositsToDate: 0, feesPaidToDate: 0, accruedDays: 82, quarterDays: 82 },
-  // AUM bases pinned as accrued in #143. The 2026-11-20 mark corrections
-  // (Replit, Apptronik, Hark, Decart held at cost) would restate them to
-  // $599,765.00 and $862,481.67 (fee −$21.27); not restated by decision.
-  { quarter: "Q3 2026", baseDate: "2026-06-30", depositsToDate: 600_000, feesPaidToDate: 235, accruedDays: 92, quarterDays: 92, pinnedAum: 602_314.93 },
-  { quarter: "Q4 2026", baseDate: "2026-09-30", depositsToDate: 804_145, feesPaidToDate: 330, accruedDays: 51, quarterDays: 92, pinnedAum: 865_557.92 },
-] as { quarter: string; baseDate: string; depositsToDate: number; feesPaidToDate: number; accruedDays: number; quarterDays: number; pinnedAum?: number }[];
+  // Restated 2026-11-20 (approved by Rob) for the corrected marks: Replit,
+  // Apptronik, Hark and Decart held at cost; was $5,410.67 on the old bases.
+  // Gifted positions are excluded from the fee base (not fund AUM).
+  { quarter: "Q3 2026", baseDate: "2026-06-30", depositsToDate: 600_000, feesPaidToDate: 235, accruedDays: 92, quarterDays: 92 },
+  { quarter: "Q4 2026", baseDate: "2026-09-30", depositsToDate: 804_145, feesPaidToDate: 330, accruedDays: 51, quarterDays: 92 },
+];
 
 const exact = (value: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
@@ -137,7 +137,7 @@ const unrealizedAt = (date: string) => sum(fundPositions
 
 const round2 = (value: number) => Math.round(value * 100) / 100;
 const feeQuarters = FEE_QUARTERS.map((quarter) => {
-  const aum = quarter.pinnedAum ?? round2(quarter.depositsToDate - quarter.feesPaidToDate + (quarter.depositsToDate ? unrealizedAt(quarter.baseDate) : 0));
+  const aum = round2(quarter.depositsToDate - quarter.feesPaidToDate + (quarter.depositsToDate ? unrealizedAt(quarter.baseDate) : 0));
   const quarterFee = round2(aum * MANAGEMENT_FEE_RATE / 4);
   const accrued = round2(quarterFee * quarter.accruedDays / quarter.quarterDays);
   return { ...quarter, aum, quarterFee, accrued };
@@ -347,10 +347,10 @@ function assertFinancials() {
   if (cents(netChangeInCash) !== cents(cashTotal)) {
     throw new Error(`Financials: ending cash ${netChangeInCash} ≠ balance sheet cash ${cashTotal}`);
   }
-  // The fee accrual is fixed at the quarter-end bases already billed; later
-  // marks must not move it.
-  if (cents(managementFee) !== cents(5_410.67)) {
-    throw new Error(`Financials: management fee ${managementFee} ≠ $5,410.67`);
+  // Restated fee on the corrected marks; a later mark dated on or before a
+  // fee quarter end must be a deliberate restatement.
+  if (cents(managementFee) !== cents(5_389.41)) {
+    throw new Error(`Financials: management fee ${managementFee} ≠ $5,389.41`);
   }
   if (cents(managerPaidExpenses) !== cents(18_117.62)) {
     throw new Error(`Financials: manager-paid fund expenses ${managerPaidExpenses} ≠ $18,117.62`);
