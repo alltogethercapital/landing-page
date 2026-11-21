@@ -2,6 +2,7 @@ import "server-only";
 
 import {
   LP_CAPITAL_CONTRIBUTED,
+  LP_CAPITAL_CONTRIBUTIONS,
   LP_INVESTMENTS,
   LP_PROJECTED_VALUATION_MARKS,
   LP_SNAPSHOT,
@@ -11,9 +12,11 @@ import { projectedPositionValue } from "@/lib/lp-projection";
 // Financial statements for Outer Rim Ventures LLC, inception (April 3, 2026)
 // to November 20, 2026. Figures come only from the reconciled SOI
 // (LP_INVESTMENTS), the Chase ••2128 ledger and the AngelList funding ledger
-// (Reconciliation 2026-11-20). Items with no evidenced cash charge, such as
-// management fees, are omitted rather than estimated. Gifted positions (1X,
-// Figure AI) are held outside the fund and excluded, as they are from AUM.
+// (Reconciliation 2026-11-20), plus two accruals owed to the Manager (Joint
+// Chancellery LLC) under the Outer Rim Ventures LLC Agreement: the §4.6
+// management fee and the §3.8 fund expenses its principals paid on the fund's
+// behalf. Gifted positions (1X, Figure AI) are held outside the fund and
+// excluded, as they are from AUM.
 
 export const LP_FIN_AS_OF = "2026-11-20";
 export const LP_FIN_INCEPTION = "2026-04-03";
@@ -54,6 +57,43 @@ const DEPLOYED_BY_ROUTE: { route: string; platforms: string[]; ledger: number }[
   { route: "Capital Co.", platforms: ["Capital Company"], ledger: 24_350 },
 ];
 
+// §3.8 fund expenses paid personally by the Manager's principals (Rob Neir,
+// Hisham El-Husseini) and reimbursable by the fund ("The Fund will pay (or
+// reimburse the Manager or its affiliates for) ..."), from the Joint Chancellery
+// Expenses sheet (Drive 1k2BskCWSYVhj2ChnTe3HXTSS8g20M2hj). Organizational costs
+// are expensed as incurred. The Manager's own costs on that sheet (domain $4,436.08,
+// design $680, hosting $99) are covered by the management fee and stay off the
+// fund; the 9/16 $4,000 row is the expense deposit already on the books.
+const MANAGER_PAID_EXPENSES = [
+  { date: "2026-01-29", payer: "Rob", item: "tkntyson formation deposit, JC + Outer Rim (1/2)", clause: "§3.8(v)", amount: 2_500 },
+  { date: "2026-01-29", payer: "Hisham", item: "tkntyson formation deposit, JC + Outer Rim (2/2)", clause: "§3.8(v)", amount: 2_500 },
+  { date: "2026-01-29", payer: "Rob", item: "Outer Rim Delaware registered agent", clause: "§3.8(iv)", amount: 49 },
+  { date: "2026-04-09", payer: "Rob", item: "tkntyson final bill, JC + Outer Rim (1/2)", clause: "§3.8(v)", amount: 5_978.34 },
+  { date: "2026-04-09", payer: "Hisham", item: "tkntyson final bill, JC + Outer Rim (2/2)", clause: "§3.8(v)", amount: 5_978.34 },
+  { date: "2026-05-01", payer: "Hisham", item: "CSC Delaware formation, Joint Chancellery", clause: "§3.8(v)", amount: 555.97 },
+  { date: "2026-05-24", payer: "Rob", item: "CSC Delaware formation, Outer Rim", clause: "§3.8", amount: 555.97 },
+];
+
+// §4.6 management fee: 2.0% per annum of Assets Under Management (aggregate
+// gross asset value, no reduction for indebtedness or reserves), billed
+// quarterly in advance on AUM at the prior fiscal quarter end. Not yet paid
+// (no bank line), so accrued as due to the Manager. Expense is recognised
+// ratably over the service period; the unearned rest of Q4 is not booked.
+// AUM at each quarter end = deposits received to date (LP capital + expense
+// deposits) less bank fees paid to date, plus unrealized appreciation on
+// positions held, using only marks dated on or before that quarter end.
+const MANAGEMENT_FEE_RATE = 0.02;
+const FEE_QUARTERS = [
+  // Initial Closing 4/10/2026; AUM at 3/31/2026 was $0, so no Q2 fee.
+  { quarter: "Q2 2026", baseDate: "2026-03-31", depositsToDate: 0, feesPaidToDate: 0, accruedDays: 82, quarterDays: 82 },
+  { quarter: "Q3 2026", baseDate: "2026-06-30", depositsToDate: 600_000, feesPaidToDate: 235, accruedDays: 92, quarterDays: 92 },
+  { quarter: "Q4 2026", baseDate: "2026-09-30", depositsToDate: 804_145, feesPaidToDate: 330, accruedDays: 51, quarterDays: 92 },
+];
+
+const exact = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+const whole = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
 const cents = (value: number) => Math.round(value * 100);
 const sum = (values: number[]) => values.reduce((total, value) => total + value, 0);
 
@@ -75,6 +115,29 @@ const investmentsByRoute = DEPLOYED_BY_ROUTE.map(({ route, platforms, ledger }) 
   return { route, count: positions.length, cost, fairValue };
 });
 
+const unrealizedAt = (date: string) => sum(fundPositions
+  .filter((investment) => investment.investmentDate <= date)
+  .map((investment) => {
+    const mark = LP_PROJECTED_VALUATION_MARKS[investment.id];
+    const performance = investment.performance && investment.performance.asOf <= date ? investment.performance : undefined;
+    return projectedPositionValue(investment.investedCost, mark && mark.asOf <= date ? mark : undefined, performance) - investment.investedCost;
+  }));
+
+const round2 = (value: number) => Math.round(value * 100) / 100;
+const feeQuarters = FEE_QUARTERS.map((quarter) => {
+  const aum = round2(quarter.depositsToDate - quarter.feesPaidToDate + (quarter.depositsToDate ? unrealizedAt(quarter.baseDate) : 0));
+  const quarterFee = round2(aum * MANAGEMENT_FEE_RATE / 4);
+  const accrued = round2(quarterFee * quarter.accruedDays / quarter.quarterDays);
+  return { ...quarter, aum, quarterFee, accrued };
+});
+const managementFee = sum(feeQuarters.map((quarter) => quarter.accrued));
+const managerPaidExpenses = sum(MANAGER_PAID_EXPENSES.map((item) => item.amount));
+const dueToManager = managementFee + managerPaidExpenses;
+const feeDetail = feeQuarters
+  .filter((quarter) => quarter.aum > 0)
+  .map((quarter) => `${quarter.quarter}: 0.5% × AUM ${exact(quarter.aum)} at ${quarter.baseDate} = ${exact(quarter.quarterFee)}${quarter.accruedDays < quarter.quarterDays ? ` × ${quarter.accruedDays}/${quarter.quarterDays} days = ${exact(quarter.accrued)}` : ""}`)
+  .join(" · ");
+
 const investmentsCost = sum(investmentsByRoute.map((item) => item.cost));
 const investmentsFairValue = sum(investmentsByRoute.map((item) => item.fairValue));
 const routedCount = sum(investmentsByRoute.map((item) => item.count));
@@ -82,16 +145,19 @@ const cashTotal = CASH.chase + CASH.angellist + CASH.fidelity;
 const expenseDeposits = sum(EXPENSE_DEPOSITS.map((item) => item.amount));
 const bankFees = BANK_FEES_GROSS - BANK_FEE_REVERSALS;
 const unrealized = investmentsFairValue - investmentsCost;
-const netInvestmentLoss = -bankFees;
+const totalExpenses = bankFees + managementFee + managerPaidExpenses;
+const netInvestmentLoss = -totalExpenses;
 const netIncrease = netInvestmentLoss + unrealized;
 const contributions = LP_CAPITAL_CONTRIBUTED;
 const totalAssets = investmentsFairValue + cashTotal;
-const totalLiabilities = expenseDeposits;
+const totalLiabilities = expenseDeposits + dueToManager;
 const netAssets = contributions + netInvestmentLoss + unrealized;
 const financing = contributions + expenseDeposits;
 // Indirect method, investment-company presentation: purchases of investments
 // are operating activities; capital and expense deposits are financing.
-const operatingCash = netIncrease - unrealized - investmentsCost;
+// Accrued fee and manager-paid expenses are non-cash: added back as the
+// increase in due to manager.
+const operatingCash = netIncrease - unrealized + dueToManager - investmentsCost;
 const netChangeInCash = operatingCash + financing;
 
 export type LpStatementRow = {
@@ -121,10 +187,6 @@ export const LP_FIN_MANAGER = "Machine Spirit Capital";
 const PERIOD_LINE = "For the period ended November 20, 2026";
 export const LP_FIN_PERIOD_DETAIL = "From April 3, 2026 (inception) to November 20, 2026";
 
-const exact = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
-const whole = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
 
 const balanceSheet: LpStatement = {
   key: "balance-sheet",
@@ -151,6 +213,12 @@ const balanceSheet: LpStatement = {
       indent: 1,
       title: `Funds deposited for accounting & expenses, not LP capital: ${EXPENSE_DEPOSITS.map((item) => `${item.source} ${exact(item.amount)}`).join(" · ")}`,
     },
+    {
+      shortLabel: "Due to manager", label: "Due to manager (Joint Chancellery)",
+      amount: dueToManager,
+      indent: 1,
+      title: `Accrued management fee ${exact(managementFee)} (§4.6) + fund expenses paid by the Manager ${exact(managerPaidExpenses)} (§3.8, reimbursable). Unpaid.`,
+    },
     { label: "Total liabilities", amount: totalLiabilities, kind: "subtotal", title: exact(totalLiabilities) },
     { label: "Partners' capital", kind: "heading" },
     { label: "Contributed capital", amount: contributions, indent: 1, title: "Galactic Imperium $400,000 · Hisham $425,000 · Paul R Neir $100,000" },
@@ -173,9 +241,21 @@ const operations: LpStatement = {
       label: "Bank and wire fees, net",
       amount: bankFees,
       indent: 1,
-      title: `Chase wire and service fees ${exact(BANK_FEES_GROSS)} less ${exact(BANK_FEE_REVERSALS)} reversal. No investment income or management fee recorded.`,
+      title: `Chase wire and service fees ${exact(BANK_FEES_GROSS)} less ${exact(BANK_FEE_REVERSALS)} reversal. No investment income recorded.`,
     },
-    { label: "Total expenses", amount: bankFees, kind: "subtotal", title: exact(bankFees) },
+    {
+      label: "Management fee",
+      amount: managementFee,
+      indent: 1,
+      title: `§4.6, 2% a year of gross assets, billed quarterly in advance on prior quarter-end AUM; accrued, unpaid. Q2 2026: $0 (AUM $0 at 3/31) · ${feeDetail}`,
+    },
+    {
+      shortLabel: "Fund expenses paid by JC", label: "Fund expenses paid by manager (Joint Chancellery)",
+      amount: managerPaidExpenses,
+      indent: 1,
+      title: `§3.8 organizational and legal costs paid by Rob and Hisham, reimbursable: tkntyson legal ${exact(16_956.68)} · CSC formation ${exact(1_111.94)} · registered agent ${exact(49)}`,
+    },
+    { label: "Total expenses", amount: totalExpenses, kind: "subtotal", title: exact(totalExpenses) },
     { label: "Net investment loss", amount: netInvestmentLoss, kind: "subtotal", title: exact(netInvestmentLoss) },
     { label: "Realized and unrealized gain", kind: "heading" },
     {
@@ -200,6 +280,12 @@ const cashFlow: LpStatement = {
     { shortLabel: "Net increase from operations", label: "Net increase in partners' capital from operations", amount: netIncrease, indent: 1, title: exact(netIncrease) },
     { shortLabel: "Adjustments:", label: "Adjustments to reconcile to net cash:", kind: "label", indent: 1 },
     { shortLabel: "Unrealized appreciation", label: "Net change in unrealized appreciation", amount: -unrealized, indent: 2, title: exact(-unrealized) },
+    {
+      shortLabel: "Due to manager", label: "Increase in due to manager",
+      amount: dueToManager,
+      indent: 2,
+      title: `Accrued management fee ${exact(managementFee)} + fund expenses paid by the Manager ${exact(managerPaidExpenses)}; no cash paid`,
+    },
     {
       shortLabel: "Purchases, net", label: "Purchases of investments, net",
       amount: -investmentsCost,
@@ -231,6 +317,19 @@ function assertFinancials() {
   }
   if (cents(netChangeInCash) !== cents(cashTotal)) {
     throw new Error(`Financials: ending cash ${netChangeInCash} ≠ balance sheet cash ${cashTotal}`);
+  }
+  if (cents(managerPaidExpenses) !== cents(18_117.62)) {
+    throw new Error(`Financials: manager-paid fund expenses ${managerPaidExpenses} ≠ $18,117.62`);
+  }
+  if (cents(totalExpenses) !== cents(bankFees + managementFee + managerPaidExpenses)) {
+    throw new Error("Financials: total expenses do not foot");
+  }
+  if (cents(dueToManager) !== cents(totalLiabilities - expenseDeposits)) {
+    throw new Error("Financials: due to manager does not tie to liabilities");
+  }
+  if (cents(feeQuarters[0].accrued) !== 0 || cents(feeQuarters[1].depositsToDate) !== cents(600_000)
+    || cents(feeQuarters[2].depositsToDate) !== cents(sum(LP_CAPITAL_CONTRIBUTIONS.filter((item) => item.date <= "2026-09-30").map((item) => item.amount)) + expenseDeposits)) {
+    throw new Error("Financials: management-fee AUM bases do not tie to deposits");
   }
   if (cents(operatingCash) !== cents(-bankFees - investmentsCost)) {
     throw new Error("Financials: operating cash does not equal fees paid plus net purchases");
@@ -267,6 +366,11 @@ export const LP_FINANCIAL_TOTALS = {
   contributions,
   expenseDeposits,
   bankFees,
+  managementFee,
+  managerPaidExpenses,
+  dueToManager,
+  totalExpenses,
+  netInvestmentLoss,
   unrealized,
   netIncrease,
   netChangeInCash,
