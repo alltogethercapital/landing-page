@@ -101,6 +101,15 @@ const cents = (value: number) => Math.round(value * 100);
 const sum = (values: number[]) => values.reduce((total, value) => total + value, 0);
 
 const fundPositions = LP_INVESTMENTS.filter((investment) => !investment.gift);
+// Gifted positions: contributed in kind by the principals at $0 cost to the
+// fund, carried at fair value on the same marks; excluded from AUM, LP
+// contributions and fund cost. Their whole value is unrealized appreciation.
+const giftPositions = LP_INVESTMENTS.filter((investment) => investment.gift);
+const giftValues = giftPositions.map((investment) => ({
+  investment,
+  value: projectedPositionValue(investment.investedCost, LP_PROJECTED_VALUATION_MARKS[investment.id], investment.performance),
+}));
+const GIFT_COST = 0;
 
 const investmentsByRoute = DEPLOYED_BY_ROUTE.map(({ route, platforms, ledger }) => {
   const positions = fundPositions.filter((investment) => platforms.includes(investment.platform));
@@ -141,8 +150,11 @@ const feeDetail = feeQuarters
   .map((quarter) => `${quarter.quarter}: 0.5% × AUM ${exact(quarter.aum)} at ${quarter.baseDate} = ${exact(quarter.quarterFee)}${quarter.accruedDays < quarter.quarterDays ? ` × ${quarter.accruedDays}/${quarter.quarterDays} days = ${exact(quarter.accrued)}` : ""}`)
   .join(" · ");
 
-const investmentsCost = sum(investmentsByRoute.map((item) => item.cost));
-const investmentsFairValue = sum(investmentsByRoute.map((item) => item.fairValue));
+const investmentsCost = sum(investmentsByRoute.map((item) => item.cost)) + GIFT_COST;
+const fundFairValue = sum(investmentsByRoute.map((item) => item.fairValue));
+const giftFairValue = sum(giftValues.map((item) => item.value));
+const investmentsFairValue = fundFairValue + giftFairValue;
+const giftDetail = giftValues.map(({ investment, value }) => `${investment.company} ${investment.round} ${exact(value)}`).join(" · ");
 const routedCount = sum(investmentsByRoute.map((item) => item.count));
 const cashTotal = CASH.chase + CASH.angellist + CASH.fidelity;
 const expenseDeposits = sum(EXPENSE_DEPOSITS.map((item) => item.amount));
@@ -199,14 +211,16 @@ const balanceSheet: LpStatement = {
   dateLine: "As of November 20, 2026",
   rows: [
     { label: "Assets", kind: "heading" },
-    { shortLabel: `Investments (cost ${whole(investmentsCost)})`, label: `Investments, at value (cost ${whole(investmentsCost)})`, kind: "label", indent: 1, title: `Cost ${exact(investmentsCost)}. Latest comparable valuations; positions without one at cost. Gross, not NAV. Excludes $37,188 of gifted positions held outside the fund.` },
+    { shortLabel: `Fund-purchased (cost ${whole(investmentsCost)})`, label: `Fund-purchased investments (cost ${whole(investmentsCost)})`, kind: "label", indent: 1, title: `Cost ${exact(investmentsCost)}. Latest comparable valuations; positions without one at cost. Gross, not NAV.` },
     ...investmentsByRoute.map((item) => ({
       label: item.route,
       amount: item.fairValue,
       indent: 2 as const,
       title: `${item.count} position${item.count === 1 ? "" : "s"} · cost ${exact(item.cost)} · value ${exact(item.fairValue)}`,
     })),
-    { shortLabel: "Total investments", label: "Total investments, at value", amount: investmentsFairValue, kind: "subtotal", indent: 1, title: exact(investmentsFairValue) },
+    { label: "Investments at value", amount: fundFairValue, kind: "subtotal", indent: 1, title: `Fund-purchased: cost ${exact(investmentsCost)} · value ${exact(fundFairValue)}` },
+    { shortLabel: "Gifted positions", label: "Gifted positions, at value", amount: giftFairValue, indent: 1, title: `Contributed in kind at $0 cost; fair value on latest documented rounds; excluded from AUM: ${giftDetail}` },
+    { shortLabel: "Total investments", label: "Total investments, at value", amount: investmentsFairValue, kind: "subtotal", indent: 1, title: `Fund-purchased ${exact(fundFairValue)} + gifted ${exact(giftFairValue)} = ${exact(investmentsFairValue)}` },
     { label: "Cash", amount: cashTotal, indent: 1, title: `Chase ••2128 ${exact(CASH.chase)} · AngelList ${exact(CASH.angellist)} · Fidelity ${exact(CASH.fidelity)}` },
     { label: "Total assets", amount: totalAssets, kind: "total", title: exact(totalAssets) },
     { label: "Liabilities", kind: "heading" },
@@ -224,9 +238,10 @@ const balanceSheet: LpStatement = {
     },
     { label: "Total liabilities", amount: totalLiabilities, kind: "subtotal", title: exact(totalLiabilities) },
     { label: "Partners' capital", kind: "heading" },
-    { label: "Contributed capital", amount: contributions, indent: 1, title: "Galactic Imperium $400,000 · Hisham $425,000 · Paul R Neir $100,000" },
+    { label: "Contributed capital", amount: contributions, indent: 1, title: "LP cash contributions (AUM): Galactic Imperium $400,000 · Hisham $425,000 · Paul R Neir $100,000" },
+    { shortLabel: "Contributed in kind", label: "Contributed in kind (gifted positions)", amount: GIFT_COST, indent: 1, title: `${giftPositions.length} gifted positions recorded at $0 contributed value; their fair value ${exact(giftFairValue)} is in unrealized appreciation. Not LP capital; excluded from AUM.` },
     { shortLabel: "Net investment loss", label: "Accumulated net investment loss", amount: netInvestmentLoss, indent: 1, title: exact(netInvestmentLoss) },
-    { shortLabel: "Unrealized appreciation", label: "Net unrealized appreciation", amount: unrealized, indent: 1, title: exact(unrealized) },
+    { shortLabel: "Unrealized appreciation", label: "Net unrealized appreciation", amount: unrealized, indent: 1, title: `Fund-purchased ${exact(fundFairValue - investmentsCost)} + gifted ${exact(giftFairValue)} = ${exact(unrealized)}` },
     { label: "Total partners' capital", amount: netAssets, kind: "subtotal", title: exact(netAssets) },
     { shortLabel: "Total liabilities & capital", label: "Total liabilities and partners' capital", amount: totalLiabilities + netAssets, kind: "total", title: exact(totalLiabilities + netAssets) },
   ],
@@ -265,7 +280,7 @@ const operations: LpStatement = {
       shortLabel: "Unrealized appreciation", label: "Net change in unrealized appreciation",
       amount: unrealized,
       indent: 1,
-      title: `Value ${exact(investmentsFairValue)} less cost ${exact(investmentsCost)}. No realizations to date.`,
+      title: `Value ${exact(investmentsFairValue)} (fund-purchased ${exact(fundFairValue)} + gifted ${exact(giftFairValue)} at $0 cost) less cost ${exact(investmentsCost)}. No realizations to date.`,
     },
     { shortLabel: "Net gain on investments", label: "Net realized and unrealized gain", amount: unrealized, kind: "subtotal", title: exact(unrealized) },
     { shortLabel: "Net increase from operations", label: "Net increase in partners' capital from operations", amount: netIncrease, kind: "total", title: exact(netIncrease) },
@@ -303,6 +318,8 @@ const cashFlow: LpStatement = {
     { label: "Net increase in cash", amount: netChangeInCash, kind: "subtotal", title: exact(netChangeInCash) },
     { label: "Cash, beginning of period", amount: 0, indent: 1, title: "Fund opened April 2026" },
     { label: "Cash, end of period", amount: netChangeInCash, kind: "total", title: `Chase ${exact(CASH.chase)} · AngelList ${exact(CASH.angellist)} · Fidelity ${exact(CASH.fidelity)}` },
+    { shortLabel: "Non-cash disclosure", label: "Supplemental non-cash disclosure", kind: "heading" },
+    { shortLabel: "Contributed in kind (gifts)", label: "Investments contributed in kind (gifted at $0 cost)", amount: GIFT_COST, indent: 1, title: `${giftPositions.length} gifted positions, $0 contributed value; current fair value ${exact(giftFairValue)}: ${giftDetail}` },
   ],
 };
 
@@ -311,6 +328,15 @@ const cashFlow: LpStatement = {
 function assertFinancials() {
   if (routedCount !== fundPositions.length) {
     throw new Error(`Financials: ${fundPositions.length - routedCount} positions have no route`);
+  }
+  if (cents(GIFT_COST) !== 0 || giftPositions.length !== 3 || !(giftFairValue > 0)) {
+    throw new Error(`Financials: gifted positions must carry $0 cost and a positive fair value (${giftFairValue})`);
+  }
+  if (cents(investmentsCost) !== cents(927_350.74)) {
+    throw new Error(`Financials: fund cost ${investmentsCost} ≠ $927,350.74 (gifts add $0)`);
+  }
+  if (cents(unrealized) !== cents(fundFairValue - investmentsCost + giftFairValue)) {
+    throw new Error("Financials: unrealized appreciation does not include the gifts at $0 cost");
   }
   if (cents(investmentsCost) !== cents(LP_SNAPSHOT.fundCostTotal)) {
     throw new Error(`Financials: investments cost ${investmentsCost} ≠ SOI ${LP_SNAPSHOT.fundCostTotal}`);
@@ -367,6 +393,8 @@ export const LP_FINANCIAL_STATEMENTS: LpStatement[] = [balanceSheet, operations,
 export const LP_FINANCIAL_TOTALS = {
   investmentsCost,
   investmentsFairValue,
+  fundFairValue,
+  giftFairValue,
   cash: cashTotal,
   totalAssets,
   totalLiabilities,

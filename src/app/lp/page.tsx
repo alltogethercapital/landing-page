@@ -107,17 +107,23 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
     : value("section") === "performance"
       ? "performance"
       : "investments";
-  // Gifted positions are listed but carry no cost basis or projected value.
+  // Gifted positions: $0 cost to the fund, carried at fair value, excluded
+  // from AUM. Their value lifts Projected and the Multiple; cost is fund cost.
   const fundInvestments = investments.filter((item) => !item.gift);
+  const giftedValue = investments.filter((item) => item.gift).reduce(
+    (total, item) => total + item.projection.projectedValue,
+    0,
+  );
   const investedCost = fundInvestments.reduce((total, item) => total + item.investedCost, 0);
   const pendingAllocation = fundInvestments.reduce(
     (total, item) => total + (item.vehicleAllocation?.pendingAmount ?? 0),
     0,
   );
-  const totalProjectedValue = fundInvestments.reduce(
+  const fundProjectedValue = fundInvestments.reduce(
     (total, item) => total + item.projection.projectedValue,
     0,
   );
+  const totalProjectedValue = fundProjectedValue + giftedValue;
   const currentValueMultiple = totalProjectedValue / investedCost;
   return (
     <div className="lp-portal-shell">
@@ -139,7 +145,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
             <MetricLabel
               label="Projected"
               tooltipId="lp-nav-tooltip"
-              description="Estimated gross value from latest comparable valuations; positions without one stay at cost; gifts excluded. Gross, not NAV."
+              description={`Estimated gross value from latest comparable valuations: fund-purchased ${currency(fundProjectedValue)} + gifted ${currency(giftedValue)} ($0 cost). Positions without one at cost. Gross, not NAV.`}
             />
           </dt>
           <dd>{currency(totalProjectedValue)}</dd>
@@ -159,7 +165,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
             <MetricLabel
               label="Multiple"
               tooltipId="lp-gross-value-multiple-tooltip"
-              description={`Projected ÷ cost basis: ${currency(totalProjectedValue)} ÷ ${currency(investedCost)}. Gifts excluded.`}
+              description={`Projected ÷ cost basis: (fund-purchased ${currency(fundProjectedValue)} + gifted ${currency(giftedValue)}) ÷ fund cost ${currency(investedCost)}. Gifts at $0 cost; excluded from AUM.`}
             />
           </dt>
           <dd>{currentValueMultiple.toFixed(2)}×</dd>

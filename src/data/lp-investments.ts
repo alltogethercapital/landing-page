@@ -38,8 +38,10 @@ export type InvestmentRecord = {
   description?: string;
   reviewStatus: InvestmentReviewStatus;
   reviewNote?: string;
-  // Positions bought personally and gifted to the fund. Listed, but excluded
-  // from cost basis, Projected, Multiple, shares and allocations.
+  // Positions bought personally and gifted to the fund: $0 cost to the fund,
+  // carried at fair value (counted in Projected, Multiple and the statements),
+  // excluded from AUM, LP contributions, fund cost and allocations.
+  // investedCost here is the principal's original personal cost ($37,188).
   gift?: true;
   securityAllocation?: SecurityAllocation[];
   vehicleAllocation?: VehicleAllocation;

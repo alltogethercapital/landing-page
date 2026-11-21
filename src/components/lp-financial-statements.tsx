@@ -66,9 +66,10 @@ function Statement({ statement }: { statement: LpStatement }) {
           })}
         </tbody>
       </table>
-      <p className="lp-fin-note" title={`${statement.key === "balance-sheet" ? statement.dateLine : LP_FIN_PERIOD_DETAIL}. Amounts in USD. Unaudited. Investments at latest comparable valuations (positions without one at cost); not NAV. Gifted positions held outside the fund are excluded.`}>
+      <p className="lp-fin-note" title={`${statement.key === "balance-sheet" ? statement.dateLine : LP_FIN_PERIOD_DETAIL}. Amounts in USD. Unaudited. Investments at latest comparable valuations (positions without one at cost); not NAV. Gifted positions contributed at $0 cost; carried at fair value; excluded from AUM.`}>
         <span className="lp-fin-full">{dateShort} · USD · Unaudited · Investments at latest comparable valuations, not NAV</span>
         <span className="lp-fin-short" aria-hidden="true">{dateShort} · USD · Unaudited</span>
+        <span className="lp-fin-gift-note"><span className="lp-fin-full">Gifted positions contributed at $0 cost; carried at fair value; excluded from AUM.</span><span className="lp-fin-short" aria-hidden="true">Gifts: $0 cost · at fair value · excluded from AUM</span></span>
       </p>
     </section>
   );

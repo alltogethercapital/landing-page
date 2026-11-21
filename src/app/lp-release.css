@@ -1258,6 +1258,7 @@ html[data-site-theme="dark"] .lp-portal-page {
 .lp-fin-table td { padding-right: var(--lp-component-inset); text-align: right; }
 .lp-fin-table col.lp-fin-col-amount { width: 140px; }
 .lp-fin-short { display: none; }
+.lp-fin-note .lp-fin-gift-note { display: block; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; }
 .lp-fin-table td span { display: inline-block; min-width: 92px; padding: 0 0 1px; text-align: right; }
 
 .lp-fin-indent-1 th { padding-left: calc(var(--lp-component-inset) + 16px); }
@@ -1316,3 +1317,10 @@ html[data-site-theme="dark"] .lp-portal-page {
   .lp-fin-indent-2 th { padding-left: calc(var(--lp-component-inset) + 20px); }
 }
 
+
+.lp-figure-table--marks .lp-gift-label {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--lp-muted);
+}
