@@ -6,6 +6,7 @@ import { SiteAppearance } from "@/components/site-appearance";
 import { buildSearchIndex } from "@/lib/search";
 import { SITE_THEME_SCRIPT } from "@/lib/site-theme";
 import { pageTitle } from "@/lib/page-metadata";
+import { PageTransitions } from "@/components/page-transitions";
 import "./globals.css";
 import "./lp-release.css";
 import "./site-rails.css";
@@ -14,6 +15,7 @@ import "./landing.css";
 import "./company-logos.css";
 import "./site-identity.css";
 import "./compact.css";
+import "./transitions.css";
 
 const atlasTypewriter = localFont({
   variable: "--font-atlas-typewriter",
@@ -141,6 +143,7 @@ export default function RootLayout({
         style={hiddenScrollbarStyle}
       >
         <SiteAppearance />
+        <PageTransitions />
         <SiteSearch index={buildSearchIndex()} />
         {children}
       </body>
