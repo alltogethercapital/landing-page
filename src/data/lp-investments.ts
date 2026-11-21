@@ -38,6 +38,9 @@ export type InvestmentRecord = {
   description?: string;
   reviewStatus: InvestmentReviewStatus;
   reviewNote?: string;
+  // Positions bought personally and gifted to the fund. Listed, but excluded
+  // from cost basis, Projected, Multiple, shares and allocations.
+  gift?: true;
   securityAllocation?: SecurityAllocation[];
   vehicleAllocation?: VehicleAllocation;
   performance?: {
@@ -100,9 +103,9 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "20-array-labs", chronology: 20, company: "Array Labs", investedCost: 10000, investmentDate: "2026-05-23", round: "Series A+", entryValuation: "$90M public valuation", instrument: "Equity", platform: "AngelList", driveFolderId: "1rctopc9sizaPH0jZYsW0kBW96cZqHOlG", logo: "/logos/cards/array-labs.png", description: "Satellite swarms mapping Earth in real time.", reviewStatus: "verified" },
   { id: "21-corgi", chronology: 21, company: "Corgi", investedCost: 10000, investmentDate: "2026-05-25", round: "Series B+", entryValuation: "$2.5B valuation cap", instrument: "SAFE", platform: "AngelList", driveFolderId: "1MIfGNQQEAMqb0vXDUeJ-n5B_GWDBaSIt", logo: "/logos/cards/corgi.png", reviewStatus: "verified" },
   { id: "22-aformic", chronology: 22, company: "Aformic", investedCost: 4910, investmentDate: "2026-05-27", round: "Pre-seed", entryValuation: "$35M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1lWVnqP_P6ZYSYpZAVD7mwQevfxR4rXRE", logo: "/logos/cards/aformic.png", reviewStatus: "verified" },
-  { id: "23-1x-series-c", chronology: 23, company: "1X", investedCost: 20609, investmentDate: "2025-10-29", round: "Series C", entryValuation: "$10B post-money", instrument: "Equity", platform: "Echo", driveFolderId: "1eiNpQEV0QGZG0u_2Vgd_lsjeZmT8Ggas", logo: "/logos/cards/1x.png", description: "Humanoid robots engineered for the home.", reviewStatus: "verified" },
-  { id: "24-1x-series-b", chronology: 24, company: "1X", investedCost: 3511, investmentDate: "2026-04-30", round: "Series B", entryValuation: "$4.59B post-money", instrument: "Equity", platform: "Echo", driveFolderId: "1oZJ8W19XxhBZkzvp2DV7DM9zPC1-XC-p", logo: "/logos/cards/1x.png", description: "Humanoid robots engineered for the home.", reviewStatus: "verified" },
-  { id: "25-figure-ai", chronology: 25, company: "Figure AI", investedCost: 13068, investmentDate: "2025-12-17", round: "Series C", entryValuation: "$30B post-money", instrument: "Secondary", platform: "Echo", driveFolderId: "16n-o8ge-FbpgN7ucZ9qE2G0xwy96OzCq", logo: "/logos/cards/figure.png", description: "General-purpose humanoid robots for the workforce.", reviewStatus: "verified" },
+  { id: "23-1x-series-c", gift: true, chronology: 23, company: "1X", investedCost: 20609, investmentDate: "2025-10-29", round: "Series C", entryValuation: "$10B post-money", instrument: "Equity", platform: "Echo", driveFolderId: "1eiNpQEV0QGZG0u_2Vgd_lsjeZmT8Ggas", logo: "/logos/cards/1x.png", description: "Humanoid robots engineered for the home.", reviewStatus: "verified" },
+  { id: "24-1x-series-b", gift: true, chronology: 24, company: "1X", investedCost: 3511, investmentDate: "2026-04-30", round: "Series B", entryValuation: "$4.59B post-money", instrument: "Equity", platform: "Echo", driveFolderId: "1oZJ8W19XxhBZkzvp2DV7DM9zPC1-XC-p", logo: "/logos/cards/1x.png", description: "Humanoid robots engineered for the home.", reviewStatus: "verified" },
+  { id: "25-figure-ai", gift: true, chronology: 25, company: "Figure AI", investedCost: 13068, investmentDate: "2025-12-17", round: "Series C", entryValuation: "$30B post-money", instrument: "Secondary", platform: "Echo", driveFolderId: "16n-o8ge-FbpgN7ucZ9qE2G0xwy96OzCq", logo: "/logos/cards/figure.png", description: "General-purpose humanoid robots for the workforce.", reviewStatus: "verified" },
   { id: "26-campus", chronology: 26, company: "Campus", investedCost: 10000, investmentDate: "2026-06-02", round: "Series B+", entryValuation: "$500M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1ZgkaUf9s2i0PIUoduaH_KBy74MecgLjU", logo: "/logos/cards/campus.png", description: "An accredited online college expanding access to education.", reviewStatus: "verified" },
   { id: "27-compresr", chronology: 27, company: "Compresr", investedCost: 4953, investmentDate: "2026-06-11", round: "Seed", entryValuation: "$30M post-money", instrument: "SAFE", platform: "AngelList", driveFolderId: "1bdmsrORNNGUruOUYklpOOK_J-hjrkdWj", logo: "/logos/cards/compresr.svg", description: "Context compression infrastructure for LLM applications and agents.", reviewStatus: "verified" },
   { id: "28-rendezvous-robotics", chronology: 28, company: "Rendezvous Robotics", investedCost: 5000, investmentDate: "2026-06-11", round: "Seed", entryValuation: "$35M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "1qa3idkYDk50l0ek1goo_gUq6J1buGfbc", logo: "/logos/cards/rendezvous-robotics.svg", logoTreatment: "inverse", description: "Spacecraft that autonomously assemble into large structures in orbit.", reviewStatus: "verified" },
@@ -219,6 +222,27 @@ export const LP_PROJECTED_VALUATION_MARKS: Record<string, ProjectedValuationMark
   },
 };
 
+// Capital contributed to Outer Rim Ventures LLC, from the Capital Contribution
+// rows of the bank Transactions ledger. AUM is shown as this total; gifted
+// positions add nothing to it.
+export const LP_CAPITAL_CONTRIBUTIONS: { ledgerRow: number; date: string; amount: number }[] = [
+  { ledgerRow: 1, date: "2026-04-10", amount: 300_000 },
+  { ledgerRow: 2, date: "2026-04-13", amount: 300_000 },
+  { ledgerRow: 51, date: "2026-08-11", amount: 20_000 },
+  { ledgerRow: 55, date: "2026-08-13", amount: 5_000 },
+  { ledgerRow: 56, date: "2026-08-17", amount: 5_000 },
+  { ledgerRow: 57, date: "2026-09-02", amount: 20_000 },
+  { ledgerRow: 67, date: "2026-09-11", amount: 100_000 },
+  { ledgerRow: 68, date: "2026-09-14", amount: 50_000 },
+  { ledgerRow: 70, date: "2026-11-17", amount: 100_000 },
+  { ledgerRow: 71, date: "2026-11-19", amount: 25_000 },
+];
+
+export const LP_CAPITAL_CONTRIBUTED = LP_CAPITAL_CONTRIBUTIONS.reduce(
+  (sum, contribution) => sum + contribution.amount,
+  0,
+);
+
 export const LP_PROJECTION_AS_OF = "2026-11-10";
 
 export const LP_SNAPSHOT = {
@@ -229,5 +253,8 @@ export const LP_SNAPSHOT = {
   publishedAt: "2026-11-19",
   recordCount: 63,
   investedCostTotal: 984539.79,
+  giftedCostTotal: 37188,
+  fundCostTotal: 947351.79,
+  capitalContributed: 925000,
   status: "Reconciled position-for-position to Drive chronology 1–63 and SOI through Anthropic, including the owner-confirmed November 16 Atomarine final allocation and AngelList Investor Account credit; Anthropic is the one position bought on the public market; valuation evidence reviewed November 10; pending records retain explicit evidence caveats",
 } as const;

@@ -9,7 +9,7 @@ import { LpPortfolioTable } from "@/components/lp-portfolio-table";
 import { LpSectionTabs } from "@/components/lp-section-tabs";
 import { LpAllocationDonut, type LpAllocationSlice } from "@/components/lp-allocation-donut";
 import { LETTER_ALLOCATION } from "@/data/lp-letter-figures";
-import { getLpPortfolio, type LpInvestmentDto } from "@/lib/lp-data";
+import { getLpPortfolio, LP_AUM, type LpInvestmentDto } from "@/lib/lp-data";
 import { pageTitle } from "@/lib/page-metadata";
 
 type LpPortfolioPageProps = {
@@ -45,6 +45,7 @@ function companySlices(investments: LpInvestmentDto[]): LpAllocationSlice[] {
   const totals = new Map<string, number>();
   const add = (label: string, amount: number) => totals.set(label, (totals.get(label) ?? 0) + amount);
   for (const investment of investments) {
+    if (investment.gift) continue;
     const allocation = investment.vehicleAllocation;
     if (allocation) {
       add(allocation.deployedCompany, allocation.deployedAmount);
@@ -102,12 +103,14 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
     : value("section") === "performance"
       ? "performance"
       : "investments";
-  const investedCost = investments.reduce((total, item) => total + item.investedCost, 0);
-  const pendingAllocation = investments.reduce(
+  // Gifted positions are listed but carry no cost basis or projected value.
+  const fundInvestments = investments.filter((item) => !item.gift);
+  const investedCost = fundInvestments.reduce((total, item) => total + item.investedCost, 0);
+  const pendingAllocation = fundInvestments.reduce(
     (total, item) => total + (item.vehicleAllocation?.pendingAmount ?? 0),
     0,
   );
-  const totalProjectedValue = investments.reduce(
+  const totalProjectedValue = fundInvestments.reduce(
     (total, item) => total + item.projection.projectedValue,
     0,
   );
@@ -122,17 +125,17 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
             <MetricLabel
               label="AUM"
               tooltipId="lp-aum-tooltip"
-              description={`Recorded cost of all ${investments.length} positions, including ${currency(pendingAllocation)} of H256 still being allocated. Not a fair-value or regulatory AUM figure.`}
+              description="Capital contributed by LPs."
             />
           </dt>
-          <dd>{currency(investedCost)}</dd>
+          <dd>{currency(LP_AUM)}</dd>
         </div>
         <div className="lp-summary-metric--primary">
           <dt>
             <MetricLabel
               label="Projected"
               tooltipId="lp-nav-tooltip"
-              description="Estimated gross value from latest comparable valuations; positions without one stay at cost. Not administrator-reported NAV; before fees, carry, taxes and dilution."
+              description="Estimated gross value from latest comparable valuations; positions without one stay at cost; gifts excluded. Gross, not NAV."
             />
           </dt>
           <dd>{currency(totalProjectedValue)}</dd>
@@ -142,7 +145,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
             <MetricLabel
               label="Pending"
               tooltipId="lp-pending-allocation-tooltip"
-              description={`${currency(pendingAllocation)} of H256 being finalized between Atoms and Applied Intuition. Held at cost in AUM and Projected until deployed.`}
+              description={`${currency(pendingAllocation)} of H256 being finalized between Atoms and Applied Intuition. Held at cost in Projected until deployed.`}
             />
           </dt>
           <dd>{currency(pendingAllocation)}</dd>
@@ -152,7 +155,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
             <MetricLabel
               label="Multiple"
               tooltipId="lp-gross-value-multiple-tooltip"
-              description={`Projected ÷ AUM: ${currency(totalProjectedValue)} ÷ ${currency(investedCost)}. Gross estimate.`}
+              description={`Projected ÷ cost basis: ${currency(totalProjectedValue)} ÷ ${currency(investedCost)}. Gifts excluded.`}
             />
           </dt>
           <dd>{currentValueMultiple.toFixed(2)}×</dd>
@@ -160,7 +163,7 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
       </dl>
 
       <LpAllocationDonut
-        positionCount={investments.length}
+        positionCount={fundInvestments.length}
         views={[
           { key: "company", label: "By company", slices: companySlices(investments) },
           {

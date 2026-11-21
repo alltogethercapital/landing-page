@@ -1130,3 +1130,13 @@ html[data-site-theme="dark"] .lp-portal-page {
 @media (max-width: 639px) {
   .lp-update-rows a { grid-template-columns: 26px 88px minmax(0, 1fr) 14px; gap: 8px; font-size: 13px; }
 }
+
+/* Gifted positions: listed, muted, no cost or share. */
+.lp-figure-bar-row--gift .lp-figure-bar-amount,
+.lp-figure-bar-row--gift .lp-figure-bar-value { color: var(--lp-muted); }
+.lp-figure-bar-label small.lp-gift-label {
+  flex: none;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

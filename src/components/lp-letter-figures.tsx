@@ -259,7 +259,7 @@ function ConcentrationAndStructure() {
 /* 03 — Performance ---------------------------------------------------------- */
 
 function ValuationEvidence() {
-  const positions = LP_INVESTMENTS.map((recordedPosition) => {
+  const positions = LP_INVESTMENTS.filter((recordedPosition) => !recordedPosition.gift).map((recordedPosition) => {
     const mark = LP_PROJECTED_VALUATION_MARKS[recordedPosition.id];
     const position = recordedPosition.vehicleAllocation && mark
       ? {

@@ -117,7 +117,8 @@ export type LetterPosition = InvestmentRecord & {
   entryValuationAmount?: number;
 };
 
-export const LETTER_POSITIONS: LetterPosition[] = LP_INVESTMENTS.map((record) => ({
+// Gifted positions are excluded from every cost-based figure.
+export const LETTER_POSITIONS: LetterPosition[] = LP_INVESTMENTS.filter((record) => !record.gift).map((record) => ({
   ...record,
   allocationCategory: CATEGORY_BY_CHRONOLOGY[record.chronology],
   allocationCategoryLabel: LETTER_ALLOCATION_LABELS[CATEGORY_BY_CHRONOLOGY[record.chronology]],
