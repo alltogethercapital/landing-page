@@ -1235,43 +1235,6 @@ html[data-site-theme="dark"] .lp-portal-page {
 
 .lp-fin-statement { max-width: 760px; }
 
-.lp-fin-header {
-  padding: 0 var(--lp-component-inset) 12px;
-  box-shadow: inset 0 -1px 0 var(--lp-ink); /* site is borderless; rules are drawn */
-  text-align: center;
-}
-
-.lp-fin-header p,
-.lp-fin-header h3 {
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.lp-fin-entity {
-  color: var(--lp-muted);
-  font-family: var(--cog-mono);
-  font-size: var(--lp-micro);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.lp-fin-header h3 {
-  margin-top: 6px;
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: 0;
-}
-
-.lp-fin-title-short { display: none; }
-
-.lp-fin-date {
-  margin-top: 4px;
-  color: var(--lp-muted);
-  font-size: 12px;
-}
-
 .lp-fin-table {
   inline-size: 100%;
   border-collapse: collapse;
@@ -1299,8 +1262,9 @@ html[data-site-theme="dark"] .lp-portal-page {
 .lp-fin-table td span { display: inline-block; min-width: 92px; padding: 0 0 1px; text-align: right; }
 
 .lp-fin-table thead th {
-  padding-top: 10px;
-  padding-bottom: 4px;
+  padding-top: 0;
+  padding-bottom: 7px;
+  box-shadow: inset 0 -1px 0 var(--lp-ink); /* site is borderless; rules are drawn */
   color: var(--lp-muted);
   font-family: var(--cog-mono);
   font-size: var(--lp-micro);
@@ -1318,7 +1282,8 @@ html[data-site-theme="dark"] .lp-portal-page {
   letter-spacing: 0.02em;
 }
 
-.lp-fin-table tbody tr:first-child th { box-shadow: none; padding-top: 6px; }
+.lp-fin-table tbody tr:first-child th { box-shadow: none; padding-top: 10px; }
+.lp-fin-table thead th.lp-fin-asof { text-transform: uppercase; }
 
 .lp-fin-row--label th { color: var(--lp-muted); font-style: italic; }
 .lp-fin-row--item th { color: var(--lp-ink); }
@@ -1354,15 +1319,10 @@ html[data-site-theme="dark"] .lp-portal-page {
 }
 
 @media (max-width: 639px) {
-  .lp-fin-title-full { display: none; }
-  .lp-fin-title-short { display: inline; }
-  .lp-fin-header h3 { font-size: 15px; }
-  .lp-fin-date { font-size: 11px; }
   .lp-fin-table th, .lp-fin-table td { font-size: 12px; }
   .lp-fin-table col.lp-fin-col-amount { width: 104px; }
   .lp-fin-table .lp-fin-full { display: none; }
   .lp-fin-table .lp-fin-short { display: inline; }
-  .lp-fin-entity .lp-fin-manager { display: none; }
   .lp-fin-table td span { min-width: 80px; }
   .lp-fin-indent-1 th { padding-left: calc(var(--lp-component-inset) + 10px); }
   .lp-fin-indent-2 th { padding-left: calc(var(--lp-component-inset) + 20px); }

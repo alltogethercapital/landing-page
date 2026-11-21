@@ -1,7 +1,6 @@
 import { LpSectionTabs } from "@/components/lp-section-tabs";
 import {
   LP_FIN_ENTITY,
-  LP_FIN_MANAGER,
   LP_FIN_PERIOD_DETAIL,
   LP_FINANCIAL_STATEMENTS,
   type LpStatement,
@@ -35,15 +34,7 @@ function Label({ row }: { row: LpStatement["rows"][number] }) {
 function Statement({ statement }: { statement: LpStatement }) {
   const firstAmountIndex = statement.rows.findIndex((row) => row.amount !== undefined);
   return (
-    <section className="lp-fin-statement" aria-labelledby={`lp-fin-${statement.key}`}>
-      <header className="lp-fin-header">
-        <p className="lp-fin-entity">{LP_FIN_ENTITY}<span className="lp-fin-manager"> · {LP_FIN_MANAGER}</span></p>
-        <h3 id={`lp-fin-${statement.key}`} title={statement.title} aria-label={statement.title}>
-          <span className="lp-fin-title-full">{statement.title}</span>
-          <span className="lp-fin-title-short" aria-hidden="true">{statement.shortTitle}</span>
-        </h3>
-        <p className="lp-fin-date" title={statement.key === "balance-sheet" ? statement.dateLine : LP_FIN_PERIOD_DETAIL}>{statement.dateLine}</p>
-      </header>
+    <section className="lp-fin-statement" aria-label={`${statement.title}, ${LP_FIN_ENTITY}`}>
       <table className="lp-fin-table">
         <colgroup>
           <col />
@@ -51,7 +42,7 @@ function Statement({ statement }: { statement: LpStatement }) {
         </colgroup>
         <thead>
           <tr>
-            <th scope="col"><span className="sr-only">Line item</span></th>
+            <th scope="col" className="lp-fin-asof" title={statement.key === "balance-sheet" ? statement.dateLine : LP_FIN_PERIOD_DETAIL}>{statement.dateLine}</th>
             <th scope="col" className="is-number">USD</th>
           </tr>
         </thead>
