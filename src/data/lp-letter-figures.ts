@@ -70,7 +70,7 @@ const CATEGORY_BY_CHRONOLOGY: Record<number, LetterAllocationCategory> = {
 // Entry valuation as reported at the time of investment. These are entry prices,
 // not marks. Positions absent from this map carry no company price at entry.
 const ENTRY_VALUATION_BY_CHRONOLOGY: Record<number, number> = {
-  1: 25e6, 2: 695e6, 3: 27e6, 4: 8.6e9,
+  1: 25e6, 2: 695e6, 3: 122.379e6, 4: 8.6e9,
   6: 312.5e6, 7: 10.5e9, 8: 10e6, 10: 2e9,
   11: 852e9, 12: 4.9e9, 13: 250e6, 14: 160e6, 15: 3e9,
   16: 70e6, 17: 5.775e9, 18: 15e6, 20: 90e6,
