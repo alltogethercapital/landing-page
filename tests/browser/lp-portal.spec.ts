@@ -859,11 +859,11 @@ test("financial statements tab balances and ties to the SOI", async ({ page }) =
     await expect(logo).toBeVisible();
     await expect(logo).toHaveAttribute("href", "/");
     await expect(page.getByText("Outer Rim Ventures LLC · Machine Spirit Capital")).toHaveCount(0);
-    const usd = page.locator("#lp-panel-balance-sheet thead th.is-number");
-    await expect(usd).toHaveText("USD");
-    const usdBox = await usd.boundingBox();
-    const firstRowBox = await page.locator("#lp-panel-balance-sheet tbody tr").first().boundingBox();
-    expect(usdBox!.y + usdBox!.height).toBeLessThanOrEqual(firstRowBox!.y + 1);
+await expect(page.locator(".lp-fin-table thead")).toHaveCount(0);
+    await expect(page.locator("#lp-panel-balance-sheet tbody tr").first()).toHaveText("Assets");
+    await expect(page.locator("#lp-panel-balance-sheet .lp-fin-note")).toContainText(/As of Nov 20, 2026 · USD · Unaudited/);
+    await expect(page.locator("#lp-panel-operations .lp-fin-note")).toContainText(/Period ended Nov 20, 2026 · USD · Unaudited/);
+    await expect(page.locator("#lp-panel-cash-flow .lp-fin-note")).toContainText(/Period ended Nov 20, 2026 · USD · Unaudited/);
     await expect(page.locator(".lp-summary-grid")).toHaveCount(0);
     await page.waitForLoadState("networkidle");
     const sub = page.getByRole("tablist", { name: "Financial statements" });
