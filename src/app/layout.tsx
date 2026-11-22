@@ -97,7 +97,7 @@ const sourceSans = localFont({
 const SITE_URL = "https://machinespirit.com";
 const SITE_TITLE = pageTitle("Home");
 const SITE_DESCRIPTION =
-  "Machine Spirit Capital backs the founders creating and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.";
+  "Machine Spirit Capital backs the founders creating and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space—so technology serves human flourishing.";
 
 const hiddenScrollbarStyle: CSSProperties = {
   msOverflowStyle: "none",

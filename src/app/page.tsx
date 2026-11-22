@@ -15,7 +15,7 @@ import { pageMetadata } from "@/lib/page-metadata";
 
 export const metadata = pageMetadata(
   "Home",
-  "Machine Spirit Capital backs the founders creating and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space.",
+  "Machine Spirit Capital backs the founders creating and stewarding the hard frontier across AI, defense, energy, robotics, semiconductors, and space—so technology serves human flourishing.",
   "/",
 );
 
@@ -54,8 +54,8 @@ export default function Home() {
           </p>
           <p>
             We want safe AI, guided by intelligent global teamwork, to expand
-            human agency and carry us toward an abundant, human-centric
-            future—not an AI-centric one.
+            human agency and carry us toward an abundant future of human
+            flourishing—not an AI-centric one.
           </p>
           <p>
             We back the founders building it across AI, robotics, semiconductors,
