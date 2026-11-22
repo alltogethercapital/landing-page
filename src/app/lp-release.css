@@ -1390,3 +1390,33 @@ html[data-site-theme="dark"] .lp-portal-page {
 .lp-tip.is-open .lp-tip-bubble { opacity: 1; visibility: visible; }
 .lp-fin-label { display: inline-block; max-width: calc(100% - 22px); overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; }
 .lp-figure-table--marks .lp-tip-bubble { left: auto; right: var(--lp-component-inset); max-width: min(320px, calc(100vw - 72px)); }
+
+/* Performance: Company | Entry | Mark | Cost | Value | Multiple, one line per row. */
+.lp-figure-table--perf thead th.is-number { text-align: right; }
+.lp-figure-table--perf thead th:first-child,
+.lp-figure-table--perf tbody th:first-child,
+.lp-figure-table--perf tfoot th:first-child { min-width: 0; }
+.lp-figure-table--perf td.is-number,
+.lp-figure-table--perf th.is-number { padding-left: 4px; }
+.lp-figure-table--perf .lp-perf-narrow { display: none; }
+@media (max-width: 639px) {
+  .lp-figure-table.lp-figure-table--perf thead th,
+  .lp-figure-table.lp-figure-table--perf tbody th,
+  .lp-figure-table.lp-figure-table--perf tbody td,
+  .lp-figure-table.lp-figure-table--perf tfoot th,
+  .lp-figure-table.lp-figure-table--perf tfoot td { padding-right: 3px; padding-left: 0; font-size: 12px; }
+  .lp-figure-table.lp-figure-table--perf thead th:first-child,
+  .lp-figure-table.lp-figure-table--perf tbody th:first-child,
+  .lp-figure-table.lp-figure-table--perf tfoot th:first-child { padding-left: 0; }
+  .lp-figure-table.lp-figure-table--perf thead th:last-child,
+  .lp-figure-table.lp-figure-table--perf tbody td:last-child,
+  .lp-figure-table.lp-figure-table--perf tfoot td:last-child { padding-right: 0; }
+  .lp-figure-table.lp-figure-table--perf .is-number { font-size: 10px; letter-spacing: -0.03em; }
+  .lp-figure-table.lp-figure-table--perf thead th { font-size: 9px; letter-spacing: 0.02em; }
+  .lp-figure-table--perf tbody th strong { font-size: 10.5px; }
+  .lp-figure-table--perf .lp-perf-mark-tip { display: none; }
+  .lp-figure-table--perf .lp-perf-wide { display: none; }
+  .lp-figure-table--perf .lp-perf-narrow { display: inline; }
+  .lp-figure-table--perf .lp-perf-suffix { display: none; }
+}
+.lp-figure-table--perf :is(th, td):last-child .lp-tip-trigger { width: 17px; margin-right: 0; justify-content: flex-end; }

@@ -166,20 +166,20 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
             content: <LpPortfolioTable investments={investments} query={value("query")} />,
           },
           {
-            key: "analysis",
-            label: "Insights",
-            content: (
-              <div className="lp-portfolio-analysis">
-                <LpPortfolioInsights />
-              </div>
-            ),
-          },
-          {
             key: "performance",
             label: "Performance",
             content: (
               <div className="lp-portfolio-analysis">
                 <LpPortfolioPerformance />
+              </div>
+            ),
+          },
+          {
+            key: "analysis",
+            label: "Insights",
+            content: (
+              <div className="lp-portfolio-analysis">
+                <LpPortfolioInsights />
               </div>
             ),
           },
