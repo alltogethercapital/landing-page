@@ -7,7 +7,6 @@ import {
   LETTER_DEPLOYMENT,
   LETTER_ENTRY_BUCKETS,
   LETTER_ENTRY_ROUND_SPLIT,
-  LETTER_H256_PENDING_AMOUNT,
   LETTER_INVESTED_TOTAL,
   LETTER_SECURITY_TYPE_SPLIT,
   type LetterShare,
@@ -20,7 +19,6 @@ import { LpScrollArea } from "@/components/lp-scroll-area";
 import {
   abbreviateLpValuation,
   formatCompactUsd,
-  formatSignedWholeUsd,
   formatWholeUsd,
 } from "@/lib/lp-format";
 
@@ -262,59 +260,130 @@ function ConcentrationAndStructure() {
 
 /* 03 — Performance ---------------------------------------------------------- */
 
-function formatMarkCell(entry: string, latest?: string) {
-  const from = abbreviateLpValuation(entry);
-  if (!latest) return { label: from.label, title: from.detail };
-  const to = abbreviateLpValuation(latest);
-  if (from.label === to.label) return { label: from.label, title: to.detail };
-  return {
-    label: `${from.label} → ${to.label}`,
-    title: `${from.detail} → ${to.detail}`,
-  };
+// Short cell label for a valuation string: "$25M" + " cap", "$9B", "$111.50" + "/sh".
+// The suffix is dropped on phones; the cell title keeps the full terms.
+type ValuationCell = { label: string; suffix?: string; narrow?: string; detail: string };
+
+function valuationLabel(value: string): ValuationCell {
+  const detail = value.replace(/\s*\(held at cost\)\s*$/i, "").trim();
+  if (/\/share/i.test(detail)) {
+    const price = detail.match(/\$[\d,.]+/);
+    if (price) return { label: price[0], suffix: "/sh", detail };
+  }
+  if (/^uncapped\b/i.test(detail)) return { label: "Uncapped", narrow: "No cap", detail };
+  const match = detail.match(/^(~?)\$([\d.]+)([KMBT])\b/i);
+  if (match) {
+    const amount = Number(match[2]);
+    const rounded = amount >= 100 ? amount.toFixed(1).replace(/\.0$/, "") : String(Number(amount.toFixed(2)));
+    const label = `${match[1]}$${rounded}${match[3].toUpperCase()}`;
+    const rest = detail.slice(match[0].length);
+    return /\bcap\b/i.test(rest) ? { label, suffix: " cap", detail } : { label, detail };
+  }
+  return { label: abbreviateLpValuation(detail).label, detail };
+}
+
+function ValuationText({ cell }: { cell: ValuationCell }) {
+  return (
+    <>
+      {cell.narrow ? (
+        <>
+          <span className="lp-perf-wide">{cell.label}</span>
+          <span className="lp-perf-narrow">{cell.narrow}</span>
+        </>
+      ) : cell.label}
+      {cell.suffix ? <span className="lp-perf-suffix">{cell.suffix}</span> : null}
+    </>
+  );
+}
+
+type PerformanceRow = {
+  key: string;
+  company: string;
+  companyNarrow?: string;
+  entry: ValuationCell;
+  mark: ValuationCell;
+  markTip?: string;
+  markUrl?: string;
+  cost: number;
+  value: number;
+  multiple: number;
+  gift?: true;
+  pending?: true;
+};
+
+function performanceRows(): PerformanceRow[] {
+  const rows: PerformanceRow[] = [];
+  for (const position of LP_INVESTMENTS) {
+    const mark = LP_PROJECTED_VALUATION_MARKS[position.id];
+    const entry = valuationLabel(mark?.entryValuation ?? position.entryValuation);
+    const markCell = mark ? valuationLabel(mark.latestValuation) : entry;
+    const markDetail = mark
+      ? `${markCell.detail} · ${mark.asOf} · ${mark.source}`
+      : `${entry.detail} · no newer priced round · held at cost`;
+    if (position.vehicleAllocation && mark) {
+      // H256: the Anduril slice carries the scenario mark; the balance being
+      // finalized stays at cost.
+      const slice = mark.costBasisAmount ?? position.investedCost * position.vehicleAllocation.deployedShare;
+      const sliceValue = projectedPositionValue(slice, { ...mark, costBasisAmount: undefined });
+      rows.push({
+        key: `${position.id}-anduril`,
+        company: `${position.vehicleAllocation.deployedCompany} (H256)`,
+        entry,
+        mark: { ...markCell, detail: markDetail },
+        markTip: mark.basis === "assumption"
+          ? `Owner-directed $100B scenario from reported talks; not a closed round. ${formatWholeUsd(slice)} × ${markCell.label} ÷ ${entry.label}.`
+          : undefined,
+        markUrl: mark.sourceUrl,
+        cost: slice,
+        value: sliceValue,
+        multiple: sliceValue / slice,
+      });
+      const pendingCost = position.investedCost - slice;
+      rows.push({
+        key: `${position.id}-pending`,
+        company: "Finalizing allocation",
+        companyNarrow: "Pending (H256)",
+        entry: { label: "Pending", detail: "H256 balance being finalized between Atoms and Applied Intuition" },
+        mark: { label: "Pending", detail: "Held at cost until deployed" },
+        cost: pendingCost,
+        value: pendingCost,
+        multiple: 1,
+        pending: true,
+      });
+      continue;
+    }
+    const value = projectedPositionValue(position.investedCost, mark, position.performance);
+    rows.push({
+      key: position.id,
+      company: position.company,
+      entry,
+      mark: { ...markCell, detail: markDetail },
+      markUrl: mark?.sourceUrl,
+      cost: position.gift ? 0 : position.investedCost,
+      value,
+      // Gifts cost the fund $0; their multiple is mark ÷ entry.
+      multiple: position.gift
+        ? (mark ? mark.latestValuationAmount / mark.entryValuationAmount : 1)
+        : value / position.investedCost,
+      gift: position.gift,
+    });
+  }
+  return rows.sort((left, right) =>
+    right.multiple - left.multiple || right.value - left.value || left.company.localeCompare(right.company),
+  );
 }
 
 function ValuationEvidence() {
-  const positions = LP_INVESTMENTS.filter((recordedPosition) => !recordedPosition.gift).map((recordedPosition) => {
-    const mark = LP_PROJECTED_VALUATION_MARKS[recordedPosition.id];
-    const position = recordedPosition.vehicleAllocation && mark
-      ? {
-          ...recordedPosition,
-          id: `${recordedPosition.id}-anduril`,
-          company: recordedPosition.vehicleAllocation.deployedCompany,
-          investedCost: mark.costBasisAmount
-            ?? recordedPosition.investedCost * recordedPosition.vehicleAllocation.deployedShare,
-          round: `Via H256 · ${recordedPosition.vehicleAllocation.deployedRound}`,
-          entryValuation: mark.entryValuation ?? recordedPosition.entryValuation,
-        }
-      : recordedPosition;
-    const carried = projectedPositionValue(position.investedCost, mark, position.performance);
-    const delta = carried - position.investedCost;
-    return {
-      position,
-      mark,
-      carried,
-      delta,
-      multiple: carried / position.investedCost,
-      hasGain: delta > 0.005,
-      hasLoss: delta < -0.005,
-    };
-  }).sort((left, right) =>
-    Number(right.hasGain) - Number(left.hasGain)
-      || right.delta - left.delta
-      || left.position.chronology - right.position.chronology,
-  );
-  // Gifted positions: $0 cost to the fund, carried at fair value on the same
-  // marks, excluded from AUM. Their whole value lifts the total multiple.
-  const gifts = LP_INVESTMENTS.filter((recordedPosition) => recordedPosition.gift).map((position) => {
-    const mark = LP_PROJECTED_VALUATION_MARKS[position.id];
-    return { position, mark, carried: projectedPositionValue(position.investedCost, mark, position.performance) };
-  });
-  const giftCarried = gifts.reduce((sum, gift) => sum + gift.carried, 0);
-  const fundCarried = positions.reduce((sum, position) => sum + position.carried, 0)
-    + LETTER_H256_PENDING_AMOUNT;
-  const totalCarried = fundCarried + giftCarried;
-  const totalDelta = totalCarried - LETTER_INVESTED_TOTAL;
-  const totalMultiple = totalCarried / LETTER_INVESTED_TOTAL;
+  const rows = performanceRows();
+  const fundCost = rows.reduce((sum, row) => sum + row.cost, 0);
+  const fundValue = rows.filter((row) => !row.gift).reduce((sum, row) => sum + row.value, 0);
+  const giftValue = rows.filter((row) => row.gift).reduce((sum, row) => sum + row.value, 0);
+  const totalValue = Math.round((fundValue + giftValue) * 100) / 100;
+  const totalMultiple = totalValue / fundCost;
+  if (Math.abs(fundCost - LETTER_INVESTED_TOTAL) > 0.005) {
+    throw new Error(`Performance cost ${fundCost} does not tie to fund cost ${LETTER_INVESTED_TOTAL}`);
+  }
+  const tone = (multiple: number) => multiple > 1.00005 ? " is-gain" : multiple < 0.99995 ? " is-loss" : " is-flat";
 
   return (
     <section
@@ -323,125 +392,85 @@ function ValuationEvidence() {
     >
       <h2 id="lp-performance-section-title" className="sr-only">Performance</h2>
       <LpScrollArea className="lp-figure-table-wrap">
-        <table className="lp-figure-table lp-figure-table--marks">
+        <table className="lp-figure-table lp-figure-table--marks lp-figure-table--perf">
           <thead>
             <tr>
               <th scope="col">Company</th>
-              <th
-                scope="col"
-                title="Entry valuation → current mark. Post-money, cap, assumed, reported, and at-cost detail is in each row tooltip."
-              >
-                Entry → Mark
-                <LpTip label="Entry → Mark" text="Entry post-money → latest documented round. Value = cost × latest ÷ entry (ASC 820); no newer round = at cost." />
-              </th>
+              <th scope="col" className="is-number" title="Valuation, cap or price at entry">Entry</th>
+              <th scope="col" className="is-number" title="Latest verifiable valuation or price; no newer round = entry">Mark</th>
               <th scope="col" className="is-number">Cost</th>
-              <th
-                scope="col"
-                className="is-number"
-                title="Gross multiple of projected value to cost. Projected value and dollar change are in each row tooltip."
-              >
-                Multiple
-                <LpTip label="Multiple" text="Projected value ÷ cost. Gifts show their value instead ($0 cost)." />
+              <th scope="col" className="is-number">
+                Value
+                <LpTip label="Value column" text="Cost × mark ÷ entry. No newer round: mark = entry, value = cost." />
+              </th>
+              <th scope="col" className="is-number">
+                <span className="lp-perf-wide">Multiple</span>
+                <span className="lp-perf-narrow">Mult</span>
+                <LpTip label="Multiple column" text="Value ÷ cost. Gifts ($0 cost): mark ÷ entry." />
               </th>
             </tr>
           </thead>
           <tbody>
-            {positions.map(({ position, mark, carried, delta, multiple, hasGain, hasLoss }) => {
-              const markCell = formatMarkCell(mark?.entryValuation ?? position.entryValuation, mark?.latestValuation);
-              const markTitle = [
-                markCell.title,
-                mark ? `As of ${mark.asOf}` : "Held at cost · No approved mark",
-                mark?.costBasisAmount && position.investedCost !== mark.costBasisAmount
-                  ? `${formatWholeUsd(mark.costBasisAmount)} marked slice`
-                  : null,
-              ].filter(Boolean).join(" · ");
-              const multipleTitle = `${formatWholeUsd(carried)} projected · ${
-                hasGain || hasLoss ? formatSignedWholeUsd(delta) : "at cost"
-              }`;
-              const markContent = mark?.sourceUrl ? (
-                <a href={mark.sourceUrl} target="_blank" rel="noreferrer">{markCell.label}</a>
+            {rows.map((row) => {
+              const markContent = row.markUrl ? (
+                <a href={row.markUrl} target="_blank" rel="noreferrer"><ValuationText cell={row.mark} /></a>
               ) : (
-                markCell.label
+                <ValuationText cell={row.mark} />
               );
+              const className = [
+                row.multiple > 1.00005 ? "has-gain" : null,
+                row.gift ? "is-gift" : null,
+                row.pending ? "lp-performance-pending-row" : null,
+              ].filter(Boolean).join(" ") || undefined;
               return (
-                <tr key={position.id} className={hasGain ? "has-gain" : undefined}>
-                  <th scope="row" title={position.company}>
-                    <strong>{position.company}</strong>
+                <tr key={row.key} className={className}>
+                  <th scope="row">
+                    {row.companyNarrow ? (
+                      <strong>
+                        <span className="lp-perf-wide">{row.company}</span>
+                        <span className="lp-perf-narrow">{row.companyNarrow}</span>
+                      </strong>
+                    ) : (
+                      <strong>{row.company}</strong>
+                    )}
                   </th>
-                  <td title={markTitle}>{markContent}</td>
-                  <td className="is-number" title={formatWholeUsd(position.investedCost)}>
-                    {formatCompactUsd(position.investedCost)}
+                  <td className="is-number" title={row.entry.detail}><ValuationText cell={row.entry} /></td>
+                  <td className="is-number" title={row.mark.detail}>
+                    {markContent}
+                    {row.markTip ? <span className="lp-perf-mark-tip"><LpTip label={`${row.company} mark`} text={row.markTip} /></span> : null}
                   </td>
-                  <td
-                    className={`is-number lp-performance-change${hasGain ? " is-gain" : hasLoss ? " is-loss" : " is-flat"}`}
-                    title={multipleTitle}
-                    data-carried={Math.round(carried * 100)}
-                  >
-                    {multiple.toFixed(2)}×
+                  <td className="is-number" title={row.gift ? "Gifted: $0 cost to the fund" : formatWholeUsd(row.cost)}>
+                    {row.gift ? <small className="lp-gift-label">Gift</small> : formatCompactUsd(row.cost)}
                   </td>
-                </tr>
-              );
-            })}
-            {gifts.map(({ position, mark, carried }) => {
-              const markCell = formatMarkCell(mark?.entryValuation ?? position.entryValuation, mark?.latestValuation);
-              const markContent = mark?.sourceUrl ? (
-                <a href={mark.sourceUrl} target="_blank" rel="noreferrer">{markCell.label}</a>
-              ) : (
-                markCell.label
-              );
-              return (
-                <tr key={position.id} className="is-gift">
-                  <th scope="row" title={`${position.company} · ${position.round} · gifted to the fund`}>
-                    <strong>{position.company}</strong>
-                  </th>
-                  <td title={[markCell.title, mark ? `As of ${mark.asOf}` : "Latest documented round"].join(" · ")}>{markContent}</td>
-                  <td className="is-number" title="Gifted: $0 cost to the fund">
-                    <small className="lp-gift-label">Gift</small>
+                  <td className="is-number" title={formatWholeUsd(row.value)} data-carried={Math.round(row.value * 100)}>
+                    {formatCompactUsd(row.value)}
                   </td>
-                  <td
-                    className="is-number lp-performance-change is-gain"
-                    title={`${formatWholeUsd(carried)} at fair value · $0 cost · excluded from AUM`}
-                    data-carried={Math.round(carried * 100)}
-                  >
-                    {formatCompactUsd(carried)}
+                  <td className={`is-number lp-performance-change${tone(row.multiple)}`}>
+                    {row.multiple.toFixed(2)}×
                   </td>
                 </tr>
               );
             })}
           </tbody>
           <tfoot>
-            <tr className="lp-performance-pending-row">
-              <th scope="row">
-                <strong>Finalizing allocation</strong>
-              </th>
-              <td title="H256 · Atoms or Applied Intuition · included at cost">—</td>
-              <td className="is-number" title={formatWholeUsd(LETTER_H256_PENDING_AMOUNT)}>
-                {formatCompactUsd(LETTER_H256_PENDING_AMOUNT)}
-              </td>
-              <td
-                className="is-number lp-performance-change is-flat"
-                title={`${formatWholeUsd(LETTER_H256_PENDING_AMOUNT)} projected · at cost`}
-                data-carried={Math.round(LETTER_H256_PENDING_AMOUNT * 100)}
-              >
-                1.00×
-              </td>
-            </tr>
             <tr className="lp-performance-total-row">
               <th scope="row">Total</th>
               <td />
-              <td className="is-number" title={formatWholeUsd(LETTER_INVESTED_TOTAL)}>
-                {formatCompactUsd(LETTER_INVESTED_TOTAL)}
+              <td />
+              <td className="is-number" title={formatWholeUsd(fundCost)}>
+                <span className="lp-perf-wide">{formatWholeUsd(fundCost)}</span>
+                <span className="lp-perf-narrow">{formatCompactUsd(fundCost)}</span>
               </td>
-              <td
-                className={`is-number lp-performance-change${totalDelta > 0.005 ? " is-gain" : totalDelta < -0.005 ? " is-loss" : " is-flat"}`}
-                title={`${formatWholeUsd(totalCarried)} projected (fund-purchased ${formatWholeUsd(fundCarried)} + gifted ${formatWholeUsd(giftCarried)} at $0 cost) · ${formatSignedWholeUsd(totalDelta)}`}
-                data-carried={Math.round(totalCarried * 100)}
-              >
+              <td className="is-number" title={formatWholeUsd(totalValue)} data-carried={Math.round(totalValue * 100)}>
+                <span className="lp-perf-wide">{formatWholeUsd(totalValue)}</span>
+                <span className="lp-perf-narrow">{totalValue >= 1_000_000 ? `$${(totalValue / 1_000_000).toFixed(2)}M` : formatCompactUsd(totalValue)}</span>
+              </td>
+              <td className={`is-number lp-performance-change${tone(totalMultiple)}`}>
                 {totalMultiple.toFixed(2)}×
                 <LpTip
                   up
                   label="Total multiple"
-                  text={`(Fund-purchased ${formatWholeUsd(fundCarried)} + gifted ${formatWholeUsd(giftCarried)}) ÷ fund cost ${formatWholeUsd(LETTER_INVESTED_TOTAL)} = ${totalMultiple.toFixed(2)}×. Pending H256 ${formatCompactUsd(LETTER_H256_PENDING_AMOUNT)} at cost.`}
+                  text={`(Fund ${formatWholeUsd(fundValue)} + gifted ${formatWholeUsd(giftValue)}) ÷ fund cost ${formatWholeUsd(fundCost)} = ${totalMultiple.toFixed(2)}×. Value = Projected.`}
                 />
               </td>
             </tr>

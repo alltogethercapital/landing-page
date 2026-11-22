@@ -48,9 +48,8 @@ test("publishes the November 19 portfolio with complete coverage and reconciled 
   const rows = await page.locator(".lp-figure-table--marks tbody tr [data-carried]").evaluateAll(
     (elements) => elements.map((element) => Number(element.getAttribute("data-carried"))),
   );
-  const pending = Number(await page.locator(".lp-performance-pending-row [data-carried]").getAttribute("data-carried"));
   const total = Number(await page.locator(".lp-performance-total-row [data-carried]").getAttribute("data-carried"));
-  expect(rows.reduce((sum, value) => sum + value, pending)).toBe(total);
+  expect(rows.reduce((sum, value) => sum + value, 0)).toBe(total);
   expect(total).toBe(106936050);
 
   await page.goto("/lp/investments/59-atomarine");
@@ -112,6 +111,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   const investmentsSectionLink = portfolioSections.getByRole("tab", { name: "Investments", exact: true });
   const insightsLink = portfolioSections.getByRole("tab", { name: "Insights", exact: true });
   const performanceLink = portfolioSections.getByRole("tab", { name: "Performance", exact: true });
+  await expect(portfolioSections.getByRole("tab")).toHaveText(["Investments", "Performance", "Insights"]);
   await expect(investmentsSectionLink).toHaveAttribute("aria-selected", "true");
   await expect(insightsLink).toHaveAttribute("aria-selected", "false");
   await expect(performanceLink).toHaveAttribute("aria-selected", "false");
@@ -149,7 +149,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(summaryGrid.getByText("Pending", { exact: true })).toBeVisible();
   await expect(summaryGrid.locator(".lp-summary-basis")).toHaveCount(0);
   await expect(summaryGrid.getByText("$112,000", { exact: true })).toBeVisible();
-  await expect(page.getByText("$1,069,361", { exact: true })).toBeVisible();
+  await expect(summaryGrid.getByText("$1,069,361", { exact: true })).toBeVisible();
   await expect(summaryGrid.getByText("Multiple", { exact: true })).toBeVisible();
   await expect(page.getByText("Projected value multiple", { exact: true })).toHaveCount(0);
   await expect(summaryGrid.getByText("1.15×", { exact: true })).toBeVisible();
@@ -335,10 +335,15 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   });
   expect(investmentColumnTitleStyle).toEqual(performanceColumnTitleStyle);
   const performanceRows = page.locator(".lp-figure-table--marks tbody tr");
-  await expect(performanceRows).toHaveCount(61);
+  await expect(performanceRows).toHaveCount(62);
+  await expect(page.locator(".lp-figure-table--marks thead th")).toHaveText([/Company/, /Entry/, /Mark/, /Cost/, /Value/, /Multiple/]);
+  const multiples = await page.locator(".lp-figure-table--marks tbody tr td:last-child").allTextContents();
+  const multipleValues = multiples.map((text) => Number.parseFloat(text));
+  expect([...multipleValues].sort((a, b) => b - a)).toEqual(multipleValues);
   const h256AndurilMark = performanceRows.filter({ hasText: "Anduril" });
   await expect(h256AndurilMark.getByRole("rowheader")).toContainText("Anduril");
-  await expect(h256AndurilMark).toContainText("$60B → $100B");
+  await expect(h256AndurilMark).toContainText("$60B");
+  await expect(h256AndurilMark).toContainText("$100B");
   await expect(h256AndurilMark).toContainText("$88K");
   await expect(h256AndurilMark).toContainText("1.67×");
   await expect(h256AndurilMark).not.toContainText("entry valuation");
@@ -356,11 +361,11 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(figureGift).toContainText("Gift");
   await expect(figureGift.locator("[data-carried]")).toHaveAttribute("data-carried", "1698840");
   const valuationRows = page.locator(".lp-figure-table--marks tbody tr.has-gain");
-  await expect(valuationRows).toHaveCount(4);
+  await expect(valuationRows).toHaveCount(6);
   for (const company of ["Replit", "Hark", "Decart.ai", "Apptronik"]) {
     const row = page.locator(".lp-figure-table--marks tbody tr").filter({ hasText: company });
     await expect(row).not.toHaveClass(/has-gain/);
-    await expect(row.locator("[data-carried]")).toHaveAttribute("title", /at cost/);
+    await expect(row.locator(".lp-performance-change")).toHaveClass(/is-flat/);
   }
   await expect(valuationRows.first().getByRole("rowheader")).toHaveCSS("box-shadow", "none");
   for (const [company, cost, carriedTitle] of [
@@ -381,7 +386,7 @@ test("protects, authenticates, shows the investment graph, and opens an investme
   await expect(positronPerformance).not.toContainText("At cost");
   await expect(positronPerformance).toContainText("1.00×");
   await expect(positronPerformance.locator(".lp-performance-change")).toHaveClass(/is-flat/);
-  await expect(positronPerformance.getByRole("cell").first()).toHaveAttribute("title", /Held at cost · No approved mark/);
+  await expect(positronPerformance.getByRole("cell").nth(1)).toHaveAttribute("title", /held at cost/);
   const pendingPerformanceRow = page.locator(".lp-performance-pending-row");
   await expect(pendingPerformanceRow).toContainText("Finalizing allocation");
   await expect(pendingPerformanceRow).not.toContainText("Atoms or Applied Intuition");
