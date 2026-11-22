@@ -32,7 +32,7 @@ export function formatSignedWholeUsd(value: number) {
 
 export function abbreviateLpValuation(value: string) {
   const detail = value.trim();
-  if (/^uncapped(\s+SAFE)?$/i.test(detail)) return { label: "Uncapped", detail };
+  if (/^uncapped\b/i.test(detail)) return { label: "Uncapped", detail };
   if (/^(N\/A|Not evidenced)$/i.test(detail)) return { label: "—", detail };
   if (/^No (co\. )?val/i.test(detail)) return { label: "No val", detail };
 

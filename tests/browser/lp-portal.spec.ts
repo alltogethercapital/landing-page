@@ -59,7 +59,7 @@ test("publishes the November 19 portfolio with complete coverage and reconciled 
   await expect(page.locator(".lp-performance")).toContainText("1.00×");
   await page.goto("/lp/investments/62-summer-engine");
   await expect(page.getByRole("heading", { name: "Summer Engine" })).toBeVisible();
-  await expect(page.getByText("Uncapped", { exact: true })).toHaveCount(2);
+  await expect(page.getByText("Uncapped (MFN-only SAFE)", { exact: true })).toHaveCount(2);
   await page.goto("/lp/investments/63-anthropic");
   await expect(page.getByRole("heading", { name: "Anthropic" })).toBeVisible();
   await expect(page.locator(".lp-performance")).toContainText("$79,739.91");
