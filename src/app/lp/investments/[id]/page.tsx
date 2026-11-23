@@ -6,6 +6,9 @@ import { UIIcon } from "@/components/icons";
 import { LP_COMPANY_REVIEW_AS_OF } from "@/data/lp-company-updates";
 import { getCompanyContext, getLpInvestment, getLpSnapshot } from "@/lib/lp-data";
 import { pageTitle } from "@/lib/page-metadata";
+import { LpCompanyDetailView } from "@/components/lp-company-detail";
+import { getLpCompanyDetail } from "@/lib/lp-company-detail";
+import { lpCompanyKey, lpCompanySlug } from "@/lib/lp-company-key";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -47,6 +50,7 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
   const context = getCompanyContext(investment.company);
   const snapshot = getLpSnapshot();
   const projection = investment.projection;
+  const companyDetail = await getLpCompanyDetail(lpCompanySlug(lpCompanyKey(investment)));
 
   return (
     <div className="lp-portal-shell lp-detail-shell">
@@ -153,6 +157,12 @@ export default async function LpInvestmentDetailPage({ params }: PageProps) {
           )}
         </p>
       </section>
+
+      {companyDetail ? (
+        <section className="lp-cd-page" aria-label="Company history">
+          <LpCompanyDetailView detail={companyDetail} headingId="lp-company-history-title" showPosition={false} />
+        </section>
+      ) : null}
 
       <footer className="lp-portal-footer">
         <span>Private and confidential</span>
