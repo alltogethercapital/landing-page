@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { LpInvestmentDto } from "@/lib/lp-data";
 import { formatCompactUsd, formatWholeUsd } from "@/lib/lp-format";
+import { lpCompanyHref } from "@/lib/lp-company-key";
 
 type CompanyAllocationRow = {
   id: string;
@@ -32,7 +33,7 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
         label: allocation.deployedCompany,
         amount: allocation.deployedAmount,
         detail: `via H256 · ${formatWholePercent(allocation.deployedShare)}`,
-        href: `/lp/investments/${investment.id}`,
+        href: lpCompanyHref(allocation.deployedCompany),
         searchText: `${allocation.deployedCompany} H256 deployed`.toLocaleLowerCase(),
         positionCount: 1,
       });
@@ -55,7 +56,7 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
       existing.amount += investment.investedCost;
       existing.positionCount += 1;
       existing.detail = `${existing.positionCount} positions`;
-      existing.href = `/lp?query=${encodeURIComponent(investment.company)}`;
+      existing.href = lpCompanyHref(investment.company);
       existing.searchText += ` ${investment.round} ${investment.investmentDate}`.toLocaleLowerCase();
       continue;
     }
@@ -64,7 +65,7 @@ function buildCompanyAllocationRows(investments: LpInvestmentDto[]): CompanyAllo
       id: investment.id,
       label: investment.company,
       amount: investment.investedCost,
-      href: `/lp/investments/${investment.id}`,
+      href: lpCompanyHref(investment.company),
       searchText: `${investment.company} ${investment.round} ${investment.investmentDate}${investment.gift ? " gift" : ""}`.toLocaleLowerCase(),
       positionCount: 1,
       gift: investment.gift,
@@ -125,7 +126,7 @@ export function LpPortfolioTable({
                 aria-label={`${row.label}: gift, excluded from cost basis`}
               >
                 <span className="lp-figure-bar-label" title={`${row.label} · Gift`}>
-                  <Link href={row.href}>{row.label}</Link>
+                  <Link href={row.href} scroll={false} prefetch={false}>{row.label}</Link>
                   <small className="lp-gift-label">Gift</small>
                 </span>
                 <span className="lp-figure-bar-track" aria-hidden="true">
@@ -141,7 +142,7 @@ export function LpPortfolioTable({
                 aria-label={`${row.label}: ${formatWholeUsd(row.amount)}, ${formatPercent(row.amount / totalCapital)} of total capital`}
               >
                 <span className="lp-figure-bar-label" title={row.title ?? (row.detail ? `${row.label} · ${row.detail}` : row.label)}>
-                  <Link href={row.href}>{row.label}</Link>
+                  <Link href={row.href} scroll={false} prefetch={false}>{row.label}</Link>
                   {row.detail ? <small>{row.detail}</small> : null}
                 </span>
                 <span className="lp-figure-bar-track" aria-hidden="true">

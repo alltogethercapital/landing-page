@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { LpTip } from "@/components/lp-tip";
+import { lpCompanyHref, lpCompanyKey } from "@/lib/lp-company-key";
 import { requireLpSession } from "@/lib/lp-auth";
 import { projectedPositionValue } from "@/lib/lp-projection";
 import {
@@ -262,7 +264,7 @@ function ConcentrationAndStructure() {
 
 // Short cell label for a valuation string: "$25M" + " cap", "$9B", "$111.50" + "/sh".
 // The suffix is dropped on phones; the cell title keeps the full terms.
-type ValuationCell = { label: string; suffix?: string; narrow?: string; detail: string };
+export type ValuationCell = { label: string; suffix?: string; narrow?: string; detail: string };
 
 function valuationLabel(value: string): ValuationCell {
   const detail = value.replace(/\s*\(held at cost\)\s*$/i, "").trim();
@@ -282,7 +284,7 @@ function valuationLabel(value: string): ValuationCell {
   return { label: abbreviateLpValuation(detail).label, detail };
 }
 
-function ValuationText({ cell }: { cell: ValuationCell }) {
+export function ValuationText({ cell }: { cell: ValuationCell }) {
   return (
     <>
       {cell.narrow ? (
@@ -296,8 +298,12 @@ function ValuationText({ cell }: { cell: ValuationCell }) {
   );
 }
 
-type PerformanceRow = {
+export type PerformanceRow = {
   key: string;
+  /** LP_INVESTMENTS id this row comes from. */
+  positionId: string;
+  /** Company detail key (H256 looks through to Anduril); absent for the pending H256 balance. */
+  companyKey?: string;
   company: string;
   companyNarrow?: string;
   entry: ValuationCell;
@@ -311,7 +317,9 @@ type PerformanceRow = {
   pending?: true;
 };
 
-function performanceRows(): PerformanceRow[] {
+// Single source for position numbers: the Performance table and the company
+// detail view both read these rows.
+export function performanceRows(): PerformanceRow[] {
   const rows: PerformanceRow[] = [];
   for (const position of LP_INVESTMENTS) {
     const mark = LP_PROJECTED_VALUATION_MARKS[position.id];
@@ -327,6 +335,8 @@ function performanceRows(): PerformanceRow[] {
       const sliceValue = projectedPositionValue(slice, { ...mark, costBasisAmount: undefined });
       rows.push({
         key: `${position.id}-anduril`,
+        positionId: position.id,
+        companyKey: lpCompanyKey(position),
         company: `${position.vehicleAllocation.deployedCompany} (H256)`,
         entry,
         mark: { ...markCell, detail: markDetail },
@@ -341,6 +351,7 @@ function performanceRows(): PerformanceRow[] {
       const pendingCost = position.investedCost - slice;
       rows.push({
         key: `${position.id}-pending`,
+        positionId: position.id,
         company: "Finalizing allocation",
         companyNarrow: "Pending (H256)",
         entry: { label: "Pending", detail: "H256 balance being finalized between Atoms and Applied Intuition" },
@@ -355,6 +366,8 @@ function performanceRows(): PerformanceRow[] {
     const value = projectedPositionValue(position.investedCost, mark, position.performance);
     rows.push({
       key: position.id,
+      positionId: position.id,
+      companyKey: lpCompanyKey(position),
       company: position.company,
       entry,
       mark: { ...markCell, detail: markDetail },
@@ -430,6 +443,15 @@ function ValuationEvidence() {
                         <span className="lp-perf-wide">{row.company}</span>
                         <span className="lp-perf-narrow">{row.companyNarrow}</span>
                       </strong>
+                    ) : row.companyKey ? (
+                      <Link
+                        className="lp-company-link"
+                        href={lpCompanyHref(row.companyKey, "performance")}
+                        scroll={false}
+                        prefetch={false}
+                      >
+                        <strong>{row.company}</strong>
+                      </Link>
                     ) : (
                       <strong>{row.company}</strong>
                     )}

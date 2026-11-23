@@ -6,6 +6,9 @@ import {
   LpPortfolioPerformance,
 } from "@/components/lp-letter-figures";
 import { LpPortfolioTable } from "@/components/lp-portfolio-table";
+import { LpCompanyDetailView } from "@/components/lp-company-detail";
+import { LpCompanyDrawer } from "@/components/lp-company-drawer";
+import { getLpCompanyDetail } from "@/lib/lp-company-detail";
 import { LpSectionTabs } from "@/components/lp-section-tabs";
 import { LpAllocationDonut, type LpAllocationSlice } from "@/components/lp-allocation-donut";
 import { LETTER_ALLOCATION } from "@/data/lp-letter-figures";
@@ -75,6 +78,13 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
     const statement = value("statement");
     redirect(statement ? `/lp/financials?statement=${encodeURIComponent(statement)}` : "/lp/financials");
   }
+  const companySlug = value("company");
+  const companyDetail = companySlug ? await getLpCompanyDetail(companySlug) : null;
+  const closeParams = new URLSearchParams();
+  for (const [key, raw] of Object.entries(params)) {
+    if (key !== "company" && typeof raw === "string") closeParams.set(key, raw);
+  }
+  const closeHref = closeParams.size ? `/lp?${closeParams.toString()}` : "/lp";
   const section = value("section") === "analysis"
     ? "analysis"
     : value("section") === "performance"
@@ -189,6 +199,12 @@ export default async function LpPortfolioPage({ searchParams }: LpPortfolioPageP
       <footer className="lp-portal-footer">
         <span>Private and confidential</span>
       </footer>
+
+      {companyDetail ? (
+        <LpCompanyDrawer key={companyDetail.slug} closeHref={closeHref} labelledBy="lp-company-detail-title">
+          <LpCompanyDetailView detail={companyDetail} headingId="lp-company-detail-title" />
+        </LpCompanyDrawer>
+      ) : null}
     </div>
   );
 }
