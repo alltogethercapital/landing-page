@@ -573,9 +573,11 @@ export const LP_COMPANY_HISTORY: Record<string, LpCompanyHistory> = {
   },
   "Longshot Space": {
     sector: "Space · Launch",
-    lastReviewed: R,
+    lastReviewed: "2026-11-24",
     rounds: [
       { date: "2026-06", round: "Seed", raised: 5 * M, lead: "South Park Commons", sourceUrl: "https://longshotspace.com/newsroom/longshot-secures-5-million-investment-from-south-park-commons-bringing-total-funding-to-20-million" },
+      // Entry terms from the AngelList material-terms notice of 2026-11-24 (deal page is not public). $180M post is already the portal entry valuation.
+      { date: "2026-11-10", round: "Series A", raised: 30 * M, postMoney: 180 * M, ours: true, sourceUrl: "https://www.longshotspace.com/" },
     ],
     news: [
       { date: "2026-10-13", title: "Gun-launched cargo at TC Disrupt", source: "TechCrunch", url: "https://techcrunch.com/2026/10/13/forget-rockets-longshot-wants-to-fire-cargo-into-space-from-a-gun-see-it-at-techcrunch-disrupt-2026/" },

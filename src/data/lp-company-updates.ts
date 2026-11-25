@@ -407,7 +407,7 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
   },
   "Longshot Space": {
     headline: "Ground-accelerator testing continues",
-    summary: "Longshot reports more than 100 shots and Mach 4.2 on its Oakland accelerator. The $5,000 owner-confirmed position is recorded at cost at a $180 million post-money entry valuation because no later company valuation or approved administrator mark has been supplied.",
+    summary: "Longshot reports more than 100 shots and Mach 4.2 on its Oakland accelerator. The $5,000 position is recorded at cost in the Series A priced preferred round ($30 million raised, $180 million post-money). No later company valuation or approved administrator mark has been supplied.",
     source: "Longshot company website",
     sourceUrl: "https://longshotspace.com/company",
     kind: "current-status",
