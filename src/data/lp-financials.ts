@@ -24,7 +24,7 @@ export const LP_FIN_INCEPTION = "2026-04-03";
 // Cash on hand at November 20, 2026.
 const CASH = {
   chase: 626.32, // Chase ••2128 balance (Plaid)
-  angellist: 696.94, // AngelList Investor Account (Atomarine cutback credit 11/16)
+  angellist: 696.94, // AngelList Investor Account (Atomarine cutback credit 11/16; close confirmed 11/24)
   fidelity: 11, // $11 test wire held at Fidelity ••1524
 };
 
