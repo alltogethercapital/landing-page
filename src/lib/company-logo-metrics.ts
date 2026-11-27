@@ -26,6 +26,31 @@ export type CompanyLogoMetric = {
 };
 
 export const COMPANY_LOGO_METRICS: Readonly<Record<string, CompanyLogoMetric>> = {
+  "/logos/cards/t3-code.svg": {
+    "name": "T3 Code",
+    "intrinsicWidth": 94,
+    "intrinsicHeight": 57,
+    "inkBounds": {
+      "x": 0,
+      "y": 0,
+      "width": 94,
+      "height": 57
+    },
+    "crop": {
+      "left": 0,
+      "top": 0,
+      "width": 1,
+      "height": 1
+    },
+    "inkAspect": 1.649123,
+    "kind": "icon",
+    "label": "Code",
+    "tone": "dark",
+    "meanLuminance": 0,
+    "inkCoverage": 0.461891,
+    "visibleCoverage": 0.461891,
+    "opticalBoost": 1
+  },
   "/logos/cards/anthropic.svg": {
     "name": "Anthropic",
     "intrinsicWidth": 570,

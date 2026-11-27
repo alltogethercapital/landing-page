@@ -111,10 +111,12 @@ const giftValues = giftPositions.map((investment) => ({
 }));
 const GIFT_COST = 0;
 
+const unfundedCost = sum(fundPositions.filter((investment) => investment.fundingPending).map((investment) => investment.investedCost));
 const investmentsByRoute = DEPLOYED_BY_ROUTE.map(({ route, platforms, ledger }) => {
   const positions = fundPositions.filter((investment) => platforms.includes(investment.platform));
-  const cost = sum(positions.map((investment) => investment.investedCost));
-  const fairValue = sum(positions.map((investment) =>
+  const funded = positions.filter((investment) => !investment.fundingPending);
+  const cost = sum(funded.map((investment) => investment.investedCost));
+  const fairValue = sum(funded.map((investment) =>
     projectedPositionValue(
       investment.investedCost,
       LP_PROJECTED_VALUATION_MARKS[investment.id],
@@ -399,8 +401,8 @@ function assertFinancials() {
   if (cents(unrealized) !== cents(fundFairValue - investmentsCost + giftFairValue)) {
     throw new Error("Financials: unrealized appreciation does not include the gifts at $0 cost");
   }
-  if (cents(investmentsCost) !== cents(LP_SNAPSHOT.fundCostTotal)) {
-    throw new Error(`Financials: investments cost ${investmentsCost} ≠ SOI ${LP_SNAPSHOT.fundCostTotal}`);
+  if (cents(investmentsCost + unfundedCost) !== cents(LP_SNAPSHOT.fundCostTotal)) {
+    throw new Error(`Financials: investments cost ${investmentsCost} + unfunded ${unfundedCost} ≠ SOI ${LP_SNAPSHOT.fundCostTotal}`);
   }
   if (cents(totalAssets) !== cents(totalLiabilities + netAssets)) {
     throw new Error(`Financials: balance sheet does not balance (${totalAssets} vs ${netAssets})`);

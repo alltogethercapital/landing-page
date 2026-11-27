@@ -32,6 +32,14 @@ export const LP_COMPANY_UPDATES: Record<string, LpCompanyUpdate> = {
     sourceDate: "2026-11-13",
     kind: "current-status",
   },
+  "T3 Code": {
+    headline: "Open-source control plane for coding agents",
+    summary: "T3 Code is a free, open-source app for running coding agents from multiple labs — including Claude Code, Codex, Cursor and Grok — in one interface on desktop, web and phone, using the developer's own subscriptions. The fund committed $25,000 on an uncapped MFN SAFE on November 27, 2026; funding is pending and the position is held at cost.",
+    source: "T3 Code product site",
+    sourceUrl: "https://t3.codes/",
+    sourceDate: "2026-11-27",
+    kind: "current-status",
+  },
   "Budbreak Innovations": {
     headline: "Emma field deployments and 2026 closed beta",
     summary: "Budbreak reports Emma deployments across wine grapes, blueberries and lettuce, with its 2026 closed beta accepting growers. Its public site describes field deployments across Napa, Sonoma, Lodi and the Finger Lakes.",
