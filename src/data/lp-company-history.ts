@@ -747,4 +747,18 @@ export const LP_COMPANY_HISTORY: Record<string, LpCompanyHistory> = {
       { date: "2025-06-12", title: "$26M Series B; launches Wholebody", source: "PR Newswire", url: "https://www.prnewswire.com/news-releases/commons-clinic-raises-26m-series-b-launches-wholebody-multi-specialty-care-platform-302479773.html" },
     ],
   },
+  "T3 Code": {
+    sector: "Developer Tools",
+    lastReviewed: "2026-11-27",
+    rounds: [
+      { date: "2022-03", round: "YC W22", lead: "Y Combinator", sourceUrl: "https://t3.tools/blog/yc-announcement" },
+      { date: "2026-11-27", round: "Series A SAFE (uncapped MFN)", ours: true, sourceUrl: "https://t3.codes/" },
+    ],
+    news: [
+      { date: "2026-11-21", title: "Adds multi-repo project support", source: "Hacker News", url: "https://news.ycombinator.com/item?id=50588007" },
+      { date: "2026-03-07", title: "Launches open-source T3 Code", source: "X / Theo Browne", url: "https://x.com/theo/status/2030071716530245800" },
+      { date: "2026-02-08", title: "T3 Code repo created on GitHub", source: "GitHub", url: "https://github.com/pingdotgg/t3code" },
+      { date: "2022-03-03", title: "Joins Y Combinator Winter 2022", source: "T3 Tools", url: "https://t3.tools/blog/yc-announcement" },
+    ],
+  },
 };

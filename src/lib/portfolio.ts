@@ -22,6 +22,7 @@ export type Company = {
 // (600px 2-col) and 228px at 14px (3-col min around 1381px). Hard budget:
 // 200px at 13.5px / 208px at 14px, leaving room for subpixel rounding.
 export const PORTFOLIO: Company[] = [
+  { name: "T3 Code", href: "https://t3.codes/", sectors: ["AI", "Software"], blurb: "Multi-agent coding cockpit", logo: "/logos/t3-code.svg", cardLogo: "/logos/cards/t3-code.svg", logoLabel: "Code" },
   { name: "Anthropic", href: "https://www.anthropic.com/", sectors: ["AI", "Research"], blurb: "Frontier AI safety, Claude", logo: "/logos/anthropic.svg", cardLogo: "/logos/cards/anthropic.svg", publicListing: { exchange: "Nasdaq", ticker: "ANT" } },
   { name: "Summer Engine", href: "https://www.summerengine.com/", sectors: ["AI", "Gaming", "Software"], blurb: "AI 2D and 3D game engine", logo: "/logos/summer-engine.svg", cardLogo: "/logos/cards/summer-engine.svg", image: "/work/cards/summer-engine.jpg", cardImage: "/work/cards/summer-engine.jpg" },
   { name: "Standard Bots", href: "https://standardbots.com/", sectors: ["Robotics", "AI", "Manufacturing"], blurb: "AI-native industrial robots", logo: "/logos/standard-bots.png", cardLogo: "/logos/cards/standard-bots.svg", logoLabel: "Standard Bots", image: "/work/cards/standard-bots.png", cardImage: "/work/cards/standard-bots.png" },

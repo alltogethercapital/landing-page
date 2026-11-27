@@ -43,6 +43,10 @@ export type InvestmentRecord = {
   // excluded from AUM, LP contributions, fund cost and allocations.
   // investedCost here is the principal's original personal cost ($37,188).
   gift?: true;
+  // Owner-confirmed commitment not yet evidenced as funded (no ledger or bank
+  // movement). Counted in the live SOI / portal cost; excluded from the
+  // November 20, 2026 financial statements and deployed-cash ties.
+  fundingPending?: true;
   securityAllocation?: SecurityAllocation[];
   vehicleAllocation?: VehicleAllocation;
   performance?: {
@@ -145,6 +149,7 @@ export const LP_INVESTMENTS: InvestmentRecord[] = [
   { id: "62-summer-engine", chronology: 62, company: "Summer Engine", investedCost: 25000, investmentDate: "2026-11-13", round: "N/A", entryValuation: "Uncapped (MFN-only SAFE)", instrument: "SAFE", platform: "YC", driveFolderId: "1VlSG2viDL9xFN6tTNaTIz5JyDOmvhJgO", logo: "/logos/cards/summer-engine.svg", logoTreatment: "inverse", description: "The AI game engine for people and agents.", reviewStatus: "verified", reviewNote: "Uncapped MFN SAFE signed through the YC Investors portal; $25,000 wired to Summer Labs Inc on November 19, 2026 from Chase.", securityAllocation: [{ securityType: "SAFE", share: 1 }] },
   { id: "63-anthropic", chronology: 63, company: "Anthropic", investedCost: 100000, investmentDate: "2026-11-19", round: "Public (Nasdaq: ANT)", entryValuation: "~$2.01T fully diluted at open", instrument: "Public Equity", platform: "Fidelity", driveFolderId: "1x9fZRQlxyiuizI5oMC_vGtGG9I0yyn6u", logo: "/logos/cards/anthropic.svg", description: "Frontier AI research and safety, and the creators of Claude.", reviewStatus: "verified", reviewNote: "Bought on the public market on Anthropic's first trading day: Nasdaq: ANT Class A common stock at $111.50 per share, against the $83.00 IPO price. Cost basis $100,000; 896.86 shares derived from $100,000 / $111.50. Funded by the $51,000 and $49,000 Chase ••2128 wires to Fidelity on November 17, 2026. Unlike the private positions, this position has a daily market price.", securityAllocation: [{ securityType: "Public Equity", share: 1 }] },
   { id: "64-commons-clinic", chronology: 64, company: "Commons Clinic", investedCost: 10000, investmentDate: "2026-05-26", round: "Series B+", entryValuation: "$40M pre-money", instrument: "Equity", platform: "AngelList", driveFolderId: "11v0VsdRI3_ycFmr8aXM00MhqByHrGL9k", logo: "/logos/cards/commons-clinic.png", description: "Transparent-price spine, joint and orthopedic care in Los Angeles.", reviewStatus: "verified", reviewNote: "AngelList Series B+ preferred equity at a $40M pre-money valuation; $10,000 invested May 26, 2026 per the AngelList funding ledger and the Chase ••2128 ACH pulls that day. Added in the November 20, 2026 reconciliation.", securityAllocation: [{ securityType: "Equity", share: 1 }] },
+  { id: "65-t3-code", chronology: 65, company: "T3 Code", investedCost: 25000, investmentDate: "2026-11-27", round: "Series A", entryValuation: "Uncapped MFN SAFE (0% discount)", instrument: "SAFE", platform: "AngelList", driveFolderId: "1bImjwFPTq8n65Y5C9iIgHoxU07oni57K", logo: "/logos/cards/t3-code.svg", logoTreatment: "inverse", description: "The open-source control plane for coding agents.", reviewStatus: "pending", reviewNote: "Owner confirmed the $25,000 position on November 27, 2026 (commitment date; funding pending). T3 Tools Inc. (Ping Labs, YC W22) via the Mispriced syndicate (Mispriced-T3-1119 Fund I, a series of Platform Funds 2026, LP); Platform Advisor, LLC; Series A SAFE, uncapped MFN, 0% discount; estimated expenses 2.9%; 20% gross carry; 0% management fee. The founder expects the upcoming priced round around $250M; that figure is an estimate, not a term of the SAFE, and is not used as a mark. Held at cost ($25,000, 1.00x). Supplied LPA, PPM, and subscription agreement are generic offering documents directed to an electronic signature package; investor-specific execution and GP acceptance are not completed in that packet. No AngelList ledger or bank movement has been evidenced. AngelList cash coverage is unknown (last recorded AngelList cash $696.94; last Chase ••2128 cash $626.32 as of November 20). No cash row created.", fundingPending: true, securityAllocation: [{ securityType: "SAFE", share: 1 }] },
 ];
 
 // Valuation inputs used for the LP-facing gross projection. Most inputs are
@@ -277,13 +282,13 @@ export const LP_PROJECTION_AS_OF = "2026-11-20";
 export const LP_SNAPSHOT = {
   source: "Machine Spirit Drive · Schedule of Investments",
   sourceId: "18GiV-rADZRhI7nJpCiUv5_RUCC3iiYFfpxaE6pLJ8yo",
-  sourceRange: "Sheet1!A2:L65",
-  sourceModifiedAt: "2026-11-22",
+  sourceRange: "Sheet1!A2:L66",
+  sourceModifiedAt: "2026-11-27",
   publishedAt: "2026-11-20",
-  recordCount: 61,
-  investedCostTotal: 964538.74,
+  recordCount: 62,
+  investedCostTotal: 989538.74,
   giftedCostTotal: 37188,
-  fundCostTotal: 927350.74,
+  fundCostTotal: 952350.74,
   capitalContributed: 925000,
-  status: "Reconciled November 20, 2026 to Chase ••2128 (95 transactions, $626.32 balance) and the AngelList, Sydecar, YC, Capital Company and Fidelity records: fund cost $927,350.74 against $925,000 of LP capital plus $4,145 of funds deposited for accounting & expenses (not LP capital); Corgi, Sourcerer and Allia Health were refunded and are excluded; Commons Clinic added; valuation evidence refreshed November 20 (OpenAI $1.25T, Supabase $10.65B, Anthropic $88.91 Nasdaq close)",
+  status: "Reconciled November 20, 2026 to Chase ••2128 (95 transactions, $626.32 balance) and the AngelList, Sydecar, YC, Capital Company and Fidelity records: funded cost $927,350.74 against $925,000 of LP capital plus $4,145 of funds deposited for accounting & expenses (not LP capital); Corgi, Sourcerer and Allia Health were refunded and are excluded; Commons Clinic added; valuation evidence refreshed November 20 (OpenAI $1.25T, Supabase $10.65B, Anthropic $88.91 Nasdaq close). Updated November 27, 2026: T3 Code $25,000 uncapped MFN SAFE committed (funding pending; AngelList cash coverage unknown). SOI fund cost $952,350.74 includes that unfunded commitment; November 20 financial statements and deployed-cash ties stay at the funded $927,350.74.",
 } as const;
